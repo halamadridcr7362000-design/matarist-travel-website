@@ -1314,11 +1314,6 @@ document.addEventListener('click', (e) => {
 </div>
 
 <script>
-// ════════════════════════════════
-// ⚠️ ضع API Key هنا فقط
-const ANTHROPIC_API_KEY = "YOUR_API_KEY_HERE";
-// ════════════════════════════════
-
 const SYSTEM_PROMPT = `أنت مساعد ذكي لشركة Matarist Travel، وكالة سياحية محترفة مقرها اسطنبول تركيا.
 
 معلومات الشركة:
@@ -1443,19 +1438,12 @@ async function sendMessage() {
   showTyping();
 
   try {
-    const res = await fetch("https://api.anthropic.com/v1/messages", {
+    const res = await fetch("/.netlify/functions/chat", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
-        "anthropic-dangerous-allow-browser": "true"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "claude-haiku-4-5-20251001",
-        max_tokens: 1000,
-        system: SYSTEM_PROMPT,
-        messages: chatMessages
+        messages: chatMessages,
+        system: SYSTEM_PROMPT
       })
     });
 
