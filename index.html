@@ -2,7 +2,6 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/png" href="favicon-v2_ico.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Matarist Travel | Istanbul – Cairo & Worldwide Travel Services</title>
 <meta name="description" content="Matarist Travel – Professional online travel agency based in Istanbul. Flight booking, visa assistance, hotel reservations, airport transfers, and global cargo shipping between Turkey and Egypt.">
@@ -1169,5 +1168,316 @@ document.addEventListener('click', (e) => {
   }
 });
 </script>
+
+<!-- ═══ MATARIST AI CHAT WIDGET ═══ -->
+<style>
+#matarist-chat-widget {
+  position: fixed;
+  bottom: 90px;
+  right: 26px;
+  z-index: 99999;
+  font-family: 'Cairo', 'DM Sans', sans-serif;
+}
+#chat-toggle-btn {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a2d5a, #c9a84c);
+  border: none; cursor: pointer;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; color: white;
+  transition: all 0.3s ease;
+  position: relative;
+}
+#chat-toggle-btn:hover { transform: scale(1.1); box-shadow: 0 6px 25px rgba(201,168,76,0.5); }
+.chat-notification {
+  position: absolute; top: -4px; right: -4px;
+  background: #e74c3c; color: white;
+  font-size: 11px; font-weight: bold;
+  width: 20px; height: 20px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid white;
+}
+#chat-window {
+  position: absolute; bottom: 75px; right: 0;
+  width: 360px; height: 520px;
+  background: white; border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  display: none; flex-direction: column; overflow: hidden;
+  border: 1px solid rgba(201,168,76,0.3);
+}
+#chat-window.open { display: flex; animation: chatOpen 0.3s ease; }
+@keyframes chatOpen {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.chat-header {
+  background: linear-gradient(135deg, #0f1d3d, #1a2d5a);
+  padding: 14px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.chat-header-info { display: flex; align-items: center; gap: 10px; }
+.chat-avatar {
+  width: 38px; height: 38px; background: #c9a84c;
+  border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; color: #0f1d3d; font-size: 16px;
+}
+.chat-name { color: white; font-weight: 700; font-size: 14px; }
+.chat-status { color: #b8d0f0; font-size: 11px; display: flex; align-items: center; gap: 4px; }
+.status-dot { width: 7px; height: 7px; background: #2ecc71; border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+.chat-close-btn { background: none; border: none; color: white; cursor: pointer; font-size: 16px; opacity: 0.7; }
+.chat-close-btn:hover { opacity: 1; }
+.chat-messages {
+  flex: 1; overflow-y: auto; padding: 16px;
+  background: #f8f9fa; display: flex; flex-direction: column; gap: 12px;
+}
+.message { display: flex; flex-direction: column; }
+.bot-message { align-items: flex-start; }
+.user-message { align-items: flex-end; }
+.message-bubble { max-width: 85%; padding: 10px 14px; border-radius: 14px; font-size: 13px; line-height: 1.6; }
+.bot-message .message-bubble { background: white; color: #1a1a2e; border: 1px solid #e8e8e8; border-bottom-left-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.user-message .message-bubble { background: linear-gradient(135deg, #1a2d5a, #243570); color: white; border-bottom-right-radius: 4px; }
+.message-time { font-size: 10px; color: #aaa; margin-top: 3px; padding: 0 4px; }
+.typing-dots { display: flex; gap: 4px; align-items: center; }
+.typing-dots span { width: 7px; height: 7px; background: #c9a84c; border-radius: 50%; animation: typing 1.2s infinite; }
+.typing-dots span:nth-child(2){animation-delay:0.2s}
+.typing-dots span:nth-child(3){animation-delay:0.4s}
+@keyframes typing { 0%,60%,100%{transform:translateY(0);opacity:0.4} 30%{transform:translateY(-6px);opacity:1} }
+.chat-input-area { padding: 12px; background: white; border-top: 1px solid #eee; }
+.chat-input-wrapper { display: flex; gap: 8px; align-items: center; }
+#chat-input {
+  flex: 1; padding: 10px 14px;
+  border: 1.5px solid #e0e0e0; border-radius: 25px;
+  font-size: 13px; font-family: 'Cairo','DM Sans',sans-serif;
+  outline: none; direction: rtl;
+}
+#chat-input:focus { border-color: #c9a84c; }
+#send-btn {
+  width: 40px; height: 40px; background: #c9a84c;
+  border: none; border-radius: 50%; color: white; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; transition: all 0.2s; flex-shrink: 0;
+}
+#send-btn:hover { background: #b8973e; transform: scale(1.05); }
+#send-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+.chat-footer-note { text-align: center; margin-top: 8px; }
+.chat-footer-note a { color: #25D366; font-size: 12px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+.chat-footer-note a:hover { color: #128C7E; }
+@media(max-width:480px){ #chat-window{width:310px;height:480px;right:-10px} #matarist-chat-widget{right:16px;bottom:80px} }
+</style>
+
+<div id="matarist-chat-widget">
+  <button id="chat-toggle-btn" onclick="toggleChat()" aria-label="Open chat">
+    <i class="fas fa-comments" id="chat-icon"></i>
+    <i class="fas fa-times" id="close-icon" style="display:none"></i>
+    <span class="chat-notification" id="chat-notification">1</span>
+  </button>
+  <div id="chat-window">
+    <div class="chat-header">
+      <div class="chat-header-info">
+        <div class="chat-avatar"><i class="fas fa-plane"></i></div>
+        <div>
+          <div class="chat-name">Matarist Travel AI</div>
+          <div class="chat-status"><span class="status-dot"></span> متاح الآن | Available 24/7</div>
+        </div>
+      </div>
+      <button class="chat-close-btn" onclick="toggleChat()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="chat-messages" id="chat-messages">
+      <div class="message bot-message">
+        <div class="message-bubble">
+          👋 مرحباً! أنا مساعد Matarist Travel الذكي.<br><br>
+          يمكنني مساعدتك في:<br>
+          ✈️ تذاكر الطيران<br>
+          🏨 حجز الفنادق<br>
+          🏖️ رحلات تركيا<br>
+          📦 خدمات الكارجو<br>
+          🛂 الفيزا والتأشيرات<br><br>
+          كيف يمكنني مساعدتك؟
+        </div>
+        <div class="message-time">الآن</div>
+      </div>
+    </div>
+    <div class="chat-input-area">
+      <div class="chat-input-wrapper">
+        <input type="text" id="chat-input" placeholder="اكتب سؤالك هنا..." onkeypress="handleKeyPress(event)" autocomplete="off"/>
+        <button id="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+      </div>
+      <div class="chat-footer-note">
+        <a href="https://wa.me/905451218167" target="_blank">
+          <i class="fab fa-whatsapp"></i> احجز الآن عبر واتساب
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════
+// ⚠️ ضع API Key هنا فقط
+const ANTHROPIC_API_KEY = "YOUR_API_KEY_HERE";
+// ════════════════════════════════
+
+const SYSTEM_PROMPT = `أنت مساعد ذكي لشركة Matarist Travel، وكالة سياحية محترفة مقرها اسطنبول تركيا.
+
+معلومات الشركة:
+- الاسم: Matarist Travel
+- واتساب: +90 545 121 8167
+- البريد: mataristtravel@gmail.com
+- الموقع: mataristtravel.netlify.app
+- العنوان: Istanbul, Turkey
+
+خدماتنا:
+1. حجز تذاكر طيران (تركيا ↔ مصر وعالمياً)
+2. حجز فنادق عالمياً
+3. خدمات الفيزا
+4. توصيل VIP من وإلى المطار
+5. شحن كارجو دولي
+
+رحلات اسطنبول والمدن التركية:
+- بورصا الخضراء: 25$
+- سابنجا ومعشوقية: 25$
+- شيلا أغوا: 30$
+- جزيرة الأميرات: 35$
+- سهرة البوسفور: 35$
+- يالوا (كل السبت): 30$
+- إزميت: 30$
+- أنطاليا (أسبوعية): 300$
+- طرابزون (أسبوعية): 200$
+- كابادوكيا (3 أيام): 410$
+
+فنادق شرم الشيخ (نصف إقامة - للفرد):
+- يوني شرم: 4أيام 5,325ج / 5أيام 6,750ج
+- رويال نعمه: 4أيام 5,490ج / 5أيام 6,970ج
+- شاركس باي: 4أيام 6,600ج / 5أيام 8,450ج
+- كنابش: 4أيام 8,625ج / 5أيام 11,150ج
+
+فنادق الغردقة (إقامة كاملة - للفرد):
+- صن اند سي ⭐⭐⭐: 4أيام 7,900ج / 5أيام 10,150ج
+- ميراج باي ⭐⭐⭐⭐: 4أيام 9,000ج / 5أيام 11,650ج
+- ستيلا بيتش ⭐⭐⭐⭐⭐: 4أيام 15,700ج / 5أيام 27,000ج
+- ديزرت روز ⭐⭐⭐⭐⭐: 4أيام 19,000ج / 5أيام 34,500ج
+
+أسعار الصرف: 1ج = 0.019$ = 0.85 ليرة تركية
+
+قواعد الرد:
+- رد بنفس لغة العميل (عربي/إنجليزي/تركي)
+- كن ودوداً ومحترفاً
+- اقترح دائماً التواصل عبر واتساب للحجز
+- لا تتجاوز 150 كلمة`;
+
+let chatMessages = [];
+let isTyping = false;
+let isOpen = false;
+
+function toggleChat() {
+  const win = document.getElementById("chat-window");
+  const chatIcon = document.getElementById("chat-icon");
+  const closeIcon = document.getElementById("close-icon");
+  const notif = document.getElementById("chat-notification");
+  isOpen = !isOpen;
+  if (isOpen) {
+    win.classList.add("open");
+    chatIcon.style.display = "none";
+    closeIcon.style.display = "block";
+    if (notif) notif.style.display = "none";
+    document.getElementById("chat-input").focus();
+    scrollToBottom();
+  } else {
+    win.classList.remove("open");
+    chatIcon.style.display = "block";
+    closeIcon.style.display = "none";
+  }
+}
+
+function handleKeyPress(e) {
+  if (e.key === "Enter") { e.preventDefault(); sendMessage(); }
+}
+
+function getTime() {
+  return new Date().toLocaleTimeString("ar", {hour:"2-digit", minute:"2-digit"});
+}
+
+function addMessage(text, isUser) {
+  const div = document.getElementById("chat-messages");
+  const msg = document.createElement("div");
+  msg.className = "message " + (isUser ? "user-message" : "bot-message");
+  msg.innerHTML = `<div class="message-bubble">${text.replace(/\n/g,"<br>")}</div><div class="message-time">${getTime()}</div>`;
+  div.appendChild(msg);
+  scrollToBottom();
+}
+
+function showTyping() {
+  const div = document.getElementById("chat-messages");
+  const t = document.createElement("div");
+  t.className = "message bot-message";
+  t.id = "typing-ind";
+  t.innerHTML = `<div class="message-bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+  div.appendChild(t);
+  scrollToBottom();
+}
+
+function hideTyping() {
+  const t = document.getElementById("typing-ind");
+  if (t) t.remove();
+}
+
+function scrollToBottom() {
+  const div = document.getElementById("chat-messages");
+  div.scrollTop = div.scrollHeight;
+}
+
+async function sendMessage() {
+  const input = document.getElementById("chat-input");
+  const btn = document.getElementById("send-btn");
+  const text = input.value.trim();
+  if (!text || isTyping) return;
+
+  input.value = "";
+  isTyping = true;
+  btn.disabled = true;
+
+  addMessage(text, true);
+  chatMessages.push({role:"user", content:text});
+  showTyping();
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-allow-browser": "true"
+      },
+      body: JSON.stringify({
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT,
+        messages: chatMessages
+      })
+    });
+
+    const data = await res.json();
+    const reply = data.content[0].text;
+    chatMessages.push({role:"assistant", content:reply});
+    hideTyping();
+    addMessage(reply, false);
+
+  } catch(err) {
+    hideTyping();
+    addMessage("عذراً، حدث خطأ. تواصل معنا عبر واتساب: +90 545 121 8167 ✅", false);
+  }
+
+  isTyping = false;
+  btn.disabled = false;
+  input.focus();
+
+  if (chatMessages.length > 20) chatMessages = chatMessages.slice(-10);
+}
+</script>
+<!-- ═══ END CHAT WIDGET ═══ -->
+
 </body>
 </html>
