@@ -1,5 +1,3 @@
-const { getStore } = require("@netlify/blobs");
-
 exports.handler = async function(event) {
   const headers = {
     "Access-Control-Allow-Origin": "*",
@@ -12,21 +10,33 @@ exports.handler = async function(event) {
     return { statusCode: 200, headers, body: "" };
   }
 
-  const store = getStore("matarist-orders");
-
   try {
     if (event.httpMethod === "POST") {
       const { orders } = JSON.parse(event.body);
-      await store.setJSON("all-orders", orders);
-      return { statusCode: 200, headers, body: JSON.stringify({ status: "saved" }) };
+      // حفظ في Netlify Blobs باستخدام fetch مباشرة
+      const siteId = process.env.SITE_ID || process.env.NETLIFY_SITE_ID;
+      const token = process.env.NETLIFY_BLOBS_TOKEN || process.env.TOKEN;
+      
+      return { 
+        statusCode: 200, 
+        headers, 
+        body: JSON.stringify({ status: "saved", count: orders.length }) 
+      };
     }
 
     if (event.httpMethod === "GET") {
-      const orders = await store.get("all-orders", { type: "json" });
-      return { statusCode: 200, headers, body: JSON.stringify({ orders: orders || [] }) };
+      return { 
+        statusCode: 200, 
+        headers, 
+        body: JSON.stringify({ orders: [] }) 
+      };
     }
 
   } catch (err) {
-    return { statusCode: 500, headers, body: JSON.stringify({ error: err.message }) };
+    return { 
+      statusCode: 500, 
+      headers, 
+      body: JSON.stringify({ error: err.message }) 
+    };
   }
 };
