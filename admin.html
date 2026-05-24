@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matarist — لوحة العمليات</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#0d1117;
+  --surface:#161b22;
+  --surface2:#1c2330;
+  --border:#30363d;
+  --gold:#c9a84c;
+  --gold-light:#e8c97a;
+  --text:#e6edf3;
+  --text-muted:#7d8590;
+  --green:#2ea043;
+  --blue:#1f6feb;
+  --orange:#d29922;
+  --red:#da3633;
+  --purple:#8b5cf6;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* ── Login ── */
+#login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999}
+.login-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:48px 40px;width:360px;text-align:center}
+.login-logo{font-size:2rem;font-weight:900;color:var(--gold);margin-bottom:4px}
+.login-sub{color:var(--text-muted);font-size:0.85rem;margin-bottom:32px}
+.login-input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;color:var(--text);font-family:'Cairo',sans-serif;font-size:1rem;outline:none;margin-bottom:12px;transition:border-color 0.2s}
+.login-input:focus{border-color:var(--gold)}
+.login-btn{width:100%;background:var(--gold);color:#000;border:none;padding:13px;border-radius:8px;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:background 0.2s}
+.login-btn:hover{background:var(--gold-light)}
+.login-error{color:var(--red);font-size:0.85rem;margin-top:8px;display:none}
+
+/* ── Layout ── */
+#app{display:none}
+.sidebar{position:fixed;right:0;top:0;bottom:0;width:220px;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;z-index:100}
+.sidebar-logo{padding:20px 16px;border-bottom:1px solid var(--border)}
+.sidebar-logo-title{font-size:1.1rem;font-weight:900;color:var(--gold)}
+.sidebar-logo-sub{font-size:0.75rem;color:var(--text-muted)}
+.sidebar-nav{flex:1;padding:12px 8px;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;transition:background 0.2s;margin-bottom:2px;position:relative}
+.nav-item:hover{background:var(--surface2)}
+.nav-item.active{background:var(--surface2);color:var(--gold)}
+.nav-item i{width:18px;text-align:center;font-size:0.95rem}
+.nav-item span{font-size:0.9rem;font-weight:600}
+.nav-badge{position:absolute;left:10px;background:var(--red);color:#fff;font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.sidebar-footer{padding:16px;border-top:1px solid var(--border)}
+.logout-btn{width:100%;background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:8px;border-radius:8px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:0.85rem;transition:all 0.2s}
+.logout-btn:hover{border-color:var(--red);color:var(--red)}
+
+/* ── Main ── */
+.main{margin-right:220px;padding:24px;min-height:100vh}
+.page{display:none}
+.page.active{display:block}
+
+/* ── Header ── */
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.page-title{font-size:1.4rem;font-weight:700}
+.page-subtitle{color:var(--text-muted);font-size:0.85rem;margin-top:2px}
+
+/* ── Stats cards ── */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+.stat-label{color:var(--text-muted);font-size:0.8rem;margin-bottom:8px}
+.stat-value{font-size:1.8rem;font-weight:900}
+.stat-sub{color:var(--text-muted);font-size:0.78rem;margin-top:4px}
+.stat-card.gold .stat-value{color:var(--gold)}
+.stat-card.green .stat-value{color:var(--green)}
+.stat-card.blue .stat-value{color:var(--blue)}
+.stat-card.orange .stat-value{color:var(--orange)}
+
+/* ── Service tabs ── */
+.service-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.svc-tab{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:20px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-family:'Cairo',sans-serif;font-size:0.85rem;font-weight:600;color:var(--text-muted);transition:all 0.2s;position:relative}
+.svc-tab:hover{border-color:var(--gold);color:var(--text)}
+.svc-tab.active{background:var(--gold);border-color:var(--gold);color:#000}
+.svc-tab .tab-count{background:var(--red);color:#fff;font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.svc-tab.active .tab-count{background:rgba(0,0,0,0.3)}
+
+/* ── Orders table ── */
+.orders-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.orders-toolbar{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.search-input{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;width:240px}
+.search-input:focus{border-color:var(--gold)}
+.filter-select{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'Cairo',sans-serif;font-size:0.85rem;outline:none}
+.orders-table{width:100%;border-collapse:collapse}
+.orders-table th{padding:12px 16px;text-align:right;font-size:0.78rem;color:var(--text-muted);font-weight:600;border-bottom:1px solid var(--border);background:var(--surface2)}
+.orders-table td{padding:12px 16px;font-size:0.88rem;border-bottom:1px solid var(--border);vertical-align:middle}
+.orders-table tr:last-child td{border-bottom:none}
+.orders-table tr:hover td{background:var(--surface2)}
+.orders-table tr{cursor:pointer}
+
+/* ── Status badges ── */
+.status{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;font-size:0.75rem;font-weight:700}
+.status.new{background:rgba(31,111,235,0.15);color:#58a6ff}
+.status.processing{background:rgba(210,153,34,0.15);color:#e3b341}
+.status.sent{background:rgba(139,92,246,0.15);color:#a78bfa}
+.status.confirmed{background:rgba(46,160,67,0.15);color:#3fb950}
+.status.cancelled{background:rgba(218,54,51,0.15);color:#f85149}
+
+/* ── Order modal ── */
+.order-modal{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.25s}
+.order-modal.open{opacity:1;pointer-events:all}
+.order-panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto}
+.order-panel-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--surface);z-index:10}
+.order-panel-title{font-size:1.1rem;font-weight:700}
+.panel-close{background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);width:32px;height:32px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.panel-close:hover{border-color:var(--red);color:var(--red)}
+.order-panel-body{padding:24px}
+
+/* ── Data grid in panel ── */
+.data-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.data-item label{font-size:0.75rem;color:var(--text-muted);display:block;margin-bottom:3px}
+.data-item span{font-size:0.92rem;font-weight:600}
+
+/* ── Profit section ── */
+.profit-section{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px}
+.profit-title{font-size:0.85rem;font-weight:700;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.profit-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:end}
+.profit-field label{font-size:0.75rem;color:var(--text-muted);margin-bottom:4px;display:block}
+.profit-input{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:'Cairo',sans-serif;font-size:0.95rem;width:100%;outline:none;transition:border-color 0.2s}
+.profit-input:focus{border-color:var(--gold)}
+.profit-toggle{display:flex;gap:4px;margin-bottom:4px}
+.profit-toggle button{flex:1;padding:6px 8px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text-muted);font-family:'Cairo',sans-serif;font-size:0.8rem;cursor:pointer;transition:all 0.2s}
+.profit-toggle button.active{background:var(--gold);border-color:var(--gold);color:#000;font-weight:700}
+.final-price{background:rgba(46,160,67,0.1);border:1px solid rgba(46,160,67,0.3);border-radius:8px;padding:12px;text-align:center}
+.final-price label{font-size:0.75rem;color:var(--text-muted);display:block;margin-bottom:4px}
+.final-price .amount{font-size:1.4rem;font-weight:900;color:var(--green)}
+
+/* ── Action buttons ── */
+.action-btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:8px;border:none;font-family:'Cairo',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s}
+.btn-status{background:var(--surface2);border:1px solid var(--border);color:var(--text)}
+.btn-status:hover{border-color:var(--gold);color:var(--gold)}
+.btn-whatsapp{background:#25d366;color:#fff}
+.btn-whatsapp:hover{background:#1db954}
+.btn-confirm{background:var(--green);color:#fff}
+.btn-confirm:hover{background:#238636}
+.btn-cancel{background:transparent;border:1px solid var(--red);color:var(--red)}
+.btn-cancel:hover{background:var(--red);color:#fff}
+
+/* ── Divider ── */
+.divider{height:1px;background:var(--border);margin:16px 0}
+
+/* ── Empty state ── */
+.empty-state{padding:60px;text-align:center;color:var(--text-muted)}
+.empty-state i{font-size:2.5rem;margin-bottom:12px;display:block}
+
+/* ── Notification toast ── */
+.toast{position:fixed;bottom:24px;left:24px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px;font-size:0.9rem;box-shadow:0 8px 24px rgba(0,0,0,0.4);z-index:9999;transform:translateY(20px);opacity:0;transition:all 0.3s;max-width:320px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{border-color:var(--green)}
+.toast.error{border-color:var(--red)}
+
+/* ── Notification System ── */
+.notif-popup{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-120px);background:var(--surface);border:1px solid var(--gold);border-radius:14px;padding:16px 20px;min-width:340px;max-width:420px;box-shadow:0 12px 40px rgba(0,0,0,0.5);z-index:9999;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);display:flex;align-items:center;gap:14px}
+.notif-popup.show{transform:translateX(-50%) translateY(0)}
+.notif-icon{font-size:1.8rem;flex-shrink:0;animation:bell-ring 0.5s ease}
+@keyframes bell-ring{0%,100%{transform:rotate(0)}20%{transform:rotate(-20deg)}40%{transform:rotate(20deg)}60%{transform:rotate(-10deg)}80%{transform:rotate(10deg)}}
+.notif-content{flex:1}
+.notif-ref{font-size:0.75rem;color:var(--gold);font-weight:700;margin-bottom:2px}
+.notif-name{font-size:1rem;font-weight:700;color:var(--text)}
+.notif-type{font-size:0.82rem;color:var(--text-muted);margin-top:2px}
+.notif-close{background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:0.85rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s}
+.notif-close:hover{border-color:var(--red);color:var(--red)}
+.notif-bar{position:absolute;bottom:0;left:0;height:3px;background:var(--gold);border-radius:0 0 14px 14px;width:100%;animation:notif-timer 5s linear forwards}
+@keyframes notif-timer{from{width:100%}to{width:0%}}
+
+/* ── Sound toggle button ── */
+.sound-toggle{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.2s;font-family:'Cairo',sans-serif;font-size:0.85rem;color:var(--text-muted)}
+.sound-toggle:hover{border-color:var(--gold);color:var(--gold)}
+.sound-toggle.on{border-color:var(--green);color:var(--green)}
+.sound-toggle .sound-dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+
+/* ── Currency Bar ── */
+.currency-bar{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 20px;margin-bottom:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.currency-label{font-size:0.82rem;color:var(--text-muted);font-weight:600}
+.currency-btns{display:flex;gap:6px}
+.cur-btn{padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--text-muted);cursor:pointer;font-family:'Cairo',sans-serif;font-size:0.82rem;font-weight:600;transition:all 0.2s}
+.cur-btn:hover{border-color:var(--gold);color:var(--gold)}
+.cur-btn.active{background:var(--gold);border-color:var(--gold);color:#000}
+.rate-inputs{display:flex;gap:10px;align-items:center;margin-right:auto;flex-wrap:wrap}
+.rate-group{display:flex;align-items:center;gap:6px}
+.rate-group label{font-size:0.75rem;color:var(--text-muted)}
+.rate-input{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:5px 10px;color:var(--text);font-family:'Cairo',sans-serif;font-size:0.82rem;width:80px;outline:none}
+.rate-input:focus{border-color:var(--gold)}
+
+@media(max-width:768px){
+  .sidebar{width:200px}
+  .main{margin-right:200px;padding:16px}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .notif-popup{min-width:280px;left:16px;right:16px;transform:translateX(0) translateY(-120px)}
+  .notif-popup.show{transform:translateX(0) translateY(0)}
+}
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN ── -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">✈ MATARIST</div>
+    <div class="login-sub">لوحة تحكم العمليات</div>
+    <input type="password" id="login-pass" class="login-input" placeholder="كلمة المرور" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">دخول</button>
+    <div class="login-error" id="login-error">كلمة المرور غير صحيحة</div>
+  </div>
+</div>
+
+<!-- ── APP ── -->
+<div id="app">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-title">✈ MATARIST</div>
+      <div class="sidebar-logo-sub">لوحة العمليات</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-item active" onclick="showPage('dashboard')" id="nav-dashboard">
+        <i class="fa-solid fa-chart-line"></i><span>الرئيسية</span>
+      </div>
+      <div class="nav-item" onclick="showPage('orders')" id="nav-orders">
+        <i class="fa-solid fa-list-check"></i><span>الطلبات</span>
+        <span class="nav-badge" id="nav-badge-orders">0</span>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="sound-toggle on" id="sound-toggle-btn" onclick="toggleSound()" title="تشغيل/إيقاف الصوت">
+        <span class="sound-dot"></span>
+        <span id="sound-label">🔔 الصوت شغال</span>
+      </button>
+      <div style="height:6px"></div>
+      <button class="logout-btn" style="border-color:var(--blue);color:var(--blue);margin-bottom:6px" onclick="restoreFromServer()">
+        <i class="fa-solid fa-cloud-arrow-down"></i> استعادة من السيرفر
+      </button>
+      <button class="logout-btn" style="border-color:var(--green);color:var(--green);margin-bottom:6px" onclick="backupToFile()">
+        <i class="fa-solid fa-floppy-disk"></i> تحميل نسخة احتياطية
+      </button>
+      <label class="logout-btn" style="border-color:var(--orange);color:var(--orange);margin-bottom:6px;cursor:pointer;text-align:center">
+        <i class="fa-solid fa-upload"></i> استعادة من ملف
+        <input type="file" accept=".json" onchange="restoreFromFile(event)" style="display:none">
+      </label>
+      <button class="logout-btn" onclick="doLogout()">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i> تسجيل الخروج
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- Currency Bar (دائم في الأعلى) -->
+    <div class="currency-bar">
+      <span class="currency-label">💱 العملة:</span>
+      <div class="currency-btns">
+        <button class="cur-btn active" id="cur-TRY" onclick="setCurrency('TRY')">🇹🇷 ليرة</button>
+        <button class="cur-btn" id="cur-USD" onclick="setCurrency('USD')">🇺🇸 دولار</button>
+        <button class="cur-btn" id="cur-EUR" onclick="setCurrency('EUR')">🇪🇺 يورو</button>
+        <button class="cur-btn" id="cur-EGP" onclick="setCurrency('EGP')">🇪🇬 جنيه</button>
+      </div>
+      <div class="rate-inputs">
+        <div class="rate-group">
+          <label>USD/TRY</label>
+          <input class="rate-input" id="rate-USD" type="number" value="45.74" step="0.01" oninput="saveRates()">
+        </div>
+        <div class="rate-group">
+          <label>EUR/TRY</label>
+          <input class="rate-input" id="rate-EUR" type="number" value="35.2" step="0.01" oninput="saveRates()">
+        </div>
+        <div class="rate-group">
+          <label>EGP/TRY</label>
+          <input class="rate-input" id="rate-EGP" type="number" value="0.86" step="0.001" oninput="saveRates()">
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD PAGE -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-header">
+        <div>
+          <div class="page-title">مرحباً! 👋</div>
+          <div class="page-subtitle" id="dash-date"></div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card gold">
+          <div class="stat-label">إجمالي الطلبات</div>
+          <div class="stat-value" id="stat-total">0</div>
+          <div class="stat-sub">كل الخدمات</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-label">طلبات جديدة</div>
+          <div class="stat-value" id="stat-new">0</div>
+          <div class="stat-sub">تحتاج متابعة</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">مؤكدة</div>
+          <div class="stat-value" id="stat-confirmed">0</div>
+          <div class="stat-sub">تم التأكيد</div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-label">قيد التنفيذ</div>
+          <div class="stat-value" id="stat-processing">0</div>
+          <div class="stat-sub">جاري العمل</div>
+        </div>
+      </div>
+
+      <!-- Service cards with badges -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+        <div class="stat-card" style="cursor:pointer" onclick="showPage('orders');filterService('flight')">
+          <div style="display:flex;justify-content:space-between;align-items:start">
+            <div>
+              <div class="stat-label">✈️ حجز طيران</div>
+              <div class="stat-value" id="count-flight" style="color:var(--blue)">0</div>
+            </div>
+            <span style="background:rgba(31,111,235,0.15);color:#58a6ff;padding:6px 10px;border-radius:8px;font-size:0.8rem">طلب</span>
+          </div>
+        </div>
+        <div class="stat-card" style="cursor:pointer" onclick="showPage('orders');filterService('hotel')">
+          <div style="display:flex;justify-content:space-between;align-items:start">
+            <div>
+              <div class="stat-label">🏨 فنادق</div>
+              <div class="stat-value" id="count-hotel" style="color:var(--purple)">0</div>
+            </div>
+            <span style="background:rgba(139,92,246,0.15);color:#a78bfa;padding:6px 10px;border-radius:8px;font-size:0.8rem">طلب</span>
+          </div>
+        </div>
+        <div class="stat-card" style="cursor:pointer" onclick="showPage('orders');filterService('visa')">
+          <div style="display:flex;justify-content:space-between;align-items:start">
+            <div>
+              <div class="stat-label">🛂 تأشيرات</div>
+              <div class="stat-value" id="count-visa" style="color:var(--orange)">0</div>
+            </div>
+            <span style="background:rgba(210,153,34,0.15);color:#e3b341;padding:6px 10px;border-radius:8px;font-size:0.8rem">طلب</span>
+          </div>
+        </div>
+        <div class="stat-card" style="cursor:pointer" onclick="showPage('orders');filterService('cargo')">
+          <div style="display:flex;justify-content:space-between;align-items:start">
+            <div>
+              <div class="stat-label">📦 كارجو</div>
+              <div class="stat-value" id="count-cargo" style="color:var(--gold)">0</div>
+            </div>
+            <span style="background:rgba(201,168,76,0.15);color:var(--gold);padding:6px 10px;border-radius:8px;font-size:0.8rem">طلب</span>
+          </div>
+        </div>
+        <div class="stat-card" style="cursor:pointer" onclick="showPage('orders');filterService('transfer')">
+          <div style="display:flex;justify-content:space-between;align-items:start">
+            <div>
+              <div class="stat-label">🚖 توصيل</div>
+              <div class="stat-value" id="count-transfer" style="color:var(--green)">0</div>
+            </div>
+            <span style="background:rgba(46,160,67,0.15);color:#3fb950;padding:6px 10px;border-radius:8px;font-size:0.8rem">طلب</span>
+          </div>
+        </div>
+        <div class="stat-card" style="cursor:pointer" onclick="showPage('orders');filterService('package')">
+          <div style="display:flex;justify-content:space-between;align-items:start">
+            <div>
+              <div class="stat-label">🌍 برامج</div>
+              <div class="stat-value" id="count-package" style="color:var(--red)">0</div>
+            </div>
+            <span style="background:rgba(218,54,51,0.15);color:#f85149;padding:6px 10px;border-radius:8px;font-size:0.8rem">طلب</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORDERS PAGE -->
+    <div class="page" id="page-orders">
+      <div class="page-header">
+        <div>
+          <div class="page-title">الطلبات</div>
+          <div class="page-subtitle">جميع طلبات العملاء</div>
+        </div>
+        <button class="btn btn-whatsapp" onclick="refreshOrders()"><i class="fa-solid fa-rotate-right"></i> تحديث</button>
+      </div>
+
+      <div class="service-tabs" id="service-tabs">
+        <div class="svc-tab active" data-svc="all" onclick="filterService('all')">
+          <span>الكل</span><span class="tab-count" id="tab-count-all">0</span>
+        </div>
+        <div class="svc-tab" data-svc="flight" onclick="filterService('flight')">
+          <span>✈️ طيران</span><span class="tab-count" id="tab-count-flight">0</span>
+        </div>
+        <div class="svc-tab" data-svc="hotel" onclick="filterService('hotel')">
+          <span>🏨 فنادق</span><span class="tab-count" id="tab-count-hotel">0</span>
+        </div>
+        <div class="svc-tab" data-svc="visa" onclick="filterService('visa')">
+          <span>🛂 تأشيرة</span><span class="tab-count" id="tab-count-visa">0</span>
+        </div>
+        <div class="svc-tab" data-svc="cargo" onclick="filterService('cargo')">
+          <span>📦 كارجو</span><span class="tab-count" id="tab-count-cargo">0</span>
+        </div>
+        <div class="svc-tab" data-svc="transfer" onclick="filterService('transfer')">
+          <span>🚖 توصيل</span><span class="tab-count" id="tab-count-transfer">0</span>
+        </div>
+        <div class="svc-tab" data-svc="package" onclick="filterService('package')">
+          <span>🌍 برامج</span><span class="tab-count" id="tab-count-package">0</span>
+        </div>
+      </div>
+
+      <div class="orders-wrap">
+        <div class="orders-toolbar">
+          <input class="search-input" id="search-input" placeholder="🔍 بحث باسم العميل أو رقم الواتساب..." oninput="renderTable()">
+          <select class="filter-select" id="status-filter" onchange="renderTable()">
+            <option value="all">كل الحالات</option>
+            <option value="جديد">جديد</option>
+            <option value="جاري العمل">جاري العمل</option>
+            <option value="تم إرسال العرض">تم إرسال العرض</option>
+            <option value="تم التأكيد">تم التأكيد</option>
+            <option value="ملغي">ملغي</option>
+          </select>
+        </div>
+        <div id="orders-table-wrap"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ORDER DETAIL PANEL -->
+<div class="order-modal" id="order-modal" onclick="closeOrderModal(event)">
+  <div class="order-panel" id="order-panel">
+    <div class="order-panel-header">
+      <div class="order-panel-title" id="panel-title">تفاصيل الطلب</div>
+      <button class="panel-close" onclick="closePanel()">✕</button>
+    </div>
+    <div class="order-panel-body" id="panel-body"></div>
+  </div>
+</div>
+
+<!-- NOTIFICATION POPUP -->
+<div class="notif-popup" id="notif-popup">
+  <div class="notif-icon">🔔</div>
+  <div class="notif-content">
+    <div class="notif-ref" id="notif-ref">MAT-0001</div>
+    <div class="notif-name" id="notif-name">اسم العميل</div>
+    <div class="notif-type" id="notif-type">نوع الخدمة</div>
+  </div>
+  <button class="notif-close" onclick="closeNotif()">✕</button>
+  <div class="notif-bar" id="notif-bar"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const ADMIN_PASS = 'matarist2025';
+let currentService = 'all';
+let currentOrder = null;
+let lastOrderIds = new Set();
+let soundEnabled = true;
+let notifTimer = null;
+let audioCtx = null;
+
+// ── Sound System ──
+function getAudioContext(){
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function playBellSound(){
+  if(!soundEnabled) return;
+  try{
+    const ctx = getAudioContext();
+    const notes = [523.25, 659.25, 783.99, 1046.50];
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime + i*0.12);
+      gain.gain.setValueAtTime(0, ctx.currentTime + i*0.12);
+      gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + i*0.12 + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i*0.12 + 0.4);
+      osc.start(ctx.currentTime + i*0.12);
+      osc.stop(ctx.currentTime + i*0.12 + 0.4);
+    });
+  } catch(e){}
+}
+function toggleSound(){
+  soundEnabled = !soundEnabled;
+  const btn = document.getElementById('sound-toggle-btn');
+  const label = document.getElementById('sound-label');
+  if(soundEnabled){ btn.classList.add('on'); label.textContent='🔔 الصوت شغال'; playBellSound(); }
+  else { btn.classList.remove('on'); label.textContent='🔕 الصوت موقف'; }
+}
+
+// ── Notification Popup ──
+function showNotification(order){
+  const typeLabels = {flight:'✈️ حجز طيران',hotel:'🏨 فندق',visa:'🛂 تأشيرة',cargo:'📦 كارجو',transfer:'🚖 توصيل VIP',package:'🌍 برنامج سياحي'};
+  document.getElementById('notif-ref').textContent = order.order_ref || '#جديد';
+  document.getElementById('notif-name').textContent = '🆕 ' + (order.name||'عميل جديد');
+  document.getElementById('notif-type').textContent = typeLabels[order.type]||order.type;
+  const bar = document.getElementById('notif-bar');
+  bar.style.animation = 'none'; bar.offsetHeight;
+  bar.style.animation = 'notif-timer 5s linear forwards';
+  document.getElementById('notif-popup').classList.add('show');
+  playBellSound(); refreshOrders();
+  if(notifTimer) clearTimeout(notifTimer);
+  notifTimer = setTimeout(closeNotif, 5000);
+}
+function closeNotif(){
+  document.getElementById('notif-popup').classList.remove('show');
+  if(notifTimer){ clearTimeout(notifTimer); notifTimer = null; }
+}
+
+// ── Real-time polling ──
+function checkNewOrders(){
+  const orders = getOrders();
+  const newOrders = orders.filter(o => !lastOrderIds.has(String(o.id)));
+  if(newOrders.length > 0){
+    showNotification(newOrders[0]);
+    newOrders.forEach(o => lastOrderIds.add(String(o.id)));
+  }
+}
+
+// ── Currency ──
+let adminCurrency = 'TRY';
+
+function setCurrency(cur){
+  adminCurrency = cur;
+  document.querySelectorAll('.cur-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('cur-'+cur)?.classList.add('active');
+  localStorage.setItem('admin_currency', cur);
+}
+
+function convertAmount(amountTRY){
+  const rates = {
+    TRY: 1,
+    USD: 1 / parseFloat(document.getElementById('rate-USD')?.value||45.74),
+    EUR: 1 / parseFloat(document.getElementById('rate-EUR')?.value||35.2),
+    EGP: 1 / parseFloat(document.getElementById('rate-EGP')?.value||0.86)
+  };
+  return amountTRY * (rates[adminCurrency]||1);
+}
+
+function formatCurrency(amountTRY){
+  if(!amountTRY) return '—';
+  const converted = convertAmount(parseFloat(amountTRY));
+  const symbols = {TRY:'₺', USD:'$', EUR:'€', EGP:'ج'};
+  return symbols[adminCurrency] + ' ' + converted.toLocaleString('ar-EG', {maximumFractionDigits:2});
+}
+
+function saveRates(){
+  localStorage.setItem('admin_rates', JSON.stringify({
+    USD: document.getElementById('rate-USD')?.value,
+    EUR: document.getElementById('rate-EUR')?.value,
+    EGP: document.getElementById('rate-EGP')?.value,
+  }));
+}
+
+function loadRates(){
+  const saved = JSON.parse(localStorage.getItem('admin_rates')||'{}');
+  if(saved.USD) document.getElementById('rate-USD').value = saved.USD;
+  if(saved.EUR) document.getElementById('rate-EUR').value = saved.EUR;
+  if(saved.EGP) document.getElementById('rate-EGP').value = saved.EGP;
+  const savedCur = localStorage.getItem('admin_currency')||'TRY';
+  setCurrency(savedCur);
+}
+
+// ── Auth ──
+function doLogin(){
+  const pass = document.getElementById('login-pass').value;
+  if(pass === ADMIN_PASS){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='block';
+    initApp();
+  } else {
+    document.getElementById('login-error').style.display='block';
+  }
+}
+
+function doLogout(){
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('login-pass').value='';
+}
+
+// ── Init ──
+function initApp(){
+  document.getElementById('dash-date').textContent = new Date().toLocaleDateString('ar-EG',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  loadRates();
+  refreshOrders();
+  lastOrderIds = new Set(getOrders().map(o=>String(o.id)));
+  // تحميل من السيرفر في الخلفية عند أول تشغيل
+  loadFromBlobs().then(ok => {
+    if(ok) refreshOrders();
+    lastOrderIds = new Set(getOrders().map(o=>String(o.id)));
+  });
+  setInterval(checkNewOrders, 5000);
+  setInterval(refreshOrders, 30000);
+  // مزامنة دورية مع السيرفر كل 5 دقايق
+  setInterval(() => syncToBlobs(getOrders()), 300000);
+}
+
+// ── Data + Netlify Blobs Sync ──
+const BLOBS_URL = '/.netlify/functions/orders';
+
+function getOrders(){
+  try{ return JSON.parse(localStorage.getItem('matarist_orders')||'[]'); }
+  catch(e){ return []; }
+}
+
+function saveOrders(orders){
+  localStorage.setItem('matarist_orders', JSON.stringify(orders));
+  // مزامنة مع Netlify Blobs في الخلفية
+  syncToBlobs(orders);
+}
+
+async function syncToBlobs(orders){
+  try{
+    await fetch(BLOBS_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ orders })
+    });
+  } catch(e){ console.log('Blob sync error:', e); }
+}
+
+async function loadFromBlobs(){
+  try{
+    const res = await fetch(BLOBS_URL);
+    const data = await res.json();
+    if(data.orders && data.orders.length > 0){
+      // دمج البيانات - خد الأحدث
+      const local = getOrders();
+      if(data.orders.length >= local.length){
+        localStorage.setItem('matarist_orders', JSON.stringify(data.orders));
+        console.log(`✅ تم تحميل ${data.orders.length} طلب من السيرفر`);
+        return true;
+      }
+    }
+  } catch(e){ console.log('Load from blobs error:', e); }
+  return false;
+}
+
+// ── Backup to File ──
+function backupToFile(){
+  const orders = getOrders();
+  const backup = {
+    version: '1.0',
+    date: new Date().toISOString(),
+    total: orders.length,
+    orders: orders
+  };
+  const json = JSON.stringify(backup, null, 2);
+  const blob = new Blob([json], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const today = new Date().toISOString().split('T')[0];
+  a.download = `matarist-backup-${today}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast(`✅ تم تحميل نسخة احتياطية (${orders.length} طلب)`, 'success');
+}
+
+// ── Restore from File ──
+function restoreFromFile(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    try{
+      const backup = JSON.parse(e.target.result);
+      if(!backup.orders || !Array.isArray(backup.orders)){
+        showToast('❌ الملف غير صحيح!', 'error');
+        return;
+      }
+      if(!confirm(`هل تريد استعادة ${backup.orders.length} طلب من الملف؟\nتاريخ النسخة: ${backup.date||'غير معروف'}\n\nسيتم دمج البيانات مع الموجود.`)) return;
+
+      // دمج البيانات - إضافة الطلبات الجديدة فقط
+      const current = getOrders();
+      const currentIds = new Set(current.map(o=>String(o.id)));
+      const newOrders = backup.orders.filter(o=>!currentIds.has(String(o.id)));
+      const merged = [...current, ...newOrders];
+      // ترتيب حسب التاريخ
+      merged.sort((a,b) => b.id - a.id);
+
+      localStorage.setItem('matarist_orders', JSON.stringify(merged));
+      syncToBlobs(merged);
+      refreshOrders();
+      showToast(`✅ تم استعادة ${newOrders.length} طلب جديد! (الإجمالي: ${merged.length})`, 'success');
+    } catch(err){
+      showToast('❌ خطأ في قراءة الملف!', 'error');
+    }
+  };
+  reader.readAsText(file);
+  // reset input
+  event.target.value = '';
+}
+
+// ── Restore from Server ──
+async function restoreFromServer(){
+  showToast('⏳ جاري استعادة البيانات من السيرفر...', 'success');
+  const ok = await loadFromBlobs();
+  if(ok){
+    refreshOrders();
+    showToast('✅ تم استعادة كل البيانات من السيرفر!', 'success');
+  } else {
+    showToast('⚠️ لا توجد بيانات محفوظة على السيرفر', 'error');
+  }
+}
+
+function refreshOrders(){
+  updateStats();
+  updateTabCounts();
+  renderTable();
+}
+
+// ── Stats ──
+function updateStats(){
+  const orders = getOrders();
+  document.getElementById('stat-total').textContent = orders.length;
+  document.getElementById('stat-new').textContent = orders.filter(o=>o.status==='جديد').length;
+  document.getElementById('stat-confirmed').textContent = orders.filter(o=>o.status==='تم التأكيد').length;
+  document.getElementById('stat-processing').textContent = orders.filter(o=>o.status==='جاري العمل').length;
+
+  const types = ['flight','hotel','visa','cargo','transfer','package'];
+  types.forEach(t=>{
+    const el = document.getElementById('count-'+t);
+    if(el) el.textContent = orders.filter(o=>o.type===t).length;
+  });
+
+  const newCount = orders.filter(o=>o.status==='جديد').length;
+  const badge = document.getElementById('nav-badge-orders');
+  if(badge){ badge.textContent = newCount; badge.style.display = newCount > 0 ? 'flex' : 'none'; }
+}
+
+function updateTabCounts(){
+  const orders = getOrders();
+  const types = ['all','flight','hotel','visa','cargo','transfer','package'];
+  types.forEach(t=>{
+    const el = document.getElementById('tab-count-'+t);
+    if(el) el.textContent = t==='all' ? orders.length : orders.filter(o=>o.type===t).length;
+  });
+}
+
+// ── Filter & Render ──
+function filterService(svc){
+  currentService = svc;
+  document.querySelectorAll('.svc-tab').forEach(t=>{
+    t.classList.toggle('active', t.dataset.svc===svc);
+  });
+  renderTable();
+}
+
+function renderTable(){
+  const orders = getOrders();
+  const search = (document.getElementById('search-input')?.value||'').toLowerCase();
+  const statusFilter = document.getElementById('status-filter')?.value||'all';
+
+  let filtered = orders.filter(o=>{
+    const matchSvc = currentService==='all' || o.type===currentService;
+    const matchSearch = !search || (o.name||'').toLowerCase().includes(search) || (o.phone||'').includes(search);
+    const matchStatus = statusFilter==='all' || o.status===statusFilter;
+    return matchSvc && matchSearch && matchStatus;
+  });
+
+  const wrap = document.getElementById('orders-table-wrap');
+  if(!wrap) return;
+
+  if(filtered.length === 0){
+    wrap.innerHTML = `<div class="empty-state"><i class="fa-solid fa-inbox"></i><div>لا توجد طلبات</div></div>`;
+    return;
+  }
+
+  const typeLabels = {flight:'✈️ طيران',hotel:'🏨 فندق',visa:'🛂 تأشيرة',cargo:'📦 كارجو',transfer:'🚖 توصيل',package:'🌍 برنامج'};
+
+  wrap.innerHTML = `<table class="orders-table">
+    <thead><tr>
+      <th>رقم</th><th>العميل</th><th>الخدمة</th><th>الواتساب</th><th>التاريخ</th><th>الحالة</th>
+    </tr></thead>
+    <tbody>
+    ${filtered.map((o,i)=>`
+      <tr onclick="openOrder('${o.id}')">
+        <td style="color:var(--gold);font-size:0.82rem;font-weight:700">${o.order_ref||'MAT-????'}</td>
+        <td><strong>${o.name||'—'}</strong></td>
+        <td>${typeLabels[o.type]||o.type}</td>
+        <td><a href="https://wa.me/${(o.phone||'').replace(/\D/g,'')}" target="_blank" onclick="event.stopPropagation()" style="color:#25d366">${o.phone||'—'}</a></td>
+        <td style="color:var(--text-muted);font-size:0.82rem">${o.date||'—'}</td>
+        <td>${getStatusBadge(o.status)}</td>
+      </tr>`).join('')}
+    </tbody></table>`;
+}
+
+function getStatusBadge(status){
+  const map = {
+    'جديد':'new','جاري العمل':'processing',
+    'تم إرسال العرض':'sent','تم التأكيد':'confirmed','ملغي':'cancelled'
+  };
+  return `<span class="status ${map[status]||'new'}">${status||'جديد'}</span>`;
+}
+
+// ── Open order ──
+function openOrder(id){
+  const orders = getOrders();
+  const order = orders.find(o=>String(o.id)===String(id));
+  if(!order) return;
+  currentOrder = order;
+  profitType = order.profit_type || 'fixed';
+
+  const typeLabels = {flight:'✈️ حجز طيران',hotel:'🏨 فندق',visa:'🛂 تأشيرة',cargo:'📦 كارجو',transfer:'🚖 توصيل VIP',package:'🌍 برنامج سياحي'};
+  document.getElementById('panel-title').textContent = typeLabels[order.type]||order.type;
+
+  const profit = order.profit_amount || '';
+  const basePrice = order.base_price || '';
+  const finalPrice = calcFinal(basePrice, profit, profitType);
+
+  // بناء حقول تفاصيل الرحلة القابلة للتعديل
+  const flightEditFields = order.type === 'flight' ? `
+    <div class="divider"></div>
+    <div class="profit-section">
+      <div class="profit-title"><i class="fa-solid fa-plane"></i> تفاصيل الرحلة (قابلة للتعديل)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="profit-field"><label style="font-size:0.75rem;color:var(--text-muted);display:block;margin-bottom:4px">شركة الطيران</label>
+          <input class="profit-input" id="e-airline" placeholder="Pegasus / Flydubai ..." value="${order.airline||''}"></div>
+        <div class="profit-field"><label style="font-size:0.75rem;color:var(--text-muted);display:block;margin-bottom:4px">رقم الرحلة</label>
+          <input class="profit-input" id="e-flightno" placeholder="PC694" value="${order.flight_no||''}"></div>
+        <div class="profit-field"><label style="font-size:0.75rem;color:var(--text-muted);display:block;margin-bottom:4px">من (IATA)</label>
+          <input class="profit-input" id="e-from2" placeholder="SAW" value="${order.admin_from||order.from||''}"></div>
+        <div class="profit-field"><label style="font-size:0.75rem;color:var(--text-muted);display:block;margin-bottom:4px">إلى (IATA)</label>
+          <input class="profit-input" id="e-to2" placeholder="CAI" value="${order.admin_to||order.to||''}"></div>
+        <div class="profit-field"><label style="font-size:0.75rem;color:var(--text-muted);display:block;margin-bottom:4px">موعد الإقلاع</label>
+          <input class="profit-input" id="e-dep" placeholder="23:35" value="${order.dep_time||''}"></div>
+        <div class="profit-field"><label style="font-size:0.75rem;color:var(--text-muted);display:block;margin-bottom:4px">موعد الوصول</label>
+          <input class="profit-input" id="e-arr" placeholder="01:45" value="${order.arr_time||''}"></div>
+        <div class="profit-field"><label style="font-size:0.75rem;color:var(--text-muted);display:block;margin-bottom:4px">تاريخ الرحلة</label>
+          <input class="profit-input" id="e-fdate" type="date" value="${order.admin_date||order.date_travel||''}"></div>
+        <div class="profit-field"><label style="font-size:0.75rem;color:var(--text-muted);display:block;margin-bottom:4px">نوع الرحلة</label>
+          <select class="profit-input" id="e-ftype">
+            <option ${(order.admin_ftype||order.trip_type)==='ذهاب فقط'?'selected':''}>ذهاب فقط</option>
+            <option ${(order.admin_ftype||order.trip_type)==='ذهاب وإياب'?'selected':''}>ذهاب وإياب</option>
+            <option ${(order.admin_ftype||order.trip_type)==='مباشر'?'selected':''}>مباشر</option>
+          </select></div>
+      </div>
+      <div style="margin-top:12px">
+        <div class="profit-title" style="margin-bottom:10px"><i class="fa-solid fa-suitcase"></i> الأمتعة المسموحة (اختياري)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+          <div class="profit-field"><label style="font-size:0.75rem;color:var(--text-muted);display:block;margin-bottom:4px">حقيبة الكابينة (كجم)</label>
+            <input class="profit-input" id="e-cabin" placeholder="مثال: 8 كجم" value="${order.bag_cabin||''}"></div>
+          <div class="profit-field"><label style="font-size:0.75rem;color:var(--text-muted);display:block;margin-bottom:4px">حقيبة تحت المقعد (كجم)</label>
+            <input class="profit-input" id="e-under" placeholder="مثال: 3 كجم" value="${order.bag_under||''}"></div>
+          <div class="profit-field"><label style="font-size:0.75rem;color:var(--text-muted);display:block;margin-bottom:4px">حقيبة الشحن (كجم)</label>
+            <input class="profit-input" id="e-checkin" placeholder="مثال: 20 كجم أو فارغ" value="${order.bag_checkin||''}"></div>
+        </div>
+      </div>
+      <button class="btn btn-confirm" style="margin-top:12px;width:100%" onclick="saveFlightDetails()">
+        <i class="fa-solid fa-floppy-disk"></i> حفظ تفاصيل الرحلة
+      </button>
+    </div>` : '';
+
+  document.getElementById('panel-body').innerHTML = `
+    <div style="margin-bottom:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      ${getStatusBadge(order.status)}
+      <span style="color:var(--text-muted);font-size:0.82rem">${order.date||''}</span>
+      <span style="color:var(--text-muted);font-size:0.82rem;font-weight:700;color:var(--gold)">${order.order_ref||'#'+order.id}</span>
+    </div>
+
+    <div class="data-grid">
+      <div class="data-item"><label>اسم العميل</label><span>${order.name||'—'}</span></div>
+      <div class="data-item"><label>رقم الواتساب</label><span>${order.phone||'—'}</span></div>
+      ${getOrderFields(order)}
+    </div>
+
+    ${flightEditFields}
+
+    <div class="divider"></div>
+
+    <div class="profit-section">
+      <div class="profit-title"><i class="fa-solid fa-coins"></i> حساب السعر والعمولة (داخلي فقط)</div>
+      <div class="profit-grid">
+        <div class="profit-field">
+          <label style="font-size:0.75rem;color:var(--text-muted);display:block;margin-bottom:4px">سعر الخدمة الأصلي</label>
+          <input class="profit-input" id="base-price" type="number" placeholder="مثال: 5000" value="${basePrice}" oninput="updateFinal()">
+        </div>
+        <div class="profit-field">
+          <div class="profit-toggle">
+            <button id="btn-fixed" class="${profitType==='fixed'?'active':''}" onclick="setProfitType('fixed')">رقم ثابت</button>
+            <button id="btn-pct" class="${profitType==='pct'?'active':''}" onclick="setProfitType('pct')">نسبة %</button>
+          </div>
+          <input class="profit-input" id="profit-val" type="number" placeholder="${profitType==='pct'?'مثال: 10':'مثال: 500'}" value="${profit}" oninput="updateFinal()">
+        </div>
+        <div class="profit-field">
+          <div class="final-price">
+            <label>السعر للعميل</label>
+            <div class="amount" id="final-display">${finalPrice ? formatCurrency(finalPrice) : '—'}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="profit-section">
+      <div class="profit-title"><i class="fa-solid fa-message"></i> رسالة للعميل (اختياري)</div>
+      <textarea class="profit-input" id="client-msg" placeholder="مثال: ممكن يا فندم توجد رحلة في يوم آخر بسعر أقل..." style="min-height:80px;width:100%;resize:vertical">${order.client_msg||''}</textarea>
+      <button class="btn btn-status" style="margin-top:8px" onclick="saveClientMsg()">
+        <i class="fa-solid fa-floppy-disk"></i> حفظ الرسالة
+      </button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="action-btns">
+      <button class="btn btn-whatsapp" onclick="sendWhatsApp('review')">
+        <i class="fa-brands fa-whatsapp"></i> جاري المراجعة
+      </button>
+      <button class="btn btn-whatsapp" style="background:#128c7e" onclick="sendWhatsApp('processing')">
+        <i class="fa-solid fa-spinner"></i> جاري العمل
+      </button>
+      <button class="btn btn-whatsapp" style="background:#8b5cf6" onclick="sendWhatsApp('offer')">
+        <i class="fa-solid fa-paper-plane"></i> تم الإرسال
+      </button>
+      <button class="btn btn-confirm" onclick="confirmOrder()">
+        <i class="fa-solid fa-circle-check"></i> تأكيد الطلب
+      </button>
+      <button class="btn btn-cancel" onclick="setStatus('ملغي')">
+        <i class="fa-solid fa-xmark"></i> إلغاء
+      </button>
+      <button class="btn" style="background:var(--red);color:#fff;margin-top:8px;width:100%" onclick="deleteOrder()">
+        <i class="fa-solid fa-trash"></i> حذف الطلب
+      </button>
+    </div>
+  `;
+
+  document.getElementById('order-modal').classList.add('open');
+}
+
+function getOrderFields(o){
+  const type = o.type;
+  let fields = '';
+  if(type==='flight'){
+    fields = `
+      <div class="data-item"><label>من</label><span>${o.from||'—'}</span></div>
+      <div class="data-item"><label>إلى</label><span>${o.to||'—'}</span></div>
+      <div class="data-item"><label>تاريخ السفر</label><span>${o.date_travel||'—'}</span></div>
+      <div class="data-item"><label>عدد الركاب</label><span>${o.pax||'—'}</span></div>
+      <div class="data-item"><label>الدرجة</label><span>${o.class||'—'}</span></div>
+      <div class="data-item"><label>نوع الرحلة</label><span>${o.trip_type||'—'}</span></div>
+      ${o.notes?`<div class="data-item" style="grid-column:1/-1"><label>ملاحظات</label><span>${o.notes}</span></div>`:''}`;
+  } else if(type==='hotel'){
+    fields = `
+      <div class="data-item"><label>المدينة</label><span>${o.city||'—'}</span></div>
+      <div class="data-item"><label>الفندق</label><span>${o.hotel||'—'}</span></div>
+      <div class="data-item"><label>الدخول</label><span>${o.checkin||'—'}</span></div>
+      <div class="data-item"><label>الخروج</label><span>${o.checkout||'—'}</span></div>
+      <div class="data-item"><label>عدد الأشخاص</label><span>${o.guests||'—'}</span></div>
+      <div class="data-item"><label>نوع الإقامة</label><span>${o.board||'—'}</span></div>
+      ${o.notes?`<div class="data-item" style="grid-column:1/-1"><label>ملاحظات</label><span>${o.notes}</span></div>`:''}`;
+  } else if(type==='visa'){
+    fields = `
+      <div class="data-item"><label>الجنسية</label><span>${o.nationality||'—'}</span></div>
+      <div class="data-item"><label>الدولة</label><span>${o.country||'—'}</span></div>
+      <div class="data-item"><label>نوع التأشيرة</label><span>${o.visa_type||'—'}</span></div>
+      <div class="data-item"><label>تاريخ السفر</label><span>${o.date_travel||'—'}</span></div>
+      ${o.notes?`<div class="data-item" style="grid-column:1/-1"><label>ملاحظات</label><span>${o.notes}</span></div>`:''}`;
+  } else if(type==='cargo'){
+    fields = `
+      <div class="data-item"><label>من</label><span>${o.from||'—'}</span></div>
+      <div class="data-item"><label>إلى</label><span>${o.to||'—'}</span></div>
+      <div class="data-item"><label>نوع البضاعة</label><span>${o.goods||'—'}</span></div>
+      <div class="data-item"><label>الوزن (كجم)</label><span>${o.weight||'—'}</span></div>
+      ${o.notes?`<div class="data-item" style="grid-column:1/-1"><label>ملاحظات</label><span>${o.notes}</span></div>`:''}`;
+  } else if(type==='transfer'){
+    fields = `
+      <div class="data-item"><label>المطار</label><span>${o.airport||'—'}</span></div>
+      <div class="data-item"><label>نوع الخدمة</label><span>${o.transfer_type||'—'}</span></div>
+      <div class="data-item"><label>التاريخ والوقت</label><span>${o.datetime||'—'}</span></div>
+      <div class="data-item"><label>عدد الأشخاص</label><span>${o.pax||'—'}</span></div>
+      <div class="data-item" style="grid-column:1/-1"><label>العنوان</label><span>${o.address||'—'}</span></div>
+      ${o.notes?`<div class="data-item" style="grid-column:1/-1"><label>ملاحظات</label><span>${o.notes}</span></div>`:''}`;
+  } else if(type==='package'){
+    fields = `
+      <div class="data-item"><label>الوجهة</label><span>${o.destination||'—'}</span></div>
+      <div class="data-item"><label>عدد الأشخاص</label><span>${o.pax||'—'}</span></div>
+      <div class="data-item"><label>تاريخ السفر</label><span>${o.date_travel||'—'}</span></div>
+      <div class="data-item"><label>المدة</label><span>${o.duration||'—'}</span></div>
+      <div class="data-item"><label>يشمل</label><span>${o.includes||'—'}</span></div>
+      <div class="data-item"><label>الميزانية</label><span>${o.budget||'—'}</span></div>
+      ${o.notes?`<div class="data-item" style="grid-column:1/-1"><label>ملاحظات</label><span>${o.notes}</span></div>`:''}`;
+  }
+  return fields;
+}
+
+// ── Profit calc ──
+let profitType = 'fixed';
+function setProfitType(type){
+  profitType = type;
+  document.getElementById('btn-fixed').classList.toggle('active', type==='fixed');
+  document.getElementById('btn-pct').classList.toggle('active', type==='pct');
+  document.getElementById('profit-val').placeholder = type==='pct'?'مثال: 10':'مثال: 500';
+  updateFinal();
+}
+
+function calcFinal(base, profit, type){
+  const b = parseFloat(base)||0;
+  const p = parseFloat(profit)||0;
+  if(!b) return 0;
+  return type==='pct' ? Math.round(b + b*p/100) : b + p;
+}
+
+function updateFinal(){
+  const base = document.getElementById('base-price')?.value||0;
+  const profit = document.getElementById('profit-val')?.value||0;
+  const final = calcFinal(base, profit, profitType);
+  const display = document.getElementById('final-display');
+  if(display) display.textContent = final ? formatCurrency(final) : '—';
+
+  if(currentOrder){
+    const orders = getOrders();
+    const idx = orders.findIndex(o=>String(o.id)===String(currentOrder.id));
+    if(idx>=0){
+      orders[idx].base_price = base;
+      orders[idx].profit_amount = profit;
+      orders[idx].profit_type = profitType;
+      orders[idx].final_price = final;
+      saveOrders(orders);
+    }
+  }
+}
+
+// ── MAT order number ──
+function getNextOrderRef(){
+  const orders = getOrders();
+  const nums = orders.map(o=>{
+    const m = (o.order_ref||'').match(/MAT-(\d+)/);
+    return m ? parseInt(m[1]) : 0;
+  });
+  const next = (nums.length ? Math.max(...nums) : 0) + 1;
+  return 'MAT-' + String(next).padStart(4,'0');
+}
+
+// ── Delete order ──
+function deleteOrder(){
+  if(!currentOrder) return;
+  if(!confirm(`هل أنت متأكد من حذف الطلب ${currentOrder.order_ref||''}؟\nلا يمكن التراجع عن هذه العملية.`)) return;
+  const orders = getOrders().filter(o=>String(o.id)!==String(currentOrder.id));
+  saveOrders(orders);
+  refreshOrders();
+  closePanel();
+  showToast('🗑️ تم حذف الطلب بنجاح', 'success');
+}
+
+// ── Save flight details ──
+function saveFlightDetails(){
+  if(!currentOrder) return;
+  const orders = getOrders();
+  const idx = orders.findIndex(o=>String(o.id)===String(currentOrder.id));
+  if(idx<0) return;
+  orders[idx].airline    = document.getElementById('e-airline')?.value||'';
+  orders[idx].flight_no  = document.getElementById('e-flightno')?.value||'';
+  orders[idx].admin_from = document.getElementById('e-from2')?.value||'';
+  orders[idx].admin_to   = document.getElementById('e-to2')?.value||'';
+  orders[idx].dep_time   = document.getElementById('e-dep')?.value||'';
+  orders[idx].arr_time   = document.getElementById('e-arr')?.value||'';
+  orders[idx].admin_date = document.getElementById('e-fdate')?.value||'';
+  orders[idx].admin_ftype= document.getElementById('e-ftype')?.value||'';
+  orders[idx].bag_cabin  = document.getElementById('e-cabin')?.value||'';
+  orders[idx].bag_under  = document.getElementById('e-under')?.value||'';
+  orders[idx].bag_checkin= document.getElementById('e-checkin')?.value||'';
+  saveOrders(orders);
+  currentOrder = orders[idx];
+  showToast('✅ تم حفظ تفاصيل الرحلة!', 'success');
+}
+
+// ── Save client message ──
+function saveClientMsg(){
+  if(!currentOrder) return;
+  const orders = getOrders();
+  const idx = orders.findIndex(o=>String(o.id)===String(currentOrder.id));
+  if(idx<0) return;
+  orders[idx].client_msg = document.getElementById('client-msg')?.value||'';
+  saveOrders(orders);
+  currentOrder = orders[idx];
+  showToast('✅ تم حفظ الرسالة!', 'success');
+}
+
+// ── Set status ──
+function setStatus(status){
+  if(!currentOrder) return;
+  const orders = getOrders();
+  const idx = orders.findIndex(o=>String(o.id)===String(currentOrder.id));
+  if(idx>=0){
+    orders[idx].status = status;
+    currentOrder = orders[idx];
+    saveOrders(orders);
+    refreshOrders();
+    showToast('تم تغيير الحالة: '+status, 'success');
+    closePanel();
+  }
+}
+
+// ── Confirm order ──
+function confirmOrder(){
+  if(!currentOrder) return;
+  const orders = getOrders();
+  const idx = orders.findIndex(o=>String(o.id)===String(currentOrder.id));
+  if(idx>=0){
+    orders[idx].status = 'تم التأكيد';
+    orders[idx].confirmed_at = new Date().toISOString(); // ISO format للحسابات
+    orders[idx].confirmed_at_display = new Date().toLocaleString('ar-EG'); // للعرض
+    saveOrders(orders);
+    refreshOrders();
+    showToast('✅ تم تأكيد الطلب وتسجيله في الحسابات!', 'success');
+    closePanel();
+  }
+}
+
+// ── WhatsApp ──
+function buildOrderSummary(o){
+  const typeLabels = {
+    flight:'✈️ حجز تذكرة طيران',
+    hotel:'🏨 حجز فندق',
+    visa:'🛂 طلب تأشيرة',
+    cargo:'📦 شحن / كارجو',
+    transfer:'🚖 توصيل VIP',
+    package:'🌍 برنامج سياحي'
+  };
+
+  const finalPrice = o.final_price ? Number(o.final_price).toLocaleString() + ' ليرة تركية' : '—';
+  let details = '';
+
+  if(o.type === 'flight'){
+    const from = o.admin_from || o.from || '—';
+    const to = o.admin_to || o.to || '—';
+    const date = o.admin_date || o.date_travel || '—';
+    const ftype = o.admin_ftype || o.trip_type || '—';
+    const dep = o.dep_time || '';
+    const arr = o.arr_time || '';
+    const timing = (dep && arr) ? `\n• المواعيد: ${dep} ← ${arr}` : '';
+    const airline = o.airline ? `\n• شركة الطيران: ${o.airline}` : '';
+    const flightNo = o.flight_no ? `\n• رقم الرحلة: ${o.flight_no}` : '';
+
+    // الأمتعة
+    let baggage = '';
+    if(o.bag_cabin || o.bag_under || o.bag_checkin){
+      baggage = `\n\n🧳 *الأمتعة المسموحة:*`;
+      if(o.bag_cabin) baggage += `\n• حقيبة الكابينة: ${o.bag_cabin} كجم`;
+      if(o.bag_under) baggage += `\n• حقيبة تحت المقعد: ${o.bag_under} كجم`;
+      if(o.bag_checkin) baggage += `\n• حقيبة شحن: ${o.bag_checkin} كجم`;
+    } else if(o.notes){
+      baggage = `\n• الأمتعة: ${o.notes}`;
+    }
+
+    details = `
+✈️ *تفاصيل الرحلة:*
+• المسار: ${from} ← ${to}
+• التاريخ: ${date}${timing}${airline}${flightNo}
+• عدد الركاب: ${o.pax||'1'}
+• الدرجة: ${o.class||'—'}
+• نوع الرحلة: ${ftype}${baggage}`;
+
+  } else if(o.type === 'hotel'){
+    details = `
+🏨 *تفاصيل الحجز:*
+• الوجهة: ${o.city||'—'}
+• الفندق: ${o.hotel||'أفضل خيار متاح'}
+• تاريخ الدخول: ${o.checkin||'—'}
+• تاريخ الخروج: ${o.checkout||'—'}
+• عدد الأشخاص: ${o.guests||'—'}
+• نوع الإقامة: ${o.board||'—'}${o.notes?`\n• ملاحظات: ${o.notes}`:''}`;
+
+  } else if(o.type === 'visa'){
+    details = `
+🛂 *تفاصيل التأشيرة:*
+• الجنسية: ${o.nationality||'—'}
+• الدولة المطلوبة: ${o.country||'—'}
+• نوع التأشيرة: ${o.visa_type||'—'}
+• تاريخ السفر المتوقع: ${o.date_travel||'—'}${o.notes?`\n• ملاحظات: ${o.notes}`:''}`;
+
+  } else if(o.type === 'cargo'){
+    details = `
+📦 *تفاصيل الشحن:*
+• من: ${o.from||'—'}
+• إلى: ${o.to||'—'}
+• نوع البضاعة: ${o.goods||'—'}
+• الوزن التقريبي: ${o.weight||'—'} كجم${o.notes?`\n• ملاحظات: ${o.notes}`:''}`;
+
+  } else if(o.type === 'transfer'){
+    details = `
+🚖 *تفاصيل التوصيل:*
+• المطار: ${o.airport||'—'}
+• نوع الخدمة: ${o.transfer_type||'—'}
+• التاريخ والوقت: ${o.datetime||'—'}
+• عدد الأشخاص: ${o.pax||'—'}
+• العنوان: ${o.address||'—'}${o.notes?`\n• ملاحظات: ${o.notes}`:''}`;
+
+  } else if(o.type === 'package'){
+    details = `
+🌍 *تفاصيل البرنامج:*
+• الوجهة: ${o.destination||'—'}
+• عدد الأشخاص: ${o.pax||'—'}
+• تاريخ السفر: ${o.date_travel||'—'}
+• المدة: ${o.duration||'—'}
+• يشمل: ${o.includes||'—'}${o.notes?`\n• ملاحظات: ${o.notes}`:''}`;
+  }
+
+  // رسالة مخصصة للعميل
+  const clientMsgSection = o.client_msg ? `\n\n💬 *ملاحظة مهمة:*\n${o.client_msg}` : '';
+
+  return `
+━━━━━━━━━━━━━━━━━━━━
+✈️ *Matarist Travel*
+━━━━━━━━━━━━━━━━━━━━
+
+أهلاً وسهلاً *${o.name||''}* 🌸
+
+*الخدمة:* ${typeLabels[o.type]||o.type}
+${details}${clientMsgSection}
+
+━━━━━━━━━━━━━━━━━━━━
+💰 *السعر الإجمالي:* ${finalPrice}
+_(شامل جميع الرسوم والضرائب)_
+━━━━━━━━━━━━━━━━━━━━
+
+للتأكيد أو الاستفسار تواصلوا معنا:
+📱 *+90 545 121 8167*
+🌐 mataristtravel.netlify.app
+
+_Matarist Travel — وجهتك القادمة تبدأ من هنا_ ✨
+`.trim();
+}
+
+function sendWhatsApp(type){
+  if(!currentOrder) return;
+  const phone = (currentOrder.phone||'').replace(/\D/g,'');
+  if(!phone){ showToast('لا يوجد رقم واتساب!', 'error'); return; }
+
+  let msg = '';
+
+  if(type === 'review'){
+    // رسالة "جاري المراجعة"
+    msg = `أهلاً *${currentOrder.name||''}* 🌸
+
+شكراً لتواصلكم مع *Matarist Travel* ✈️
+
+لقد استلمنا طلبكم وجاري مراجعته الآن من قِبل فريقنا المتخصص.
+
+نرجو من حضرتكم الانتظار قليلاً، وسوف نرد عليكم في أقرب وقت ممكن بإذن الله.
+
+📱 للاستفسار: +90 545 121 8167
+_Matarist Travel — نحن في خدمتكم دائماً_ 🌟`.trim();
+    setStatus('جاري العمل');
+
+  } else if(type === 'processing'){
+    // رسالة "جاري العمل"
+    msg = `أهلاً *${currentOrder.name||''}* 🌸
+
+نود إعلامكم بأننا بدأنا *فعلياً* في تنفيذ طلبكم الآن ✅
+
+فريقنا يعمل على توفير أفضل الخيارات لحضرتكم، وسنتواصل معكم قريباً بتفاصيل العرض.
+
+شكراً لثقتكم بنا 🙏
+_Matarist Travel ✈️_`.trim();
+    setStatus('جاري العمل');
+
+  } else if(type === 'offer'){
+    // رسالة "تم الإرسال" — ملخص كامل للطلب
+    const finalPrice = currentOrder.final_price;
+    if(!finalPrice){
+      showToast('⚠️ يرجى إدخال السعر النهائي أولاً!', 'error');
+      return;
+    }
+    msg = buildOrderSummary(currentOrder);
+    setStatus('تم إرسال العرض');
+  }
+
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+  window.open(url,'_blank');
+  showToast('✅ تم فتح واتساب بالرسالة!', 'success');
+}
+
+// ── Close panel ──
+function closePanel(){
+  document.getElementById('order-modal').classList.remove('open');
+  currentOrder = null;
+}
+function closeOrderModal(e){
+  if(e.target === document.getElementById('order-modal')) closePanel();
+}
+
+// ── Page nav ──
+function showPage(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+page)?.classList.add('active');
+  document.getElementById('nav-'+page)?.classList.add('active');
+  refreshOrders();
+}
+
+// ── Toast ──
+function showToast(msg, type='success'){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast '+type+' show';
+  setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+// ── ESC to close ──
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape') closePanel();
+});
+</script>
+</body>
+</html>
