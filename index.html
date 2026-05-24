@@ -40,6 +40,36 @@ h1{font-size:clamp(2.4rem,5vw,4.6rem)}
 h2{font-size:clamp(1.8rem,3.6vw,2.8rem)}
 h3{font-size:1.4rem}
 
+/* ═══ Service Badges ═══ */
+.service-badge{position:absolute;top:12px;right:12px;background:#e74c3c;color:#fff;font-size:11px;font-weight:700;width:24px;height:24px;border-radius:50%;display:none;align-items:center;justify-content:center;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,0.3);animation:pulse-badge 2s infinite}
+.service-badge.has-orders{display:flex}
+@keyframes pulse-badge{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+
+/* ═══ Modal ═══ */
+.modal-overlay{position:fixed;inset:0;background:rgba(10,20,50,0.75);z-index:9000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.modal-overlay.active{opacity:1;pointer-events:all}
+.modal-box{background:#fff;border-radius:16px;width:100%;max-width:540px;max-height:90vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,0.25);transform:translateY(30px);transition:transform 0.3s}
+.modal-overlay.active .modal-box{transform:translateY(0)}
+.modal-header{background:var(--navy-dark);color:#fff;padding:20px 24px;border-radius:16px 16px 0 0;display:flex;align-items:center;justify-content:space-between}
+.modal-header h3{font-family:'Cairo',sans-serif;font-size:1.15rem;font-weight:700;color:#fff;margin:0}
+.modal-close{background:rgba(255,255,255,0.15);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background 0.2s}
+.modal-close:hover{background:rgba(255,255,255,0.3)}
+.modal-body{padding:24px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.form-row.single{grid-template-columns:1fr}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group label{font-size:0.78rem;font-weight:600;color:var(--text-mid);text-transform:uppercase;letter-spacing:0.05em}
+.form-group input,.form-group select,.form-group textarea{border:1.5px solid #e0e5f0;border-radius:8px;padding:10px 14px;font-size:0.95rem;font-family:'Cairo','DM Sans',sans-serif;color:var(--text-dark);outline:none;transition:border-color 0.2s;background:#fafbff;width:100%}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--navy);background:#fff}
+.form-group textarea{resize:vertical;min-height:80px}
+.modal-submit{width:100%;background:var(--navy-dark);color:#fff;border:none;padding:14px;border-radius:10px;font-size:1rem;font-weight:700;font-family:'Cairo','DM Sans',sans-serif;cursor:pointer;transition:background 0.2s;margin-top:10px}
+.modal-submit:hover{background:var(--navy)}
+.success-msg{display:none;text-align:center;padding:30px 20px}
+.success-msg.show{display:block}
+.success-icon{font-size:3rem;margin-bottom:12px}
+.success-msg h4{font-family:'Cairo',sans-serif;font-size:1.2rem;color:var(--navy-dark);margin-bottom:8px;font-weight:700}
+.success-msg p{color:var(--text-mid);font-size:0.95rem;line-height:1.6}
+
 /* ═══ RTL adjustments ═══ */
 [dir="rtl"] .pillar{border-left:none;border-right:3px solid var(--gold);border-radius:2px 0 0 2px}
 [dir="rtl"] .cargo-feat{flex-direction:row-reverse;text-align:right}
@@ -585,74 +615,347 @@ footer{background:var(--navy-dark);border-top:1px solid rgba(201,168,76,0.2);pad
   </div>
   <div class="services-grid">
 
-    <div class="service-card reveal">
+    <div class="service-card reveal" onclick="openModal('flight')">
+      <span class="service-badge" id="badge-flight">0</span>
       <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=900&q=80" alt="Flight Booking" loading="lazy">
       <div class="service-card-overlay"></div>
       <div class="service-card-content">
         <div class="service-card-tag" data-i18n="s1_tag">Global</div>
         <h3 data-i18n="s1_title">Flight Booking</h3>
         <p data-i18n="s1_desc">Best fares on international flights. Direct routes and connections between Turkey, Egypt and worldwide destinations.</p>
-        <a href="https://wa.me/905451218167" class="service-card-cta" target="_blank"><span data-i18n="book_now">Book Now</span> <i class="fa-solid fa-arrow-right"></i></a>
+        <span class="service-card-cta"><span data-i18n="book_now">Book Now</span> <i class="fa-solid fa-arrow-right"></i></span>
       </div>
     </div>
 
-    <div class="service-card reveal">
+    <div class="service-card reveal" onclick="openModal('visa')">
+      <span class="service-badge" id="badge-visa">0</span>
       <img src="https://images.unsplash.com/photo-1569949381669-ecf31ae8e613?w=900&q=80" alt="Visa Assistance" loading="lazy">
       <div class="service-card-overlay"></div>
       <div class="service-card-content">
         <div class="service-card-tag" data-i18n="s2_tag">Multiple Countries</div>
         <h3 data-i18n="s2_title">Visa Assistance</h3>
         <p data-i18n="s2_desc">Expert guidance for tourist and business visas. Document preparation and application support for various countries.</p>
-        <a href="https://wa.me/905451218167" class="service-card-cta" target="_blank"><span data-i18n="book_now">Book Now</span> <i class="fa-solid fa-arrow-right"></i></a>
+        <span class="service-card-cta"><span data-i18n="book_now">Book Now</span> <i class="fa-solid fa-arrow-right"></i></span>
       </div>
     </div>
 
-    <div class="service-card reveal">
+    <div class="service-card reveal" onclick="openModal('hotel')">
+      <span class="service-badge" id="badge-hotel">0</span>
       <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900&q=80" alt="Hotel Reservations" loading="lazy">
       <div class="service-card-overlay"></div>
       <div class="service-card-content">
         <div class="service-card-tag" data-i18n="s3_tag">Worldwide Hotels</div>
         <h3 data-i18n="s3_title">Hotel Reservations</h3>
         <p data-i18n="s3_desc">Budget-friendly to luxury accommodations worldwide. Short or long stays — we find the perfect option for you.</p>
-        <a href="https://wa.me/905451218167" class="service-card-cta" target="_blank"><span data-i18n="book_now">Book Now</span> <i class="fa-solid fa-arrow-right"></i></a>
+        <span class="service-card-cta"><span data-i18n="book_now">Book Now</span> <i class="fa-solid fa-arrow-right"></i></span>
       </div>
     </div>
 
-    <div class="service-card reveal">
+    <div class="service-card reveal" onclick="openModal('cargo')">
+      <span class="service-badge" id="badge-cargo">0</span>
       <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=900&q=80" alt="Cargo and Shipping" loading="lazy">
       <div class="service-card-overlay"></div>
       <div class="service-card-content">
         <div class="service-card-tag" data-i18n="s4_tag">⭐ Core Global Service</div>
         <h3 data-i18n="s4_title">Cargo & Shipping</h3>
         <p data-i18n="s4_desc">Fast, secure international cargo with door-to-door delivery. Specialists on Turkey ↔ Egypt logistics routes.</p>
-        <a href="https://wa.me/905451218167" class="service-card-cta" target="_blank"><span data-i18n="get_quote">Get Quote</span> <i class="fa-solid fa-arrow-right"></i></a>
+        <span class="service-card-cta"><span data-i18n="get_quote">Get Quote</span> <i class="fa-solid fa-arrow-right"></i></span>
       </div>
     </div>
 
-    <div class="service-card reveal">
+    <div class="service-card reveal" onclick="openModal('transfer')">
+      <span class="service-badge" id="badge-transfer">0</span>
       <img src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=900&q=80" alt="Airport Transfers" loading="lazy">
       <div class="service-card-overlay"></div>
       <div class="service-card-content">
         <div class="service-card-tag" data-i18n="s5_tag">VIP Private</div>
         <h3 data-i18n="s5_title">Airport Transfers</h3>
         <p data-i18n="s5_desc">VIP private pickups and drop-offs. Individual or group transfers handled with professionalism and reliability.</p>
-        <a href="https://wa.me/905451218167" class="service-card-cta" target="_blank"><span data-i18n="book_now">Book Now</span> <i class="fa-solid fa-arrow-right"></i></a>
+        <span class="service-card-cta"><span data-i18n="book_now">Book Now</span> <i class="fa-solid fa-arrow-right"></i></span>
       </div>
     </div>
 
-    <div class="service-card reveal">
+    <div class="service-card reveal" onclick="openModal('package')">
+      <span class="service-badge" id="badge-package">0</span>
       <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?w=900&q=80" alt="Custom Travel Packages" loading="lazy">
       <div class="service-card-overlay"></div>
       <div class="service-card-content">
         <div class="service-card-tag" data-i18n="s6_tag">Tailored Packages</div>
         <h3 data-i18n="s6_title">Travel Packages</h3>
         <p data-i18n="s6_desc">Custom bundles combining flights, hotels and transfers. Perfect for Eid holidays, summer trips and business travel.</p>
-        <a href="https://wa.me/905451218167" class="service-card-cta" target="_blank"><span data-i18n="book_now">Book Now</span> <i class="fa-solid fa-arrow-right"></i></a>
+        <span class="service-card-cta"><span data-i18n="book_now">Book Now</span> <i class="fa-solid fa-arrow-right"></i></span>
       </div>
     </div>
 
   </div>
 </section>
+
+<!-- ═══ MODALS ═══ -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal-box" id="modal-box">
+
+    <!-- FLIGHT -->
+    <div id="modal-flight" style="display:none">
+      <div class="modal-header">
+        <h3>✈️ حجز تذكرة طيران</h3>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="form-flight">
+          <div class="form-row">
+            <div class="form-group"><label>الاسم الكامل</label><input type="text" id="f-name" placeholder="الاسم كامل" required></div>
+            <div class="form-group"><label>رقم الواتساب</label><input type="tel" id="f-phone" placeholder="+905xxxxxxxxx" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>من (مدينة المغادرة)</label><input type="text" id="f-from" placeholder="إسطنبول" required></div>
+            <div class="form-group"><label>إلى (مدينة الوصول)</label><input type="text" id="f-to" placeholder="القاهرة" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>تاريخ السفر</label><input type="date" id="f-date" required></div>
+            <div class="form-group"><label>عدد الركاب</label><input type="number" id="f-pax" min="1" max="20" value="1"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>درجة السفر</label>
+              <select id="f-class">
+                <option value="اقتصادية">اقتصادية</option>
+                <option value="رجال أعمال">رجال أعمال</option>
+                <option value="أولى">الدرجة الأولى</option>
+              </select>
+            </div>
+            <div class="form-group"><label>رحلة ذهاب فقط / ذهاب وإياب</label>
+              <select id="f-type">
+                <option value="ذهاب فقط">ذهاب فقط</option>
+                <option value="ذهاب وإياب">ذهاب وإياب</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row single">
+            <div class="form-group"><label>الأمتعة الإضافية (اختياري)</label><textarea id="f-notes" placeholder="هل تحتاج إضافة أمتعة إضافية؟ يرجى كتابة الوزن المطلوب أو أي تفاصيل متعلقة بالأمتعة إن وجدت.&#10;&#10;أمثلة:&#10;• أحتاج حقيبة شحن 20 كجم&#10;• معي حقيبة إضافية 10 كجم&#10;• لا أحتاج أمتعة إضافية"></textarea></div>
+          </div>
+          <button class="modal-submit" onclick="submitOrder('flight')">✅ إرسال الطلب</button>
+        </div>
+        <div class="success-msg" id="success-flight">
+          <div class="success-icon">🎉</div>
+          <h4>شكراً لكم!</h4>
+          <p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISA -->
+    <div id="modal-visa" style="display:none">
+      <div class="modal-header">
+        <h3>🛂 طلب تأشيرة</h3>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="form-visa">
+          <div class="form-row">
+            <div class="form-group"><label>الاسم الكامل</label><input type="text" id="v-name" placeholder="الاسم كامل" required></div>
+            <div class="form-group"><label>رقم الواتساب</label><input type="tel" id="v-phone" placeholder="+905xxxxxxxxx" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>الجنسية</label><input type="text" id="v-nationality" placeholder="مصري / تركي ..."></div>
+            <div class="form-group"><label>الدولة المراد السفر إليها</label><input type="text" id="v-country" placeholder="تركيا / مصر / أوروبا..."></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>نوع التأشيرة</label>
+              <select id="v-type">
+                <option value="سياحية">سياحية</option>
+                <option value="عمل">عمل</option>
+                <option value="دراسة">دراسة</option>
+                <option value="إقامة">إقامة</option>
+              </select>
+            </div>
+            <div class="form-group"><label>تاريخ السفر المتوقع</label><input type="date" id="v-date"></div>
+          </div>
+          <div class="form-row single">
+            <div class="form-group"><label>ملاحظات</label><textarea id="v-notes" placeholder="أي تفاصيل إضافية..."></textarea></div>
+          </div>
+          <button class="modal-submit" onclick="submitOrder('visa')">✅ إرسال الطلب</button>
+        </div>
+        <div class="success-msg" id="success-visa">
+          <div class="success-icon">🎉</div>
+          <h4>شكراً لكم!</h4>
+          <p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOTEL -->
+    <div id="modal-hotel" style="display:none">
+      <div class="modal-header">
+        <h3>🏨 حجز فندق</h3>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="form-hotel">
+          <div class="form-row">
+            <div class="form-group"><label>الاسم الكامل</label><input type="text" id="h-name" placeholder="الاسم كامل" required></div>
+            <div class="form-group"><label>رقم الواتساب</label><input type="tel" id="h-phone" placeholder="+905xxxxxxxxx" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>المدينة / الوجهة</label><input type="text" id="h-city" placeholder="شرم الشيخ / الغردقة..." required></div>
+            <div class="form-group"><label>اسم الفندق (اختياري)</label><input type="text" id="h-hotel" placeholder="أي فندق مناسب"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>تاريخ الدخول</label><input type="date" id="h-checkin" required></div>
+            <div class="form-group"><label>تاريخ الخروج</label><input type="date" id="h-checkout" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>عدد الأشخاص</label><input type="number" id="h-guests" min="1" value="2"></div>
+            <div class="form-group"><label>نوع الإقامة</label>
+              <select id="h-board">
+                <option value="نصف إقامة">نصف إقامة</option>
+                <option value="إقامة كاملة">إقامة كاملة</option>
+                <option value="غرفة فقط">غرفة فقط</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row single">
+            <div class="form-group"><label>ملاحظات</label><textarea id="h-notes" placeholder="تفضيلات خاصة..."></textarea></div>
+          </div>
+          <button class="modal-submit" onclick="submitOrder('hotel')">✅ إرسال الطلب</button>
+        </div>
+        <div class="success-msg" id="success-hotel">
+          <div class="success-icon">🎉</div>
+          <h4>شكراً لكم!</h4>
+          <p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARGO -->
+    <div id="modal-cargo" style="display:none">
+      <div class="modal-header">
+        <h3>📦 طلب شحن / كارجو</h3>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="form-cargo">
+          <div class="form-row">
+            <div class="form-group"><label>الاسم الكامل</label><input type="text" id="c-name" placeholder="الاسم كامل" required></div>
+            <div class="form-group"><label>رقم الواتساب</label><input type="tel" id="c-phone" placeholder="+905xxxxxxxxx" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>من (دولة الشحن)</label><input type="text" id="c-from" placeholder="تركيا" required></div>
+            <div class="form-group"><label>إلى (دولة الوصول)</label><input type="text" id="c-to" placeholder="مصر" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>نوع البضاعة</label><input type="text" id="c-goods" placeholder="ملابس / إلكترونيات..."></div>
+            <div class="form-group"><label>الوزن التقريبي (كجم)</label><input type="number" id="c-weight" placeholder="50"></div>
+          </div>
+          <div class="form-row single">
+            <div class="form-group"><label>ملاحظات</label><textarea id="c-notes" placeholder="أبعاد، تفاصيل التسليم..."></textarea></div>
+          </div>
+          <button class="modal-submit" onclick="submitOrder('cargo')">✅ إرسال الطلب</button>
+        </div>
+        <div class="success-msg" id="success-cargo">
+          <div class="success-icon">🎉</div>
+          <h4>شكراً لكم!</h4>
+          <p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRANSFER -->
+    <div id="modal-transfer" style="display:none">
+      <div class="modal-header">
+        <h3>🚖 طلب توصيل VIP</h3>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="form-transfer">
+          <div class="form-row">
+            <div class="form-group"><label>الاسم الكامل</label><input type="text" id="t-name" placeholder="الاسم كامل" required></div>
+            <div class="form-group"><label>رقم الواتساب</label><input type="tel" id="t-phone" placeholder="+905xxxxxxxxx" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>المطار</label><input type="text" id="t-airport" placeholder="مطار صبيحة / أتاتورك..."></div>
+            <div class="form-group"><label>تاريخ ووقت الرحلة</label><input type="datetime-local" id="t-datetime"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>نوع الخدمة</label>
+              <select id="t-type">
+                <option value="استقبال من المطار">استقبال من المطار</option>
+                <option value="توصيل للمطار">توصيل للمطار</option>
+                <option value="ذهاب وإياب">ذهاب وإياب</option>
+              </select>
+            </div>
+            <div class="form-group"><label>عدد الأشخاص</label><input type="number" id="t-pax" min="1" value="1"></div>
+          </div>
+          <div class="form-row single">
+            <div class="form-group"><label>العنوان (الفندق / المنزل)</label><input type="text" id="t-address" placeholder="اسم الفندق أو العنوان"></div>
+          </div>
+          <div class="form-row single">
+            <div class="form-group"><label>ملاحظات</label><textarea id="t-notes" placeholder="أي تفاصيل إضافية..."></textarea></div>
+          </div>
+          <button class="modal-submit" onclick="submitOrder('transfer')">✅ إرسال الطلب</button>
+        </div>
+        <div class="success-msg" id="success-transfer">
+          <div class="success-icon">🎉</div>
+          <h4>شكراً لكم!</h4>
+          <p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PACKAGE -->
+    <div id="modal-package" style="display:none">
+      <div class="modal-header">
+        <h3>🌍 طلب برنامج سياحي</h3>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="form-package">
+          <div class="form-row">
+            <div class="form-group"><label>الاسم الكامل</label><input type="text" id="p-name" placeholder="الاسم كامل" required></div>
+            <div class="form-group"><label>رقم الواتساب</label><input type="tel" id="p-phone" placeholder="+905xxxxxxxxx" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>الوجهة المطلوبة</label><input type="text" id="p-dest" placeholder="شرم الشيخ / أنطاليا..."></div>
+            <div class="form-group"><label>عدد الأشخاص</label><input type="number" id="p-pax" min="1" value="2"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>تاريخ السفر</label><input type="date" id="p-date"></div>
+            <div class="form-group"><label>مدة الرحلة</label>
+              <select id="p-duration">
+                <option value="3 أيام">3 أيام</option>
+                <option value="4 أيام">4 أيام</option>
+                <option value="5 أيام">5 أيام</option>
+                <option value="أسبوع">أسبوع</option>
+                <option value="أكثر من أسبوع">أكثر من أسبوع</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row single">
+            <div class="form-group"><label>ما يشمله البرنامج</label>
+              <select id="p-includes">
+                <option value="فندق + طيران + توصيل">فندق + طيران + توصيل</option>
+                <option value="فندق + طيران">فندق + طيران</option>
+                <option value="فندق فقط">فندق فقط</option>
+                <option value="حسب الميزانية">حسب الميزانية</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row single">
+            <div class="form-group"><label>الميزانية التقريبية</label><input type="text" id="p-budget" placeholder="مثال: 5000 جنيه للشخص"></div>
+          </div>
+          <div class="form-row single">
+            <div class="form-group"><label>ملاحظات</label><textarea id="p-notes" placeholder="أي تفاصيل إضافية..."></textarea></div>
+          </div>
+          <button class="modal-submit" onclick="submitOrder('package')">✅ إرسال الطلب</button>
+        </div>
+        <div class="success-msg" id="success-package">
+          <div class="success-icon">🎉</div>
+          <h4>شكراً لكم!</h4>
+          <p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <!-- ABOUT -->
 <section id="about">
@@ -1534,6 +1837,175 @@ async function sendMessage() {
 }
 </script>
 <!-- ═══ END CHAT WIDGET ═══ -->
+
+<!-- ═══ ORDER FORMS SYSTEM ═══ -->
+<script>
+// ─── Storage for orders ───
+function getOrders(){
+  try{ return JSON.parse(localStorage.getItem('matarist_orders')||'[]'); }
+  catch(e){ return []; }
+}
+function saveOrders(orders){
+  localStorage.setItem('matarist_orders', JSON.stringify(orders));
+}
+
+// ─── Update badges ───
+function updateBadges(){
+  const orders = getOrders();
+  const types = ['flight','visa','hotel','cargo','transfer','package'];
+  types.forEach(type => {
+    const count = orders.filter(o => o.type === type && o.status === 'جديد').length;
+    const badge = document.getElementById('badge-'+type);
+    if(badge){
+      badge.textContent = count;
+      badge.classList.toggle('has-orders', count > 0);
+    }
+  });
+}
+
+// ─── Open modal ───
+function openModal(type){
+  const overlay = document.getElementById('modal-overlay');
+  // hide all modals first
+  document.querySelectorAll('.modal-box > div').forEach(d => d.style.display='none');
+  // show the right one
+  const target = document.getElementById('modal-'+type);
+  if(target) target.style.display='block';
+  overlay.classList.add('active');
+  document.body.style.overflow='hidden';
+}
+
+// ─── Close modal ───
+function closeModal(){
+  const overlay = document.getElementById('modal-overlay');
+  overlay.classList.remove('active');
+  document.body.style.overflow='';
+  // reset success messages after delay
+  setTimeout(() => {
+    document.querySelectorAll('.success-msg').forEach(m => m.classList.remove('show'));
+    document.querySelectorAll('[id^="form-"]').forEach(f => f.style.display='block');
+  }, 400);
+}
+
+function closeModalOutside(e){
+  if(e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+// ─── Submit order ───
+function submitOrder(type){
+  let data = { type, status:'جديد', date: new Date().toLocaleString('ar-EG'), id: Date.now() };
+
+  if(type === 'flight'){
+    const name = document.getElementById('f-name').value.trim();
+    const phone = document.getElementById('f-phone').value.trim();
+    if(!name || !phone){ alert('يرجى إدخال الاسم ورقم الواتساب'); return; }
+    data = {...data, name, phone,
+      from: document.getElementById('f-from').value,
+      to: document.getElementById('f-to').value,
+      date_travel: document.getElementById('f-date').value,
+      pax: document.getElementById('f-pax').value,
+      class: document.getElementById('f-class').value,
+      trip_type: document.getElementById('f-type').value,
+      notes: document.getElementById('f-notes').value
+    };
+  } else if(type === 'visa'){
+    const name = document.getElementById('v-name').value.trim();
+    const phone = document.getElementById('v-phone').value.trim();
+    if(!name || !phone){ alert('يرجى إدخال الاسم ورقم الواتساب'); return; }
+    data = {...data, name, phone,
+      nationality: document.getElementById('v-nationality').value,
+      country: document.getElementById('v-country').value,
+      visa_type: document.getElementById('v-type').value,
+      date_travel: document.getElementById('v-date').value,
+      notes: document.getElementById('v-notes').value
+    };
+  } else if(type === 'hotel'){
+    const name = document.getElementById('h-name').value.trim();
+    const phone = document.getElementById('h-phone').value.trim();
+    if(!name || !phone){ alert('يرجى إدخال الاسم ورقم الواتساب'); return; }
+    data = {...data, name, phone,
+      city: document.getElementById('h-city').value,
+      hotel: document.getElementById('h-hotel').value,
+      checkin: document.getElementById('h-checkin').value,
+      checkout: document.getElementById('h-checkout').value,
+      guests: document.getElementById('h-guests').value,
+      board: document.getElementById('h-board').value,
+      notes: document.getElementById('h-notes').value
+    };
+  } else if(type === 'cargo'){
+    const name = document.getElementById('c-name').value.trim();
+    const phone = document.getElementById('c-phone').value.trim();
+    if(!name || !phone){ alert('يرجى إدخال الاسم ورقم الواتساب'); return; }
+    data = {...data, name, phone,
+      from: document.getElementById('c-from').value,
+      to: document.getElementById('c-to').value,
+      goods: document.getElementById('c-goods').value,
+      weight: document.getElementById('c-weight').value,
+      notes: document.getElementById('c-notes').value
+    };
+  } else if(type === 'transfer'){
+    const name = document.getElementById('t-name').value.trim();
+    const phone = document.getElementById('t-phone').value.trim();
+    if(!name || !phone){ alert('يرجى إدخال الاسم ورقم الواتساب'); return; }
+    data = {...data, name, phone,
+      airport: document.getElementById('t-airport').value,
+      datetime: document.getElementById('t-datetime').value,
+      transfer_type: document.getElementById('t-type').value,
+      pax: document.getElementById('t-pax').value,
+      address: document.getElementById('t-address').value,
+      notes: document.getElementById('t-notes').value
+    };
+  } else if(type === 'package'){
+    const name = document.getElementById('p-name').value.trim();
+    const phone = document.getElementById('p-phone').value.trim();
+    if(!name || !phone){ alert('يرجى إدخال الاسم ورقم الواتساب'); return; }
+    data = {...data, name, phone,
+      destination: document.getElementById('p-dest').value,
+      pax: document.getElementById('p-pax').value,
+      date_travel: document.getElementById('p-date').value,
+      duration: document.getElementById('p-duration').value,
+      includes: document.getElementById('p-includes').value,
+      budget: document.getElementById('p-budget').value,
+      notes: document.getElementById('p-notes').value
+    };
+  }
+
+  // Save to localStorage
+  const orders = getOrders();
+  // Generate MAT-XXXX number
+  const nums = orders.map(o=>{
+    const m = (o.order_ref||'').match(/MAT-(\d+)/);
+    return m ? parseInt(m[1]) : 0;
+  });
+  const next = (nums.length ? Math.max(...nums) : 0) + 1;
+  data.order_ref = 'MAT-' + String(next).padStart(4,'0');
+  orders.unshift(data);
+  saveOrders(orders);
+  // مزامنة مع السيرفر
+  try{
+    fetch('/.netlify/functions/orders', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ orders })
+    });
+  } catch(e){};
+
+  // Show success message
+  document.getElementById('form-'+type).style.display='none';
+  document.getElementById('success-'+type).classList.add('show');
+
+  // Update badges
+  updateBadges();
+
+  // Auto close after 3 seconds
+  setTimeout(closeModal, 3000);
+}
+
+// ─── Init badges on load ───
+document.addEventListener('DOMContentLoaded', updateBadges);
+updateBadges();
+</script>
+<!-- ═══ END ORDER FORMS SYSTEM ═══ -->
 
 </body>
 </html>
