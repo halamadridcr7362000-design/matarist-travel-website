@@ -1855,10 +1855,9 @@ async function syncToBlobs(orders){
     await fetch('/.netlify/functions/orders', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-     body: JSON.stringify({ orders: orders })
+      body: JSON.stringify({ orders: orders })
     });
   } catch(e){ console.log('Sync error:', e); }
-}
 }
 
 // ─── Update badges ───
@@ -1993,14 +1992,6 @@ function submitOrder(type){
   data.order_ref = 'MAT-' + String(next).padStart(4,'0');
   orders.unshift(data);
   saveOrders(orders);
-  // مزامنة مع السيرفر
-  try{
-    fetch('/.netlify/functions/orders', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ newOrder: data })
-    });
-  } catch(e){};
 
   // Show success message
   document.getElementById('form-'+type).style.display='none';
