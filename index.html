@@ -1847,6 +1847,18 @@ function getOrders(){
 }
 function saveOrders(orders){
   localStorage.setItem('matarist_orders', JSON.stringify(orders));
+  syncToBlobs(orders);
+}
+
+async function syncToBlobs(orders){
+  try{
+    await fetch('/.netlify/functions/orders', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+     body: JSON.stringify({ orders: orders })
+    });
+  } catch(e){ console.log('Sync error:', e); }
+}
 }
 
 // ─── Update badges ───
