@@ -1,3 +1,5 @@
+const { getStore } = require("@netlify/blobs");
+
 exports.handler = async function(event) {
   const headers = {
     "Access-Control-Allow-Origin": "*",
@@ -11,32 +13,46 @@ exports.handler = async function(event) {
   }
 
   try {
+    const store = getStore("orders");
+
     if (event.httpMethod === "POST") {
-      const { orders } = JSON.parse(event.body);
-      // حفظ في Netlify Blobs باستخدام fetch مباشرة
-      const siteId = process.env.SITE_ID || process.env.NETLIFY_SITE_ID;
-      const token = process.env.NETLIFY_BLOBS_TOKEN || process.env.TOKEN;
+      const body = JSON.parse(event.body);
       
-      return { 
-        statusCode: 200, 
-        headers, 
-        body: JSON.stringify({ status: "saved", count: orders.length }) 
-      };
+      // لو بعتلنا order واحد جديد
+      if (body.newOrder) {
+        const existing = await store.get("all-orders");
+        const orders = existing ? JSON.parse(existing) : [];
+        orders.unshift(body.newOrder);
+        await store.set("all-orders", JSON.stringify(orders));
+        return {
+          statusCode: 200, headers,
+          body: JSON.stringify({ status: "saved", count: orders.length })
+        };
+      }
+      
+      // لو بعتلنا كل الأوردرات (من admin)
+      if (body.orders) {
+        await store.set("all-orders", JSON.stringify(body.orders));
+        return {
+          statusCode: 200, headers,
+          body: JSON.stringify({ status: "saved", count: body.orders.length })
+        };
+      }
     }
 
     if (event.httpMethod === "GET") {
-      return { 
-        statusCode: 200, 
-        headers, 
-        body: JSON.stringify({ orders: [] }) 
+      const data = await store.get("all-orders");
+      const orders = data ? JSON.parse(data) : [];
+      return {
+        statusCode: 200, headers,
+        body: JSON.stringify({ orders })
       };
     }
 
   } catch (err) {
-    return { 
-      statusCode: 500, 
-      headers, 
-      body: JSON.stringify({ error: err.message }) 
+    return {
+      statusCode: 500, headers,
+      body: JSON.stringify({ error: err.message })
     };
   }
 };
