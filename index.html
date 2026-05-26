@@ -1986,7 +1986,7 @@ function submitOrder(type){
     fetch('/.netlify/functions/orders', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ orders })
+      body: JSON.stringify({ newOrder: data })
     });
   } catch(e){};
 
