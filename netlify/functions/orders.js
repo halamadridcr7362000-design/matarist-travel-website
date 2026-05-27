@@ -13,31 +13,28 @@ exports.handler = async function(event) {
   }
 
   try {
-    const store = getStore("orders");
+    const store = getStore({
+      name: "orders",
+      siteID: process.env.NETLIFY_SITE_ID,
+      token: process.env.NETLIFY_BLOBS_TOKEN,
+    });
 
     if (event.httpMethod === "POST") {
       const body = JSON.parse(event.body);
+      const existing = await store.get("all-orders");
+      let orders = existing ? JSON.parse(existing) : [];
       
-      // لو بعتلنا order واحد جديد
       if (body.newOrder) {
-        const existing = await store.get("all-orders");
-        const orders = existing ? JSON.parse(existing) : [];
         orders.unshift(body.newOrder);
-        await store.set("all-orders", JSON.stringify(orders));
-        return {
-          statusCode: 200, headers,
-          body: JSON.stringify({ status: "saved", count: orders.length })
-        };
+      } else if (body.orders) {
+        orders = body.orders;
       }
       
-      // لو بعتلنا كل الأوردرات (من admin)
-      if (body.orders) {
-        await store.set("all-orders", JSON.stringify(body.orders));
-        return {
-          statusCode: 200, headers,
-          body: JSON.stringify({ status: "saved", count: body.orders.length })
-        };
-      }
+      await store.set("all-orders", JSON.stringify(orders));
+      return {
+        statusCode: 200, headers,
+        body: JSON.stringify({ status: "saved", count: orders.length })
+      };
     }
 
     if (event.httpMethod === "GET") {
