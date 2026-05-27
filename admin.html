@@ -511,12 +511,35 @@ function closeNotif(){
 }
 
 // ── Real-time polling ──
-function checkNewOrders(){
+async function checkNewOrders(){
+  try{
+    const res = await fetch(BLOBS_URL);
+    const data = await res.json();
+    if(data.orders && data.orders.length > 0){
+      const local = getOrders();
+      const localIds = new Set(local.map(o=>String(o.id)));
+      const serverNew = data.orders.filter(o => !localIds.has(String(o.id)));
+      if(serverNew.length > 0){
+        const merged = [...data.orders];
+        const mergedIds = new Set(merged.map(o=>String(o.id)));
+        local.forEach(o => { if(!mergedIds.has(String(o.id))) merged.push(o); });
+        merged.sort((a,b) => b.id - a.id);
+        localStorage.setItem('matarist_orders', JSON.stringify(merged));
+        refreshOrders();
+        serverNew.forEach(o => {
+          showNotification(o);
+          lastOrderIds.add(String(o.id));
+        });
+        return;
+      }
+    }
+  } catch(e){}
   const orders = getOrders();
   const newOrders = orders.filter(o => !lastOrderIds.has(String(o.id)));
   if(newOrders.length > 0){
     showNotification(newOrders[0]);
     newOrders.forEach(o => lastOrderIds.add(String(o.id)));
+    refreshOrders();
   }
 }
 
@@ -588,15 +611,15 @@ function initApp(){
   loadRates();
   refreshOrders();
   lastOrderIds = new Set(getOrders().map(o=>String(o.id)));
-  // تحميل من السيرفر في الخلفية عند أول تشغيل
+  // تحميل من السيرفر فور الفتح
   loadFromBlobs().then(ok => {
     if(ok) refreshOrders();
     lastOrderIds = new Set(getOrders().map(o=>String(o.id)));
   });
-  setInterval(checkNewOrders, 5000);
+  // فحص تلقائي كل 10 ثواني للطلبات الجديدة من السيرفر
+  setInterval(checkNewOrders, 10000);
+  // تحديث الداشبورد كل 30 ثانية
   setInterval(refreshOrders, 30000);
-  // مزامنة دورية مع السيرفر كل 5 دقايق
-  setInterval(() => syncToBlobs(getOrders()), 300000);
 }
 
 // ── Data + Netlify Blobs Sync ──
