@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Matarist Travel | Istanbul – Cairo & Worldwide Travel Services</title>
-<meta name="description" content="Matarist Travel – Professional online travel agency based in Istanbul. Flight booking, visa assistance, hotel reservations, airport transfers, and global cargo shipping between Turkey and Egypt.">
-<meta name="keywords" content="Matarist Travel, Istanbul travel agency, Turkey Egypt flights, cargo shipping Turkey Egypt, visa assistance, airport transfer Istanbul, online travel services">
+<meta name="description" content="Matarist Travel – Professional online travel agency based in Istanbul. Flight booking, visa assistance, hotel reservations, airport transfers, Umrah packages, and global cargo shipping between Turkey and Egypt.">
+<meta name="keywords" content="Matarist Travel, Istanbul travel agency, Turkey Egypt flights, cargo shipping, visa assistance, Umrah, airport transfer">
 <meta property="og:title" content="Matarist Travel | Istanbul – Cairo & Worldwide">
-<meta property="og:description" content="Flights, hotels, visa, cargo & VIP transfers. Turkey ↔ Egypt specialists.">
+<meta property="og:description" content="Flights, hotels, visa, Umrah, cargo & VIP transfers. Turkey ↔ Egypt specialists.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,37 +15,20 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 :root{
-  --navy:#1a2d5a;
-  --navy-dark:#0f1d3d;
-  --navy-mid:#243570;
-  --gold:#c9a84c;
-  --gold-light:#e8c97a;
-  --cream:#f8f5ef;
-  --cream-dark:#ede8df;
-  --white:#ffffff;
-  --text-dark:#1a1a2e;
-  --text-mid:#3d4a6b;
-  --text-light:#7a8aaa;
-  --shadow:0 20px 60px rgba(26,45,90,0.12);
-  --transition:all 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+  --navy:#1a2d5a;--navy-dark:#0f1d3d;--navy-mid:#243570;--gold:#c9a84c;--gold-light:#e8c97a;
+  --cream:#f8f5ef;--cream-dark:#ede8df;--white:#ffffff;--text-dark:#1a1a2e;--text-mid:#3d4a6b;--text-light:#7a8aaa;
+  --shadow:0 20px 60px rgba(26,45,90,0.12);--transition:all 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text-dark);overflow-x:hidden}
 [dir="rtl"] body{font-family:'Cairo','DM Sans',sans-serif}
-
 h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;line-height:1.1}
 [dir="rtl"] h1,[dir="rtl"] h2,[dir="rtl"] h3{font-family:'Cairo',sans-serif;font-weight:700;line-height:1.3}
-h1{font-size:clamp(2.4rem,5vw,4.6rem)}
-h2{font-size:clamp(1.8rem,3.6vw,2.8rem)}
-h3{font-size:1.4rem}
-
-/* ═══ Service Badges ═══ */
+h1{font-size:clamp(2.4rem,5vw,4.6rem)}h2{font-size:clamp(1.8rem,3.6vw,2.8rem)}h3{font-size:1.4rem}
 .service-badge{position:absolute;top:12px;right:12px;background:#e74c3c;color:#fff;font-size:11px;font-weight:700;width:24px;height:24px;border-radius:50%;display:none;align-items:center;justify-content:center;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,0.3);animation:pulse-badge 2s infinite}
 .service-badge.has-orders{display:flex}
 @keyframes pulse-badge{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
-
-/* ═══ Modal ═══ */
 .modal-overlay{position:fixed;inset:0;background:rgba(10,20,50,0.75);z-index:9000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.3s}
 .modal-overlay.active{opacity:1;pointer-events:all}
 .modal-box{background:#fff;border-radius:16px;width:100%;max-width:540px;max-height:90vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,0.25);transform:translateY(30px);transition:transform 0.3s}
@@ -69,226 +52,122 @@ h3{font-size:1.4rem}
 .success-icon{font-size:3rem;margin-bottom:12px}
 .success-msg h4{font-family:'Cairo',sans-serif;font-size:1.2rem;color:var(--navy-dark);margin-bottom:8px;font-weight:700}
 .success-msg p{color:var(--text-mid);font-size:0.95rem;line-height:1.6}
-
-/* ═══ RTL adjustments ═══ */
 [dir="rtl"] .pillar{border-left:none;border-right:3px solid var(--gold);border-radius:2px 0 0 2px}
 [dir="rtl"] .cargo-feat{flex-direction:row-reverse;text-align:right}
+[dir="rtl"] .umrah-feat{flex-direction:row-reverse;text-align:right}
 [dir="rtl"] .contact-card{flex-direction:row-reverse;text-align:right}
 [dir="rtl"] .contact-card-arrow{transform:scaleX(-1)}
 [dir="rtl"] .service-card::before{left:auto;right:0}
 [dir="rtl"] .footer-inner{flex-direction:row-reverse}
 [dir="rtl"] .fab{right:auto;left:26px}
 
-/* ═══ NAVIGATION ═══ */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:1000;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:10px 5%;
-  background:rgba(15,29,61,0.97);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid rgba(201,168,76,0.2);
-  gap:20px;
-}
+
+
+
+.nav-logo-icon{display:flex;align-items:center;justify-content:center;width:54px;height:54px;background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(201,168,76,0.05));border:1.5px solid rgba(201,168,76,0.4);border-radius:10px;flex-shrink:0;transition:var(--transition)}
+.nav-logo-icon i{font-size:1.5rem;color:var(--gold);transform:rotate(-15deg);filter:drop-shadow(0 2px 6px rgba(201,168,76,0.4))}
+.nav-logo:hover .nav-logo-icon{background:linear-gradient(135deg,rgba(201,168,76,0.25),rgba(201,168,76,0.1));border-color:rgba(201,168,76,0.6);transform:scale(1.05)}
+.nav-logo:hover .nav-logo-icon i{transform:rotate(-25deg) scale(1.1)}
+.footer-logo-icon{display:flex;align-items:center;justify-content:center;width:42px;height:42px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);border-radius:8px;flex-shrink:0}
+.footer-logo-icon i{font-size:1.15rem;color:var(--gold);transform:rotate(-15deg)}
+@media(max-width:560px){.nav-logo-icon{width:46px;height:46px}.nav-logo-icon i{font-size:1.25rem}}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:10px 5%;background:rgba(15,29,61,0.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,0.2);gap:20px}
 .nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;flex-shrink:0}
 .nav-logo img{height:64px;width:auto;max-width:80px;object-fit:contain;display:block;flex-shrink:0}
 .nav-logo-text{display:flex;flex-direction:column;line-height:1.1}
 .nav-logo-text span:first-child{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:700;color:var(--white);letter-spacing:0.05em}
 [dir="rtl"] .nav-logo-text span:first-child{font-family:'Cairo',sans-serif}
 .nav-logo-text span:last-child{font-size:0.62rem;color:var(--gold);letter-spacing:0.18em;text-transform:uppercase}
-
-.nav-center{display:flex;align-items:center;gap:28px;list-style:none}
-.nav-center a{color:rgba(255,255,255,0.82);text-decoration:none;font-size:0.8rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.2s}
+.nav-center{display:flex;align-items:center;gap:24px;list-style:none}
+.nav-center a{color:rgba(255,255,255,0.82);text-decoration:none;font-size:0.78rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.2s}
 .nav-center a:hover{color:var(--gold-light)}
-
 .nav-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
 .lang-switcher{display:flex;gap:2px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:3px;padding:3px}
 .lang-btn{background:none;border:none;color:rgba(255,255,255,0.6);font-size:0.7rem;font-weight:600;letter-spacing:0.05em;padding:5px 9px;border-radius:2px;cursor:pointer;transition:var(--transition);font-family:inherit}
 .lang-btn.active{background:var(--gold);color:var(--navy-dark)}
 .lang-btn:hover:not(.active){color:var(--white)}
-
-.nav-cta{
-  background:var(--gold);color:var(--navy-dark);
-  padding:9px 18px;border-radius:2px;font-weight:600;font-size:0.8rem;
-  text-decoration:none;transition:var(--transition);white-space:nowrap;
-  border:2px solid var(--gold);display:inline-flex;align-items:center;gap:7px;
-}
+.nav-cta{background:var(--gold);color:var(--navy-dark);padding:9px 18px;border-radius:2px;font-weight:600;font-size:0.8rem;text-decoration:none;transition:var(--transition);white-space:nowrap;border:2px solid var(--gold);display:inline-flex;align-items:center;gap:7px}
 .nav-cta:hover{background:var(--gold-light);border-color:var(--gold-light);transform:translateY(-1px)}
-
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none}
 .hamburger span{display:block;width:22px;height:2px;background:var(--white);border-radius:2px;transition:var(--transition)}
-
 .mobile-nav{display:none;position:fixed;top:84px;left:0;right:0;background:var(--navy-dark);z-index:999;padding:16px 5%;border-bottom:1px solid rgba(201,168,76,0.2)}
 .mobile-nav.open{display:block}
 .mobile-nav a{display:block;color:rgba(255,255,255,0.82);text-decoration:none;padding:11px 0;font-size:0.88rem;border-bottom:1px solid rgba(255,255,255,0.06);text-transform:uppercase;letter-spacing:0.06em}
 .mobile-lang{display:flex;gap:8px;padding:12px 0 4px}
 .mobile-lang button{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);padding:7px 14px;border-radius:2px;cursor:pointer;font-family:inherit;font-size:0.78rem;font-weight:600}
 .mobile-lang button.active{background:var(--gold);color:var(--navy-dark);border-color:var(--gold)}
-
-/* ═══ VIDEO HERO ═══ */
-.hero{
-  position:relative;min-height:100vh;
-  display:flex;align-items:center;overflow:hidden;
-  padding:110px 5% 80px;
-}
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;padding:110px 5% 80px}
 .hero-video-slider{position:absolute;inset:0;z-index:0}
 .hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease}
 .hero-slide.active{opacity:1}
 .hero-slide video,.hero-slide img{width:100%;height:100%;object-fit:cover;display:block}
-.hero-overlay{
-  position:absolute;inset:0;z-index:1;
-  background:linear-gradient(135deg,rgba(15,29,61,0.92) 0%,rgba(26,45,90,0.78) 55%,rgba(36,53,112,0.55) 100%);
-}
-.hero-pattern{
-  position:absolute;inset:0;z-index:2;
-  background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23c9a84c' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
-}
+.hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(135deg,rgba(15,29,61,0.92) 0%,rgba(26,45,90,0.78) 55%,rgba(36,53,112,0.55) 100%)}
+.hero-pattern{position:absolute;inset:0;z-index:2;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23c9a84c' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E")}
 .hero-content{position:relative;z-index:3;max-width:700px}
-.hero-badge{
-  display:inline-flex;align-items:center;gap:8px;
-  background:rgba(201,168,76,0.13);border:1px solid rgba(201,168,76,0.32);
-  padding:7px 16px;border-radius:2px;margin-bottom:24px;
-  color:var(--gold-light);font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:500;
-  animation:fadeUp 0.8s ease both;
-}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.13);border:1px solid rgba(201,168,76,0.32);padding:7px 16px;border-radius:2px;margin-bottom:24px;color:var(--gold-light);font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:500;animation:fadeUp 0.8s ease both}
 .hero h1{color:var(--white);margin-bottom:22px;animation:fadeUp 0.8s 0.15s ease both}
 .hero h1 em{color:var(--gold);font-style:normal}
 .hero p{color:rgba(255,255,255,0.78);font-size:1.05rem;line-height:1.75;margin-bottom:38px;font-weight:300;animation:fadeUp 0.8s 0.3s ease both;max-width:600px}
 [dir="rtl"] .hero p{font-weight:400}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp 0.8s 0.45s ease both}
-
-.btn-primary{
-  display:inline-flex;align-items:center;gap:9px;
-  background:var(--gold);color:var(--navy-dark);
-  padding:15px 28px;border-radius:2px;
-  font-weight:600;font-size:0.88rem;letter-spacing:0.04em;
-  text-decoration:none;transition:var(--transition);border:2px solid var(--gold);
-}
+.btn-primary{display:inline-flex;align-items:center;gap:9px;background:var(--gold);color:var(--navy-dark);padding:15px 28px;border-radius:2px;font-weight:600;font-size:0.88rem;letter-spacing:0.04em;text-decoration:none;transition:var(--transition);border:2px solid var(--gold)}
 .btn-primary:hover{background:var(--gold-light);border-color:var(--gold-light);transform:translateY(-2px);box-shadow:0 12px 32px rgba(201,168,76,0.35)}
-.btn-outline{
-  display:inline-flex;align-items:center;gap:9px;
-  border:2px solid rgba(255,255,255,0.3);color:var(--white);
-  padding:15px 28px;border-radius:2px;
-  font-weight:500;font-size:0.88rem;text-decoration:none;transition:var(--transition);
-}
+.btn-outline{display:inline-flex;align-items:center;gap:9px;border:2px solid rgba(255,255,255,0.3);color:var(--white);padding:15px 28px;border-radius:2px;font-weight:500;font-size:0.88rem;text-decoration:none;transition:var(--transition)}
 .btn-outline:hover{border-color:var(--gold);color:var(--gold)}
-
 .hero-stats{display:flex;gap:32px;margin-top:50px;padding-top:34px;border-top:1px solid rgba(255,255,255,0.1);animation:fadeUp 0.8s 0.6s ease both;flex-wrap:wrap}
 .stat{display:flex;flex-direction:column;gap:3px}
 .stat-num{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:700;color:var(--gold)}
 [dir="rtl"] .stat-num{font-family:'Cairo',sans-serif}
 .stat-label{font-size:0.72rem;color:rgba(255,255,255,0.55);letter-spacing:0.08em;text-transform:uppercase}
-
 .hero-dots{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:3}
 .hero-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3);border:none;cursor:pointer;transition:var(--transition);padding:0}
 .hero-dot.active{background:var(--gold);transform:scale(1.3);width:22px;border-radius:4px}
-
-/* ═══ ROUTES STRIP ═══ */
-.routes-strip{
-  background:var(--gold);padding:14px 5%;
-  display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;
-}
-.route-item{display:flex;align-items:center;gap:8px;color:var(--navy-dark);font-weight:600;font-size:0.86rem}
+.routes-strip{background:var(--gold);padding:14px 5%;display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap}
+.route-item{display:flex;align-items:center;gap:8px;color:var(--navy-dark);font-weight:600;font-size:0.84rem}
 .route-sep{color:rgba(26,45,90,0.4);font-size:0.78rem}
-
-/* ═══ SECTIONS ═══ */
 section{padding:85px 5%}
 .section-label{display:inline-block;color:var(--gold);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;font-weight:600;margin-bottom:12px}
 .section-title{color:var(--navy-dark);margin-bottom:16px}
 .section-sub{color:var(--text-mid);font-size:1rem;line-height:1.72;max-width:560px;font-weight:300}
 [dir="rtl"] .section-sub{font-weight:400}
 .section-header{margin-bottom:50px}
-
-/* ═══ SERVICES IMAGE CARDS ═══ */
 #services{background:var(--white)}
 .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.service-card{
-  position:relative;border-radius:4px;overflow:hidden;
-  aspect-ratio:4/3;cursor:pointer;
-  box-shadow:0 8px 30px rgba(26,45,90,0.1);
-  background:var(--navy-dark);
-}
-.service-card img{
-  width:100%;height:100%;object-fit:cover;display:block;
-  transition:transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
-}
+.service-card{position:relative;border-radius:4px;overflow:hidden;aspect-ratio:4/3;cursor:pointer;box-shadow:0 8px 30px rgba(26,45,90,0.1);background:var(--navy-dark)}
+.service-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94)}
 .service-card:hover img{transform:scale(1.08)}
-.service-card-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(15,29,61,0.92) 0%,rgba(15,29,61,0.4) 55%,rgba(15,29,61,0.05) 100%);
-  transition:var(--transition);
-}
+.service-card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,29,61,0.92) 0%,rgba(15,29,61,0.4) 55%,rgba(15,29,61,0.05) 100%);transition:var(--transition)}
 .service-card:hover .service-card-overlay{background:linear-gradient(to top,rgba(15,29,61,0.96) 0%,rgba(26,45,90,0.6) 60%,rgba(26,45,90,0.2) 100%)}
-.service-card-content{
-  position:absolute;bottom:0;left:0;right:0;
-  padding:22px 22px 24px;
-}
+.service-card-content{position:absolute;bottom:0;left:0;right:0;padding:22px 22px 24px}
 [dir="rtl"] .service-card-content{text-align:right}
-.service-card-tag{
-  display:inline-block;background:var(--gold);color:var(--navy-dark);
-  font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
-  padding:4px 9px;border-radius:2px;margin-bottom:8px;
-}
+.service-card-tag{display:inline-block;background:var(--gold);color:var(--navy-dark);font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:4px 9px;border-radius:2px;margin-bottom:8px}
 .service-card-content h3{color:var(--white);font-size:1.25rem;margin-bottom:6px}
-.service-card-content p{
-  color:rgba(255,255,255,0.78);font-size:0.8rem;line-height:1.55;font-weight:300;
-  max-height:0;overflow:hidden;opacity:0;
-  transition:max-height 0.4s ease,opacity 0.3s ease;
-}
+.service-card-content p{color:rgba(255,255,255,0.78);font-size:0.8rem;line-height:1.55;font-weight:300;max-height:0;overflow:hidden;opacity:0;transition:max-height 0.4s ease,opacity 0.3s ease}
 .service-card:hover .service-card-content p{max-height:90px;opacity:1}
-.service-card-cta{
-  display:inline-flex;align-items:center;gap:6px;margin-top:10px;
-  color:var(--gold);font-size:0.76rem;font-weight:600;letter-spacing:0.06em;
-  opacity:0;transform:translateY(8px);transition:all 0.35s ease 0.05s;
-  text-decoration:none;
-}
+.service-card-cta{display:inline-flex;align-items:center;gap:6px;margin-top:10px;color:var(--gold);font-size:0.76rem;font-weight:600;letter-spacing:0.06em;opacity:0;transform:translateY(8px);transition:all 0.35s ease 0.05s;text-decoration:none}
 .service-card:hover .service-card-cta{opacity:1;transform:translateY(0)}
-
-/* ═══ ABOUT ═══ */
 #about{background:var(--cream)}
+.about-logo-block{margin-bottom:28px;display:flex;align-items:center}
+.about-logo-img{height:140px;width:auto;opacity:0.85;filter:drop-shadow(0 2px 8px rgba(26,45,90,0.08));transition:var(--transition)}
+.about-logo-img:hover{opacity:1;transform:scale(1.03)}
+@media(max-width:560px){.about-logo-img{height:100px}}
+
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
-/* ═══ CINEMATIC ABOUT VISUAL ═══ */
-.about-visual{
-  position:relative;aspect-ratio:4/5;
-  background:var(--navy-dark);border-radius:6px;overflow:hidden;
-  box-shadow:0 30px 80px rgba(15,29,61,0.35);
-}
+.about-visual{position:relative;aspect-ratio:4/5;background:var(--navy-dark);border-radius:6px;overflow:hidden;box-shadow:0 30px 80px rgba(15,29,61,0.35)}
 .about-slider{position:absolute;inset:0;z-index:0}
-.about-slide{
-  position:absolute;inset:0;opacity:0;
-  background-size:cover;background-position:center;
-  transition:opacity 1.5s ease, transform 8s ease-out;
-  transform:scale(1);
-}
+.about-slide{position:absolute;inset:0;opacity:0;background-size:cover;background-position:center;transition:opacity 1.5s ease,transform 8s ease-out;transform:scale(1)}
 .about-slide.active{opacity:1;transform:scale(1.08)}
-.about-visual-overlay{
-  position:absolute;inset:0;z-index:1;
-  background:
-    linear-gradient(180deg, rgba(15,29,61,0.4) 0%, rgba(15,29,61,0.55) 50%, rgba(15,29,61,0.92) 100%),
-    radial-gradient(circle at 70% 30%, rgba(201,168,76,0.15) 0%, transparent 60%);
-}
-.about-visual-content{
-  position:absolute;inset:0;z-index:2;
-  display:flex;flex-direction:column;justify-content:space-between;
-  padding:36px 32px;
-}
+.about-visual-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(15,29,61,0.4) 0%,rgba(15,29,61,0.55) 50%,rgba(15,29,61,0.92) 100%),radial-gradient(circle at 70% 30%,rgba(201,168,76,0.15) 0%,transparent 60%)}
+.about-visual-content{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:space-between;padding:36px 32px}
 .about-visual-top{display:flex;justify-content:space-between;align-items:flex-start}
-.about-eyebrow{
-  display:inline-flex;align-items:center;gap:8px;
-  background:rgba(255,255,255,0.08);backdrop-filter:blur(8px);
-  border:1px solid rgba(255,255,255,0.15);
-  padding:7px 14px;border-radius:30px;
-  color:var(--white);font-size:0.68rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
-}
+.about-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.15);padding:7px 14px;border-radius:30px;color:var(--white);font-size:0.68rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase}
 .about-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold);animation:dotpulse 2s ease-in-out infinite}
 @keyframes dotpulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.6;transform:scale(0.85)}}
-.about-loc-tag{
-  display:flex;flex-direction:column;align-items:flex-end;gap:2px;
-  color:rgba(255,255,255,0.85);font-size:0.72rem;text-align:right;
-}
+.about-loc-tag{display:flex;flex-direction:column;align-items:flex-end;gap:2px;color:rgba(255,255,255,0.85);font-size:0.72rem;text-align:right}
 [dir="rtl"] .about-loc-tag{align-items:flex-start;text-align:left}
 .about-loc-tag .loc-flag{font-size:1.4rem;line-height:1}
 .about-loc-tag .loc-name{font-weight:600;letter-spacing:0.08em;text-transform:uppercase;font-size:0.7rem}
-
 .about-visual-bottom{display:flex;flex-direction:column;gap:18px}
 .about-flag-pair{display:flex;align-items:center;justify-content:center;gap:14px;padding:12px 18px;background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.12);border-radius:50px;width:fit-content;margin:0 auto}
 .about-flag{font-size:1.7rem;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3))}
@@ -298,60 +177,30 @@ section{padding:85px 5%}
 .about-connector::after{right:0;transform:translate(50%,-50%)}
 .about-plane{font-size:1.2rem;color:var(--gold);animation:fly 3s ease-in-out infinite;filter:drop-shadow(0 0 8px rgba(201,168,76,0.5))}
 @keyframes fly{0%,100%{transform:translateX(-4px) translateY(2px) rotate(-3deg)}50%{transform:translateX(4px) translateY(-2px) rotate(3deg)}}
-
-.about-tagline{
-  color:var(--white);font-family:'Cormorant Garamond',serif;
-  font-size:1.85rem;text-align:center;line-height:1.25;
-  text-shadow:0 4px 24px rgba(0,0,0,0.5);
-  letter-spacing:-0.01em;
-}
+.about-tagline{color:var(--white);font-family:'Cormorant Garamond',serif;font-size:1.85rem;text-align:center;line-height:1.25;text-shadow:0 4px 24px rgba(0,0,0,0.5);letter-spacing:-0.01em}
 [dir="rtl"] .about-tagline{font-family:'Cairo',sans-serif;font-size:1.5rem;font-weight:700}
 .about-tagline em{color:var(--gold);font-style:normal;font-weight:700;display:inline-block;position:relative}
-.about-tagline em::after{
-  content:'';position:absolute;left:0;right:0;bottom:-3px;height:2px;
-  background:var(--gold);transform:scaleX(0);transform-origin:left;
-  animation:underline 2.5s ease 1s forwards;
-}
+.about-tagline em::after{content:'';position:absolute;left:0;right:0;bottom:-3px;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;animation:underline 2.5s ease 1s forwards}
 @keyframes underline{to{transform:scaleX(1)}}
-
-.about-trust-row{
-  display:flex;align-items:center;justify-content:space-around;gap:8px;
-  padding:12px 14px;background:rgba(0,0,0,0.3);backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,0.08);border-radius:6px;
-  margin-top:4px;
-}
+.about-trust-row{display:flex;align-items:center;justify-content:space-around;gap:8px;padding:12px 14px;background:rgba(0,0,0,0.3);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.08);border-radius:6px;margin-top:4px}
 .trust-item{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;flex:1}
 .trust-item i{color:var(--gold);font-size:0.9rem;margin-bottom:2px}
 .trust-item .t-num{color:var(--white);font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;line-height:1}
 [dir="rtl"] .trust-item .t-num{font-family:'Cairo',sans-serif}
 .trust-item .t-lbl{color:rgba(255,255,255,0.7);font-size:0.58rem;letter-spacing:0.06em;text-transform:uppercase;font-weight:500;white-space:nowrap}
 .trust-divider{width:1px;height:24px;background:rgba(255,255,255,0.15)}
-
-.about-card{
-  position:absolute;bottom:-16px;right:-16px;background:var(--gold);
-  padding:16px 20px;border-radius:4px;text-align:center;
-  box-shadow:0 16px 36px rgba(201,168,76,0.35);
-  z-index:3;
-}
+.about-card{position:absolute;bottom:-16px;right:-16px;background:var(--gold);padding:16px 20px;border-radius:4px;text-align:center;box-shadow:0 16px 36px rgba(201,168,76,0.35);z-index:3}
 [dir="rtl"] .about-card{right:auto;left:-16px}
 .about-card-num{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--navy-dark);line-height:1}
 [dir="rtl"] .about-card-num{font-family:'Cairo',sans-serif}
 .about-card-txt{font-size:0.64rem;color:var(--navy-dark);text-transform:uppercase;letter-spacing:0.12em;font-weight:600;margin-top:3px}
-
-/* Slider dots */
-.about-dots{
-  position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:3;
-  display:flex;gap:6px;
-}
+.about-dots{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:6px}
 .about-dot{width:20px;height:3px;background:rgba(255,255,255,0.25);border:none;cursor:pointer;border-radius:2px;transition:var(--transition);padding:0}
 .about-dot.active{background:var(--gold);width:30px}
-
 .pillars{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:32px}
 .pillar{padding:16px 18px;background:var(--white);border-left:3px solid var(--gold);border-radius:0 3px 3px 0}
 .pillar h4{color:var(--navy-dark);font-size:0.86rem;font-weight:600;margin-bottom:4px;font-family:inherit}
 .pillar p{color:var(--text-light);font-size:0.78rem;line-height:1.55;font-weight:300}
-
-/* ═══ CARGO ═══ */
 .cargo-section{background:var(--navy-dark);padding:85px 5%;position:relative;overflow:hidden}
 .cargo-section::before{content:'';position:absolute;top:-100px;right:-100px;width:360px;height:360px;border:1px solid rgba(201,168,76,0.1);border-radius:50%}
 .cargo-inner{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;position:relative;z-index:2}
@@ -367,57 +216,57 @@ section{padding:85px 5%}
 .cargo-stat-big .num{font-family:'Cormorant Garamond',serif;font-size:3.3rem;font-weight:700;color:var(--gold);line-height:1}
 [dir="rtl"] .cargo-stat-big .num{font-family:'Cairo',sans-serif}
 .cargo-stat-big .lbl{color:rgba(255,255,255,0.5);font-size:0.74rem;letter-spacing:0.15em;text-transform:uppercase;margin-top:4px}
-
-/* ═══ CONTACT ═══ */
+#umrah{background:var(--navy-dark);padding:85px 5%;position:relative;overflow:hidden;border-top:1px solid rgba(201,168,76,0.15)}
+#umrah::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=1600&q=80') center/cover no-repeat;opacity:0.08}
+.umrah-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.umrah-badge-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.35);padding:7px 16px;border-radius:2px;color:var(--gold-light);font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:500;margin-bottom:16px}
+.umrah-title{color:var(--white);margin-bottom:16px}
+.umrah-title em{color:var(--gold);font-style:normal}
+.umrah-sub{color:rgba(255,255,255,0.65);font-size:0.98rem;line-height:1.75;margin-bottom:28px;font-weight:300}
+[dir="rtl"] .umrah-sub{font-weight:400}
+.umrah-features{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+.umrah-feat{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:3px;transition:var(--transition)}
+.umrah-feat:hover{background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.22)}
+.umrah-feat-icon{width:34px;height:34px;background:rgba(201,168,76,0.15);border-radius:3px;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:0.9rem;flex-shrink:0}
+.umrah-feat h4{color:var(--white);font-size:0.86rem;font-weight:600;margin-bottom:2px;font-family:inherit}
+.umrah-feat p{color:rgba(255,255,255,0.5);font-size:0.78rem;line-height:1.5;font-weight:300}
+.umrah-visual{display:flex;flex-direction:column;gap:16px;align-items:center}
+.umrah-img-wrap{width:100%;border-radius:8px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.4);border:2px solid rgba(201,168,76,0.25);position:relative}
+.umrah-img-wrap img{width:100%;height:320px;object-fit:cover;display:block}
+.umrah-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,29,61,0.7) 0%,transparent 60%);display:flex;align-items:flex-end;padding:20px}
+.umrah-img-label{color:var(--gold);font-size:0.8rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase}
+.umrah-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}
+.umrah-stat{background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:6px;padding:14px 10px;text-align:center}
+.umrah-stat .u-num{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--gold);line-height:1}
+[dir="rtl"] .umrah-stat .u-num{font-family:'Cairo',sans-serif}
+.umrah-stat .u-lbl{color:rgba(255,255,255,0.55);font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;margin-top:4px}
 #contact{background:var(--cream)}
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:46px}
 .contact-cards{display:flex;flex-direction:column;gap:12px}
-.contact-card{
-  display:flex;align-items:center;gap:16px;
-  padding:18px 20px;background:var(--white);border-radius:4px;
-  border:1px solid var(--cream-dark);text-decoration:none;
-  transition:var(--transition);
-}
+.contact-card{display:flex;align-items:center;gap:16px;padding:18px 20px;background:var(--white);border-radius:4px;border:1px solid var(--cream-dark);text-decoration:none;transition:var(--transition)}
 .contact-card:hover{border-color:var(--gold);box-shadow:0 12px 36px rgba(26,45,90,0.1);transform:translateY(-2px)}
-.contact-card-icon{
-  width:46px;height:46px;border-radius:3px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:1.15rem;
-  transition:var(--transition);
-}
+.contact-card-icon{width:46px;height:46px;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.15rem;transition:var(--transition)}
 .contact-card:hover .contact-card-icon{transform:scale(1.08)}
 .contact-card-icon.wa{background:#e8f9ed;color:#25D366}
 .contact-card-icon.ig{background:linear-gradient(135deg,#feda75,#fa7e1e,#d62976,#962fbf);color:#fff}
 .contact-card-icon.fb{background:#eef2fc;color:#1877F2}
 .contact-card-icon.em{background:#fef4e8;color:#c9a84c}
 .contact-card-icon.lo{background:#eef2fc;color:#1a2d5a}
+.contact-card-icon.tt{background:#f0f0f0;color:#000}
 .contact-card-text{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
 .contact-card-label{font-size:0.68rem;color:var(--text-light);letter-spacing:0.12em;text-transform:uppercase;font-weight:600}
 .contact-card-value{color:var(--navy-dark);font-weight:500;font-size:0.9rem;word-break:break-word}
 .contact-card-arrow{color:var(--text-light);font-size:0.78rem;transition:var(--transition);flex-shrink:0}
 .contact-card:hover .contact-card-arrow{color:var(--gold);transform:translateX(4px)}
-
 .whatsapp-block{background:var(--navy-dark);border-radius:4px;padding:36px;display:flex;flex-direction:column;gap:18px;height:fit-content}
 .whatsapp-block h3{color:var(--white);font-size:1.65rem}
 .whatsapp-block p{color:rgba(255,255,255,0.65);font-size:0.92rem;line-height:1.7;font-weight:300}
 [dir="rtl"] .whatsapp-block p{font-weight:400}
-.whatsapp-btn{
-  display:inline-flex;align-items:center;gap:10px;
-  background:#25D366;color:white;
-  padding:16px 28px;border-radius:3px;
-  font-weight:600;font-size:0.93rem;
-  text-decoration:none;transition:var(--transition);width:fit-content;
-}
+.whatsapp-btn{display:inline-flex;align-items:center;gap:10px;background:#25D366;color:white;padding:16px 28px;border-radius:3px;font-weight:600;font-size:0.93rem;text-decoration:none;transition:var(--transition);width:fit-content}
 .whatsapp-btn:hover{background:#1ebe5d;transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,211,102,0.35)}
 .social-row{display:flex;gap:9px;margin-top:4px;flex-wrap:wrap}
-.social-pill{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:9px 15px;border:1px solid rgba(255,255,255,0.14);border-radius:3px;
-  color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.8rem;font-weight:500;
-  transition:var(--transition);
-}
+.social-pill{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border:1px solid rgba(255,255,255,0.14);border-radius:3px;color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.8rem;font-weight:500;transition:var(--transition)}
 .social-pill:hover{border-color:var(--gold);color:var(--gold)}
-
-/* ═══ FOOTER ═══ */
 footer{background:var(--navy-dark);border-top:1px solid rgba(201,168,76,0.2);padding:40px 5% 24px}
 .footer-inner{display:flex;align-items:center;justify-content:space-between;padding-bottom:24px;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.08);flex-wrap:wrap;gap:18px}
 .footer-brand{display:flex;align-items:center;gap:12px}
@@ -427,79 +276,52 @@ footer{background:var(--navy-dark);border-top:1px solid rgba(201,168,76,0.2);pad
 .footer-links a{color:rgba(255,255,255,0.45);font-size:0.78rem;text-decoration:none;transition:color 0.2s;text-transform:uppercase;letter-spacing:0.06em}
 .footer-links a:hover{color:var(--gold)}
 .footer-copy{color:rgba(255,255,255,0.3);font-size:0.74rem;text-align:center}
-
-/* ═══ FAB ═══ */
-.fab{
-  position:fixed;bottom:24px;right:24px;z-index:999;
-  width:56px;height:56px;border-radius:50%;
-  background:#25D366;color:white;
-  display:flex;align-items:center;justify-content:center;
-  text-decoration:none;box-shadow:0 8px 24px rgba(37,211,102,0.45);
-  animation:pulse 2.5s ease-in-out infinite;transition:transform 0.2s;font-size:1.5rem;
-}
+.fab{position:fixed;bottom:24px;right:24px;z-index:999;width:56px;height:56px;border-radius:50%;background:#25D366;color:white;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 8px 24px rgba(37,211,102,0.45);animation:pulse 2.5s ease-in-out infinite;transition:transform 0.2s;font-size:1.5rem}
 .fab:hover{transform:scale(1.1)}
 @keyframes pulse{0%,100%{box-shadow:0 8px 24px rgba(37,211,102,0.45)}50%{box-shadow:0 8px 40px rgba(37,211,102,0.7)}}
-
-/* ═══ ANIMATIONS ═══ */
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 .reveal{opacity:0;transform:translateY(26px);transition:opacity 0.6s ease,transform 0.6s ease}
 .reveal.visible{opacity:1;transform:none}
-
-/* ═══ RESPONSIVE ═══ */
 @media(max-width:900px){
-  .nav-center{display:none}
-  .hamburger{display:flex}
-  .nav-right .nav-cta{display:none}
+  .nav-center{display:none}.hamburger{display:flex}.nav-right .nav-cta{display:none}
   .services-grid{grid-template-columns:repeat(2,1fr)}
-  .about-grid,.cargo-inner,.contact-grid{grid-template-columns:1fr;gap:40px}
+  .about-grid,.cargo-inner,.contact-grid,.umrah-inner{grid-template-columns:1fr;gap:40px}
   .about-visual{aspect-ratio:3/2;max-height:420px}
-  .about-card{bottom:10px;right:10px}
-  [dir="rtl"] .about-card{right:auto;left:10px}
-  .pillars{grid-template-columns:1fr}
-  .hero-stats{gap:20px}
-  .cargo-visual{min-height:200px}
+  .about-card{bottom:10px;right:10px}[dir="rtl"] .about-card{right:auto;left:10px}
+  .pillars{grid-template-columns:1fr}.hero-stats{gap:20px}.cargo-visual{min-height:200px}
 }
 @media(max-width:560px){
-  .services-grid{grid-template-columns:1fr}
-  nav{padding:10px 4%;gap:10px}
-  .nav-logo img{height:50px;max-width:62px}
-  .nav-logo-text span:first-child{font-size:1.1rem}
-  .nav-logo-text span:last-child{font-size:0.58rem}
-  .hero{padding:100px 4% 60px}
-  section{padding:65px 4%}
-  .routes-strip{gap:12px;padding:12px 4%}
-  .route-item{font-size:0.78rem}
-  .whatsapp-block{padding:28px}
-  .contact-card{padding:16px}
-  .about-tagline{font-size:1.55rem}
-  .about-visual-content{padding:26px 22px}
-  .about-flag-pair{padding:10px 14px;gap:10px}
-  .about-flag{font-size:1.5rem}
-  .about-trust-row{padding:10px}
-  .trust-item .t-num{font-size:0.95rem}
-  .trust-item .t-lbl{font-size:0.55rem}
+  .services-grid{grid-template-columns:1fr}nav{padding:10px 4%;gap:10px}
+  .nav-logo img{height:50px;max-width:62px}.nav-logo-text span:first-child{font-size:1.1rem}
+  .nav-logo-text span:last-child{font-size:0.58rem}.hero{padding:100px 4% 60px}
+  section{padding:65px 4%}.routes-strip{gap:10px;padding:12px 4%}.route-item{font-size:0.76rem}
+  .whatsapp-block{padding:28px}.contact-card{padding:16px}
+  .about-tagline{font-size:1.55rem}.about-visual-content{padding:26px 22px}
+  .about-flag-pair{padding:10px 14px;gap:10px}.about-flag{font-size:1.5rem}
+  .about-trust-row{padding:10px}.trust-item .t-num{font-size:0.95rem}.trust-item .t-lbl{font-size:0.55rem}
 }
 </style>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2280%22%20fill%3D%22%231a2d5a%22/%3E%3Cpath%20transform%3D%22translate%2896%2096%29%20scale%280.625%29%22%20fill%3D%22%23c9a84c%22%20d%3D%22M482.3%20192c34.2%200%2093.7%2029%2093.7%2064c0%2036-59.5%2064-93.7%2064l-116.6%200L265.2%20495.9c-5.7%2010-16.3%2016.1-27.8%2016.1l-56.2%200c-10.6%200-18.3-10.2-15.4-20.4l49-171.6L112%20320%2068.8%20377.6c-3%204-7.8%206.4-12.8%206.4l-42%200c-7.8%200-14-6.3-14-14c0-1.3%20.2-2.6%20.5-3.9L32%20256%20.5%20145.9c-.4-1.3-.5-2.6-.5-3.9c0-7.8%206.3-14%2014-14l42%200c5%200%209.8%202.4%2012.8%206.4L112%20192l102.9%200-49-171.6C162.9%2010.2%20170.6%200%20181.2%200l56.2%200c11.5%200%2022.1%206.2%2027.8%2016.1L365.7%20192l116.6%200z%22/%3E%3C/svg%3E">
 </head>
 <body>
-
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">
-    <img src="data:image/png;base64,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" alt="Matarist Travel Logo">
+    <span class="nav-logo-icon" aria-label="Matarist Travel">
+      <i class="fa-solid fa-plane-up"></i>
+    </span>
     <div class="nav-logo-text">
       <span data-i18n="brand_name">Matarist</span>
       <span data-i18n="brand_sub">Travel</span>
     </div>
   </a>
-
   <ul class="nav-center">
     <li><a href="#services" data-i18n="nav_services">Services</a></li>
     <li><a href="#about" data-i18n="nav_about">About</a></li>
     <li><a href="#cargo" data-i18n="nav_cargo">Cargo</a></li>
+    <li><a href="#umrah" data-i18n="nav_umrah">Umrah</a></li>
     <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
   </ul>
-
   <div class="nav-right">
     <div class="lang-switcher" role="group" aria-label="Language">
       <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
@@ -520,6 +342,7 @@ footer{background:var(--navy-dark);border-top:1px solid rgba(201,168,76,0.2);pad
   <a href="#services" data-i18n="nav_services" onclick="toggleMenu()">Services</a>
   <a href="#about" data-i18n="nav_about" onclick="toggleMenu()">About</a>
   <a href="#cargo" data-i18n="nav_cargo" onclick="toggleMenu()">Cargo</a>
+  <a href="#umrah" data-i18n="nav_umrah" onclick="toggleMenu()">Umrah</a>
   <a href="#contact" data-i18n="nav_contact" onclick="toggleMenu()">Contact</a>
   <a href="https://wa.me/905451218167" data-i18n="nav_book" target="_blank">Book Now</a>
   <div class="mobile-lang">
@@ -562,14 +385,17 @@ footer{background:var(--navy-dark);border-top:1px solid rgba(201,168,76,0.2);pad
         <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1600&q=80" alt="Travel lifestyle">
       </video>
     </div>
+    <!-- ✅ NEW: Mecca / Umrah slide (slide #6) -->
+    <div class="hero-slide">
+      <img src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=1600&q=80" alt="Mecca Haram - Umrah">
+    </div>
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-pattern"></div>
-
   <div class="hero-content">
-    <div class="hero-badge" data-i18n="hero_badge">✈ Istanbul · Cairo · Worldwide</div>
+    <div class="hero-badge" data-i18n="hero_badge">✈ Istanbul · Cairo · Mecca · Worldwide</div>
     <h1 data-i18n="hero_h1">Your Journey Starts <em>Here</em></h1>
-    <p data-i18n="hero_p">Matarist Travel connects Istanbul and Cairo with seamless flight bookings, visa support, hotel reservations, VIP transfers, and global cargo shipping — all in one trusted place.</p>
+    <p data-i18n="hero_p">Matarist Travel connects Istanbul and Cairo with seamless flight bookings, visa support, hotel reservations, VIP transfers, Umrah packages and global cargo shipping — all in one trusted place.</p>
     <div class="hero-actions">
       <a href="https://wa.me/905451218167" class="btn-primary" target="_blank" rel="noopener">
         <i class="fa-brands fa-whatsapp"></i>
@@ -582,7 +408,7 @@ footer{background:var(--navy-dark);border-top:1px solid rgba(201,168,76,0.2);pad
     </div>
     <div class="hero-stats">
       <div class="stat"><span class="stat-num">2</span><span class="stat-label" data-i18n="stat1">Core Markets</span></div>
-      <div class="stat"><span class="stat-num">5+</span><span class="stat-label" data-i18n="stat2">Travel Services</span></div>
+      <div class="stat"><span class="stat-num">7+</span><span class="stat-label" data-i18n="stat2">Travel Services</span></div>
       <div class="stat"><span class="stat-num">24/7</span><span class="stat-label" data-i18n="stat3">WhatsApp Support</span></div>
       <div class="stat"><span class="stat-num">🌍</span><span class="stat-label" data-i18n="stat4">Global Cargo</span></div>
     </div>
@@ -594,6 +420,7 @@ footer{background:var(--navy-dark);border-top:1px solid rgba(201,168,76,0.2);pad
     <button class="hero-dot" onclick="goToSlide(2)" aria-label="Slide 3"></button>
     <button class="hero-dot" onclick="goToSlide(3)" aria-label="Slide 4"></button>
     <button class="hero-dot" onclick="goToSlide(4)" aria-label="Slide 5"></button>
+    <button class="hero-dot" onclick="goToSlide(5)" aria-label="Slide 6"></button>
   </div>
 </section>
 
@@ -603,6 +430,8 @@ footer{background:var(--navy-dark);border-top:1px solid rgba(201,168,76,0.2);pad
   <div class="route-sep">✈ ──────── ✈</div>
   <div class="route-item"><span>🇪🇬</span> <span data-i18n="route_eg">Cairo, Egypt</span></div>
   <div class="route-sep">·</div>
+  <div class="route-item"><span>🕌</span> <span data-i18n="route_umrah">Umrah Packages</span></div>
+  <div class="route-sep">·</div>
   <div class="route-item"><span>🌐</span> <span data-i18n="route_global">+ Worldwide Cargo</span></div>
 </div>
 
@@ -611,7 +440,7 @@ footer{background:var(--navy-dark);border-top:1px solid rgba(201,168,76,0.2);pad
   <div class="section-header reveal">
     <span class="section-label" data-i18n="srv_label">What We Offer</span>
     <h2 class="section-title" data-i18n="srv_title">Complete Travel Solutions</h2>
-    <p class="section-sub" data-i18n="srv_sub">From flights and hotels to global cargo shipping — we handle every detail so you can travel with confidence.</p>
+    <p class="section-sub" data-i18n="srv_sub">From flights and hotels to Umrah packages and global cargo shipping — we handle every detail so you can travel with confidence.</p>
   </div>
   <div class="services-grid">
 
@@ -687,270 +516,134 @@ footer{background:var(--navy-dark);border-top:1px solid rgba(201,168,76,0.2);pad
       </div>
     </div>
 
+    <!-- ✅ NEW: 7th Service — Umrah (uses same 'package' backend type) -->
+    <div class="service-card reveal" onclick="openModal('umrah')">
+      <span class="service-badge" id="badge-umrah">0</span>
+      <img src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=900&q=80" alt="Umrah Packages" loading="lazy">
+      <div class="service-card-overlay"></div>
+      <div class="service-card-content">
+        <div class="service-card-tag" data-i18n="s7_tag">🕌 Spiritual Journey</div>
+        <h3 data-i18n="s7_title">Umrah Packages</h3>
+        <p data-i18n="s7_desc">Complete Umrah packages from Istanbul. Flights, hotels near Haram, transfers and full logistical support.</p>
+        <span class="service-card-cta"><span data-i18n="book_now">Book Now</span> <i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+    </div>
+
   </div>
 </section>
-
 <!-- ═══ MODALS ═══ -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
   <div class="modal-box" id="modal-box">
 
     <!-- FLIGHT -->
     <div id="modal-flight" style="display:none">
-      <div class="modal-header">
-        <h3>✈️ حجز تذكرة طيران</h3>
-        <button class="modal-close" onclick="closeModal()">✕</button>
-      </div>
+      <div class="modal-header"><h3>✈️ حجز تذكرة طيران</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
       <div class="modal-body">
         <div id="form-flight">
-          <div class="form-row">
-            <div class="form-group"><label>الاسم الكامل</label><input type="text" id="f-name" placeholder="الاسم كامل" required></div>
-            <div class="form-group"><label>رقم الواتساب</label><input type="tel" id="f-phone" placeholder="+905xxxxxxxxx" required></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label>من (مدينة المغادرة)</label><input type="text" id="f-from" placeholder="إسطنبول" required></div>
-            <div class="form-group"><label>إلى (مدينة الوصول)</label><input type="text" id="f-to" placeholder="القاهرة" required></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label>تاريخ السفر</label><input type="date" id="f-date" required></div>
-            <div class="form-group"><label>عدد الركاب</label><input type="number" id="f-pax" min="1" max="20" value="1"></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label>درجة السفر</label>
-              <select id="f-class">
-                <option value="اقتصادية">اقتصادية</option>
-                <option value="رجال أعمال">رجال أعمال</option>
-                <option value="أولى">الدرجة الأولى</option>
-              </select>
-            </div>
-            <div class="form-group"><label>رحلة ذهاب فقط / ذهاب وإياب</label>
-              <select id="f-type">
-                <option value="ذهاب فقط">ذهاب فقط</option>
-                <option value="ذهاب وإياب">ذهاب وإياب</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row single">
-            <div class="form-group"><label>الأمتعة الإضافية (اختياري)</label><textarea id="f-notes" placeholder="هل تحتاج إضافة أمتعة إضافية؟ يرجى كتابة الوزن المطلوب أو أي تفاصيل متعلقة بالأمتعة إن وجدت.&#10;&#10;أمثلة:&#10;• أحتاج حقيبة شحن 20 كجم&#10;• معي حقيبة إضافية 10 كجم&#10;• لا أحتاج أمتعة إضافية"></textarea></div>
-          </div>
+          <div class="form-row"><div class="form-group"><label>الاسم الكامل</label><input type="text" id="f-name" placeholder="الاسم كامل" required></div><div class="form-group"><label>رقم الواتساب</label><input type="tel" id="f-phone" placeholder="+905xxxxxxxxx" required></div></div>
+          <div class="form-row"><div class="form-group"><label>من (مدينة المغادرة)</label><input type="text" id="f-from" placeholder="إسطنبول" required></div><div class="form-group"><label>إلى (مدينة الوصول)</label><input type="text" id="f-to" placeholder="القاهرة" required></div></div>
+          <div class="form-row"><div class="form-group"><label>تاريخ السفر</label><input type="date" id="f-date" required></div><div class="form-group"><label>عدد الركاب</label><input type="number" id="f-pax" min="1" max="20" value="1"></div></div>
+          <div class="form-row"><div class="form-group"><label>درجة السفر</label><select id="f-class"><option value="اقتصادية">اقتصادية</option><option value="رجال أعمال">رجال أعمال</option><option value="أولى">الدرجة الأولى</option></select></div><div class="form-group"><label>رحلة ذهاب فقط / ذهاب وإياب</label><select id="f-type"><option value="ذهاب فقط">ذهاب فقط</option><option value="ذهاب وإياب">ذهاب وإياب</option></select></div></div>
+          <div class="form-row single"><div class="form-group"><label>الأمتعة الإضافية (اختياري)</label><textarea id="f-notes" placeholder="هل تحتاج إضافة أمتعة إضافية؟ يرجى كتابة الوزن المطلوب أو أي تفاصيل متعلقة بالأمتعة إن وجدت."></textarea></div></div>
           <button class="modal-submit" onclick="submitOrder('flight')">✅ إرسال الطلب</button>
         </div>
-        <div class="success-msg" id="success-flight">
-          <div class="success-icon">🎉</div>
-          <h4>شكراً لكم!</h4>
-          <p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p>
-        </div>
+        <div class="success-msg" id="success-flight"><div class="success-icon">🎉</div><h4>شكراً لكم!</h4><p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
       </div>
     </div>
 
     <!-- VISA -->
     <div id="modal-visa" style="display:none">
-      <div class="modal-header">
-        <h3>🛂 طلب تأشيرة</h3>
-        <button class="modal-close" onclick="closeModal()">✕</button>
-      </div>
+      <div class="modal-header"><h3>🛂 طلب تأشيرة</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
       <div class="modal-body">
         <div id="form-visa">
-          <div class="form-row">
-            <div class="form-group"><label>الاسم الكامل</label><input type="text" id="v-name" placeholder="الاسم كامل" required></div>
-            <div class="form-group"><label>رقم الواتساب</label><input type="tel" id="v-phone" placeholder="+905xxxxxxxxx" required></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label>الجنسية</label><input type="text" id="v-nationality" placeholder="مصري / تركي ..."></div>
-            <div class="form-group"><label>الدولة المراد السفر إليها</label><input type="text" id="v-country" placeholder="تركيا / مصر / أوروبا..."></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label>نوع التأشيرة</label>
-              <select id="v-type">
-                <option value="سياحية">سياحية</option>
-                <option value="عمل">عمل</option>
-                <option value="دراسة">دراسة</option>
-                <option value="إقامة">إقامة</option>
-              </select>
-            </div>
-            <div class="form-group"><label>تاريخ السفر المتوقع</label><input type="date" id="v-date"></div>
-          </div>
-          <div class="form-row single">
-            <div class="form-group"><label>ملاحظات</label><textarea id="v-notes" placeholder="أي تفاصيل إضافية..."></textarea></div>
-          </div>
+          <div class="form-row"><div class="form-group"><label>الاسم الكامل</label><input type="text" id="v-name" placeholder="الاسم كامل" required></div><div class="form-group"><label>رقم الواتساب</label><input type="tel" id="v-phone" placeholder="+905xxxxxxxxx" required></div></div>
+          <div class="form-row"><div class="form-group"><label>الجنسية</label><input type="text" id="v-nationality" placeholder="مصري / تركي ..."></div><div class="form-group"><label>الدولة المراد السفر إليها</label><input type="text" id="v-country" placeholder="تركيا / مصر / أوروبا..."></div></div>
+          <div class="form-row"><div class="form-group"><label>نوع التأشيرة</label><select id="v-type"><option value="سياحية">سياحية</option><option value="عمل">عمل</option><option value="دراسة">دراسة</option><option value="إقامة">إقامة</option></select></div><div class="form-group"><label>تاريخ السفر المتوقع</label><input type="date" id="v-date"></div></div>
+          <div class="form-row single"><div class="form-group"><label>ملاحظات</label><textarea id="v-notes" placeholder="أي تفاصيل إضافية..."></textarea></div></div>
           <button class="modal-submit" onclick="submitOrder('visa')">✅ إرسال الطلب</button>
         </div>
-        <div class="success-msg" id="success-visa">
-          <div class="success-icon">🎉</div>
-          <h4>شكراً لكم!</h4>
-          <p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p>
-        </div>
+        <div class="success-msg" id="success-visa"><div class="success-icon">🎉</div><h4>شكراً لكم!</h4><p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
       </div>
     </div>
 
     <!-- HOTEL -->
     <div id="modal-hotel" style="display:none">
-      <div class="modal-header">
-        <h3>🏨 حجز فندق</h3>
-        <button class="modal-close" onclick="closeModal()">✕</button>
-      </div>
+      <div class="modal-header"><h3>🏨 حجز فندق</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
       <div class="modal-body">
         <div id="form-hotel">
-          <div class="form-row">
-            <div class="form-group"><label>الاسم الكامل</label><input type="text" id="h-name" placeholder="الاسم كامل" required></div>
-            <div class="form-group"><label>رقم الواتساب</label><input type="tel" id="h-phone" placeholder="+905xxxxxxxxx" required></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label>المدينة / الوجهة</label><input type="text" id="h-city" placeholder="شرم الشيخ / الغردقة..." required></div>
-            <div class="form-group"><label>اسم الفندق (اختياري)</label><input type="text" id="h-hotel" placeholder="أي فندق مناسب"></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label>تاريخ الدخول</label><input type="date" id="h-checkin" required></div>
-            <div class="form-group"><label>تاريخ الخروج</label><input type="date" id="h-checkout" required></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label>عدد الأشخاص</label><input type="number" id="h-guests" min="1" value="2"></div>
-            <div class="form-group"><label>نوع الإقامة</label>
-              <select id="h-board">
-                <option value="نصف إقامة">نصف إقامة</option>
-                <option value="إقامة كاملة">إقامة كاملة</option>
-                <option value="غرفة فقط">غرفة فقط</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row single">
-            <div class="form-group"><label>ملاحظات</label><textarea id="h-notes" placeholder="تفضيلات خاصة..."></textarea></div>
-          </div>
+          <div class="form-row"><div class="form-group"><label>الاسم الكامل</label><input type="text" id="h-name" placeholder="الاسم كامل" required></div><div class="form-group"><label>رقم الواتساب</label><input type="tel" id="h-phone" placeholder="+905xxxxxxxxx" required></div></div>
+          <div class="form-row"><div class="form-group"><label>المدينة / الوجهة</label><input type="text" id="h-city" placeholder="شرم الشيخ / الغردقة..." required></div><div class="form-group"><label>اسم الفندق (اختياري)</label><input type="text" id="h-hotel" placeholder="أي فندق مناسب"></div></div>
+          <div class="form-row"><div class="form-group"><label>تاريخ الدخول</label><input type="date" id="h-checkin" required></div><div class="form-group"><label>تاريخ الخروج</label><input type="date" id="h-checkout" required></div></div>
+          <div class="form-row"><div class="form-group"><label>عدد الأشخاص</label><input type="number" id="h-guests" min="1" value="2"></div><div class="form-group"><label>نوع الإقامة</label><select id="h-board"><option value="نصف إقامة">نصف إقامة</option><option value="إقامة كاملة">إقامة كاملة</option><option value="غرفة فقط">غرفة فقط</option></select></div></div>
+          <div class="form-row single"><div class="form-group"><label>ملاحظات</label><textarea id="h-notes" placeholder="تفضيلات خاصة..."></textarea></div></div>
           <button class="modal-submit" onclick="submitOrder('hotel')">✅ إرسال الطلب</button>
         </div>
-        <div class="success-msg" id="success-hotel">
-          <div class="success-icon">🎉</div>
-          <h4>شكراً لكم!</h4>
-          <p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p>
-        </div>
+        <div class="success-msg" id="success-hotel"><div class="success-icon">🎉</div><h4>شكراً لكم!</h4><p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
       </div>
     </div>
 
     <!-- CARGO -->
     <div id="modal-cargo" style="display:none">
-      <div class="modal-header">
-        <h3>📦 طلب شحن / كارجو</h3>
-        <button class="modal-close" onclick="closeModal()">✕</button>
-      </div>
+      <div class="modal-header"><h3>📦 طلب شحن / كارجو</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
       <div class="modal-body">
         <div id="form-cargo">
-          <div class="form-row">
-            <div class="form-group"><label>الاسم الكامل</label><input type="text" id="c-name" placeholder="الاسم كامل" required></div>
-            <div class="form-group"><label>رقم الواتساب</label><input type="tel" id="c-phone" placeholder="+905xxxxxxxxx" required></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label>من (دولة الشحن)</label><input type="text" id="c-from" placeholder="تركيا" required></div>
-            <div class="form-group"><label>إلى (دولة الوصول)</label><input type="text" id="c-to" placeholder="مصر" required></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label>نوع البضاعة</label><input type="text" id="c-goods" placeholder="ملابس / إلكترونيات..."></div>
-            <div class="form-group"><label>الوزن التقريبي (كجم)</label><input type="number" id="c-weight" placeholder="50"></div>
-          </div>
-          <div class="form-row single">
-            <div class="form-group"><label>ملاحظات</label><textarea id="c-notes" placeholder="أبعاد، تفاصيل التسليم..."></textarea></div>
-          </div>
+          <div class="form-row"><div class="form-group"><label>الاسم الكامل</label><input type="text" id="c-name" placeholder="الاسم كامل" required></div><div class="form-group"><label>رقم الواتساب</label><input type="tel" id="c-phone" placeholder="+905xxxxxxxxx" required></div></div>
+          <div class="form-row"><div class="form-group"><label>من (دولة الشحن)</label><input type="text" id="c-from" placeholder="تركيا" required></div><div class="form-group"><label>إلى (دولة الوصول)</label><input type="text" id="c-to" placeholder="مصر" required></div></div>
+          <div class="form-row"><div class="form-group"><label>نوع البضاعة</label><input type="text" id="c-goods" placeholder="ملابس / إلكترونيات..."></div><div class="form-group"><label>الوزن التقريبي (كجم)</label><input type="number" id="c-weight" placeholder="50"></div></div>
+          <div class="form-row single"><div class="form-group"><label>ملاحظات</label><textarea id="c-notes" placeholder="أبعاد، تفاصيل التسليم..."></textarea></div></div>
           <button class="modal-submit" onclick="submitOrder('cargo')">✅ إرسال الطلب</button>
         </div>
-        <div class="success-msg" id="success-cargo">
-          <div class="success-icon">🎉</div>
-          <h4>شكراً لكم!</h4>
-          <p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p>
-        </div>
+        <div class="success-msg" id="success-cargo"><div class="success-icon">🎉</div><h4>شكراً لكم!</h4><p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
       </div>
     </div>
 
     <!-- TRANSFER -->
     <div id="modal-transfer" style="display:none">
-      <div class="modal-header">
-        <h3>🚖 طلب توصيل VIP</h3>
-        <button class="modal-close" onclick="closeModal()">✕</button>
-      </div>
+      <div class="modal-header"><h3>🚖 طلب توصيل VIP</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
       <div class="modal-body">
         <div id="form-transfer">
-          <div class="form-row">
-            <div class="form-group"><label>الاسم الكامل</label><input type="text" id="t-name" placeholder="الاسم كامل" required></div>
-            <div class="form-group"><label>رقم الواتساب</label><input type="tel" id="t-phone" placeholder="+905xxxxxxxxx" required></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label>المطار</label><input type="text" id="t-airport" placeholder="مطار صبيحة / أتاتورك..."></div>
-            <div class="form-group"><label>تاريخ ووقت الرحلة</label><input type="datetime-local" id="t-datetime"></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label>نوع الخدمة</label>
-              <select id="t-type">
-                <option value="استقبال من المطار">استقبال من المطار</option>
-                <option value="توصيل للمطار">توصيل للمطار</option>
-                <option value="ذهاب وإياب">ذهاب وإياب</option>
-              </select>
-            </div>
-            <div class="form-group"><label>عدد الأشخاص</label><input type="number" id="t-pax" min="1" value="1"></div>
-          </div>
-          <div class="form-row single">
-            <div class="form-group"><label>العنوان (الفندق / المنزل)</label><input type="text" id="t-address" placeholder="اسم الفندق أو العنوان"></div>
-          </div>
-          <div class="form-row single">
-            <div class="form-group"><label>ملاحظات</label><textarea id="t-notes" placeholder="أي تفاصيل إضافية..."></textarea></div>
-          </div>
+          <div class="form-row"><div class="form-group"><label>الاسم الكامل</label><input type="text" id="t-name" placeholder="الاسم كامل" required></div><div class="form-group"><label>رقم الواتساب</label><input type="tel" id="t-phone" placeholder="+905xxxxxxxxx" required></div></div>
+          <div class="form-row"><div class="form-group"><label>المطار</label><input type="text" id="t-airport" placeholder="مطار صبيحة / أتاتورك..."></div><div class="form-group"><label>تاريخ ووقت الرحلة</label><input type="datetime-local" id="t-datetime"></div></div>
+          <div class="form-row"><div class="form-group"><label>نوع الخدمة</label><select id="t-type"><option value="استقبال من المطار">استقبال من المطار</option><option value="توصيل للمطار">توصيل للمطار</option><option value="ذهاب وإياب">ذهاب وإياب</option></select></div><div class="form-group"><label>عدد الأشخاص</label><input type="number" id="t-pax" min="1" value="1"></div></div>
+          <div class="form-row single"><div class="form-group"><label>العنوان (الفندق / المنزل)</label><input type="text" id="t-address" placeholder="اسم الفندق أو العنوان"></div></div>
+          <div class="form-row single"><div class="form-group"><label>ملاحظات</label><textarea id="t-notes" placeholder="أي تفاصيل إضافية..."></textarea></div></div>
           <button class="modal-submit" onclick="submitOrder('transfer')">✅ إرسال الطلب</button>
         </div>
-        <div class="success-msg" id="success-transfer">
-          <div class="success-icon">🎉</div>
-          <h4>شكراً لكم!</h4>
-          <p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p>
-        </div>
+        <div class="success-msg" id="success-transfer"><div class="success-icon">🎉</div><h4>شكراً لكم!</h4><p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
       </div>
     </div>
 
     <!-- PACKAGE -->
     <div id="modal-package" style="display:none">
-      <div class="modal-header">
-        <h3>🌍 طلب برنامج سياحي</h3>
-        <button class="modal-close" onclick="closeModal()">✕</button>
-      </div>
+      <div class="modal-header"><h3>🌍 طلب برنامج سياحي</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
       <div class="modal-body">
         <div id="form-package">
-          <div class="form-row">
-            <div class="form-group"><label>الاسم الكامل</label><input type="text" id="p-name" placeholder="الاسم كامل" required></div>
-            <div class="form-group"><label>رقم الواتساب</label><input type="tel" id="p-phone" placeholder="+905xxxxxxxxx" required></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label>الوجهة المطلوبة</label><input type="text" id="p-dest" placeholder="شرم الشيخ / أنطاليا..."></div>
-            <div class="form-group"><label>عدد الأشخاص</label><input type="number" id="p-pax" min="1" value="2"></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label>تاريخ السفر</label><input type="date" id="p-date"></div>
-            <div class="form-group"><label>مدة الرحلة</label>
-              <select id="p-duration">
-                <option value="3 أيام">3 أيام</option>
-                <option value="4 أيام">4 أيام</option>
-                <option value="5 أيام">5 أيام</option>
-                <option value="أسبوع">أسبوع</option>
-                <option value="أكثر من أسبوع">أكثر من أسبوع</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row single">
-            <div class="form-group"><label>ما يشمله البرنامج</label>
-              <select id="p-includes">
-                <option value="فندق + طيران + توصيل">فندق + طيران + توصيل</option>
-                <option value="فندق + طيران">فندق + طيران</option>
-                <option value="فندق فقط">فندق فقط</option>
-                <option value="حسب الميزانية">حسب الميزانية</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row single">
-            <div class="form-group"><label>الميزانية التقريبية</label><input type="text" id="p-budget" placeholder="مثال: 5000 جنيه للشخص"></div>
-          </div>
-          <div class="form-row single">
-            <div class="form-group"><label>ملاحظات</label><textarea id="p-notes" placeholder="أي تفاصيل إضافية..."></textarea></div>
-          </div>
+          <div class="form-row"><div class="form-group"><label>الاسم الكامل</label><input type="text" id="p-name" placeholder="الاسم كامل" required></div><div class="form-group"><label>رقم الواتساب</label><input type="tel" id="p-phone" placeholder="+905xxxxxxxxx" required></div></div>
+          <div class="form-row"><div class="form-group"><label>الوجهة المطلوبة</label><input type="text" id="p-dest" placeholder="شرم الشيخ / أنطاليا..."></div><div class="form-group"><label>عدد الأشخاص</label><input type="number" id="p-pax" min="1" value="2"></div></div>
+          <div class="form-row"><div class="form-group"><label>تاريخ السفر</label><input type="date" id="p-date"></div><div class="form-group"><label>مدة الرحلة</label><select id="p-duration"><option value="3 أيام">3 أيام</option><option value="4 أيام">4 أيام</option><option value="5 أيام">5 أيام</option><option value="أسبوع">أسبوع</option><option value="أكثر من أسبوع">أكثر من أسبوع</option></select></div></div>
+          <div class="form-row single"><div class="form-group"><label>ما يشمله البرنامج</label><select id="p-includes"><option value="فندق + طيران + توصيل">فندق + طيران + توصيل</option><option value="فندق + طيران">فندق + طيران</option><option value="فندق فقط">فندق فقط</option><option value="حسب الميزانية">حسب الميزانية</option></select></div></div>
+          <div class="form-row single"><div class="form-group"><label>الميزانية التقريبية</label><input type="text" id="p-budget" placeholder="مثال: 5000 جنيه للشخص"></div></div>
+          <div class="form-row single"><div class="form-group"><label>ملاحظات</label><textarea id="p-notes" placeholder="أي تفاصيل إضافية..."></textarea></div></div>
           <button class="modal-submit" onclick="submitOrder('package')">✅ إرسال الطلب</button>
         </div>
-        <div class="success-msg" id="success-package">
-          <div class="success-icon">🎉</div>
-          <h4>شكراً لكم!</h4>
-          <p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p>
+        <div class="success-msg" id="success-package"><div class="success-icon">🎉</div><h4>شكراً لكم!</h4><p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
+      </div>
+    </div>
+
+    <!-- ✅ NEW: UMRAH MODAL (saves as 'package' type internally — same workflow as Programs) -->
+    <div id="modal-umrah" style="display:none">
+      <div class="modal-header"><h3>🕌 طلب باقة عمرة</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div id="form-umrah">
+          <div class="form-row"><div class="form-group"><label>الاسم الكامل</label><input type="text" id="u-name" placeholder="الاسم كامل" required></div><div class="form-group"><label>رقم الواتساب</label><input type="tel" id="u-phone" placeholder="+905xxxxxxxxx" required></div></div>
+          <div class="form-row"><div class="form-group"><label>عدد المعتمرين</label><input type="number" id="u-pax" min="1" value="2"></div><div class="form-group"><label>تاريخ السفر التقريبي</label><input type="date" id="u-date"></div></div>
+          <div class="form-row"><div class="form-group"><label>مدة الرحلة</label><select id="u-duration"><option value="7 أيام">7 أيام</option><option value="10 أيام">10 أيام</option><option value="14 يوم">14 يوم</option><option value="أكثر">أكثر</option></select></div><div class="form-group"><label>الإقامة</label><select id="u-rooming"><option value="غرفة ثنائية">غرفة ثنائية</option><option value="غرفة ثلاثية">غرفة ثلاثية</option><option value="غرفة رباعية">غرفة رباعية</option><option value="غرفة فردية">غرفة فردية</option></select></div></div>
+          <div class="form-row single"><div class="form-group"><label>الباقة المطلوبة</label><select id="u-includes"><option value="طيران + فندق قرب الحرم + توصيل داخلي">طيران + فندق قرب الحرم + توصيل داخلي</option><option value="طيران + فندق فقط">طيران + فندق فقط</option><option value="فندق + توصيل فقط (بدون طيران)">فندق + توصيل فقط (بدون طيران)</option></select></div></div>
+          <div class="form-row single"><div class="form-group"><label>الميزانية التقريبية للشخص</label><input type="text" id="u-budget" placeholder="مثال: $700 للشخص"></div></div>
+          <div class="form-row single"><div class="form-group"><label>ملاحظات / طلبات خاصة</label><textarea id="u-notes" placeholder="مثل: قرب الحرم، كرسي متحرك، احتياجات صحية..."></textarea></div></div>
+          <button class="modal-submit" onclick="submitOrder('umrah')">✅ إرسال الطلب</button>
         </div>
+        <div class="success-msg" id="success-umrah"><div class="success-icon">🕌</div><h4>تقبل الله منكم!</h4><p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
       </div>
     </div>
 
@@ -961,17 +654,14 @@ footer{background:var(--navy-dark);border-top:1px solid rgba(201,168,76,0.2);pad
 <section id="about">
   <div class="about-grid">
     <div class="about-visual reveal">
-      <!-- Image slider -->
       <div class="about-slider" id="aboutSlider">
         <div class="about-slide active" style="background-image:url('https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=900&q=80')" data-loc="Istanbul" data-flag="🇹🇷"></div>
         <div class="about-slide" style="background-image:url('https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=900&q=80')" data-loc="Cairo" data-flag="🇪🇬"></div>
         <div class="about-slide" style="background-image:url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=900&q=80')" data-loc="In Flight" data-flag="✈"></div>
         <div class="about-slide" style="background-image:url('https://images.unsplash.com/photo-1527838832700-5059252407fa?w=900&q=80')" data-loc="Istanbul" data-flag="🇹🇷"></div>
-        <div class="about-slide" style="background-image:url('https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=900&q=80')" data-loc="Pyramids" data-flag="🇪🇬"></div>
+        <div class="about-slide" style="background-image:url('https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=900&q=80')" data-loc="Mecca" data-flag="🕌"></div>
       </div>
       <div class="about-visual-overlay"></div>
-
-      <!-- Top dots indicator -->
       <div class="about-dots" id="aboutDots">
         <button class="about-dot active" onclick="aboutGoTo(0)" aria-label="Slide 1"></button>
         <button class="about-dot" onclick="aboutGoTo(1)" aria-label="Slide 2"></button>
@@ -979,20 +669,11 @@ footer{background:var(--navy-dark);border-top:1px solid rgba(201,168,76,0.2);pad
         <button class="about-dot" onclick="aboutGoTo(3)" aria-label="Slide 4"></button>
         <button class="about-dot" onclick="aboutGoTo(4)" aria-label="Slide 5"></button>
       </div>
-
-      <!-- Content overlay -->
       <div class="about-visual-content">
         <div class="about-visual-top">
-          <div class="about-eyebrow">
-            <span class="dot"></span>
-            <span data-i18n="about_live">Live · Worldwide</span>
-          </div>
-          <div class="about-loc-tag">
-            <span class="loc-flag" id="locFlag">🇹🇷</span>
-            <span class="loc-name" id="locName">Istanbul</span>
-          </div>
+          <div class="about-eyebrow"><span class="dot"></span><span data-i18n="about_live">Live · Worldwide</span></div>
+          <div class="about-loc-tag"><span class="loc-flag" id="locFlag">🇹🇷</span><span class="loc-name" id="locName">Istanbul</span></div>
         </div>
-
         <div class="about-visual-bottom">
           <div class="about-flag-pair">
             <span class="about-flag">🇹🇷</span>
@@ -1003,53 +684,28 @@ footer{background:var(--navy-dark);border-top:1px solid rgba(201,168,76,0.2);pad
           </div>
           <div class="about-tagline" data-i18n="about_tagline">Your <em>Journey</em>,<br>Our Responsibility</div>
           <div class="about-trust-row">
-            <div class="trust-item">
-              <i class="fa-solid fa-plane-departure"></i>
-              <div class="t-num">500+</div>
-              <div class="t-lbl" data-i18n="trust1">Flights</div>
-            </div>
+            <div class="trust-item"><i class="fa-solid fa-plane-departure"></i><div class="t-num">500+</div><div class="t-lbl" data-i18n="trust1">Flights</div></div>
             <div class="trust-divider"></div>
-            <div class="trust-item">
-              <i class="fa-solid fa-hotel"></i>
-              <div class="t-num">200+</div>
-              <div class="t-lbl" data-i18n="trust2">Hotels</div>
-            </div>
+            <div class="trust-item"><i class="fa-solid fa-hotel"></i><div class="t-num">200+</div><div class="t-lbl" data-i18n="trust2">Hotels</div></div>
             <div class="trust-divider"></div>
-            <div class="trust-item">
-              <i class="fa-solid fa-box"></i>
-              <div class="t-num">1000+</div>
-              <div class="t-lbl" data-i18n="trust3">Shipments</div>
-            </div>
+            <div class="trust-item"><i class="fa-solid fa-kaaba"></i><div class="t-num">100+</div><div class="t-lbl" data-i18n="trust3">Umrah</div></div>
           </div>
         </div>
       </div>
-
-      <div class="about-card">
-        <div class="about-card-num">24/7</div>
-        <div class="about-card-txt" data-i18n="about_card">WhatsApp Support</div>
-      </div>
+      <div class="about-card"><div class="about-card-num">24/7</div><div class="about-card-txt" data-i18n="about_card">WhatsApp Support</div></div>
     </div>
     <div class="about-content">
+      <div class="about-logo-block">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjI2MCAzMTAgNDkwIDM5MCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgbWVldCI+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLDEwMjQuMDAwMDAwKSBzY2FsZSgwLjEwMDAwMCwtMC4xMDAwMDApIiBmaWxsPSIjMWEyZDVhIiBzdHJva2U9Im5vbmUiPgo8cGF0aCBkPSJNNjYxOSA2OTIxIGMtODYgLTI3IC0zMDMgLTE4NSAtNDE0IC0zMDAgLTI5IC0zMSAtNDcgLTQxIC03MCAtNDEgLTE2IDEgLTE4NyAyMCAtMzgwIDQ0IGwtMzUwIDQ0IC01MyAtNDUgYy0yOSAtMjUgLTUwIC00OSAtNDUgLTU0IDUgLTUgMTM3IC01OSAyOTQgLTEyMSAxNTcgLTYyIDI4NyAtMTE3IDI4OSAtMTIyIDMgLTEyIC02MzYgLTYwNCAtODIwIC03NTggLTMwMSAtMjUzIC02MTggLTQ1MyAtODI3IC01MjQgLTYxIC0yMSAtOTkgLTI3IC0xNzMgLTI4IC0xMjEgLTEgLTE1OSAxOCAtMTk5IDEwMyAtMjMgNTAgLTI2IDY4IC0yNSAxNjEgMCA4NyA1IDExOCAyNyAxNzkgbDI2IDczIC0yNiAtMjMgYy0xMzkgLTEzMCAtMjI2IC0zMzMgLTIwMyAtNDczIDM0IC0yMTEgMjI5IC0zMDEgNTQwIC0yNTEgNDAwIDY1IDc4NCAzMjUgMTY3OSAxMTM5IDExMyAxMDIgMjA4IDE4NiAyMTIgMTg2IDQgMCA1NSAtMTA5IDExNCAtMjQyIDU5IC0xMzQgMTE5IC0yNzAgMTM0IC0zMDIgbDI3IC02MCA1NiA1MCBjMzEgMjcgNTggNTQgNjAgNTkgMyA2IC0xMiAxMzQgLTMzIDI4NSAtMjEgMTUxIC00MyAzMjMgLTUwIDM4MiBsLTEyIDEwOCA5MCA5NCBjMTk4IDIwNiAyODQgMzU3IDIzNiA0MTQgLTIxIDI1IC02NiAzNSAtMTA0IDIzeiIvPgo8cGF0aCBkPSJNNDAzMCA1NzkxIGMwIC01ODkgMiAtNjgwIDE1IC02OTEgMjAgLTE3IDY5IC03IDE4OCAzNyBsOTcgMzYgMCAzODYgMCAzODYgMTc5IC0yNjkgYzk5IC0xNDcgMTgyIC0yNzAgMTg1IC0yNzMgNCAtNCAxNTIgODUgMjQ5IDE0OCA4IDYgLTE5MyAzMTEgLTUyNyA4MDIgbC04MCAxMTcgLTE1MyAwIC0xNTMgMCAwIC02Nzl6Ii8+CjxwYXRoIGQ9Ik01ODYzIDU3ODcgbC0xNDMgLTEyMiAzIC00MzAgMiAtNDMwIDE0NSAwIDE0NSAwIDMgNTUzIGMxIDMwMyAtMSA1NTIgLTUgNTUxIC01IDAgLTcyIC01NSAtMTUwIC0xMjJ6Ii8+CjxwYXRoIGQ9Ik02NDU1IDQ0OTUgYy03NCAtMjkgLTExNSAtODUgLTExNSAtMTU3IDAgLTg5IDQxIC0xMjMgMjI2IC0xODMgMTQ0IC00NiAxODMgLTg2IDEzNSAtMTM0IC01MiAtNTIgLTE2MCAtNDcgLTI3NiAxNCBsLTY0IDMzIC0yNyAtMzkgYy0yNSAtMzcgLTI2IC00MCAtMTAgLTU4IDI4IC0zMSAxMzUgLTczIDIxMiAtODQgMTI4IC0xOSAyNTcgMzAgMjkwIDEwOSAyMCA0NyAxNyAxMTMgLTUgMTUwIC0yNiA0MyAtNjggNjcgLTE5NiAxMDkgLTEzNiA0NiAtMTU1IDU3IC0xNTUgOTQgMCA3OCAxMjAgOTAgMjU0IDI2IDI4IC0xMyA1MSAtMjMgNTEgLTIyIDEgMSAxMSAxNSAyMyAzMSAxMiAxNiAyMiAzNSAyMiA0MyAwIDggLTMwIDI4IC02NyA0NiAtNTkgMjcgLTgwIDMyIC0xNjMgMzQgLTY2IDIgLTEwNyAtMiAtMTM1IC0xMnoiLz4KPHBhdGggZD0iTTI4MjAgNDE5NSBsMCAtMzA1IDYwIDAgNjAgMCAyIDIwMSAzIDIwMSA4NSAtMTI5IGM0NyAtNzAgOTMgLTEyOSAxMDIgLTEzMSAxMiAtMiA0MyAzNiAxMDcgMTM0IGw5MSAxMzYgMCAtMjA2IDAgLTIwNiA2MCAwIDYwIDAgMCAzMDUgMCAzMDUgLTYwIDAgLTYwIDAgLTk2IC0xNDUgYy01MyAtODAgLTk4IC0xNDUgLTEwMCAtMTQ1IC0yIDAgLTQ2IDY1IC05OCAxNDUgbC05NiAxNDUgLTYwIDAgLTYwIDAgMCAtMzA1eiIvPgo8cGF0aCBkPSJNMzc5MyA0NDI4IGMtMzggLTkwIC0xODMgLTQyNiAtMjExIC00OTAgbC0yMSAtNDggNjMgMCA2MyAwIDMzIDc1IDMzIDc2IDEzNCAtMyAxMzQgLTMgMzEgLTcyIDMwIC03MyA2NSAwIGM1OCAwIDY0IDIgNTggMTggLTMgOSAtNjMgMTQ2IC0xMzIgMzA1IGwtMTI2IDI4NyAtNjIgMCAtNjEgMCAtMzEgLTcyeiBtMTQzIC0xOTAgYzI0IC01NyA0NCAtMTA0IDQ0IC0xMDUgMCAtMiAtNDMgLTMgLTk2IC0zIC03MyAwIC05NSAzIC05MSAxMyAzNiA4MyA3NSAxNzYgODEgMTkxIDkgMjYgMTMgMjAgNjIgLTk2eiIvPgo8cGF0aCBkPSJNNDE3MCA0NDUwIGwwIC01MCAxMDAgMCAxMDAgMCAwIC0yNTUgMCAtMjU1IDY1IDAgNjUgMCAwIDI1NSAwIDI1NSA5NSAwIDk1IDAgMCA1MCAwIDUwIC0yNjAgMCAtMjYwIDAgMCAtNTB6Ii8+CjxwYXRoIGQ9Ik00ODg3IDQ0MTggYy03MCAtMTYwIC0yMTkgLTUwMyAtMjI0IC01MTUgLTQgLTEwIDEyIC0xMyA2MCAtMTMgbDY1IDAgMjkgNzMgMjkgNzIgMTM2IDMgMTM1IDMgMzEgLTczIDMwIC03MyA2NyAtMyBjNDAgLTIgNjYgMSA2MyA3IC0xIDUgLTYxIDE0MiAtMTMzIDMwNSBsLTEzMCAyOTYgLTYxIDAgLTYxIDAgLTM2IC04MnogbTE5MyAtMjg1IGMwIC0yIC00MyAtMyAtOTUgLTMgLTUyIDAgLTk1IDIgLTk1IDMgMCAzIDU2IDE0MCA4NyAyMTUgNCA5IDEwMiAtMTk3IDEwMyAtMjE1eiIvPgo8cGF0aCBkPSJNNTQwMCA0MTk1IGwwIC0zMDUgNjUgMCA2NSAwIDAgMTEwIDAgMTEwIDYzIDAgNjIgMCA3MyAtMTEwIDcyIC0xMTAgNzEgMCBjNTUgMCA2OCAzIDYyIDEzIC00IDcgLTQxIDU4IC04MCAxMTQgLTQwIDU1IC03MyAxMDUgLTczIDExMCAwIDYgMTQgMTYgMzEgMjMgNTEgMjIgODMgNzMgODcgMTQ0IDUgNzYgLTEzIDEyNCAtNTkgMTU4IC01NiA0MiAtOTIgNDggLTI3MCA0OCBsLTE2OSAwIDAgLTMwNXogbTMzMCAxOTAgYzM4IC0yMCA1NyAtNzQgMzggLTExMSAtMjQgLTUwIC01OCAtNjYgLTE1MiAtNzEgbC04NiAtNiAwIDEwMiAwIDEwMSA4NSAwIGM1NiAwIDk2IC01IDExNSAtMTV6Ii8+CjxwYXRoIGQ9Ik02MDUwIDQxOTUgbDAgLTMwNSA2NSAwIDY1IDAgMCAzMDUgMCAzMDUgLTY1IDAgLTY1IDAgMCAtMzA1eiIvPgo8cGF0aCBkPSJNNjkwMCA0NDUwIGwwIC01MCAxMDAgMCAxMDAgMCAwIC0yNTUgMCAtMjU1IDYwIDAgNjAgMCAwIDI1NSAwIDI1NSAxMDAgMCAxMDAgMCAwIDUwIDAgNTAgLTI2MCAwIC0yNjAgMCAwIC01MHoiLz4KPHBhdGggZD0iTTQwOTAgMzYzNiBjMCAtMjMgNCAtMjUgNTMgLTI4IGw1MiAtMyA1IC0xNDAgNSAtMTQwIDI4IC0zIDI3IC0zIDAgMTQ2IDAgMTQ1IDU1IDAgYzUyIDAgNTUgMSA1NSAyNSBsMCAyNSAtMTQwIDAgLTE0MCAwIDAgLTI0eiIvPgo8cGF0aCBkPSJNNDQ1MCAzNDg5IGwwIC0xNzAgMzIgMyBjMzEgMyAzMSA0IDMyIDU4IGwxIDU1IDM2IDMgYzM0IDMgMzggMCA2OSAtNDggMzQgLTUzIDU1IC03MCA4OSAtNzAgMjggMCAyNyA3IC0xNSA2OSBsLTM2IDUzIDMxIDI4IGMzNyAzNSA0NiA2OCAzMSAxMTUgLTE5IDU5IC01NyA3NSAtMTcyIDc1IGwtOTggMCAwIC0xNzF6IG0xOTQgMTAyIGMyNCAtMjAgMjAgLTY3IC02IC04NSAtMTMgLTkgLTQzIC0xNiAtNjkgLTE2IC00NyAwIC00NyAwIC01MyAzOCAtMyAyMCAtNCA0NiAtMiA1NyAzIDExIDUgMjIgNSAyNCAyIDkgMTExIC03IDEyNSAtMTh6Ii8+CjxwYXRoIGQ9Ik00OTIxIDM2MzggYy01IC0xMyAtMzYgLTg2IC03MCAtMTYyIC0zMyAtNzcgLTYxIC0xNDMgLTYxIC0xNDcgMCAtNSAxNCAtNyAzMiAtNiAyNiAyIDM0IDggNDYgNDAgbDE1IDM3IDc4IDAgNzkgMCAyMCAtNDAgYzE3IC0zMyAyNiAtNDAgNTAgLTQwIDE3IDAgMzAgNCAzMCA5IDAgNCAtMzIgODEgLTcxIDE3MCBsLTcxIDE2MSAtMzQgMCBjLTI3IDAgLTM3IC01IC00MyAtMjJ6IG03MiAtMTE1IGMxNCAtMzUgMjIgLTY0IDE5IC02NiAtNCAtMiAtMjggLTEgLTU0IDIgbC00NiA2IDI1IDYzIGMxNCAzNSAyNyA2MiAyOCA2MCAyIC0yIDE0IC0zMSAyOCAtNjV6Ii8+CjxwYXRoIGQ9Ik01MTU5IDM2MzggYzEzIC0zMSA4MyAtMjAwIDExMSAtMjY2IDIxIC00OSAyNSAtNTMgNTMgLTUwIDI5IDMgMzMgMTAgOTkgMTY3IDM3IDkxIDY4IDE2NiA2OCAxNjggMCAyIC0xNSAzIC0zMiAzIC0zMiAwIC0zNCAtMiAtNzYgLTEwOCAtNDQgLTExMCAtNTggLTE0MCAtNjQgLTEzMiAtMiAzIC0yNCA1NyAtNDkgMTIwIGwtNDUgMTE1IC0zNyAzIGMtMzUgMyAtMzYgMiAtMjggLTIweiIvPgo8cGF0aCBkPSJNNTU3MCAzNDkzIGwwIC0xNjggMTI1IDMgMTI1IDMgMCAyNSBjMCAyNCAtMSAyNCAtOTUgMjQgbC05NSAwIDAgNDUgMCA0NSA4MCAwIGM3OSAwIDgwIDAgODAgMjUgMCAyNSAtMSAyNSAtODAgMjUgbC04MCAwIDAgNDUgMCA0NSA5MCAwIGM4OSAwIDkwIDAgOTAgMjUgbDAgMjUgLTEyMCAwIC0xMjAgMCAwIC0xNjd6Ii8+CjxwYXRoIGQ9Ik01OTEwIDM0OTUgbDAgLTE2NSAxMjAgMCAxMjAgMCAwIDI1IGMwIDI1IC0xIDI1IC04NSAyNSBsLTg1IDAgMCAxNDAgMCAxNDAgLTM1IDAgLTM1IDAgMCAtMTY1eiIvPgo8L2c+Cjwvc3ZnPg==" alt="Matarist Travel Logo" class="about-logo-img">
+      </div>
       <span class="section-label" data-i18n="about_label">Who We Are</span>
       <h2 class="section-title" data-i18n="about_title">Istanbul-Based,<br>Globally Connected</h2>
-      <p class="section-sub" data-i18n="about_sub">Matarist Travel is a professional online travel and logistics agency based in Istanbul, Turkey. We specialize in the Turkey–Egypt corridor while delivering global cargo shipping and worldwide booking services.</p>
+      <p class="section-sub" data-i18n="about_sub">Matarist Travel is a professional online travel and logistics agency based in Istanbul, Turkey. We specialize in the Turkey–Egypt corridor while delivering Umrah packages, global cargo shipping and worldwide booking services.</p>
       <div class="pillars">
-        <div class="pillar reveal">
-          <h4 data-i18n="p1_h">Reliability</h4>
-          <p data-i18n="p1_p">Trusted by travelers and businesses for on-time bookings and deliveries.</p>
-        </div>
-        <div class="pillar reveal">
-          <h4 data-i18n="p2_h">Speed</h4>
-          <p data-i18n="p2_p">Fast WhatsApp response. Quick confirmations. No unnecessary delays.</p>
-        </div>
-        <div class="pillar reveal">
-          <h4 data-i18n="p3_h">Affordability</h4>
-          <p data-i18n="p3_p">Competitive rates for all services. Best fares without hidden charges.</p>
-        </div>
-        <div class="pillar reveal">
-          <h4 data-i18n="p4_h">Multilingual</h4>
-          <p data-i18n="p4_p">Arabic, English and Turkish — we speak your language.</p>
-        </div>
+        <div class="pillar reveal"><h4 data-i18n="p1_h">Reliability</h4><p data-i18n="p1_p">Trusted by travelers and businesses for on-time bookings and deliveries.</p></div>
+        <div class="pillar reveal"><h4 data-i18n="p2_h">Speed</h4><p data-i18n="p2_p">Fast WhatsApp response. Quick confirmations. No unnecessary delays.</p></div>
+        <div class="pillar reveal"><h4 data-i18n="p3_h">Affordability</h4><p data-i18n="p3_p">Competitive rates for all services. Best fares without hidden charges.</p></div>
+        <div class="pillar reveal"><h4 data-i18n="p4_h">Multilingual</h4><p data-i18n="p4_p">Arabic, English and Turkish — we speak your language.</p></div>
       </div>
     </div>
   </div>
@@ -1063,51 +719,50 @@ footer{background:var(--navy-dark);border-top:1px solid rgba(201,168,76,0.2);pad
       <h2 class="section-title" style="color:var(--white)" data-i18n="cargo_title">Cargo & Shipping<br>Worldwide</h2>
       <p class="section-sub" style="color:rgba(255,255,255,0.65)" data-i18n="cargo_sub">Our flagship service. We handle international cargo shipping with specialization on Turkey–Egypt routes and full global coverage.</p>
       <div class="cargo-features">
-        <div class="cargo-feat">
-          <div class="cargo-feat-icon"><i class="fa-solid fa-box"></i></div>
-          <div>
-            <h4 data-i18n="cf1_h">International Cargo Shipping</h4>
-            <p data-i18n="cf1_p">Reliable shipping to and from all countries where delivery is possible.</p>
-          </div>
-        </div>
-        <div class="cargo-feat">
-          <div class="cargo-feat-icon"><i class="fa-solid fa-door-open"></i></div>
-          <div>
-            <h4 data-i18n="cf2_h">Door-to-Door Service</h4>
-            <p data-i18n="cf2_p">We collect from your location and deliver directly to the destination — zero hassle.</p>
-          </div>
-        </div>
-        <div class="cargo-feat">
-          <div class="cargo-feat-icon"><i class="fa-solid fa-bolt"></i></div>
-          <div>
-            <h4 data-i18n="cf3_h">Fast & Secure Delivery</h4>
-            <p data-i18n="cf3_p">Speed and safety are our priorities. Every shipment is handled with care.</p>
-          </div>
-        </div>
-        <div class="cargo-feat">
-          <div class="cargo-feat-icon"><i class="fa-solid fa-link"></i></div>
-          <div>
-            <h4 data-i18n="cf4_h">Turkey ↔ Egypt Specialist</h4>
-            <p data-i18n="cf4_p">Our strongest corridor with the most active routes and competitive rates.</p>
-          </div>
-        </div>
+        <div class="cargo-feat"><div class="cargo-feat-icon"><i class="fa-solid fa-box"></i></div><div><h4 data-i18n="cf1_h">International Cargo Shipping</h4><p data-i18n="cf1_p">Reliable shipping to and from all countries where delivery is possible.</p></div></div>
+        <div class="cargo-feat"><div class="cargo-feat-icon"><i class="fa-solid fa-door-open"></i></div><div><h4 data-i18n="cf2_h">Door-to-Door Service</h4><p data-i18n="cf2_p">We collect from your location and deliver directly to the destination — zero hassle.</p></div></div>
+        <div class="cargo-feat"><div class="cargo-feat-icon"><i class="fa-solid fa-bolt"></i></div><div><h4 data-i18n="cf3_h">Fast & Secure Delivery</h4><p data-i18n="cf3_p">Speed and safety are our priorities. Every shipment is handled with care.</p></div></div>
+        <div class="cargo-feat"><div class="cargo-feat-icon"><i class="fa-solid fa-link"></i></div><div><h4 data-i18n="cf4_h">Turkey ↔ Egypt Specialist</h4><p data-i18n="cf4_p">Our strongest corridor with the most active routes and competitive rates.</p></div></div>
       </div>
     </div>
     <div class="cargo-visual reveal">
       <div class="cargo-globe-bg">🌍</div>
       <div class="cargo-stats-overlay">
-        <div class="cargo-stat-big">
-          <div class="num"><i class="fa-solid fa-globe" style="color:var(--gold)"></i></div>
-          <div class="lbl" data-i18n="cargo_stat1">Global Reach</div>
-        </div>
-        <div class="cargo-stat-big">
-          <div class="num" style="font-size:2.2rem">TR ↔ EG</div>
-          <div class="lbl" data-i18n="cargo_stat2">Primary Cargo Route</div>
-        </div>
-        <a href="https://wa.me/905451218167" class="btn-primary" target="_blank" rel="noopener">
-          <i class="fa-brands fa-whatsapp"></i>
-          <span data-i18n="cargo_cta">Get Cargo Quote</span>
-        </a>
+        <div class="cargo-stat-big"><div class="num"><i class="fa-solid fa-globe" style="color:var(--gold)"></i></div><div class="lbl" data-i18n="cargo_stat1">Global Reach</div></div>
+        <div class="cargo-stat-big"><div class="num" style="font-size:2.2rem">TR ↔ EG</div><div class="lbl" data-i18n="cargo_stat2">Primary Cargo Route</div></div>
+        <a href="https://wa.me/905451218167" class="btn-primary" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i><span data-i18n="cargo_cta">Get Cargo Quote</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ✅ NEW: UMRAH SECTION -->
+<section id="umrah">
+  <div class="umrah-inner">
+    <div class="reveal">
+      <div class="umrah-badge-tag">🕌 <span data-i18n="umrah_badge">Spiritual Journeys</span></div>
+      <h2 class="umrah-title" data-i18n="umrah_title">Umrah Packages<br>from <em>Istanbul</em></h2>
+      <p class="umrah-sub" data-i18n="umrah_sub">Complete Umrah packages tailored for travelers from Istanbul and Egypt. We handle everything — flights, hotels near the Haram, internal transfers, and full logistical support so you can focus on your spiritual journey.</p>
+      <div class="umrah-features">
+        <div class="umrah-feat"><div class="umrah-feat-icon"><i class="fa-solid fa-plane"></i></div><div><h4 data-i18n="uf1_h">Direct Flights to Madinah & Jeddah</h4><p data-i18n="uf1_p">Best fares from Istanbul SAW direct to Saudi Arabia.</p></div></div>
+        <div class="umrah-feat"><div class="umrah-feat-icon"><i class="fa-solid fa-hotel"></i></div><div><h4 data-i18n="uf2_h">Hotels Near Haram</h4><p data-i18n="uf2_p">Carefully selected hotels minutes away from Masjid al-Haram and Prophet's Mosque.</p></div></div>
+        <div class="umrah-feat"><div class="umrah-feat-icon"><i class="fa-solid fa-bus"></i></div><div><h4 data-i18n="uf3_h">Internal Transfers</h4><p data-i18n="uf3_p">Airport pickups and Makkah–Madinah transfers fully organized.</p></div></div>
+        <div class="umrah-feat"><div class="umrah-feat-icon"><i class="fa-solid fa-headset"></i></div><div><h4 data-i18n="uf4_h">Full Support</h4><p data-i18n="uf4_p">24/7 WhatsApp assistance throughout your entire spiritual journey.</p></div></div>
+      </div>
+      <button class="btn-primary" onclick="openModal('umrah')" style="cursor:pointer;border:none;font-family:'Cairo','DM Sans',sans-serif">
+        <i class="fa-solid fa-kaaba"></i>
+        <span data-i18n="umrah_cta">Request Umrah Quote</span>
+      </button>
+    </div>
+    <div class="umrah-visual reveal">
+      <div class="umrah-img-wrap">
+        <img src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=900&q=80" alt="Masjid al-Haram Makkah">
+        <div class="umrah-img-overlay"><span class="umrah-img-label">🕌 Masjid al-Haram · Makkah</span></div>
+      </div>
+      <div class="umrah-stats">
+        <div class="umrah-stat"><div class="u-num">3N</div><div class="u-lbl" data-i18n="us1">Madinah</div></div>
+        <div class="umrah-stat"><div class="u-num">3N</div><div class="u-lbl" data-i18n="us2">Makkah</div></div>
+        <div class="umrah-stat"><div class="u-num">24/7</div><div class="u-lbl" data-i18n="us3">Support</div></div>
       </div>
     </div>
   </div>
@@ -1122,64 +777,22 @@ footer{background:var(--navy-dark);border-top:1px solid rgba(201,168,76,0.2);pad
   </div>
   <div class="contact-grid">
     <div class="contact-cards">
-      <a href="https://wa.me/905451218167" class="contact-card reveal" target="_blank" rel="noopener">
-        <div class="contact-card-icon wa"><i class="fa-brands fa-whatsapp"></i></div>
-        <div class="contact-card-text">
-          <span class="contact-card-label" data-i18n="c_wa_label">WhatsApp / Phone</span>
-          <span class="contact-card-value">+90 545 121 8167</span>
-        </div>
-        <i class="fa-solid fa-arrow-right contact-card-arrow"></i>
-      </a>
-      <a href="mailto:mataristtravel@gmail.com" class="contact-card reveal">
-        <div class="contact-card-icon em"><i class="fa-solid fa-envelope"></i></div>
-        <div class="contact-card-text">
-          <span class="contact-card-label" data-i18n="c_em_label">Email</span>
-          <span class="contact-card-value">mataristtravel@gmail.com</span>
-        </div>
-        <i class="fa-solid fa-arrow-right contact-card-arrow"></i>
-      </a>
-      <a href="https://www.instagram.com/mataristtravel/" class="contact-card reveal" target="_blank" rel="noopener">
-        <div class="contact-card-icon ig"><i class="fa-brands fa-instagram"></i></div>
-        <div class="contact-card-text">
-          <span class="contact-card-label" data-i18n="c_ig_label">Instagram</span>
-          <span class="contact-card-value">@mataristtravel</span>
-        </div>
-        <i class="fa-solid fa-arrow-right contact-card-arrow"></i>
-      </a>
-      <a href="https://www.facebook.com/share/18ZAgVgqm2/" class="contact-card reveal" target="_blank" rel="noopener">
-        <div class="contact-card-icon fb"><i class="fa-brands fa-facebook-f"></i></div>
-        <div class="contact-card-text">
-          <span class="contact-card-label" data-i18n="c_fb_label">Facebook</span>
-          <span class="contact-card-value" data-i18n="c_fb_val">Matarist Travel Page</span>
-        </div>
-        <i class="fa-solid fa-arrow-right contact-card-arrow"></i>
-      </a>
-      <div class="contact-card reveal" style="cursor:default">
-        <div class="contact-card-icon lo"><i class="fa-solid fa-location-dot"></i></div>
-        <div class="contact-card-text">
-          <span class="contact-card-label" data-i18n="c_lo_label">Location</span>
-          <span class="contact-card-value" data-i18n="c_lo_val">Online Travel Services — Istanbul, Turkey</span>
-        </div>
-      </div>
+      <a href="https://wa.me/905451218167" class="contact-card reveal" target="_blank" rel="noopener"><div class="contact-card-icon wa"><i class="fa-brands fa-whatsapp"></i></div><div class="contact-card-text"><span class="contact-card-label" data-i18n="c_wa_label">WhatsApp / Phone</span><span class="contact-card-value">+90 545 121 8167</span></div><i class="fa-solid fa-arrow-right contact-card-arrow"></i></a>
+      <a href="mailto:mataristtravel@gmail.com" class="contact-card reveal"><div class="contact-card-icon em"><i class="fa-solid fa-envelope"></i></div><div class="contact-card-text"><span class="contact-card-label" data-i18n="c_em_label">Email</span><span class="contact-card-value">mataristtravel@gmail.com</span></div><i class="fa-solid fa-arrow-right contact-card-arrow"></i></a>
+      <a href="https://www.instagram.com/mataristtravel/" class="contact-card reveal" target="_blank" rel="noopener"><div class="contact-card-icon ig"><i class="fa-brands fa-instagram"></i></div><div class="contact-card-text"><span class="contact-card-label" data-i18n="c_ig_label">Instagram</span><span class="contact-card-value">@mataristtravel</span></div><i class="fa-solid fa-arrow-right contact-card-arrow"></i></a>
+      <a href="https://www.facebook.com/share/18ZAgVgqm2/" class="contact-card reveal" target="_blank" rel="noopener"><div class="contact-card-icon fb"><i class="fa-brands fa-facebook-f"></i></div><div class="contact-card-text"><span class="contact-card-label" data-i18n="c_fb_label">Facebook</span><span class="contact-card-value" data-i18n="c_fb_val">Matarist Travel Page</span></div><i class="fa-solid fa-arrow-right contact-card-arrow"></i></a>
+      <a href="https://www.tiktok.com/@mataristtravel" class="contact-card reveal" target="_blank" rel="noopener"><div class="contact-card-icon tt"><i class="fa-brands fa-tiktok"></i></div><div class="contact-card-text"><span class="contact-card-label" data-i18n="c_tt_label">TikTok</span><span class="contact-card-value">@mataristtravel</span></div><i class="fa-solid fa-arrow-right contact-card-arrow"></i></a>
+      <div class="contact-card reveal" style="cursor:default"><div class="contact-card-icon lo"><i class="fa-solid fa-location-dot"></i></div><div class="contact-card-text"><span class="contact-card-label" data-i18n="c_lo_label">Location</span><span class="contact-card-value" data-i18n="c_lo_val">Online Travel Services — Istanbul, Turkey</span></div></div>
     </div>
-
     <div class="whatsapp-block reveal">
       <h3 data-i18n="wa_block_title">Book in Minutes via WhatsApp</h3>
       <p data-i18n="wa_block_p">Skip the forms. Send us a message and get a confirmed quote fast. Our team responds in Arabic, English and Turkish — around the clock.</p>
-      <a href="https://wa.me/905451218167" class="whatsapp-btn" target="_blank" rel="noopener">
-        <i class="fa-brands fa-whatsapp" style="font-size:1.3rem"></i>
-        <span data-i18n="wa_block_btn">Chat Now on WhatsApp</span>
-      </a>
+      <a href="https://wa.me/905451218167" class="whatsapp-btn" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp" style="font-size:1.3rem"></i><span data-i18n="wa_block_btn">Chat Now on WhatsApp</span></a>
       <div class="social-row">
-        <a href="https://www.instagram.com/mataristtravel/" class="social-pill" target="_blank" rel="noopener">
-          <i class="fa-brands fa-instagram"></i> Instagram
-        </a>
-        <a href="https://www.facebook.com/share/18ZAgVgqm2/" class="social-pill" target="_blank" rel="noopener">
-          <i class="fa-brands fa-facebook-f"></i> Facebook
-        </a>
-        <a href="mailto:mataristtravel@gmail.com" class="social-pill">
-          <i class="fa-solid fa-envelope"></i> Email
-        </a>
+        <a href="https://www.instagram.com/mataristtravel/" class="social-pill" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i> Instagram</a>
+        <a href="https://www.facebook.com/share/18ZAgVgqm2/" class="social-pill" target="_blank" rel="noopener"><i class="fa-brands fa-facebook-f"></i> Facebook</a>
+        <a href="mailto:mataristtravel@gmail.com" class="social-pill"><i class="fa-solid fa-envelope"></i> Email</a>
+        <a href="https://www.tiktok.com/@mataristtravel" class="social-pill" target="_blank" rel="noopener"><i class="fa-brands fa-tiktok"></i> TikTok</a>
       </div>
     </div>
   </div>
@@ -1189,64 +802,71 @@ footer{background:var(--navy-dark);border-top:1px solid rgba(201,168,76,0.2);pad
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">
-      <img src="data:image/png;base64,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" alt="Matarist Travel">
+      <span class="footer-logo-icon" aria-label="Matarist Travel"><i class="fa-solid fa-plane-up"></i></span>
       <span class="footer-brand-text" data-i18n="footer_tagline">Istanbul, Turkey — Online Travel Services</span>
     </div>
     <div class="footer-links">
       <a href="#services" data-i18n="nav_services">Services</a>
       <a href="#about" data-i18n="nav_about">About</a>
       <a href="#cargo" data-i18n="nav_cargo">Cargo</a>
+      <a href="#umrah" data-i18n="nav_umrah">Umrah</a>
       <a href="#contact" data-i18n="nav_contact">Contact</a>
     </div>
   </div>
   <p class="footer-copy" data-i18n="footer_copy">© 2025 Matarist Travel. Based in Istanbul, serving the world.</p>
 </footer>
 
-<!-- FLOATING WHATSAPP -->
 <a href="https://wa.me/905451218167" class="fab" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
   <i class="fa-brands fa-whatsapp"></i>
 </a>
-
 <script>
 /* ═══ TRANSLATIONS ═══ */
 const translations = {
   en: {
-    brand_name:"Matarist", brand_sub:"Travel",
-    nav_services:"Services", nav_about:"About", nav_cargo:"Cargo", nav_contact:"Contact", nav_book:"Book Now",
-    hero_badge:"✈ Istanbul · Cairo · Worldwide",
+    brand_name:"Matarist",brand_sub:"Travel",
+    nav_services:"Services",nav_about:"About",nav_cargo:"Cargo",nav_umrah:"Umrah",nav_contact:"Contact",nav_book:"Book Now",
+    hero_badge:"✈ Istanbul · Cairo · Mecca · Worldwide",
     hero_h1:'Your Journey Starts <em>Here</em>',
-    hero_p:"Matarist Travel connects Istanbul and Cairo with seamless flight bookings, visa support, hotel reservations, VIP transfers, and global cargo shipping — all in one trusted place.",
-    hero_cta1:"Chat on WhatsApp", hero_cta2:"Explore Services",
-    stat1:"Core Markets", stat2:"Travel Services", stat3:"WhatsApp Support", stat4:"Global Cargo",
-    route_tr:"Istanbul, Turkey", route_eg:"Cairo, Egypt", route_global:"+ Worldwide Cargo",
-    srv_label:"What We Offer", srv_title:"Complete Travel Solutions",
-    srv_sub:"From flights and hotels to global cargo shipping — we handle every detail so you can travel with confidence.",
-    s1_tag:"Global", s1_title:"Flight Booking", s1_desc:"Best fares on international flights. Direct routes and connections between Turkey, Egypt and worldwide destinations.",
-    s2_tag:"Multiple Countries", s2_title:"Visa Assistance", s2_desc:"Expert guidance for tourist and business visas. Document preparation and application support for various countries.",
-    s3_tag:"Worldwide Hotels", s3_title:"Hotel Reservations", s3_desc:"Budget-friendly to luxury accommodations worldwide. Short or long stays — we find the perfect option for you.",
-    s4_tag:"⭐ Core Global Service", s4_title:"Cargo & Shipping", s4_desc:"Fast, secure international cargo with door-to-door delivery. Specialists on Turkey ↔ Egypt logistics routes.",
-    s5_tag:"VIP Private", s5_title:"Airport Transfers", s5_desc:"VIP private pickups and drop-offs. Individual or group transfers handled with professionalism and reliability.",
-    s6_tag:"Tailored Packages", s6_title:"Travel Packages", s6_desc:"Custom bundles combining flights, hotels and transfers. Perfect for Eid holidays, summer trips and business travel.",
-    book_now:"Book Now", get_quote:"Get Quote",
-    about_label:"Who We Are", about_title:"Istanbul-Based,<br>Globally Connected",
-    about_sub:"Matarist Travel is a professional online travel and logistics agency based in Istanbul, Turkey. We specialize in the Turkey–Egypt corridor while delivering global cargo shipping and worldwide booking services.",
-    about_tagline:'Your <em>Journey</em>,<br>Our Responsibility', about_card:"WhatsApp Support",
-    about_live:"Live · Worldwide", trust1:"Flights", trust2:"Hotels", trust3:"Shipments",
-    p1_h:"Reliability", p1_p:"Trusted by travelers and businesses for on-time bookings and deliveries.",
-    p2_h:"Speed", p2_p:"Fast WhatsApp response. Quick confirmations. No unnecessary delays.",
-    p3_h:"Affordability", p3_p:"Competitive rates for all services. Best fares without hidden charges.",
-    p4_h:"Multilingual", p4_p:"Arabic, English and Turkish — we speak your language.",
-    cargo_label:"Global Logistics", cargo_title:"Cargo & Shipping<br>Worldwide",
+    hero_p:"Matarist Travel connects Istanbul and Cairo with seamless flight bookings, visa support, hotel reservations, VIP transfers, Umrah packages and global cargo shipping — all in one trusted place.",
+    hero_cta1:"Chat on WhatsApp",hero_cta2:"Explore Services",
+    stat1:"Core Markets",stat2:"Travel Services",stat3:"WhatsApp Support",stat4:"Global Cargo",
+    route_tr:"Istanbul, Turkey",route_eg:"Cairo, Egypt",route_umrah:"Umrah Packages",route_global:"+ Worldwide Cargo",
+    srv_label:"What We Offer",srv_title:"Complete Travel Solutions",
+    srv_sub:"From flights and hotels to Umrah packages and global cargo shipping — we handle every detail so you can travel with confidence.",
+    s1_tag:"Global",s1_title:"Flight Booking",s1_desc:"Best fares on international flights. Direct routes and connections between Turkey, Egypt and worldwide destinations.",
+    s2_tag:"Multiple Countries",s2_title:"Visa Assistance",s2_desc:"Expert guidance for tourist and business visas. Document preparation and application support for various countries.",
+    s3_tag:"Worldwide Hotels",s3_title:"Hotel Reservations",s3_desc:"Budget-friendly to luxury accommodations worldwide. Short or long stays — we find the perfect option for you.",
+    s4_tag:"⭐ Core Global Service",s4_title:"Cargo & Shipping",s4_desc:"Fast, secure international cargo with door-to-door delivery. Specialists on Turkey ↔ Egypt logistics routes.",
+    s5_tag:"VIP Private",s5_title:"Airport Transfers",s5_desc:"VIP private pickups and drop-offs. Individual or group transfers handled with professionalism and reliability.",
+    s6_tag:"Tailored Packages",s6_title:"Travel Packages",s6_desc:"Custom bundles combining flights, hotels and transfers. Perfect for Eid holidays, summer trips and business travel.",
+    s7_tag:"🕌 Spiritual Journey",s7_title:"Umrah Packages",s7_desc:"Complete Umrah packages from Istanbul. Flights, hotels near Haram, transfers and full logistical support.",
+    book_now:"Book Now",get_quote:"Get Quote",
+    about_label:"Who We Are",about_title:"Istanbul-Based,<br>Globally Connected",
+    about_sub:"Matarist Travel is a professional online travel and logistics agency based in Istanbul, Turkey. We specialize in the Turkey–Egypt corridor while delivering Umrah packages, global cargo shipping and worldwide booking services.",
+    about_tagline:'Your <em>Journey</em>,<br>Our Responsibility',about_card:"WhatsApp Support",
+    about_live:"Live · Worldwide",trust1:"Flights",trust2:"Hotels",trust3:"Umrah",
+    p1_h:"Reliability",p1_p:"Trusted by travelers and businesses for on-time bookings and deliveries.",
+    p2_h:"Speed",p2_p:"Fast WhatsApp response. Quick confirmations. No unnecessary delays.",
+    p3_h:"Affordability",p3_p:"Competitive rates for all services. Best fares without hidden charges.",
+    p4_h:"Multilingual",p4_p:"Arabic, English and Turkish — we speak your language.",
+    cargo_label:"Global Logistics",cargo_title:"Cargo & Shipping<br>Worldwide",
     cargo_sub:"Our flagship service. We handle international cargo shipping with specialization on Turkey–Egypt routes and full global coverage.",
-    cf1_h:"International Cargo Shipping", cf1_p:"Reliable shipping to and from all countries where delivery is possible.",
-    cf2_h:"Door-to-Door Service", cf2_p:"We collect from your location and deliver directly to the destination — zero hassle.",
-    cf3_h:"Fast & Secure Delivery", cf3_p:"Speed and safety are our priorities. Every shipment is handled with care.",
-    cf4_h:"Turkey ↔ Egypt Specialist", cf4_p:"Our strongest corridor with the most active routes and competitive rates.",
-    cargo_stat1:"Global Reach", cargo_stat2:"Primary Cargo Route", cargo_cta:"Get Cargo Quote",
-    contact_label:"Get In Touch", contact_title:"Ready to Book?",
+    cf1_h:"International Cargo Shipping",cf1_p:"Reliable shipping to and from all countries where delivery is possible.",
+    cf2_h:"Door-to-Door Service",cf2_p:"We collect from your location and deliver directly to the destination — zero hassle.",
+    cf3_h:"Fast & Secure Delivery",cf3_p:"Speed and safety are our priorities. Every shipment is handled with care.",
+    cf4_h:"Turkey ↔ Egypt Specialist",cf4_p:"Our strongest corridor with the most active routes and competitive rates.",
+    cargo_stat1:"Global Reach",cargo_stat2:"Primary Cargo Route",cargo_cta:"Get Cargo Quote",
+    umrah_badge:"Spiritual Journeys",umrah_title:"Umrah Packages<br>from <em>Istanbul</em>",
+    umrah_sub:"Complete Umrah packages tailored for travelers from Istanbul and Egypt. We handle everything — flights, hotels near the Haram, internal transfers, and full logistical support so you can focus on your spiritual journey.",
+    uf1_h:"Direct Flights to Madinah & Jeddah",uf1_p:"Best fares from Istanbul SAW direct to Saudi Arabia.",
+    uf2_h:"Hotels Near Haram",uf2_p:"Carefully selected hotels minutes away from Masjid al-Haram and Prophet's Mosque.",
+    uf3_h:"Internal Transfers",uf3_p:"Airport pickups and Makkah–Madinah transfers fully organized.",
+    uf4_h:"Full Support",uf4_p:"24/7 WhatsApp assistance throughout your entire spiritual journey.",
+    umrah_cta:"Request Umrah Quote",us1:"Madinah",us2:"Makkah",us3:"Support",
+    contact_label:"Get In Touch",contact_title:"Ready to Book?",
     contact_sub:"Contact us on WhatsApp for the fastest response. We're here to help you plan, book and travel smoothly.",
-    c_wa_label:"WhatsApp / Phone", c_em_label:"Email", c_ig_label:"Instagram", c_fb_label:"Facebook",
-    c_fb_val:"Matarist Travel Page", c_lo_label:"Location", c_lo_val:"Online Travel Services — Istanbul, Turkey",
+    c_wa_label:"WhatsApp / Phone",c_em_label:"Email",c_ig_label:"Instagram",c_fb_label:"Facebook",
+    c_fb_val:"Matarist Travel Page",c_tt_label:"TikTok",c_lo_label:"Location",c_lo_val:"Online Travel Services — Istanbul, Turkey",
     wa_block_title:"Book in Minutes via WhatsApp",
     wa_block_p:"Skip the forms. Send us a message and get a confirmed quote fast. Our team responds in Arabic, English and Turkish — around the clock.",
     wa_block_btn:"Chat Now on WhatsApp",
@@ -1254,42 +874,50 @@ const translations = {
     footer_copy:"© 2025 Matarist Travel. Based in Istanbul, serving the world."
   },
   ar: {
-    brand_name:"مطارست", brand_sub:"للسفر",
-    nav_services:"خدماتنا", nav_about:"من نحن", nav_cargo:"الشحن", nav_contact:"تواصل معنا", nav_book:"احجز الآن",
-    hero_badge:"✈ إسطنبول · القاهرة · عالمياً",
+    brand_name:"مطارست",brand_sub:"للسفر",
+    nav_services:"خدماتنا",nav_about:"من نحن",nav_cargo:"الشحن",nav_umrah:"العمرة",nav_contact:"تواصل معنا",nav_book:"احجز الآن",
+    hero_badge:"✈ إسطنبول · القاهرة · مكة · عالمياً",
     hero_h1:'رحلتك تبدأ من <em>هنا</em>',
-    hero_p:"مطارست للسفر تربط إسطنبول بالقاهرة بحجوزات طيران سلسة، ودعم تأشيرة، وحجوزات فنادق، ونقل VIP، وشحن بضائع عالمي — كل ذلك في مكان واحد موثوق.",
-    hero_cta1:"تواصل عبر واتساب", hero_cta2:"اكتشف خدماتنا",
-    stat1:"أسواق رئيسية", stat2:"خدمات سفر", stat3:"دعم واتساب", stat4:"شحن عالمي",
-    route_tr:"إسطنبول، تركيا", route_eg:"القاهرة، مصر", route_global:"+ شحن عالمي",
-    srv_label:"ما نقدمه", srv_title:"حلول سفر متكاملة",
-    srv_sub:"من الطيران والفنادق إلى الشحن العالمي — نهتم بكل التفاصيل حتى تسافر بثقة.",
-    s1_tag:"عالمي", s1_title:"حجز تذاكر طيران", s1_desc:"أفضل أسعار التذاكر الدولية. رحلات مباشرة وترانزيت بين تركيا ومصر وجميع أنحاء العالم.",
-    s2_tag:"دول متعددة", s2_title:"خدمات التأشيرة", s2_desc:"إرشاد متخصص للتأشيرات السياحية والتجارية. تجهيز الوثائق ودعم تقديم الطلبات.",
-    s3_tag:"فنادق عالمية", s3_title:"حجوزات الفنادق", s3_desc:"خيارات اقتصادية وفاخرة في جميع أنحاء العالم. إقامات قصيرة أو طويلة — نجد لك الخيار المثالي.",
-    s4_tag:"⭐ خدمتنا العالمية الأساسية", s4_title:"شحن البضائع", s4_desc:"شحن دولي سريع وآمن مع خدمة من الباب للباب. متخصصون في مسار تركيا ↔ مصر.",
-    s5_tag:"VIP خاص", s5_title:"توصيل المطار", s5_desc:"خدمات استقبال وتوديع VIP. نقل فردي وجماعي باحترافية عالية وموثوقية.",
-    s6_tag:"باقات مخصصة", s6_title:"باقات السفر", s6_desc:"باقات تجمع الطيران والفنادق والنقل. مثالية لعطل العيد والصيف ورحلات الأعمال.",
-    book_now:"احجز الآن", get_quote:"عرض سعر",
-    about_label:"من نحن", about_title:"مقرنا إسطنبول،<br>خدماتنا عالمية",
-    about_sub:"مطارست للسفر وكالة سياحة ولوجستيات إلكترونية محترفة مقرها إسطنبول، تركيا. متخصصون في محور تركيا–مصر مع شحن بضائع عالمي وخدمات حجز دولية.",
-    about_tagline:'رحلتك <em>مسؤوليتنا</em>', about_card:"دعم واتساب",
-    about_live:"مباشر · حول العالم", trust1:"رحلة", trust2:"فندق", trust3:"شحنة",
-    p1_h:"الموثوقية", p1_p:"ثقة المسافرين والشركات في الحجوزات والتسليم في الوقت المحدد.",
-    p2_h:"السرعة", p2_p:"رد سريع عبر واتساب. تأكيد فوري. بدون تأخير.",
-    p3_h:"الأسعار التنافسية", p3_p:"أفضل الأسعار لجميع الخدمات بدون رسوم خفية.",
-    p4_h:"متعدد اللغات", p4_p:"العربية والإنجليزية والتركية — نتحدث لغتك.",
-    cargo_label:"لوجستيات عالمية", cargo_title:"شحن البضائع<br>عالمياً",
+    hero_p:"مطارست للسفر تربط إسطنبول بالقاهرة بحجوزات طيران سلسة، ودعم تأشيرة، وحجوزات فنادق، ونقل VIP، وباقات عمرة، وشحن بضائع عالمي — كل ذلك في مكان واحد موثوق.",
+    hero_cta1:"تواصل عبر واتساب",hero_cta2:"اكتشف خدماتنا",
+    stat1:"أسواق رئيسية",stat2:"خدمات سفر",stat3:"دعم واتساب",stat4:"شحن عالمي",
+    route_tr:"إسطنبول، تركيا",route_eg:"القاهرة، مصر",route_umrah:"باقات العمرة",route_global:"+ شحن عالمي",
+    srv_label:"ما نقدمه",srv_title:"حلول سفر متكاملة",
+    srv_sub:"من الطيران والفنادق إلى باقات العمرة والشحن العالمي — نهتم بكل التفاصيل حتى تسافر بثقة.",
+    s1_tag:"عالمي",s1_title:"حجز تذاكر طيران",s1_desc:"أفضل أسعار التذاكر الدولية. رحلات مباشرة وترانزيت بين تركيا ومصر وجميع أنحاء العالم.",
+    s2_tag:"دول متعددة",s2_title:"خدمات التأشيرة",s2_desc:"إرشاد متخصص للتأشيرات السياحية والتجارية. تجهيز الوثائق ودعم تقديم الطلبات.",
+    s3_tag:"فنادق عالمية",s3_title:"حجوزات الفنادق",s3_desc:"خيارات اقتصادية وفاخرة في جميع أنحاء العالم. إقامات قصيرة أو طويلة — نجد لك الخيار المثالي.",
+    s4_tag:"⭐ خدمتنا العالمية الأساسية",s4_title:"شحن البضائع",s4_desc:"شحن دولي سريع وآمن مع خدمة من الباب للباب. متخصصون في مسار تركيا ↔ مصر.",
+    s5_tag:"VIP خاص",s5_title:"توصيل المطار",s5_desc:"خدمات استقبال وتوديع VIP. نقل فردي وجماعي باحترافية عالية وموثوقية.",
+    s6_tag:"باقات مخصصة",s6_title:"باقات السفر",s6_desc:"باقات تجمع الطيران والفنادق والنقل. مثالية لعطل العيد والصيف ورحلات الأعمال.",
+    s7_tag:"🕌 رحلة روحانية",s7_title:"باقات العمرة",s7_desc:"باقات عمرة متكاملة من إسطنبول. طيران، فنادق قرب الحرم، توصيل ودعم لوجستي كامل.",
+    book_now:"احجز الآن",get_quote:"عرض سعر",
+    about_label:"من نحن",about_title:"مقرنا إسطنبول،<br>خدماتنا عالمية",
+    about_sub:"مطارست للسفر وكالة سياحة ولوجستيات إلكترونية محترفة مقرها إسطنبول، تركيا. متخصصون في محور تركيا–مصر مع باقات العمرة وشحن بضائع عالمي وخدمات حجز دولية.",
+    about_tagline:'رحلتك <em>مسؤوليتنا</em>',about_card:"دعم واتساب",
+    about_live:"مباشر · حول العالم",trust1:"رحلة",trust2:"فندق",trust3:"عمرة",
+    p1_h:"الموثوقية",p1_p:"ثقة المسافرين والشركات في الحجوزات والتسليم في الوقت المحدد.",
+    p2_h:"السرعة",p2_p:"رد سريع عبر واتساب. تأكيد فوري. بدون تأخير.",
+    p3_h:"الأسعار التنافسية",p3_p:"أفضل الأسعار لجميع الخدمات بدون رسوم خفية.",
+    p4_h:"متعدد اللغات",p4_p:"العربية والإنجليزية والتركية — نتحدث لغتك.",
+    cargo_label:"لوجستيات عالمية",cargo_title:"شحن البضائع<br>عالمياً",
     cargo_sub:"خدمتنا الأساسية. نتولى الشحن الدولي بتخصص في مسار تركيا–مصر وتغطية عالمية شاملة.",
-    cf1_h:"شحن دولي", cf1_p:"شحن موثوق من وإلى جميع الدول التي تتوفر فيها خدمات التوصيل.",
-    cf2_h:"من الباب للباب", cf2_p:"نستلم من موقعك ونوصل مباشرة للوجهة بدون أي متاعب.",
-    cf3_h:"توصيل سريع وآمن", cf3_p:"السرعة والأمان أولويتنا. كل شحنة تُعامل بعناية فائقة.",
-    cf4_h:"متخصصون تركيا ↔ مصر", cf4_p:"أقوى مساراتنا بأكثر الرحلات نشاطاً وأفضل الأسعار.",
-    cargo_stat1:"تغطية عالمية", cargo_stat2:"مسار الشحن الرئيسي", cargo_cta:"احصل على عرض سعر",
-    contact_label:"تواصل معنا", contact_title:"جاهز للحجز؟",
+    cf1_h:"شحن دولي",cf1_p:"شحن موثوق من وإلى جميع الدول التي تتوفر فيها خدمات التوصيل.",
+    cf2_h:"من الباب للباب",cf2_p:"نستلم من موقعك ونوصل مباشرة للوجهة بدون أي متاعب.",
+    cf3_h:"توصيل سريع وآمن",cf3_p:"السرعة والأمان أولويتنا. كل شحنة تُعامل بعناية فائقة.",
+    cf4_h:"متخصصون تركيا ↔ مصر",cf4_p:"أقوى مساراتنا بأكثر الرحلات نشاطاً وأفضل الأسعار.",
+    cargo_stat1:"تغطية عالمية",cargo_stat2:"مسار الشحن الرئيسي",cargo_cta:"احصل على عرض سعر",
+    umrah_badge:"رحلات روحانية",umrah_title:"باقات العمرة<br>من <em>إسطنبول</em>",
+    umrah_sub:"باقات عمرة متكاملة مصممة للمسافرين من إسطنبول ومصر. نتولى كل شيء — الطيران، الفنادق قرب الحرم، والتوصيل الداخلي، والدعم اللوجستي الكامل حتى تتفرغ لعبادتك.",
+    uf1_h:"رحلات مباشرة للمدينة وجدة",uf1_p:"أفضل الأسعار من إسطنبول SAW مباشرة للمملكة العربية السعودية.",
+    uf2_h:"فنادق قرب الحرم",uf2_p:"فنادق مختارة بعناية على بعد دقائق من المسجد الحرام والمسجد النبوي.",
+    uf3_h:"توصيل داخلي",uf3_p:"استقبال من المطار وتوصيل مكة–المدينة بشكل كامل ومنظم.",
+    uf4_h:"دعم متكامل",uf4_p:"مساعدة واتساب على مدار الساعة طوال رحلتك الروحانية.",
+    umrah_cta:"اطلب عرض سعر العمرة",us1:"المدينة",us2:"مكة",us3:"دعم",
+    contact_label:"تواصل معنا",contact_title:"جاهز للحجز؟",
     contact_sub:"تواصل معنا عبر واتساب للحصول على أسرع رد. نحن هنا لمساعدتك في التخطيط والحجز والسفر بسلاسة.",
-    c_wa_label:"واتساب / هاتف", c_em_label:"البريد الإلكتروني", c_ig_label:"إنستغرام", c_fb_label:"فيسبوك",
-    c_fb_val:"صفحة مطارست للسفر", c_lo_label:"الموقع", c_lo_val:"خدمات سفر إلكترونية — إسطنبول، تركيا",
+    c_wa_label:"واتساب / هاتف",c_em_label:"البريد الإلكتروني",c_ig_label:"إنستغرام",c_fb_label:"فيسبوك",
+    c_fb_val:"صفحة مطارست للسفر",c_tt_label:"تيك توك",c_lo_label:"الموقع",c_lo_val:"خدمات سفر إلكترونية — إسطنبول، تركيا",
     wa_block_title:"احجز في دقائق عبر واتساب",
     wa_block_p:"تجاوز النماذج. أرسل رسالة واحصل على عرض سعر مؤكد بسرعة. فريقنا يرد بالعربية والإنجليزية والتركية على مدار الساعة.",
     wa_block_btn:"تواصل الآن عبر واتساب",
@@ -1297,131 +925,113 @@ const translations = {
     footer_copy:"© 2025 مطارست للسفر. مقرنا إسطنبول ونخدم العالم."
   },
   tr: {
-    brand_name:"Matarist", brand_sub:"Seyahat",
-    nav_services:"Hizmetler", nav_about:"Hakkımızda", nav_cargo:"Kargo", nav_contact:"İletişim", nav_book:"Rezervasyon",
-    hero_badge:"✈ İstanbul · Kahire · Dünya Geneli",
+    brand_name:"Matarist",brand_sub:"Seyahat",
+    nav_services:"Hizmetler",nav_about:"Hakkımızda",nav_cargo:"Kargo",nav_umrah:"Umre",nav_contact:"İletişim",nav_book:"Rezervasyon",
+    hero_badge:"✈ İstanbul · Kahire · Mekke · Dünya Geneli",
     hero_h1:'Yolculuğunuz <em>Buradan</em> Başlar',
-    hero_p:"Matarist Travel, İstanbul ile Kahire arasında kusursuz uçuş rezervasyonları, vize desteği, otel rezervasyonları, VIP transferler ve küresel kargo hizmetleri sunar — hepsi tek güvenilir çatı altında.",
-    hero_cta1:"WhatsApp'tan Yaz", hero_cta2:"Hizmetleri Keşfet",
-    stat1:"Ana Pazar", stat2:"Seyahat Hizmeti", stat3:"WhatsApp Destek", stat4:"Küresel Kargo",
-    route_tr:"İstanbul, Türkiye", route_eg:"Kahire, Mısır", route_global:"+ Dünya Geneli Kargo",
-    srv_label:"Sunduklarımız", srv_title:"Eksiksiz Seyahat Çözümleri",
-    srv_sub:"Uçuşlardan otellere, küresel kargoya kadar her detayla ilgileniyoruz — siz sadece yolculuğun tadını çıkarın.",
-    s1_tag:"Dünya Geneli", s1_title:"Uçak Bileti", s1_desc:"Uluslararası uçuşlarda en iyi fiyatlar. Türkiye, Mısır ve dünya geneline direkt ve aktarmalı uçuşlar.",
-    s2_tag:"Birden Fazla Ülke", s2_title:"Vize Hizmetleri", s2_desc:"Turist ve iş vizesi için uzman rehberlik. Birçok ülke için belge hazırlama ve başvuru desteği.",
-    s3_tag:"Dünya Geneli Oteller", s3_title:"Otel Rezervasyonu", s3_desc:"Uygun fiyatlıdan lükse dünya genelinde konaklama. Kısa veya uzun konaklamalar.",
-    s4_tag:"⭐ Temel Küresel Hizmet", s4_title:"Kargo ve Nakliye", s4_desc:"Kapıdan kapıya teslimat ile hızlı, güvenli uluslararası kargo. Türkiye ↔ Mısır güzergahı uzmanı.",
-    s5_tag:"VIP Özel", s5_title:"Havalimanı Transferi", s5_desc:"VIP özel karşılama ve uğurlama. Bireysel veya grup transferleri en yüksek profesyonellikle.",
-    s6_tag:"Özel Paketler", s6_title:"Seyahat Paketleri", s6_desc:"Uçuş, otel ve transferi birleştiren paketler. Kurban Bayramı, yaz tatili ve iş seyahatleri için ideal.",
-    book_now:"Rezervasyon", get_quote:"Teklif Al",
-    about_label:"Biz Kimiz", about_title:"İstanbul Merkezli,<br>Küresel Bağlantılı",
-    about_sub:"Matarist Travel, İstanbul merkezli profesyonel bir çevrimiçi seyahat ve lojistik ajansıdır. Türkiye–Mısır güzergahında uzmanlaşmış olarak küresel kargo ve dünya geneli rezervasyon hizmetleri sunuyoruz.",
-    about_tagline:'Yolculuğunuz<br><em>Sorumluluğumuz</em>', about_card:"WhatsApp Destek",
-    about_live:"Canlı · Dünya Geneli", trust1:"Uçuş", trust2:"Otel", trust3:"Kargo",
-    p1_h:"Güvenilirlik", p1_p:"Zamanında rezervasyon ve teslimat için yolcular ve işletmeler tarafından tercih ediliyoruz.",
-    p2_h:"Hız", p2_p:"Hızlı WhatsApp yanıtı. Anında onay. Gereksiz gecikme yok.",
-    p3_h:"Uygun Fiyat", p3_p:"Tüm hizmetlerde rekabetçi fiyatlar. Gizli ücret yok.",
-    p4_h:"Çok Dilli", p4_p:"Arapça, İngilizce ve Türkçe — sizin dilinizde hizmet.",
-    cargo_label:"Küresel Lojistik", cargo_title:"Kargo ve Nakliye<br>Dünya Geneli",
+    hero_p:"Matarist Travel, İstanbul ile Kahire arasında uçuş rezervasyonları, vize desteği, otel rezervasyonları, VIP transferler, Umre paketleri ve küresel kargo hizmetleri sunar — hepsi tek güvenilir çatı altında.",
+    hero_cta1:"WhatsApp'tan Yaz",hero_cta2:"Hizmetleri Keşfet",
+    stat1:"Ana Pazar",stat2:"Seyahat Hizmeti",stat3:"WhatsApp Destek",stat4:"Küresel Kargo",
+    route_tr:"İstanbul, Türkiye",route_eg:"Kahire, Mısır",route_umrah:"Umre Paketleri",route_global:"+ Dünya Geneli Kargo",
+    srv_label:"Sunduklarımız",srv_title:"Eksiksiz Seyahat Çözümleri",
+    srv_sub:"Uçuşlardan otellere, Umre paketlerinden küresel kargoya kadar her detayla ilgileniyoruz.",
+    s1_tag:"Dünya Geneli",s1_title:"Uçak Bileti",s1_desc:"Uluslararası uçuşlarda en iyi fiyatlar. Türkiye, Mısır ve dünya geneline direkt ve aktarmalı uçuşlar.",
+    s2_tag:"Birden Fazla Ülke",s2_title:"Vize Hizmetleri",s2_desc:"Turist ve iş vizesi için uzman rehberlik. Birçok ülke için belge hazırlama ve başvuru desteği.",
+    s3_tag:"Dünya Geneli Oteller",s3_title:"Otel Rezervasyonu",s3_desc:"Uygun fiyatlıdan lükse dünya genelinde konaklama. Kısa veya uzun konaklamalar.",
+    s4_tag:"⭐ Temel Küresel Hizmet",s4_title:"Kargo ve Nakliye",s4_desc:"Kapıdan kapıya teslimat ile hızlı, güvenli uluslararası kargo. Türkiye ↔ Mısır güzergahı uzmanı.",
+    s5_tag:"VIP Özel",s5_title:"Havalimanı Transferi",s5_desc:"VIP özel karşılama ve uğurlama. Bireysel veya grup transferleri en yüksek profesyonellikle.",
+    s6_tag:"Özel Paketler",s6_title:"Seyahat Paketleri",s6_desc:"Uçuş, otel ve transferi birleştiren paketler. Kurban Bayramı, yaz tatili ve iş seyahatleri için ideal.",
+    s7_tag:"🕌 Manevi Yolculuk",s7_title:"Umre Paketleri",s7_desc:"İstanbul'dan eksiksiz Umre paketleri. Uçuş, Harem yakını oteller, transferler ve tam destek.",
+    book_now:"Rezervasyon",get_quote:"Teklif Al",
+    about_label:"Biz Kimiz",about_title:"İstanbul Merkezli,<br>Küresel Bağlantılı",
+    about_sub:"Matarist Travel, İstanbul merkezli profesyonel bir çevrimiçi seyahat ve lojistik ajansıdır. Türkiye–Mısır güzergahında uzmanlaşmış olarak Umre paketleri, küresel kargo ve dünya geneli rezervasyon hizmetleri sunuyoruz.",
+    about_tagline:'Yolculuğunuz<br><em>Sorumluluğumuz</em>',about_card:"WhatsApp Destek",
+    about_live:"Canlı · Dünya Geneli",trust1:"Uçuş",trust2:"Otel",trust3:"Umre",
+    p1_h:"Güvenilirlik",p1_p:"Zamanında rezervasyon ve teslimat için yolcular ve işletmeler tarafından tercih ediliyoruz.",
+    p2_h:"Hız",p2_p:"Hızlı WhatsApp yanıtı. Anında onay. Gereksiz gecikme yok.",
+    p3_h:"Uygun Fiyat",p3_p:"Tüm hizmetlerde rekabetçi fiyatlar. Gizli ücret yok.",
+    p4_h:"Çok Dilli",p4_p:"Arapça, İngilizce ve Türkçe — sizin dilinizde hizmet.",
+    cargo_label:"Küresel Lojistik",cargo_title:"Kargo ve Nakliye<br>Dünya Geneli",
     cargo_sub:"Amiral hizmetimiz. Türkiye–Mısır güzergahında uzmanlaşmış ve tam küresel kapsama sahip uluslararası kargo.",
-    cf1_h:"Uluslararası Kargo", cf1_p:"Teslimatın mümkün olduğu tüm ülkelere güvenilir sevkiyat.",
-    cf2_h:"Kapıdan Kapıya", cf2_p:"Bulunduğunuz yerden teslim alır, doğrudan varış noktasına ulaştırırız.",
-    cf3_h:"Hızlı ve Güvenli", cf3_p:"Hız ve güvenlik önceliğimiz. Her kargo özenle takip edilir.",
-    cf4_h:"Türkiye ↔ Mısır Uzmanı", cf4_p:"En aktif güzergahlarımız ve en rekabetçi fiyatlarımız bu hatta.",
-    cargo_stat1:"Küresel Erişim", cargo_stat2:"Birincil Kargo Güzergahı", cargo_cta:"Teklif Al",
-    contact_label:"İletişim", contact_title:"Rezervasyon İçin Hazır mısınız?",
-    contact_sub:"En hızlı yanıt için bize WhatsApp'tan ulaşın. Seyahatinizi planlamak, rezervasyon yapmak ve sorunsuz seyahat için buradayız.",
-    c_wa_label:"WhatsApp / Telefon", c_em_label:"E-posta", c_ig_label:"Instagram", c_fb_label:"Facebook",
-    c_fb_val:"Matarist Travel Sayfası", c_lo_label:"Konum", c_lo_val:"Çevrimiçi Seyahat Hizmetleri — İstanbul, Türkiye",
+    cf1_h:"Uluslararası Kargo",cf1_p:"Teslimatın mümkün olduğu tüm ülkelere güvenilir sevkiyat.",
+    cf2_h:"Kapıdan Kapıya",cf2_p:"Bulunduğunuz yerden teslim alır, doğrudan varış noktasına ulaştırırız.",
+    cf3_h:"Hızlı ve Güvenli",cf3_p:"Hız ve güvenlik önceliğimiz. Her kargo özenle takip edilir.",
+    cf4_h:"Türkiye ↔ Mısır Uzmanı",cf4_p:"En aktif güzergahlarımız ve en rekabetçi fiyatlarımız bu hatta.",
+    cargo_stat1:"Küresel Erişim",cargo_stat2:"Birincil Kargo Güzergahı",cargo_cta:"Teklif Al",
+    umrah_badge:"Manevi Yolculuklar",umrah_title:"Umre Paketleri<br><em>İstanbul'dan</em>",
+    umrah_sub:"İstanbul ve Mısır'dan yolcular için eksiksiz Umre paketleri. Uçuş, Harem yakını oteller, iç transferler ve tam lojistik destek.",
+    uf1_h:"Medine ve Cidde'ye Direkt Uçuşlar",uf1_p:"İstanbul SAW'dan Suudi Arabistan'a en iyi fiyatlar.",
+    uf2_h:"Harem Yakını Oteller",uf2_p:"Mescid-i Haram ve Mescid-i Nebevi'ye dakikalar uzaklıkta özenle seçilmiş oteller.",
+    uf3_h:"İç Transferler",uf3_p:"Havalimanı karşılama ve Mekke–Medine transferleri tam organize.",
+    uf4_h:"Tam Destek",uf4_p:"Tüm manevi yolculuğunuz boyunca 7/24 WhatsApp desteği.",
+    umrah_cta:"Umre Teklifi Al",us1:"Medine",us2:"Mekke",us3:"Destek",
+    contact_label:"İletişim",contact_title:"Rezervasyon İçin Hazır mısınız?",
+    contact_sub:"En hızlı yanıt için bize WhatsApp'tan ulaşın. Seyahatinizi planlamak için buradayız.",
+    c_wa_label:"WhatsApp / Telefon",c_em_label:"E-posta",c_ig_label:"Instagram",c_fb_label:"Facebook",
+    c_fb_val:"Matarist Travel Sayfası",c_tt_label:"TikTok",c_lo_label:"Konum",c_lo_val:"Çevrimiçi Seyahat Hizmetleri — İstanbul, Türkiye",
     wa_block_title:"WhatsApp ile Dakikalar İçinde Rezervasyon",
-    wa_block_p:"Form doldurmayın. Mesaj gönderin, hızlıca onaylanmış teklifinizi alın. Ekibimiz Arapça, İngilizce ve Türkçe olarak 7/24 yanıt verir.",
+    wa_block_p:"Form doldurmayın. Mesaj gönderin, hızlıca onaylanmış teklifinizi alın. 7/24 Arapça, İngilizce ve Türkçe yanıt.",
     wa_block_btn:"WhatsApp'tan Şimdi Yaz",
     footer_tagline:"İstanbul, Türkiye — Çevrimiçi Seyahat Hizmetleri",
     footer_copy:"© 2025 Matarist Travel. İstanbul merkezli, dünyaya hizmet."
   }
 };
 
-/* ═══ LANGUAGE SWITCH ═══ */
 function setLang(lang){
-  const t = translations[lang];
-  if(!t) return;
+  const t = translations[lang]; if(!t) return;
   localStorage.setItem('matarist_lang', lang);
   document.documentElement.lang = lang;
   document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
-
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if(t[key] !== undefined) el.innerHTML = t[key];
   });
-
   document.querySelectorAll('.lang-btn, .mobile-lang button').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.lang === lang);
   });
 }
-
-// Init language
 const savedLang = localStorage.getItem('matarist_lang') || 'en';
 setLang(savedLang);
 
-/* ═══ VIDEO HERO SLIDER ═══ */
+/* ═══ HERO SLIDER ═══ */
 let currentSlide = 0;
 const slides = document.querySelectorAll('.hero-slide');
 const dots = document.querySelectorAll('.hero-dot');
 let sliderTimer;
-
 function goToSlide(n){
   if(n === currentSlide) return;
   const oldVid = slides[currentSlide].querySelector('video');
   const newSlide = slides[n];
   const newVid = newSlide.querySelector('video');
-
   slides[currentSlide].classList.remove('active');
   dots[currentSlide].classList.remove('active');
   newSlide.classList.add('active');
   dots[n].classList.add('active');
-
-  // Lazy-load video on first activation
-  if(newVid && newVid.preload === 'none'){
-    newVid.preload = 'metadata';
-    newVid.load();
-  }
-  if(newVid){
-    newVid.play().catch(()=>{});
-  }
-  if(oldVid){
-    setTimeout(()=>{ try{ oldVid.pause(); }catch(e){} }, 1200);
-  }
-  currentSlide = n;
-  resetTimer();
+  if(newVid && newVid.preload === 'none'){ newVid.preload = 'metadata'; newVid.load(); }
+  if(newVid) newVid.play().catch(()=>{});
+  if(oldVid) setTimeout(()=>{ try{ oldVid.pause(); }catch(e){} }, 1200);
+  currentSlide = n; resetTimer();
 }
 function nextSlide(){ goToSlide((currentSlide + 1) % slides.length); }
-function resetTimer(){
-  clearInterval(sliderTimer);
-  sliderTimer = setInterval(nextSlide, 6500);
-}
-
-// Start slider after load
+function resetTimer(){ clearInterval(sliderTimer); sliderTimer = setInterval(nextSlide, 6500); }
 window.addEventListener('load', () => {
   const firstVid = slides[0].querySelector('video');
   if(firstVid) firstVid.play().catch(()=>{});
   resetTimer();
 });
-
-// Pause on hover (desktop)
 const heroSlider = document.getElementById('heroSlider');
 if(heroSlider){
   heroSlider.addEventListener('mouseenter', () => clearInterval(sliderTimer));
   heroSlider.addEventListener('mouseleave', resetTimer);
 }
 
-/* ═══ ABOUT IMAGE SLIDER ═══ */
+/* ═══ ABOUT SLIDER ═══ */
 let aboutCurrent = 0;
 const aboutSlides = document.querySelectorAll('.about-slide');
 const aboutDots = document.querySelectorAll('.about-dot');
 const locFlagEl = document.getElementById('locFlag');
 const locNameEl = document.getElementById('locName');
 let aboutTimer;
-
 function aboutGoTo(n){
   if(n === aboutCurrent || !aboutSlides.length) return;
   aboutSlides[aboutCurrent].classList.remove('active');
@@ -1429,16 +1039,12 @@ function aboutGoTo(n){
   aboutCurrent = n;
   aboutSlides[aboutCurrent].classList.add('active');
   aboutDots[aboutCurrent].classList.add('active');
-  // Update location tag
   if(locFlagEl) locFlagEl.textContent = aboutSlides[aboutCurrent].dataset.flag || '🌍';
   if(locNameEl) locNameEl.textContent = aboutSlides[aboutCurrent].dataset.loc || '';
   resetAboutTimer();
 }
 function aboutNext(){ aboutGoTo((aboutCurrent + 1) % aboutSlides.length); }
-function resetAboutTimer(){
-  clearInterval(aboutTimer);
-  aboutTimer = setInterval(aboutNext, 5000);
-}
+function resetAboutTimer(){ clearInterval(aboutTimer); aboutTimer = setInterval(aboutNext, 5000); }
 if(aboutSlides.length){
   resetAboutTimer();
   const aboutVis = document.querySelector('.about-visual');
@@ -1460,9 +1066,7 @@ const revealObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 /* ═══ MOBILE MENU ═══ */
-function toggleMenu(){
-  document.getElementById('mobileNav').classList.toggle('open');
-}
+function toggleMenu(){ document.getElementById('mobileNav').classList.toggle('open'); }
 document.addEventListener('click', (e) => {
   const nav = document.getElementById('mobileNav');
   const btn = document.querySelector('.hamburger');
@@ -1474,100 +1078,42 @@ document.addEventListener('click', (e) => {
 
 <!-- ═══ MATARIST AI CHAT WIDGET ═══ -->
 <style>
-#matarist-chat-widget {
-  position: fixed;
-  bottom: 90px;
-  right: 26px;
-  z-index: 99999;
-  font-family: 'Cairo', 'DM Sans', sans-serif;
-}
-#chat-toggle-btn {
-  width: 60px; height: 60px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #1a2d5a, #c9a84c);
-  border: none; cursor: pointer;
-  box-shadow: 0 4px 20px rgba(201,168,76,0.4);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 24px; color: white;
-  transition: all 0.3s ease;
-  position: relative;
-}
-#chat-toggle-btn:hover { transform: scale(1.1); box-shadow: 0 6px 25px rgba(201,168,76,0.5); }
-.chat-notification {
-  position: absolute; top: -4px; right: -4px;
-  background: #e74c3c; color: white;
-  font-size: 11px; font-weight: bold;
-  width: 20px; height: 20px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  border: 2px solid white;
-}
-#chat-window {
-  position: absolute; bottom: 75px; right: 0;
-  width: 360px; height: 520px;
-  background: white; border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-  display: none; flex-direction: column; overflow: hidden;
-  border: 1px solid rgba(201,168,76,0.3);
-}
-#chat-window.open { display: flex; animation: chatOpen 0.3s ease; }
-@keyframes chatOpen {
-  from { opacity: 0; transform: translateY(20px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-.chat-header {
-  background: linear-gradient(135deg, #0f1d3d, #1a2d5a);
-  padding: 14px 16px;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.chat-header-info { display: flex; align-items: center; gap: 10px; }
-.chat-avatar {
-  width: 38px; height: 38px; background: #c9a84c;
-  border-radius: 50%; display: flex; align-items: center;
-  justify-content: center; color: #0f1d3d; font-size: 16px;
-}
-.chat-name { color: white; font-weight: 700; font-size: 14px; }
-.chat-status { color: #b8d0f0; font-size: 11px; display: flex; align-items: center; gap: 4px; }
-.status-dot { width: 7px; height: 7px; background: #2ecc71; border-radius: 50%; animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
-.chat-close-btn { background: none; border: none; color: white; cursor: pointer; font-size: 16px; opacity: 0.7; }
-.chat-close-btn:hover { opacity: 1; }
-.chat-messages {
-  flex: 1; overflow-y: auto; padding: 16px;
-  background: #f8f9fa; display: flex; flex-direction: column; gap: 12px;
-}
-.message { display: flex; flex-direction: column; }
-.bot-message { align-items: flex-start; }
-.user-message { align-items: flex-end; }
-.message-bubble { max-width: 85%; padding: 10px 14px; border-radius: 14px; font-size: 13px; line-height: 1.6; }
-.bot-message .message-bubble { background: white; color: #1a1a2e; border: 1px solid #e8e8e8; border-bottom-left-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-.user-message .message-bubble { background: linear-gradient(135deg, #1a2d5a, #243570); color: white; border-bottom-right-radius: 4px; }
-.message-time { font-size: 10px; color: #aaa; margin-top: 3px; padding: 0 4px; }
-.typing-dots { display: flex; gap: 4px; align-items: center; }
-.typing-dots span { width: 7px; height: 7px; background: #c9a84c; border-radius: 50%; animation: typing 1.2s infinite; }
-.typing-dots span:nth-child(2){animation-delay:0.2s}
-.typing-dots span:nth-child(3){animation-delay:0.4s}
-@keyframes typing { 0%,60%,100%{transform:translateY(0);opacity:0.4} 30%{transform:translateY(-6px);opacity:1} }
-.chat-input-area { padding: 12px; background: white; border-top: 1px solid #eee; }
-.chat-input-wrapper { display: flex; gap: 8px; align-items: center; }
-#chat-input {
-  flex: 1; padding: 10px 14px;
-  border: 1.5px solid #e0e0e0; border-radius: 25px;
-  font-size: 13px; font-family: 'Cairo','DM Sans',sans-serif;
-  outline: none; direction: rtl;
-}
-#chat-input:focus { border-color: #c9a84c; }
-#send-btn {
-  width: 40px; height: 40px; background: #c9a84c;
-  border: none; border-radius: 50%; color: white; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 15px; transition: all 0.2s; flex-shrink: 0;
-}
-#send-btn:hover { background: #b8973e; transform: scale(1.05); }
-#send-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
-.chat-footer-note { text-align: center; margin-top: 8px; }
-.chat-footer-note a { color: #25D366; font-size: 12px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
-.chat-footer-note a:hover { color: #128C7E; }
-@media(max-width:480px){ #chat-window{width:310px;height:480px;right:-10px} #matarist-chat-widget{right:16px;bottom:80px} }
+#matarist-chat-widget{position:fixed;bottom:90px;right:26px;z-index:99999;font-family:'Cairo','DM Sans',sans-serif}
+#chat-toggle-btn{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#1a2d5a,#c9a84c);border:none;cursor:pointer;box-shadow:0 4px 20px rgba(201,168,76,0.4);display:flex;align-items:center;justify-content:center;font-size:24px;color:white;transition:all 0.3s ease;position:relative}
+#chat-toggle-btn:hover{transform:scale(1.1);box-shadow:0 6px 25px rgba(201,168,76,0.5)}
+.chat-notification{position:absolute;top:-4px;right:-4px;background:#e74c3c;color:white;font-size:11px;font-weight:bold;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid white}
+#chat-window{position:absolute;bottom:75px;right:0;width:360px;height:520px;background:white;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.2);display:none;flex-direction:column;overflow:hidden;border:1px solid rgba(201,168,76,0.3)}
+#chat-window.open{display:flex;animation:chatOpen 0.3s ease}
+@keyframes chatOpen{from{opacity:0;transform:translateY(20px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+.chat-header{background:linear-gradient(135deg,#0f1d3d,#1a2d5a);padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.chat-header-info{display:flex;align-items:center;gap:10px}
+.chat-avatar{width:38px;height:38px;background:#c9a84c;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#0f1d3d;font-size:16px}
+.chat-name{color:white;font-weight:700;font-size:14px}
+.chat-status{color:#b8d0f0;font-size:11px;display:flex;align-items:center;gap:4px}
+.status-dot{width:7px;height:7px;background:#2ecc71;border-radius:50%;animation:pulseS 2s infinite}
+@keyframes pulseS{0%,100%{opacity:1}50%{opacity:0.5}}
+.chat-close-btn{background:none;border:none;color:white;cursor:pointer;font-size:16px;opacity:0.7}
+.chat-messages{flex:1;overflow-y:auto;padding:16px;background:#f8f9fa;display:flex;flex-direction:column;gap:12px}
+.message{display:flex;flex-direction:column}
+.bot-message{align-items:flex-start}.user-message{align-items:flex-end}
+.message-bubble{max-width:85%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.6}
+.bot-message .message-bubble{background:white;color:#1a1a2e;border:1px solid #e8e8e8;border-bottom-left-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.user-message .message-bubble{background:linear-gradient(135deg,#1a2d5a,#243570);color:white;border-bottom-right-radius:4px}
+.message-time{font-size:10px;color:#aaa;margin-top:3px;padding:0 4px}
+.typing-dots{display:flex;gap:4px;align-items:center}
+.typing-dots span{width:7px;height:7px;background:#c9a84c;border-radius:50%;animation:typing 1.2s infinite}
+.typing-dots span:nth-child(2){animation-delay:0.2s}.typing-dots span:nth-child(3){animation-delay:0.4s}
+@keyframes typing{0%,60%,100%{transform:translateY(0);opacity:0.4}30%{transform:translateY(-6px);opacity:1}}
+.chat-input-area{padding:12px;background:white;border-top:1px solid #eee}
+.chat-input-wrapper{display:flex;gap:8px;align-items:center}
+#chat-input{flex:1;padding:10px 14px;border:1.5px solid #e0e0e0;border-radius:25px;font-size:13px;font-family:'Cairo','DM Sans',sans-serif;outline:none;direction:rtl}
+#chat-input:focus{border-color:#c9a84c}
+#send-btn{width:40px;height:40px;background:#c9a84c;border:none;border-radius:50%;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+#send-btn:hover{background:#b8973e;transform:scale(1.05)}
+#send-btn:disabled{background:#ccc;cursor:not-allowed;transform:none}
+.chat-footer-note{text-align:center;margin-top:8px}
+.chat-footer-note a{color:#25D366;font-size:12px;text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:4px}
+@media(max-width:480px){#chat-window{width:310px;height:480px;right:-10px}#matarist-chat-widget{right:16px;bottom:80px}}
 </style>
 
 <div id="matarist-chat-widget">
@@ -1594,6 +1140,7 @@ document.addEventListener('click', (e) => {
           يمكنني مساعدتك في:<br>
           ✈️ تذاكر الطيران<br>
           🏨 حجز الفنادق<br>
+          🕌 باقات العمرة<br>
           🏖️ رحلات تركيا<br>
           📦 خدمات الكارجو<br>
           🛂 الفيزا والتأشيرات<br><br>
@@ -1617,121 +1164,7 @@ document.addEventListener('click', (e) => {
 </div>
 
 <script>
-const SYSTEM_PROMPT = `أنت مساعد ذكي لشركة Matarist Travel Agency. لا تتصرف كشات بوت تقليدي يحفظ ردود ثابتة. تصرف كموظف مبيعات وخدمة عملاء محترف، لبق، ذكي، ودائمًا يحاول مساعدة العميل وتحويل المحادثة إلى فرصة بيع بدون إزعاج.
-
-قواعد أساسية:
-* ابدأ دائمًا بطريقة مهذبة مثل: "أهلاً بحضرتك يا فندم 🌸" أو "أهلاً وسهلاً بحضرتك يا فندم"
-* تحدث بشكل طبيعي جدًا كإنسان وليس روبوت.
-* لا تقل أبدًا: "لا أعرف" أو "مع الأسف" أو "هذه المعلومة غير متوفرة"
-* بدلًا من ذلك استخدم: "تمام يا فندم، ممكن حضرتك تتواصل معانا على الواتساب للحصول على تفاصيل أدق ومساعدتك بشكل أفضل 🌸"
-* في نهاية معظم الردود أضف بشكل طبيعي: "وبرضو يا فندم لو حابب تتأكد أكثر أو تستفسر عن أي تفاصيل إضافية ممكن تتواصل معانا على الواتساب 🌸"
-* كن محترمًا ومهذبًا وودودًا.
-* حاول دائمًا بيع الخدمات بطريقة ذكية بدون ضغط.
-* إذا كان العميل مترددًا قدم مميزات أو عروض أو بدائل.
-
-واتساب للتواصل: +90 545 121 8167
-
-خدمات الشركة:
-* حجوزات طيران ✈️
-* تأشيرات 🛂
-* حجوزات فنادق 🏨
-* استقبال وتوصيل من وإلى المطار 🚖
-* شحن 📦
-* برامج سياحية 🌍
-* خدمات سفر متنوعة
-
-رحلات اسطنبول اليومية (أسعار شاملة وجبة + نقل):
-- بورصا الخضراء: $25 | سابنجا & معشوقية: $25 | شيلا أغوا: $30
-- جزيرة الأميرات: $35 | سهرة البوسفور: $35 | يالوا (السبت): $30
-- إزميت: $30 | أنطاليا (أسبوعي): $300 | طرابزون: $200 | كابادوكيا (3 أيام): $410
-
-════════════════════════════════
-
-قواعد الحساب للفنادق:
-1. إذا طلب العميل 4 أيام/3 ليالي: أعطه السعر مباشرة
-2. إذا طلب 5 أيام/4 ليالي: أعطه السعر مباشرة
-3. إذا طلب ليلة واحدة: أعطه سعر الليلة مباشرة
-4. إذا طلب أكثر من 5 أيام: احسب تلقائياً (عدد الليالي × سعر الليلة) بدون ما تخبره أنك حسبت
-5. لا تقل "لا توجد باقة" - بدلًا من ذلك قدم البديل بثقة
-
-════════════════════════════════
-
-فنادق شرم الشيخ - نصف إقامة (فطار + عشا):
-(سعر الليلة | 4 أيام/3ليالي | 5 أيام/4ليالي)
-- يوني شرم ⭐⭐⭐: الليلة 1,731ج | 4أيام 5,858ج | 5أيام 7,425ج
-- رويال نعمه ⭐⭐⭐: الليلة 1,786ج | 4أيام 6,039ج | 5أيام 7,667ج
-- شاركس باي اويسيز ⭐⭐⭐: الليلة 2,156ج | 4أيام 7,260ج | 5أيام 9,295ج
-- كنابش ⭐⭐⭐⭐: الليلة 2,831ج | 4أيام 9,488ج | 5أيام 12,265ج
-- فالكون نعمه ⭐⭐⭐⭐: الليلة 2,731ج | 4أيام 9,158ج | 5أيام 11,825ج
-- تركواز بيتش ⭐⭐⭐⭐: الليلة 2,331ج | 4أيام 7,838ج | 5أيام 10,065ج
-- اوريانتال ريفولي ⭐⭐⭐⭐: الليلة 3,656ج | 4أيام 12,210ج | 5أيام 15,895ج
-- اللـيدو ⭐⭐⭐⭐: الليلة 3,521ج | 4أيام 11,765ج | 5أيام 15,301ج
-- برمويناد ماونتن ⭐⭐⭐⭐: الليلة 3,671ج | 4أيام 12,260ج | 5أيام 15,961ج
-- الميركاتو ⭐⭐⭐⭐: الليلة 3,271ج | 4أيام 10,940ج | 5أيام 14,201ج
-- كتاركت ريزورت ⭐⭐⭐⭐⭐: الليلة 3,606ج | 4أيام 12,045ج | 5أيام 15,675ج
-- كتاركت لياليتا ⭐⭐⭐⭐⭐: الليلة 3,856ج | 4أيام 12,870ج | 5أيام 16,775ج
-- نعمه باي ⭐⭐⭐⭐⭐: الليلة 4,271ج | 4أيام 14,240ج | 5أيام 18,601ج
-- مارينا شرم ⭐⭐⭐⭐⭐: الليلة 6,221ج | 4أيام 20,675ج | 5أيام 27,181ج
-- بروميناد بيتش ⭐⭐⭐⭐⭐: الليلة 7,921ج | 4أيام 26,285ج | 5أيام 34,661ج
-
-فنادق شرم الشيخ - إقامة كاملة (فطار + غدا + عشا + مشروبات):
-(سعر الليلة | 4 أيام/3ليالي | 5 أيام/4ليالي)
-- باروتيل اكوا ⭐⭐⭐: الليلة 3,431ج | 4أيام 11,468ج | 5أيام 14,905ج
-- سان جورج ⭐⭐⭐: الليلة 3,981ج | 4أيام 13,283ج | 5أيام 17,325ج
-- الجافي ⭐⭐⭐: الليلة 3,706ج | 4أيام 12,375ج | 5أيام 16,115ج
-- كيروسيز بريمير ⭐⭐⭐⭐: الليلة 6,186ج | 4أيام 20,559ج | 5أيام 27,027ج
-- بارسيلو تيران ⭐⭐⭐⭐: الليلة 5,436ج | 4أيام 17,973ج | 5أيام 23,872ج
-- باروتيل لاجون ⭐⭐⭐⭐: الليلة 3,671ج | 4أيام 12,260ج | 5أيام 15,961ج
-- سفير شلالات ⭐⭐⭐⭐⭐: الليلة 6,721ج | 4أيام 22,325ج | 5أيام 29,381ج
-- شارمليون كلوب اكوا بارك ⭐⭐⭐⭐⭐: الليلة 6,621ج | 4أيام 21,995ج | 5أيام 28,941ج
-- شارمليون كلوب ريزورت ⭐⭐⭐⭐⭐: الليلة 6,356ج | 4أيام 21,120ج | 5أيام 27,775ج
-- شارمليون جاردن ⭐⭐⭐⭐⭐: الليلة 6,571ج | 4أيام 21,830ج | 5أيام 28,721ج
-- ريجينسي بلازا ⭐⭐⭐⭐⭐: الليلة 6,771ج | 4أيام 22,490ج | 5أيام 29,601ج
-- جاز شرم دريمز ⭐⭐⭐⭐⭐: الليلة 5,921ج | 4أيام 19,685ج | 5أيام 25,861ج
-- جاز الفيروز ⭐⭐⭐⭐⭐: الليلة 6,121ج | 4أيام 20,345ج | 5أيام 26,741ج
-
-فنادق الغردقة - 3 و4 نجوم - إقامة كاملة:
-(سعر الليلة | 4 أيام/3ليالي | 5 أيام/4ليالي)
-- صن اند سي ⭐⭐⭐: الليلة 2,585ج | 4أيام 8,690ج | 5أيام 11,165ج
-- مارلين ازور ⭐⭐⭐: الليلة 3,650ج | 4أيام 12,210ج | 5أيام 15,840ج
-- جيفتون ازور ⭐⭐⭐: الليلة 3,750ج | 4أيام 12,540ج | 5أيام 16,280ج
-- ميراج باي ⭐⭐⭐⭐: الليلة 2,956ج | 4أيام 9,900ج | 5أيام 12,815ج
-- ايجلز باراديس ابو سوما ⭐⭐⭐⭐: الليلة 4,038ج | 4أيام 13,530ج | 5أيام 17,490ج
-- سافير وايت فالي ⭐⭐⭐⭐: الليلة 3,627ج | 4أيام 12,100ج | 5أيام 15,785ج
-- شمس ابو سوما ⭐⭐⭐⭐: الليلة 3,588ج | 4أيام 12,045ج | 5أيام 15,510ج
-- نيو ايجيلز ⭐⭐⭐⭐: الليلة 4,235ج | 4أيام 14,135ج | 5أيام 18,425ج
-- البـاشا ⭐⭐⭐⭐: الليلة 3,985ج | 4أيام 13,310ج | 5أيام 17,325ج
-- فارو ازور ⭐⭐⭐⭐: الليلة 4,235ج | 4أيام 14,135ج | 5أيام 18,425ج
-- الماظة وايت فالي ⭐⭐⭐⭐: الليلة 4,135ج | 4أيام 13,805ج | 5أيام 17,985ج
-- ثري كورنر صني بيتش ⭐⭐⭐⭐: الليلة 4,585ج | 4أيام 15,290ج | 5أيام 19,965ج
-- امبريال ابو سوما ⭐⭐⭐⭐: الليلة 4,279ج | 4أيام 14,300ج | 5أيام 18,590ج
-- صني دايز البلاسيو ⭐⭐⭐⭐: الليلة 4,285ج | 4أيام 14,300ج | 5أيام 18,645ج
-- ارابيا ازور ⭐⭐⭐⭐: الليلة 4,485ج | 4أيام 14,960ج | 5أيام 19,525ج
-
-فنادق الغردقة - 5 نجوم - إقامة كاملة:
-(سعر الليلة | 4 أيام/3ليالي | 5 أيام/4ليالي)
-- ستيلا جاردن مكادي ⭐⭐⭐⭐⭐: الليلة 4,954ج | 4أيام 15,125ج | 5أيام 23,430ج
-- اريبيلا ازور ⭐⭐⭐⭐⭐: الليلة 4,194ج | 4أيام 13,035ج | 5أيام 19,525ج
-- سي جال ⭐⭐⭐⭐⭐: الليلة 5,069ج | 4أيام 15,675ج | 5أيام 23,705ج
-- سندباد ⭐⭐⭐⭐⭐: الليلة 5,844ج | 4أيام 17,820ج | 5أيام 27,665ج
-- رويال لاجونز ⭐⭐⭐⭐⭐: الليلة 3,844ج | 4أيام 11,880ج | 5أيام 17,985ج
-- وايت فالي بالاس ⭐⭐⭐⭐⭐: الليلة 4,377ج | 4أيام 13,750ج | 5أيام 20,185ج
-- اولد بالاس ⭐⭐⭐⭐⭐: الليلة 4,892ج | 4أيام 13,475ج | 5أيام 25,080ج
-- ستيلا بيتش ⭐⭐⭐⭐⭐: الليلة 5,992ج | 4أيام 17,270ج | 5أيام 29,700ج
-- جاسمين بلاس ⭐⭐⭐⭐⭐: الليلة 4,412ج | 4أيام 14,685ج | 5أيام 19,250ج
-- البلاجيو لاكشيري ⭐⭐⭐⭐⭐: الليلة 4,912ج | 4أيام 16,335ج | 5أيام 21,450ج
-- سفن سيز ⭐⭐⭐⭐⭐: الليلة 5,523ج | 4أيام 16,445ج | 5أيام 26,675ج
-- لونج بيتش ⭐⭐⭐⭐⭐: الليلة 6,319ج | 4أيام 18,315ج | 5أيام 31,185ج
-- ديزرت روز ⭐⭐⭐⭐⭐: الليلة 7,479ج | 4أيام 20,900ج | 5أيام 37,950ج
-
-أسلوب الرد:
-* اجعل الردود قصيرة ومتوسطة.
-* لا تجعل الردود طويلة جدًا.
-* لا تبدو آليًا.
-* استخدم الإيموجي باعتدال.
-* كن ذكيًا في فهم المقصود حتى لو كتب العميل بطريقة غير واضحة.
-* حاول الحفاظ على العميل داخل المحادثة وتشجيعه على الحجز.
-الهدف الأساسي: تقديم تجربة تشبه موظف مبيعات محترف وليس شات بوت. اجعل العميل يشعر أنه يتحدث مع شخص حقيقي يفهمه ويهتم به ويساعده في الوصول للحجز المناسب.`;
+const SYSTEM_PROMPT = `أنت مساعد ذكي لشركة Matarist Travel Agency. تصرف كموظف مبيعات وخدمة عملاء محترف، لبق، ذكي، ودائمًا يحاول مساعدة العميل. ابدأ دائمًا بـ "أهلاً بحضرتك يا فندم 🌸". في نهاية الردود أضف: "وبرضو يا فندم لو حابب تتأكد أكثر ممكن تتواصل معانا على الواتساب 🌸". واتساب: +90 545 121 8167. الخدمات: طيران، فنادق، باقات عمرة من إسطنبول، كارجو، فيزا، توصيل VIP، برامج سياحية. باقات العمرة تشمل طيران من إسطنبول SAW + فندق قرب الحرم + توصيل داخلي. اجعل الردود قصيرة وطبيعية وغير آلية.`;
 
 let chatMessages = [];
 let isTyping = false;
@@ -1756,15 +1189,8 @@ function toggleChat() {
     closeIcon.style.display = "none";
   }
 }
-
-function handleKeyPress(e) {
-  if (e.key === "Enter") { e.preventDefault(); sendMessage(); }
-}
-
-function getTime() {
-  return new Date().toLocaleTimeString("ar", {hour:"2-digit", minute:"2-digit"});
-}
-
+function handleKeyPress(e) { if (e.key === "Enter") { e.preventDefault(); sendMessage(); } }
+function getTime() { return new Date().toLocaleTimeString("ar", {hour:"2-digit", minute:"2-digit"}); }
 function addMessage(text, isUser) {
   const div = document.getElementById("chat-messages");
   const msg = document.createElement("div");
@@ -1773,7 +1199,6 @@ function addMessage(text, isUser) {
   div.appendChild(msg);
   scrollToBottom();
 }
-
 function showTyping() {
   const div = document.getElementById("chat-messages");
   const t = document.createElement("div");
@@ -1783,64 +1208,43 @@ function showTyping() {
   div.appendChild(t);
   scrollToBottom();
 }
-
-function hideTyping() {
-  const t = document.getElementById("typing-ind");
-  if (t) t.remove();
-}
-
-function scrollToBottom() {
-  const div = document.getElementById("chat-messages");
-  div.scrollTop = div.scrollHeight;
-}
-
+function hideTyping() { const t = document.getElementById("typing-ind"); if (t) t.remove(); }
+function scrollToBottom() { const div = document.getElementById("chat-messages"); div.scrollTop = div.scrollHeight; }
 async function sendMessage() {
   const input = document.getElementById("chat-input");
   const btn = document.getElementById("send-btn");
   const text = input.value.trim();
   if (!text || isTyping) return;
-
   input.value = "";
   isTyping = true;
   btn.disabled = true;
-
   addMessage(text, true);
   chatMessages.push({role:"user", content:text});
   showTyping();
-
   try {
     const res = await fetch("/.netlify/functions/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        messages: chatMessages,
-        system: SYSTEM_PROMPT
-      })
+      body: JSON.stringify({ messages: chatMessages, system: SYSTEM_PROMPT })
     });
-
     const data = await res.json();
     const reply = data.content[0].text;
     chatMessages.push({role:"assistant", content:reply});
     hideTyping();
     addMessage(reply, false);
-
   } catch(err) {
     hideTyping();
     addMessage("عذراً، حدث خطأ. تواصل معنا عبر واتساب: +90 545 121 8167 ✅", false);
   }
-
   isTyping = false;
   btn.disabled = false;
   input.focus();
-
   if (chatMessages.length > 20) chatMessages = chatMessages.slice(-10);
 }
 </script>
-<!-- ═══ END CHAT WIDGET ═══ -->
 
 <!-- ═══ ORDER FORMS SYSTEM ═══ -->
 <script>
-// ─── Storage for orders ───
 function getOrders(){
   try{ return JSON.parse(localStorage.getItem('matarist_orders')||'[]'); }
   catch(e){ return []; }
@@ -1849,7 +1253,6 @@ function saveOrders(orders){
   localStorage.setItem('matarist_orders', JSON.stringify(orders));
   syncToBlobs(orders);
 }
-
 async function syncToBlobs(orders){
   try{
     await fetch('/.netlify/functions/orders', {
@@ -1860,12 +1263,19 @@ async function syncToBlobs(orders){
   } catch(e){ console.log('Sync error:', e); }
 }
 
-// ─── Update badges ───
 function updateBadges(){
   const orders = getOrders();
-  const types = ['flight','visa','hotel','cargo','transfer','package'];
+  const types = ['flight','visa','hotel','cargo','transfer','package','umrah'];
   types.forEach(type => {
-    const count = orders.filter(o => o.type === type && o.status === 'جديد').length;
+    let count;
+    if(type === 'package'){
+      // Package badge shows BOTH package + umrah (they share backend type)
+      count = orders.filter(o => (o.type === 'package' || o.subtype === 'umrah') && o.status === 'جديد').length;
+    } else if(type === 'umrah'){
+      count = orders.filter(o => o.subtype === 'umrah' && o.status === 'جديد').length;
+    } else {
+      count = orders.filter(o => o.type === type && o.status === 'جديد').length;
+    }
     const badge = document.getElementById('badge-'+type);
     if(badge){
       badge.textContent = count;
@@ -1874,43 +1284,35 @@ function updateBadges(){
   });
 }
 
-// ─── Open modal ───
 function openModal(type){
   const overlay = document.getElementById('modal-overlay');
-  // hide all modals first
   document.querySelectorAll('.modal-box > div').forEach(d => d.style.display='none');
-  // show the right one
   const target = document.getElementById('modal-'+type);
   if(target) target.style.display='block';
   overlay.classList.add('active');
   document.body.style.overflow='hidden';
 }
-
-// ─── Close modal ───
 function closeModal(){
   const overlay = document.getElementById('modal-overlay');
   overlay.classList.remove('active');
   document.body.style.overflow='';
-  // reset success messages after delay
   setTimeout(() => {
     document.querySelectorAll('.success-msg').forEach(m => m.classList.remove('show'));
     document.querySelectorAll('[id^="form-"]').forEach(f => f.style.display='block');
   }, 400);
 }
-
 function closeModalOutside(e){
   if(e.target === document.getElementById('modal-overlay')) closeModal();
 }
 
-// ─── Submit order ───
 function submitOrder(type){
-  let data = { type, status:'جديد', date: new Date().toLocaleString('ar-EG'), id: Date.now() };
+  let data = { status:'جديد', date: new Date().toLocaleString('ar-EG'), id: Date.now() };
 
   if(type === 'flight'){
     const name = document.getElementById('f-name').value.trim();
     const phone = document.getElementById('f-phone').value.trim();
     if(!name || !phone){ alert('يرجى إدخال الاسم ورقم الواتساب'); return; }
-    data = {...data, name, phone,
+    data = {...data, type:'flight', name, phone,
       from: document.getElementById('f-from').value,
       to: document.getElementById('f-to').value,
       date_travel: document.getElementById('f-date').value,
@@ -1923,7 +1325,7 @@ function submitOrder(type){
     const name = document.getElementById('v-name').value.trim();
     const phone = document.getElementById('v-phone').value.trim();
     if(!name || !phone){ alert('يرجى إدخال الاسم ورقم الواتساب'); return; }
-    data = {...data, name, phone,
+    data = {...data, type:'visa', name, phone,
       nationality: document.getElementById('v-nationality').value,
       country: document.getElementById('v-country').value,
       visa_type: document.getElementById('v-type').value,
@@ -1934,7 +1336,7 @@ function submitOrder(type){
     const name = document.getElementById('h-name').value.trim();
     const phone = document.getElementById('h-phone').value.trim();
     if(!name || !phone){ alert('يرجى إدخال الاسم ورقم الواتساب'); return; }
-    data = {...data, name, phone,
+    data = {...data, type:'hotel', name, phone,
       city: document.getElementById('h-city').value,
       hotel: document.getElementById('h-hotel').value,
       checkin: document.getElementById('h-checkin').value,
@@ -1947,7 +1349,7 @@ function submitOrder(type){
     const name = document.getElementById('c-name').value.trim();
     const phone = document.getElementById('c-phone').value.trim();
     if(!name || !phone){ alert('يرجى إدخال الاسم ورقم الواتساب'); return; }
-    data = {...data, name, phone,
+    data = {...data, type:'cargo', name, phone,
       from: document.getElementById('c-from').value,
       to: document.getElementById('c-to').value,
       goods: document.getElementById('c-goods').value,
@@ -1958,7 +1360,7 @@ function submitOrder(type){
     const name = document.getElementById('t-name').value.trim();
     const phone = document.getElementById('t-phone').value.trim();
     if(!name || !phone){ alert('يرجى إدخال الاسم ورقم الواتساب'); return; }
-    data = {...data, name, phone,
+    data = {...data, type:'transfer', name, phone,
       airport: document.getElementById('t-airport').value,
       datetime: document.getElementById('t-datetime').value,
       transfer_type: document.getElementById('t-type').value,
@@ -1970,7 +1372,7 @@ function submitOrder(type){
     const name = document.getElementById('p-name').value.trim();
     const phone = document.getElementById('p-phone').value.trim();
     if(!name || !phone){ alert('يرجى إدخال الاسم ورقم الواتساب'); return; }
-    data = {...data, name, phone,
+    data = {...data, type:'package', name, phone,
       destination: document.getElementById('p-dest').value,
       pax: document.getElementById('p-pax').value,
       date_travel: document.getElementById('p-date').value,
@@ -1979,12 +1381,28 @@ function submitOrder(type){
       budget: document.getElementById('p-budget').value,
       notes: document.getElementById('p-notes').value
     };
+  } else if(type === 'umrah'){
+    // ✅ UMRAH SAVED AS 'package' TYPE — same backend workflow as Programs
+    const name = document.getElementById('u-name').value.trim();
+    const phone = document.getElementById('u-phone').value.trim();
+    if(!name || !phone){ alert('يرجى إدخال الاسم ورقم الواتساب'); return; }
+    data = {...data,
+      type: 'package',          // ← Same backend type as Programs
+      subtype: 'umrah',         // ← Marker so we know it's Umrah
+      name, phone,
+      destination: 'العمرة - مكة المكرمة والمدينة المنورة',
+      pax: document.getElementById('u-pax').value,
+      date_travel: document.getElementById('u-date').value,
+      duration: document.getElementById('u-duration').value,
+      includes: document.getElementById('u-includes').value,
+      rooming: document.getElementById('u-rooming').value,
+      budget: document.getElementById('u-budget').value,
+      notes: '🕌 طلب باقة عمرة | ' + document.getElementById('u-notes').value
+    };
   }
 
-  // Save to localStorage
   const orders = getOrders();
-  // Generate MAT-XXXX number
-  const nums = orders.map(o=>{
+  const nums = orders.map(o => {
     const m = (o.order_ref||'').match(/MAT-(\d+)/);
     return m ? parseInt(m[1]) : 0;
   });
@@ -1993,22 +1411,15 @@ function submitOrder(type){
   orders.unshift(data);
   saveOrders(orders);
 
-  // Show success message
   document.getElementById('form-'+type).style.display='none';
   document.getElementById('success-'+type).classList.add('show');
-
-  // Update badges
   updateBadges();
-
-  // Auto close after 3 seconds
   setTimeout(closeModal, 3000);
 }
 
-// ─── Init badges on load ───
 document.addEventListener('DOMContentLoaded', updateBadges);
 updateBadges();
 </script>
-<!-- ═══ END ORDER FORMS SYSTEM ═══ -->
 
 </body>
 </html>
