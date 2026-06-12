@@ -468,11 +468,13 @@ function convertAmount(amountTRY){
   const rates={TRY:1,USD:1/parseFloat(document.getElementById('rate-USD')?.value||45.74),EUR:1/parseFloat(document.getElementById('rate-EUR')?.value||35.2),EGP:1/parseFloat(document.getElementById('rate-EGP')?.value||0.86)};
   return amountTRY*(rates[adminCurrency]||1);
 }
-function formatCurrency(amountTRY){
+function formatCurrency(amountTRY, forceCur){
   if(!amountTRY)return'—';
-  const converted=convertAmount(parseFloat(amountTRY));
+  const cur = forceCur || adminCurrency;
+  const rates={TRY:1,USD:1/parseFloat(document.getElementById('rate-USD')?.value||45.74),EUR:1/parseFloat(document.getElementById('rate-EUR')?.value||35.2),EGP:1/parseFloat(document.getElementById('rate-EGP')?.value||0.86)};
+  const converted=parseFloat(amountTRY)*(rates[cur]||1);
   const symbols={TRY:'₺',USD:'$',EUR:'€',EGP:'ج'};
-  return symbols[adminCurrency]+' '+converted.toLocaleString('ar-EG',{maximumFractionDigits:2});
+  return symbols[cur]+' '+converted.toLocaleString('ar-EG',{maximumFractionDigits:2});
 }
 function saveRates(){localStorage.setItem('admin_rates',JSON.stringify({USD:document.getElementById('rate-USD')?.value,EUR:document.getElementById('rate-EUR')?.value,EGP:document.getElementById('rate-EGP')?.value}));}
 function loadRates(){
@@ -864,7 +866,7 @@ function updateFinal(){
   const profit=document.getElementById('profit-val')?.value||0;
   const final=calcFinal(baseTRY,profit,profitType);
   const display=document.getElementById('final-display');
-  if(display)display.textContent=final?formatCurrency(final):'—';
+  if(display)display.textContent=final?formatCurrency(final,baseCur):'—';
 
   if(currentOrder){
     const orders=getOrders();const idx=orders.findIndex(o=>String(o.id)===String(currentOrder.id));
@@ -932,7 +934,11 @@ function confirmOrder(){
 
 function buildOrderSummary(o){
   const typeLabels={flight:'✈️ حجز تذكرة طيران',hotel:'🏨 حجز فندق',visa:'🛂 طلب تأشيرة',cargo:'📦 شحن / كارجو',transfer:'🚖 توصيل VIP',package:'🌍 برنامج سياحي'};
-  const finalPrice=o.final_price?Number(o.final_price).toLocaleString()+' ليرة تركية':'—';
+  const priceCur = o.base_currency || 'TRY';
+  const priceSymbols={TRY:'₺ ليرة تركية',USD:'$ دولار',EUR:'€ يورو',EGP:'ج جنيه'};
+  const priceRates={TRY:1,USD:1/parseFloat(document.getElementById('rate-USD')?.value||45.74),EUR:1/parseFloat(document.getElementById('rate-EUR')?.value||35.2),EGP:1/parseFloat(document.getElementById('rate-EGP')?.value||0.86)};
+  const finalConverted = o.final_price ? (parseFloat(o.final_price)*(priceRates[priceCur]||1)).toLocaleString('ar-EG',{maximumFractionDigits:2}) : null;
+  const finalPrice = finalConverted ? finalConverted+' '+priceSymbols[priceCur] : '—';
   let details='';
   if(o.type==='flight'){
     const from=o.admin_from||o.from||'—',to=o.admin_to||o.to||'—',date=o.admin_date||o.date_travel||'—';
@@ -941,25 +947,86 @@ function buildOrderSummary(o){
     const flightNo=o.flight_no?`\n• رقم الرحلة: ${o.flight_no}`:'';
     let baggage='';
     if(o.bag_cabin||o.bag_under||o.bag_checkin){
-      baggage=`\n\n🧳 *الأمتعة المسموحة:*`;
-      if(o.bag_cabin)baggage+=`\n• حقيبة الكابينة: ${o.bag_cabin}`;
-      if(o.bag_under)baggage+=`\n• تحت المقعد: ${o.bag_under}`;
-      if(o.bag_checkin)baggage+=`\n• حقيبة شحن: ${o.bag_checkin}`;
+      baggage='';
+      if(o.bag_cabin)baggage+=`
+• حقيبة الكابينة: ${o.bag_cabin} كجم`;
+      if(o.bag_under)baggage+=`
+• تحت المقعد: ${o.bag_under} كجم`;
+      if(o.bag_checkin)baggage+=`
+• حقيبة شحن: ${o.bag_checkin} كجم`;
     }
-    details=`\n✈️ *تفاصيل الرحلة:*\n• المسار: ${from} ← ${to}\n• التاريخ: ${date}${timing}${airline}${flightNo}\n• عدد الركاب: ${o.pax||'1'}\n• الدرجة: ${o.class||'—'}\n• نوع الرحلة: ${o.admin_ftype||o.trip_type||'—'}${baggage}`;
+    let flightLines = [];
+    flightLines.push('✈️ *تفاصيل الرحلة:*');
+    flightLines.push('• المسار: *'+from+' ← '+to+'*');
+    flightLines.push('• التاريخ: *'+date+'*');
+    if(o.dep_time && o.arr_time) flightLines.push('• المواعيد: *'+o.dep_time+' ← '+o.arr_time+'*');
+    if(o.airline) flightLines.push('• شركة الطيران: *'+o.airline+'*');
+    if(o.flight_no) flightLines.push('• رقم الرحلة: '+o.flight_no);
+    flightLines.push('• عدد الركاب: '+(o.pax||'1'));
+    flightLines.push('• الدرجة: '+(o.class||'—'));
+    flightLines.push('• نوع الرحلة: '+(o.admin_ftype||o.trip_type||'—'));
+    if(baggage) flightLines.push('\n🧳 *الأمتعة المسموحة:*\n'+baggage);
+    details = flightLines.join('\n');
   } else if(o.type==='hotel'){
-    details=`\n🏨 *تفاصيل الحجز:*\n• الوجهة: ${o.city||'—'}\n• الفندق: ${o.hotel||'أفضل خيار متاح'}\n• الدخول: ${o.checkin||'—'}\n• الخروج: ${o.checkout||'—'}\n• عدد الأشخاص: ${o.guests||'—'}\n• نوع الإقامة: ${o.board||'—'}`;
+    details=`
+🏨 *تفاصيل الحجز:*
+• الوجهة: *${o.city||'—'}*
+• الفندق: *${o.hotel||'أفضل خيار متاح'}*
+• تاريخ الدخول: ${o.checkin||'—'}
+• تاريخ الخروج: ${o.checkout||'—'}
+• عدد الأشخاص: ${o.guests||'—'}
+• نوع الإقامة: ${o.board||'—'}`;
   } else if(o.type==='visa'){
-    details=`\n🛂 *تفاصيل التأشيرة:*\n• الجنسية: ${o.nationality||'—'}\n• الدولة: ${o.country||'—'}\n• النوع: ${o.visa_type||'—'}\n• تاريخ السفر: ${o.date_travel||'—'}`;
+    details=`
+🛂 *تفاصيل التأشيرة:*
+• الجنسية: ${o.nationality||'—'}
+• الدولة المطلوبة: *${o.country||'—'}*
+• نوع التأشيرة: ${o.visa_type||'—'}
+• تاريخ السفر المتوقع: ${o.date_travel||'—'}`;
   } else if(o.type==='cargo'){
-    details=`\n📦 *تفاصيل الشحن:*\n• من: ${o.from||'—'}\n• إلى: ${o.to||'—'}\n• البضاعة: ${o.goods||'—'}\n• الوزن: ${o.weight||'—'} كجم`;
+    details=`
+📦 *تفاصيل الشحن:*
+• من: *${o.from||'—'}*
+• إلى: *${o.to||'—'}*
+• نوع البضاعة: ${o.goods||'—'}
+• الوزن التقريبي: ${o.weight||'—'} كجم`;
   } else if(o.type==='transfer'){
-    details=`\n🚖 *تفاصيل التوصيل:*\n• المطار: ${o.airport||'—'}\n• الخدمة: ${o.transfer_type||'—'}\n• الوقت: ${o.datetime||'—'}\n• العدد: ${o.pax||'—'}\n• العنوان: ${o.address||'—'}`;
+    details=`
+🚖 *تفاصيل التوصيل:*
+• المطار: *${o.airport||'—'}*
+• نوع الخدمة: ${o.transfer_type||'—'}
+• التاريخ والوقت: *${o.datetime||'—'}*
+• عدد الأشخاص: ${o.pax||'—'}
+• العنوان: ${o.address||'—'}`;
   } else if(o.type==='package'){
-    details=`\n🌍 *تفاصيل البرنامج:*\n• الوجهة: ${o.destination||'—'}\n• عدد الأشخاص: ${o.pax||'—'}\n• التاريخ: ${o.date_travel||'—'}\n• المدة: ${o.duration||'—'}\n• يشمل: ${o.includes||'—'}`;
+    details=`
+🌍 *تفاصيل البرنامج:*
+• الوجهة: *${o.destination||'—'}*
+• عدد الأشخاص: ${o.pax||'—'}
+• تاريخ السفر: *${o.date_travel||'—'}*
+• المدة: ${o.duration||'—'}
+• يشمل: ${o.includes||'—'}`;
   }
   const clientMsgSection=o.client_msg?`\n\n💬 *ملاحظة مهمة:*\n${o.client_msg}`:'';
-  return`━━━━━━━━━━━━━━━━━━━━\n✈️ *Matarist Travel*\n━━━━━━━━━━━━━━━━━━━━\n\nأهلاً وسهلاً *${o.name||''}* 🌸\n\n*الخدمة:* ${typeLabels[o.type]||o.type}\n${details}${clientMsgSection}\n\n━━━━━━━━━━━━━━━━━━━━\n💰 *السعر الإجمالي:* ${finalPrice}\n_(شامل جميع الرسوم والضرائب)_\n━━━━━━━━━━━━━━━━━━━━\n\nللتأكيد أو الاستفسار:\n📱 *+90 545 121 8167*\n🌐 mataristtravel.com\n\n_Matarist Travel — وجهتك القادمة تبدأ من هنا_ ✨`.trim();
+  return`━━━━━━━━━━━━━━━━━━━━
+✈️ *Matarist Travel*
+━━━━━━━━━━━━━━━━━━━━
+
+أهلاً وسهلاً *${o.name||''}* 🌸
+
+*الخدمة:* ${typeLabels[o.type]||o.type}
+${details}${clientMsgSection}
+
+━━━━━━━━━━━━━━━━━━━━
+💰 *السعر الإجمالي:* *${finalPrice}*
+_(شامل جميع الرسوم والضرائب)_
+━━━━━━━━━━━━━━━━━━━━
+
+للتأكيد أو الاستفسار:
+📱 *+90 545 121 8167*
+🌐 mataristtravel.com
+
+_Matarist Travel — وجهتك القادمة تبدأ من هنا_ ✨`.trim();
 }
 
 function sendWhatsApp(type){
