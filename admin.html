@@ -630,6 +630,12 @@ function selectServiceType(type){
   renderNewOrderFields(type);
 }
 
+function toggleNewOrderReturnDate(){
+  const isRT = document.getElementById('nf-type')?.value === 'ذهاب وإياب';
+  const wrap = document.getElementById('nf-return-wrap');
+  if(wrap) wrap.style.display = isRT ? '' : 'none';
+}
+
 function renderNewOrderFields(type){
   const wrap=document.getElementById('no-service-fields');
   const typeLabels={flight:'✈️ تفاصيل الرحلة',hotel:'🏨 تفاصيل الفندق',visa:'🛂 تفاصيل التأشيرة',cargo:'📦 تفاصيل الشحن',transfer:'🚖 تفاصيل التوصيل',package:'🌍 تفاصيل البرنامج'};
@@ -642,7 +648,8 @@ function renderNewOrderFields(type){
       <div class="form-field"><label>تاريخ السفر</label><input id="nf-date" type="date"></div>
       <div class="form-field"><label>عدد الركاب</label><input id="nf-pax" type="number" value="1" min="1"></div>
       <div class="form-field"><label>درجة السفر</label><select id="nf-class"><option>اقتصادية</option><option>رجال أعمال</option><option>أولى</option></select></div>
-      <div class="form-field"><label>نوع الرحلة</label><select id="nf-type"><option>ذهاب فقط</option><option>ذهاب وإياب</option></select></div>
+      <div class="form-field"><label>نوع الرحلة</label><select id="nf-type" onchange="toggleNewOrderReturnDate()"><option>ذهاب فقط</option><option>ذهاب وإياب</option></select></div>
+      <div class="form-field" id="nf-return-wrap" style="display:none"><label>تاريخ العودة</label><input id="nf-date-return" type="date"></div>
     </div>`;}
   else if(type==='hotel'){fields=`
     <div class="form-grid">
@@ -706,7 +713,7 @@ function saveManualOrder(){
 
   // جمع بيانات الخدمة
   if(type==='flight'){
-    data={...data,from:document.getElementById('nf-from')?.value||'',to:document.getElementById('nf-to')?.value||'',date_travel:document.getElementById('nf-date')?.value||'',pax:document.getElementById('nf-pax')?.value||'1',class:document.getElementById('nf-class')?.value||'',trip_type:document.getElementById('nf-type')?.value||''};
+    data={...data,from:document.getElementById('nf-from')?.value||'',to:document.getElementById('nf-to')?.value||'',date_travel:document.getElementById('nf-date')?.value||'',pax:document.getElementById('nf-pax')?.value||'1',class:document.getElementById('nf-class')?.value||'',trip_type:document.getElementById('nf-type')?.value||'',date_return:document.getElementById('nf-date-return')?.value||''};
   } else if(type==='hotel'){
     data={...data,city:document.getElementById('nf-city')?.value||'',hotel:document.getElementById('nf-hotel')?.value||'',checkin:document.getElementById('nf-checkin')?.value||'',checkout:document.getElementById('nf-checkout')?.value||'',guests:document.getElementById('nf-guests')?.value||'',board:document.getElementById('nf-board')?.value||''};
   } else if(type==='visa'){
@@ -730,6 +737,179 @@ function saveManualOrder(){
 }
 
 // ── Open order ──
+
+// ── Field builder helpers (use concatenation to avoid template literal nesting bugs) ──
+function efield(label, id, value, type){
+  type = type || 'text';
+  if(value===undefined||value===null) value='';
+  value = String(value).replace(/"/g,'&quot;');
+  return '<div class="profit-field"><label>'+label+'</label><input class="profit-input" id="'+id+'" type="'+type+'" value="'+value+'"></div>';
+}
+function etextarea(label, id, value){
+  value = value||'';
+  return '<div class="profit-field" style="grid-column:1/-1"><label>'+label+'</label><textarea class="profit-input" id="'+id+'" style="min-height:60px">'+value+'</textarea></div>';
+}
+function eselect(label, id, options, selected){
+  var opts = '';
+  for(var i=0;i<options.length;i++){
+    opts += '<option'+(options[i]===selected?' selected':'')+'>'+options[i]+'</option>';
+  }
+  return '<div class="profit-field"><label>'+label+'</label><select class="profit-input" id="'+id+'">'+opts+'</select></div>';
+}
+function eval_(id){
+  var el = document.getElementById(id);
+  return el ? el.value : '';
+}
+
+// ── Editable type-specific fields ──
+function getEditableTypeFields(o){
+  var t = o.type;
+  var html = '';
+  if(t==='flight'){
+    const isRT0 = (o.trip_type||o.admin_ftype)==='ذهاب وإياب';
+    html += efield('من (مدينة المغادرة)','ef-from',o.from);
+    html += efield('إلى (مدينة الوصول)','ef-to',o.to);
+    html += efield('تاريخ السفر','ef-date_travel',o.date_travel,'date');
+    html += '<div class="profit-field"><label>نوع الرحلة</label><select class="profit-input" id="ef-trip_type" onchange="toggleAdminRoundTrip()"><option'+((o.trip_type||o.admin_ftype)==='ذهاب فقط'?' selected':'')+'>ذهاب فقط</option><option'+(isRT0?' selected':'')+'>ذهاب وإياب</option></select></div>';
+    html += '<div class="profit-field" id="ef-date_return-wrap" style="display:'+(isRT0?'':'none')+'"><label>تاريخ العودة</label><input class="profit-input" id="ef-date_return" type="date" value="'+(o.date_return||'')+'"></div>';
+    html += efield('عدد الركاب','ef-pax',o.pax,'number');
+    html += eselect('الدرجة','ef-class',['اقتصادية','رجال أعمال','أولى'],o.class);
+  } else if(t==='hotel'){
+    html += efield('المدينة','ef-city',o.city);
+    html += efield('الفندق','ef-hotel',o.hotel);
+    html += efield('تاريخ الدخول','ef-checkin',o.checkin,'date');
+    html += efield('تاريخ الخروج','ef-checkout',o.checkout,'date');
+    html += efield('عدد الأشخاص','ef-guests',o.guests,'number');
+    html += eselect('نوع الإقامة','ef-board',['نصف إقامة','إقامة كاملة','غرفة فقط'],o.board);
+  } else if(t==='visa'){
+    html += efield('الجنسية','ef-nationality',o.nationality);
+    html += efield('الدولة المطلوبة','ef-country',o.country);
+    html += eselect('نوع التأشيرة','ef-visa_type',['سياحية','عمل','دراسة','إقامة'],o.visa_type);
+    html += efield('تاريخ السفر المتوقع','ef-date_travel',o.date_travel,'date');
+  } else if(t==='cargo'){
+    html += efield('من','ef-from',o.from);
+    html += efield('إلى','ef-to',o.to);
+    html += efield('نوع البضاعة','ef-goods',o.goods);
+    html += efield('الوزن (كجم)','ef-weight',o.weight,'number');
+  } else if(t==='transfer'){
+    html += efield('المطار','ef-airport',o.airport);
+    html += eselect('نوع الخدمة','ef-transfer_type',['استقبال من المطار','توصيل للمطار','ذهاب وإياب'],o.transfer_type);
+    html += efield('التاريخ والوقت','ef-datetime',o.datetime,'datetime-local');
+    html += efield('عدد الأشخاص','ef-pax',o.pax,'number');
+    html += efield('العنوان / الفندق','ef-address',o.address);
+  } else if(t==='package'){
+    html += efield('الوجهة','ef-destination',o.destination);
+    html += efield('عدد الأشخاص','ef-pax',o.pax,'number');
+    html += efield('تاريخ السفر','ef-date_travel',o.date_travel,'date');
+    html += eselect('المدة','ef-duration',['3 أيام','4 أيام','5 أيام','أسبوع','أكثر'],o.duration);
+    html += eselect('يشمل','ef-includes',['فندق + طيران + توصيل','فندق + طيران','فندق فقط'],o.includes);
+    html += efield('الميزانية التقريبية','ef-budget',o.budget);
+  }
+  html += etextarea('ملاحظات','ef-notes',o.notes);
+  return html;
+}
+
+// ── حفظ كل تعديلات الطلب ──
+function saveAllOrderFields(){
+  if(!currentOrder) return;
+  var orders = getOrders();
+  var idx = orders.findIndex(function(o){return String(o.id)===String(currentOrder.id);});
+  if(idx<0) return;
+  var o = orders[idx];
+
+  // بيانات أساسية
+  o.name = eval_('e-name');
+  o.phone = eval_('e-phone');
+  o.status = eval_('e-status');
+  o.notes = eval_('ef-notes');
+
+  // بيانات نوع الخدمة
+  var t = o.type;
+  if(t==='flight'){
+    o.from = eval_('ef-from');
+    o.to = eval_('ef-to');
+    o.date_travel = eval_('ef-date_travel');
+    o.trip_type = eval_('ef-trip_type');
+    var dr = document.getElementById('ef-date_return');
+    if(dr) o.date_return = dr.value;
+    o.pax = eval_('ef-pax');
+    o.class = eval_('ef-class');
+  } else if(t==='hotel'){
+    o.city = eval_('ef-city');
+    o.hotel = eval_('ef-hotel');
+    o.checkin = eval_('ef-checkin');
+    o.checkout = eval_('ef-checkout');
+    o.guests = eval_('ef-guests');
+    o.board = eval_('ef-board');
+  } else if(t==='visa'){
+    o.nationality = eval_('ef-nationality');
+    o.country = eval_('ef-country');
+    o.visa_type = eval_('ef-visa_type');
+    o.date_travel = eval_('ef-date_travel');
+  } else if(t==='cargo'){
+    o.from = eval_('ef-from');
+    o.to = eval_('ef-to');
+    o.goods = eval_('ef-goods');
+    o.weight = eval_('ef-weight');
+  } else if(t==='transfer'){
+    o.airport = eval_('ef-airport');
+    o.transfer_type = eval_('ef-transfer_type');
+    o.datetime = eval_('ef-datetime');
+    o.pax = eval_('ef-pax');
+    o.address = eval_('ef-address');
+  } else if(t==='package'){
+    o.destination = eval_('ef-destination');
+    o.pax = eval_('ef-pax');
+    o.date_travel = eval_('ef-date_travel');
+    o.duration = eval_('ef-duration');
+    o.includes = eval_('ef-includes');
+    o.budget = eval_('ef-budget');
+  }
+
+  saveOrders(orders);
+  currentOrder = o;
+  refreshOrders();
+  showToast('✅ تم حفظ كل التعديلات!','success');
+  openOrder(o.id); // إعادة فتح لتحديث العرض (مهم لو نوع الرحلة تغير لذهاب وإياب)
+}
+
+// ── محرر تفاصيل خط الرحلة (ذهاب / عودة) ──
+function toggleAdminRoundTrip(){
+  const isRT = document.getElementById('ef-trip_type')?.value === 'ذهاب وإياب';
+  const dr = document.getElementById('ef-date_return-wrap');
+  if(dr) dr.style.display = isRT ? '' : 'none';
+  const rl = document.getElementById('return-leg-wrap');
+  if(rl) rl.style.display = isRT ? '' : 'none';
+}
+
+function buildFlightLegEditor(prefix, o, legLabel, isReturn){
+  var airline, flightNo, from2, to2, dep, arr, date;
+  if(isReturn){
+    airline = o.r_airline; flightNo = o.r_flight_no;
+    from2 = o.r_admin_from || o.admin_to || o.to;
+    to2 = o.r_admin_to || o.admin_from || o.from;
+    dep = o.r_dep_time; arr = o.r_arr_time;
+    date = o.r_admin_date || o.date_return;
+  } else {
+    airline = o.airline; flightNo = o.flight_no;
+    from2 = o.admin_from || o.from;
+    to2 = o.admin_to || o.to;
+    dep = o.dep_time; arr = o.arr_time;
+    date = o.admin_date || o.date_travel;
+  }
+  var html = '<div class="profit-title" style="margin-bottom:10px"><i class="fa-solid fa-plane"></i> '+legLabel+'</div>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">';
+  html += efield('شركة الطيران', prefix+'-airline', airline, 'text');
+  html += efield('رقم الرحلة', prefix+'-flightno', flightNo, 'text');
+  html += efield('من (IATA)', prefix+'-from2', from2, 'text');
+  html += efield('إلى (IATA)', prefix+'-to2', to2, 'text');
+  html += efield('موعد الإقلاع', prefix+'-dep', dep, 'text');
+  html += efield('موعد الوصول', prefix+'-arr', arr, 'text');
+  html += efield('تاريخ الرحلة', prefix+'-fdate', date, 'date');
+  html += '</div>';
+  return html;
+}
+
 function openOrder(id){
   const orders=getOrders();const order=orders.find(o=>String(o.id)===String(id));
   if(!order)return;
@@ -739,24 +919,35 @@ function openOrder(id){
   const basePrice=order.base_price||'';
   const profit=order.profit_amount||'';
   const finalPrice=calcFinal(basePrice,profit,profitType);
+  const finalCur=order.final_currency||'TRY';
+
+  // ✅ بيانات العميل القابلة للتعديل
+  const clientDataHTML = `
+    <div class="profit-section" style="margin-bottom:16px">
+      <div class="profit-title"><i class="fa-solid fa-user-pen"></i> بيانات العميل والطلب (قابلة للتعديل بالكامل)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        `+efield('اسم العميل','e-name',order.name)+`
+        `+efield('رقم الواتساب','e-phone',order.phone)+`
+        `+eselect('الحالة','e-status',['جديد','جاري العمل','تم إرسال العرض','تم التأكيد','ملغي'],order.status)+`
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+        `+getEditableTypeFields(order)+`
+      </div>
+      <button class="btn btn-confirm" style="margin-top:12px;width:100%" onclick="saveAllOrderFields()">
+        <i class="fa-solid fa-floppy-disk"></i> حفظ كل التعديلات
+      </button>
+    </div>`;
+
+  // ✅ محرر تفاصيل الرحلة (طيران فقط) - ذهاب + عودة لو ذهاب وإياب
+  const isRoundTrip = order.type==='flight' && (order.trip_type||order.admin_ftype)==='ذهاب وإياب';
+  const outboundLegHTML = order.type==='flight' ? buildFlightLegEditor('e', order, '✈️ تفاصيل رحلة الذهاب', false) : '';
+  const returnLegHTML = order.type==='flight' ? '<div id="return-leg-wrap" style="display:'+(isRoundTrip?'':'none')+'"><div class="divider"></div>' + buildFlightLegEditor('r', order, '🔄 تفاصيل رحلة العودة', true) + '</div>' : '';
 
   const flightEditFields=order.type==='flight'?`
     <div class="divider"></div>
     <div class="profit-section">
-      <div class="profit-title"><i class="fa-solid fa-plane"></i> تفاصيل الرحلة (قابلة للتعديل)</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-        <div class="profit-field"><label>شركة الطيران</label><input class="profit-input" id="e-airline" placeholder="Pegasus..." value="${order.airline||''}"></div>
-        <div class="profit-field"><label>رقم الرحلة</label><input class="profit-input" id="e-flightno" placeholder="PC694" value="${order.flight_no||''}"></div>
-        <div class="profit-field"><label>من (IATA)</label><input class="profit-input" id="e-from2" placeholder="SAW" value="${order.admin_from||order.from||''}"></div>
-        <div class="profit-field"><label>إلى (IATA)</label><input class="profit-input" id="e-to2" placeholder="CAI" value="${order.admin_to||order.to||''}"></div>
-        <div class="profit-field"><label>موعد الإقلاع</label><input class="profit-input" id="e-dep" placeholder="23:35" value="${order.dep_time||''}"></div>
-        <div class="profit-field"><label>موعد الوصول</label><input class="profit-input" id="e-arr" placeholder="01:45" value="${order.arr_time||''}"></div>
-        <div class="profit-field"><label>تاريخ الرحلة</label><input class="profit-input" id="e-fdate" type="date" value="${order.admin_date||order.date_travel||''}"></div>
-        <div class="profit-field"><label>نوع الرحلة</label><select class="profit-input" id="e-ftype">
-          <option ${(order.admin_ftype||order.trip_type)==='ذهاب فقط'?'selected':''}>ذهاب فقط</option>
-          <option ${(order.admin_ftype||order.trip_type)==='ذهاب وإياب'?'selected':''}>ذهاب وإياب</option>
-        </select></div>
-      </div>
+      `+outboundLegHTML+`
+      `+returnLegHTML+`
       <div style="margin-top:12px">
         <div class="profit-title" style="margin-bottom:10px"><i class="fa-solid fa-suitcase"></i> الأمتعة</div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
@@ -775,11 +966,7 @@ function openOrder(id){
       <span style="color:var(--gold);font-size:0.82rem;font-weight:700">${order.order_ref||'#'+order.id}</span>
       ${order.manual_entry?'<span style="background:rgba(201,168,76,0.2);color:var(--gold);font-size:0.75rem;padding:3px 8px;border-radius:8px">📝 طلب يدوي</span>':''}
     </div>
-    <div class="data-grid">
-      <div class="data-item"><label>اسم العميل</label><span>${order.name||'—'}</span></div>
-      <div class="data-item"><label>رقم الواتساب</label><span>${order.phone||'—'}</span></div>
-      ${getOrderFields(order)}
-    </div>
+    ${clientDataHTML}
     ${flightEditFields}
     <div class="divider"></div>
     <div class="profit-section">
@@ -787,7 +974,6 @@ function openOrder(id){
       <div class="profit-grid">
         <div class="profit-field">
           <label>سعر الخدمة الأصلي</label>
-          <!-- ✅ NEW: اختيار العملة جنب السعر مباشرة -->
           <div class="price-with-currency">
             <input class="profit-input" id="base-price" type="number" placeholder="مثال: 5000" value="${basePrice}" oninput="updateFinal()" style="border-radius:8px 0 0 8px">
             <select id="base-currency" onchange="updateFinal()" style="background:var(--surface2);border:1px solid var(--border);border-right:none;border-radius:0 8px 8px 0;color:var(--gold);font-family:'Cairo',sans-serif;font-size:0.85rem;font-weight:700;padding:0 10px;cursor:pointer;outline:none;min-width:80px">
@@ -803,11 +989,20 @@ function openOrder(id){
             <button id="btn-pct" class="${profitType==='pct'?'active':''}" onclick="setProfitType('pct')">نسبة %</button>
           </div>
           <input class="profit-input" id="profit-val" type="number" placeholder="${profitType==='pct'?'مثال: 10':'مثال: 500'}" value="${profit}" oninput="updateFinal()">
+          <div style="margin-top:6px;font-size:0.78rem;color:var(--text-muted)">ربحك: <strong id="profit-display" style="color:var(--gold)">—</strong></div>
         </div>
         <div class="profit-field">
-          <div class="final-price">
-            <label>السعر للعميل</label>
-            <div class="amount" id="final-display">${finalPrice?formatCurrency(finalPrice):'—'}</div>
+          <label>السعر للعميل</label>
+          <div class="price-with-currency">
+            <div class="final-price" style="border-radius:8px 0 0 8px;flex:1">
+              <div class="amount" id="final-display">${finalPrice?formatCurrency(finalPrice,finalCur):'—'}</div>
+            </div>
+            <select id="final-currency" onchange="updateFinal()" style="background:var(--surface2);border:1px solid var(--border);border-right:none;border-radius:0 8px 8px 0;color:var(--green);font-family:'Cairo',sans-serif;font-size:0.85rem;font-weight:700;padding:0 10px;cursor:pointer;outline:none;min-width:80px">
+              <option value="TRY" ${finalCur==='TRY'?'selected':''}>₺ ليرة</option>
+              <option value="USD" ${finalCur==='USD'?'selected':''}>$ دولار</option>
+              <option value="EUR" ${finalCur==='EUR'?'selected':''}>€ يورو</option>
+              <option value="EGP" ${finalCur==='EGP'?'selected':''}>ج جنيه</option>
+            </select>
           </div>
         </div>
       </div>
@@ -823,12 +1018,14 @@ function openOrder(id){
       <button class="btn btn-whatsapp" onclick="sendWhatsApp('review')"><i class="fa-brands fa-whatsapp"></i> جاري المراجعة</button>
       <button class="btn btn-whatsapp" style="background:#128c7e" onclick="sendWhatsApp('processing')"><i class="fa-solid fa-spinner"></i> جاري العمل</button>
       <button class="btn btn-whatsapp" style="background:#8b5cf6" onclick="sendWhatsApp('offer')"><i class="fa-solid fa-paper-plane"></i> تم الإرسال</button>
+      <button class="btn btn-whatsapp" style="background:#0891b2" onclick="sendWhatsApp('reminder')"><i class="fa-solid fa-bell"></i> تذكير بالعرض</button>
       <button class="btn btn-confirm" onclick="confirmOrder()"><i class="fa-solid fa-circle-check"></i> تأكيد الطلب</button>
       <button class="btn btn-cancel" onclick="setStatus('ملغي')"><i class="fa-solid fa-xmark"></i> إلغاء</button>
       <button class="btn" style="background:var(--red);color:#fff;margin-top:8px;width:100%" onclick="deleteOrder()"><i class="fa-solid fa-trash"></i> حذف الطلب</button>
     </div>`;
 
   document.getElementById('order-modal').classList.add('open');
+  updateFinal();
 }
 
 function getOrderFields(o){
@@ -865,8 +1062,14 @@ function updateFinal(){
   const baseTRY=convertToTRY(baseRaw,baseCur);
   const profit=document.getElementById('profit-val')?.value||0;
   const final=calcFinal(baseTRY,profit,profitType);
+  const finalCur=document.getElementById('final-currency')?.value||'TRY';
   const display=document.getElementById('final-display');
-  if(display)display.textContent=final?formatCurrency(final,baseCur):'—';
+  if(display)display.textContent=final?formatCurrency(final,finalCur):'—';
+
+  // ✅ إظهار الربح الصافي (يفيد خصوصاً عند استخدام النسبة %)
+  const profitTRY = final - baseTRY;
+  const profitDisplay=document.getElementById('profit-display');
+  if(profitDisplay)profitDisplay.textContent = profitTRY ? formatCurrency(profitTRY,'TRY') : '—';
 
   if(currentOrder){
     const orders=getOrders();const idx=orders.findIndex(o=>String(o.id)===String(currentOrder.id));
@@ -877,6 +1080,7 @@ function updateFinal(){
       orders[idx].profit_amount=profit;
       orders[idx].profit_type=profitType;
       orders[idx].final_price=final;
+      orders[idx].final_currency=finalCur;
       saveOrders(orders);
     }
   }
@@ -893,17 +1097,28 @@ function saveFlightDetails(){
   if(!currentOrder)return;
   const orders=getOrders();const idx=orders.findIndex(o=>String(o.id)===String(currentOrder.id));
   if(idx<0)return;
-  orders[idx].airline=document.getElementById('e-airline')?.value||'';
-  orders[idx].flight_no=document.getElementById('e-flightno')?.value||'';
-  orders[idx].admin_from=document.getElementById('e-from2')?.value||'';
-  orders[idx].admin_to=document.getElementById('e-to2')?.value||'';
-  orders[idx].dep_time=document.getElementById('e-dep')?.value||'';
-  orders[idx].arr_time=document.getElementById('e-arr')?.value||'';
-  orders[idx].admin_date=document.getElementById('e-fdate')?.value||'';
-  orders[idx].admin_ftype=document.getElementById('e-ftype')?.value||'';
-  orders[idx].bag_cabin=document.getElementById('e-cabin')?.value||'';
-  orders[idx].bag_under=document.getElementById('e-under')?.value||'';
-  orders[idx].bag_checkin=document.getElementById('e-checkin')?.value||'';
+  // رحلة الذهاب
+  orders[idx].airline=eval_('e-airline');
+  orders[idx].flight_no=eval_('e-flightno');
+  orders[idx].admin_from=eval_('e-from2');
+  orders[idx].admin_to=eval_('e-to2');
+  orders[idx].dep_time=eval_('e-dep');
+  orders[idx].arr_time=eval_('e-arr');
+  orders[idx].admin_date=eval_('e-fdate');
+  // رحلة العودة (لو ذهاب وإياب)
+  if(document.getElementById('r-airline')){
+    orders[idx].r_airline=eval_('r-airline');
+    orders[idx].r_flight_no=eval_('r-flightno');
+    orders[idx].r_admin_from=eval_('r-from2');
+    orders[idx].r_admin_to=eval_('r-to2');
+    orders[idx].r_dep_time=eval_('r-dep');
+    orders[idx].r_arr_time=eval_('r-arr');
+    orders[idx].r_admin_date=eval_('r-fdate');
+  }
+  // الأمتعة
+  orders[idx].bag_cabin=eval_('e-cabin');
+  orders[idx].bag_under=eval_('e-under');
+  orders[idx].bag_checkin=eval_('e-checkin');
   saveOrders(orders);currentOrder=orders[idx];showToast('✅ تم حفظ تفاصيل الرحلة!','success');
 }
 
@@ -934,7 +1149,7 @@ function confirmOrder(){
 
 function buildOrderSummary(o){
   const typeLabels={flight:'✈️ حجز تذكرة طيران',hotel:'🏨 حجز فندق',visa:'🛂 طلب تأشيرة',cargo:'📦 شحن / كارجو',transfer:'🚖 توصيل VIP',package:'🌍 برنامج سياحي'};
-  const priceCur = o.base_currency || 'TRY';
+  const priceCur = o.final_currency || o.base_currency || 'TRY';
   const priceSymbols={TRY:'₺ ليرة تركية',USD:'$ دولار',EUR:'€ يورو',EGP:'ج جنيه'};
   const priceRates={TRY:1,USD:1/parseFloat(document.getElementById('rate-USD')?.value||45.74),EUR:1/parseFloat(document.getElementById('rate-EUR')?.value||35.2),EGP:1/parseFloat(document.getElementById('rate-EGP')?.value||0.86)};
   const finalConverted = o.final_price ? (parseFloat(o.final_price)*(priceRates[priceCur]||1)).toLocaleString('ar-EG',{maximumFractionDigits:2}) : null;
@@ -955,8 +1170,9 @@ function buildOrderSummary(o){
       if(o.bag_checkin)baggage+=`
 • حقيبة شحن: ${o.bag_checkin} كجم`;
     }
+    const isRT = (o.trip_type||o.admin_ftype)==='ذهاب وإياب';
     let flightLines = [];
-    flightLines.push('✈️ *تفاصيل الرحلة:*');
+    flightLines.push('✈️ *'+(isRT?'تفاصيل رحلة الذهاب:':'تفاصيل الرحلة:')+'*');
     flightLines.push('• المسار: *'+from+' ← '+to+'*');
     flightLines.push('• التاريخ: *'+date+'*');
     if(o.dep_time && o.arr_time) flightLines.push('• المواعيد: *'+o.dep_time+' ← '+o.arr_time+'*');
@@ -964,8 +1180,21 @@ function buildOrderSummary(o){
     if(o.flight_no) flightLines.push('• رقم الرحلة: '+o.flight_no);
     flightLines.push('• عدد الركاب: '+(o.pax||'1'));
     flightLines.push('• الدرجة: '+(o.class||'—'));
-    flightLines.push('• نوع الرحلة: '+(o.admin_ftype||o.trip_type||'—'));
-    if(baggage) flightLines.push('\n🧳 *الأمتعة المسموحة:*\n'+baggage);
+    flightLines.push('• نوع الرحلة: '+(o.trip_type||o.admin_ftype||'—'));
+
+    // رحلة العودة (لو ذهاب وإياب)
+    if(isRT){
+      const rFrom=o.r_admin_from||to, rTo=o.r_admin_to||from, rDate=o.r_admin_date||o.date_return||'—';
+      flightLines.push('');
+      flightLines.push('🔄 *تفاصيل رحلة العودة:*');
+      flightLines.push('• المسار: *'+rFrom+' ← '+rTo+'*');
+      flightLines.push('• التاريخ: *'+rDate+'*');
+      if(o.r_dep_time && o.r_arr_time) flightLines.push('• المواعيد: *'+o.r_dep_time+' ← '+o.r_arr_time+'*');
+      if(o.r_airline) flightLines.push('• شركة الطيران: *'+o.r_airline+'*');
+      if(o.r_flight_no) flightLines.push('• رقم الرحلة: '+o.r_flight_no);
+    }
+
+    if(baggage) flightLines.push('\n🧳 *الأمتعة المسموحة:*'+baggage);
     details = flightLines.join('\n');
   } else if(o.type==='hotel'){
     details=`
@@ -1044,6 +1273,8 @@ function sendWhatsApp(type){
     if(!currentOrder.final_price){showToast('⚠️ يرجى إدخال السعر النهائي أولاً!','error');return;}
     msg=buildOrderSummary(currentOrder);
     setStatus('تم إرسال العرض');
+  } else if(type==='reminder'){
+    msg=`مرحباً *${currentOrder.name||''}* 🌸\n\nنود تذكيركم بالعرض الذي أرسلناه لكم سابقاً ✈️\n\nهل ما زلتم مهتمين بالحجز؟ يسعدنا إكمال الإجراءات معكم في أقرب وقت 🙏\n\nفي حالة وجود أي استفسار، نحن في خدمتكم دائماً.\n\n📱 +90 545 121 8167\n_Matarist Travel ✈️_`.trim();
   }
   window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
   showToast('✅ تم فتح واتساب!','success');
