@@ -543,7 +543,8 @@ footer{background:var(--navy-dark);border-top:1px solid rgba(201,168,76,0.2);pad
           <div class="form-row"><div class="form-group"><label>الاسم الكامل</label><input type="text" id="f-name" placeholder="الاسم كامل" required></div><div class="form-group"><label>رقم الواتساب</label><input type="tel" id="f-phone" placeholder="+905xxxxxxxxx" required></div></div>
           <div class="form-row"><div class="form-group"><label>من (مدينة المغادرة)</label><input type="text" id="f-from" placeholder="إسطنبول" required></div><div class="form-group"><label>إلى (مدينة الوصول)</label><input type="text" id="f-to" placeholder="القاهرة" required></div></div>
           <div class="form-row"><div class="form-group"><label>تاريخ السفر</label><input type="date" id="f-date" required></div><div class="form-group"><label>عدد الركاب</label><input type="number" id="f-pax" min="1" max="20" value="1"></div></div>
-          <div class="form-row"><div class="form-group"><label>درجة السفر</label><select id="f-class"><option value="اقتصادية">اقتصادية</option><option value="رجال أعمال">رجال أعمال</option><option value="أولى">الدرجة الأولى</option></select></div><div class="form-group"><label>رحلة ذهاب فقط / ذهاب وإياب</label><select id="f-type"><option value="ذهاب فقط">ذهاب فقط</option><option value="ذهاب وإياب">ذهاب وإياب</option></select></div></div>
+          <div class="form-row"><div class="form-group"><label>درجة السفر</label><select id="f-class"><option value="اقتصادية">اقتصادية</option><option value="رجال أعمال">رجال أعمال</option><option value="أولى">الدرجة الأولى</option></select></div><div class="form-group"><label>رحلة ذهاب فقط / ذهاب وإياب</label><select id="f-type" onchange="toggleReturnDate()"><option value="ذهاب فقط">ذهاب فقط</option><option value="ذهاب وإياب">ذهاب وإياب</option></select></div></div>
+          <div class="form-row" id="f-return-row" style="display:none"><div class="form-group"><label>تاريخ العودة</label><input type="date" id="f-date-return"></div></div>
           <div class="form-row single"><div class="form-group"><label>الأمتعة الإضافية (اختياري)</label><textarea id="f-notes" placeholder="هل تحتاج إضافة أمتعة إضافية؟ يرجى كتابة الوزن المطلوب أو أي تفاصيل متعلقة بالأمتعة إن وجدت."></textarea></div></div>
           <button class="modal-submit" onclick="submitOrder('flight')">✅ إرسال الطلب</button>
         </div>
@@ -1305,6 +1306,12 @@ function closeModalOutside(e){
   if(e.target === document.getElementById('modal-overlay')) closeModal();
 }
 
+function toggleReturnDate(){
+  const isRT = document.getElementById('f-type').value === 'ذهاب وإياب';
+  document.getElementById('f-return-row').style.display = isRT ? '' : 'none';
+  if(!isRT) document.getElementById('f-date-return').value = '';
+}
+
 function submitOrder(type){
   let data = { status:'جديد', date: new Date().toLocaleString('ar-EG'), id: Date.now() };
 
@@ -1312,13 +1319,15 @@ function submitOrder(type){
     const name = document.getElementById('f-name').value.trim();
     const phone = document.getElementById('f-phone').value.trim();
     if(!name || !phone){ alert('يرجى إدخال الاسم ورقم الواتساب'); return; }
+    const tripType = document.getElementById('f-type').value;
     data = {...data, type:'flight', name, phone,
       from: document.getElementById('f-from').value,
       to: document.getElementById('f-to').value,
       date_travel: document.getElementById('f-date').value,
       pax: document.getElementById('f-pax').value,
       class: document.getElementById('f-class').value,
-      trip_type: document.getElementById('f-type').value,
+      trip_type: tripType,
+      date_return: tripType==='ذهاب وإياب' ? document.getElementById('f-date-return').value : '',
       notes: document.getElementById('f-notes').value
     };
   } else if(type === 'visa'){
