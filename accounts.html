@@ -7,36 +7,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-:root{
-  --bg:#0d1117;
-  --surface:#161b22;
-  --surface2:#1c2330;
-  --border:#30363d;
-  --gold:#c9a84c;
-  --gold-light:#e8c97a;
-  --text:#e6edf3;
-  --text-muted:#7d8590;
-  --green:#2ea043;
-  --blue:#1f6feb;
-  --orange:#d29922;
-  --red:#da3633;
-  --purple:#8b5cf6;
-}
+:root{--bg:#0d1117;--surface:#161b22;--surface2:#1c2330;--border:#30363d;--gold:#c9a84c;--gold-light:#e8c97a;--text:#e6edf3;--text-muted:#7d8590;--green:#2ea043;--blue:#1f6feb;--orange:#d29922;--red:#da3633;--purple:#8b5cf6}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-
-/* ── Login ── */
 #login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999}
 .login-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:48px 40px;width:360px;text-align:center}
 .login-logo{font-size:2rem;font-weight:900;color:var(--gold);margin-bottom:4px}
 .login-sub{color:var(--text-muted);font-size:0.85rem;margin-bottom:32px}
 .login-input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;color:var(--text);font-family:'Cairo',sans-serif;font-size:1rem;outline:none;margin-bottom:12px;transition:border-color 0.2s}
 .login-input:focus{border-color:var(--gold)}
-.login-btn{width:100%;background:var(--gold);color:#000;border:none;padding:13px;border-radius:8px;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:background 0.2s}
+.login-btn{width:100%;background:var(--gold);color:#000;border:none;padding:13px;border-radius:8px;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:700;cursor:pointer}
 .login-btn:hover{background:var(--gold-light)}
 .login-error{color:var(--red);font-size:0.85rem;margin-top:8px;display:none}
-
-/* ── Layout ── */
 #app{display:none}
 .sidebar{position:fixed;right:0;top:0;bottom:0;width:220px;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;z-index:100}
 .sidebar-logo{padding:20px 16px;border-bottom:1px solid var(--border)}
@@ -49,13 +31,10 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-h
 .nav-item i{width:18px;text-align:center;font-size:0.95rem}
 .nav-item span{font-size:0.9rem;font-weight:600}
 .sidebar-footer{padding:16px;border-top:1px solid var(--border)}
-.logout-btn{width:100%;background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:8px;border-radius:8px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:0.85rem;transition:all 0.2s}
+.logout-btn{width:100%;background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:8px;border-radius:8px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:0.85rem;transition:all 0.2s;margin-bottom:6px}
 .logout-btn:hover{border-color:var(--red);color:var(--red)}
 .main{margin-right:220px;padding:24px;min-height:100vh}
-.page{display:none}
-.page.active{display:block}
-
-/* ── Currency Bar ── */
+.page{display:none}.page.active{display:block}
 .currency-bar{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 20px;margin-bottom:24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .currency-label{font-size:0.85rem;color:var(--text-muted);font-weight:600}
 .currency-btns{display:flex;gap:6px}
@@ -66,16 +45,9 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-h
 .rate-group label{font-size:0.78rem;color:var(--text-muted)}
 .rate-input{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:'Cairo',sans-serif;font-size:0.85rem;width:90px;outline:none}
 .rate-input:focus{border-color:var(--gold)}
-
-/* ── Period Filter ── */
 .period-bar{display:flex;gap:8px;margin-bottom:20px;align-items:center}
 .period-btn{padding:7px 16px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--text-muted);cursor:pointer;font-family:'Cairo',sans-serif;font-size:0.85rem;font-weight:600;transition:all 0.2s}
 .period-btn.active{background:var(--gold);border-color:var(--gold);color:#000}
-.date-range{display:flex;gap:8px;align-items:center;margin-right:auto}
-.date-input{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:7px 12px;color:var(--text);font-family:'Cairo',sans-serif;font-size:0.85rem;outline:none}
-.date-input:focus{border-color:var(--gold)}
-
-/* ── Summary Cards ── */
 .summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
 .sum-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px}
 .sum-label{font-size:0.78rem;color:var(--text-muted);margin-bottom:6px}
@@ -85,13 +57,9 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-h
 .sum-card.green .sum-value{color:var(--green)}
 .sum-card.blue .sum-value{color:var(--blue)}
 .sum-card.purple .sum-value{color:var(--purple)}
-
-/* ── Service Tabs ── */
 .svc-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
 .svc-tab{padding:7px 16px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--text-muted);cursor:pointer;font-family:'Cairo',sans-serif;font-size:0.85rem;font-weight:600;transition:all 0.2s}
 .svc-tab.active{background:var(--gold);border-color:var(--gold);color:#000}
-
-/* ── Table ── */
 .table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
 .table-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .table-title{font-size:0.95rem;font-weight:700}
@@ -102,18 +70,12 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-h
 .acc-table td{padding:10px 16px;font-size:0.85rem;border-bottom:1px solid var(--border);vertical-align:middle}
 .acc-table tr:last-child td{border-bottom:none}
 .acc-table tfoot td{background:var(--surface2);font-weight:700;border-top:2px solid var(--border)}
-.status-confirmed{color:var(--green);font-weight:700;font-size:0.78rem}
-.status-pending{color:var(--orange);font-weight:700;font-size:0.78rem}
 .profit-cell{color:var(--green);font-weight:700}
 .empty-state{padding:50px;text-align:center;color:var(--text-muted)}
 .empty-state i{font-size:2rem;display:block;margin-bottom:10px}
-
-/* ── Toast ── */
 .toast{position:fixed;bottom:24px;left:24px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px;font-size:0.9rem;box-shadow:0 8px 24px rgba(0,0,0,0.4);z-index:9999;transform:translateY(20px);opacity:0;transition:all 0.3s;max-width:320px}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.success{border-color:var(--green)}
-
-/* ── Notification ── */
 .notif-popup{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-120px);background:var(--surface);border:1px solid var(--green);border-radius:14px;padding:16px 20px;min-width:340px;max-width:420px;box-shadow:0 12px 40px rgba(0,0,0,0.5);z-index:9999;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);display:flex;align-items:center;gap:14px}
 .notif-popup.show{transform:translateX(-50%) translateY(0)}
 .notif-icon{font-size:1.8rem;flex-shrink:0}
@@ -126,19 +88,13 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-h
 .notif-bar{position:absolute;bottom:0;left:0;height:3px;background:var(--green);border-radius:0 0 14px 14px;width:100%;animation:notif-timer 5s linear forwards}
 @keyframes notif-timer{from{width:100%}to{width:0%}}
 .sound-toggle{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:0.85rem;color:var(--text-muted);transition:all 0.2s;width:100%;margin-bottom:8px}
-.sound-toggle:hover{border-color:var(--green);color:var(--green)}
 .sound-toggle.on{border-color:var(--green);color:var(--green)}
-
-@media(max-width:768px){
-  .sidebar{width:200px}
-  .main{margin-right:200px;padding:16px}
-  .summary-grid{grid-template-columns:1fr 1fr}
-}
+.sync-status{font-size:0.75rem;color:var(--text-muted);text-align:center;padding:4px 0}
+@media(max-width:768px){.sidebar{width:200px}.main{margin-right:200px;padding:16px}.summary-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo">💰 MATARIST</div>
@@ -149,7 +105,6 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-h
   </div>
 </div>
 
-<!-- APP -->
 <div id="app">
   <div class="sidebar">
     <div class="sidebar-logo">
@@ -169,11 +124,14 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-h
         <span style="width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0"></span>
         <span id="sound-label">💰 صوت الحسابات شغال</span>
       </button>
+      <button class="logout-btn" style="border-color:var(--blue);color:var(--blue)" onclick="manualSync()">
+        <i class="fa-solid fa-rotate"></i> تحديث من السيرفر
+      </button>
+      <div class="sync-status" id="sync-status">آخر تحديث: —</div>
       <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> خروج</button>
     </div>
   </div>
 
-  <!-- NOTIFICATION POPUP -->
   <div class="notif-popup" id="notif-popup">
     <div class="notif-icon">💰</div>
     <div class="notif-content">
@@ -186,8 +144,6 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-h
   </div>
 
   <div class="main">
-
-    <!-- Currency Bar (shared) -->
     <div class="currency-bar">
       <span class="currency-label">العملة:</span>
       <div class="currency-btns">
@@ -197,22 +153,12 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-h
         <button class="cur-btn" id="cur-EGP" onclick="setCurrency('EGP')">🇪🇬 جنيه</button>
       </div>
       <div class="rate-inputs">
-        <div class="rate-group">
-          <label>USD/TRY</label>
-          <input class="rate-input" id="rate-USD" type="number" value="32.5" step="0.01" onchange="renderAll()">
-        </div>
-        <div class="rate-group">
-          <label>EUR/TRY</label>
-          <input class="rate-input" id="rate-EUR" type="number" value="35.2" step="0.01" onchange="renderAll()">
-        </div>
-        <div class="rate-group">
-          <label>EGP/TRY</label>
-          <input class="rate-input" id="rate-EGP" type="number" value="0.65" step="0.001" onchange="renderAll()">
-        </div>
+        <div class="rate-group"><label>USD/TRY</label><input class="rate-input" id="rate-USD" type="number" value="32.5" step="0.01" onchange="renderAll()"></div>
+        <div class="rate-group"><label>EUR/TRY</label><input class="rate-input" id="rate-EUR" type="number" value="35.2" step="0.01" onchange="renderAll()"></div>
+        <div class="rate-group"><label>EGP/TRY</label><input class="rate-input" id="rate-EGP" type="number" value="0.65" step="0.001" onchange="renderAll()"></div>
       </div>
     </div>
 
-    <!-- OVERVIEW PAGE -->
     <div class="page active" id="page-overview">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
         <div>
@@ -227,52 +173,21 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-h
           <button class="period-btn" id="period-all" onclick="setPeriod('all')">الكل</button>
         </div>
       </div>
-
-      <!-- Summary Cards -->
       <div class="summary-grid">
-        <div class="sum-card gold">
-          <div class="sum-label">إجمالي الأرباح</div>
-          <div class="sum-value" id="total-profit">0</div>
-          <div class="sum-sub" id="total-profit-sub">للفترة المحددة</div>
-        </div>
-        <div class="sum-card green">
-          <div class="sum-label">طلبات مؤكدة</div>
-          <div class="sum-value" id="total-confirmed">0</div>
-          <div class="sum-sub">تم تأكيد الدفع</div>
-        </div>
-        <div class="sum-card blue">
-          <div class="sum-label">إجمالي الطلبات</div>
-          <div class="sum-value" id="total-orders">0</div>
-          <div class="sum-sub">كل الحالات</div>
-        </div>
-        <div class="sum-card purple">
-          <div class="sum-label">متوسط الربح</div>
-          <div class="sum-value" id="avg-profit">0</div>
-          <div class="sum-sub">لكل طلب مؤكد</div>
-        </div>
+        <div class="sum-card gold"><div class="sum-label">إجمالي الأرباح</div><div class="sum-value" id="total-profit">0</div><div class="sum-sub" id="total-profit-sub">للفترة المحددة</div></div>
+        <div class="sum-card green"><div class="sum-label">طلبات مؤكدة</div><div class="sum-value" id="total-confirmed">0</div><div class="sum-sub">تم تأكيد الدفع</div></div>
+        <div class="sum-card blue"><div class="sum-label">إجمالي الطلبات</div><div class="sum-value" id="total-orders">0</div><div class="sum-sub">كل الحالات</div></div>
+        <div class="sum-card purple"><div class="sum-label">متوسط الربح</div><div class="sum-value" id="avg-profit">0</div><div class="sum-sub">لكل طلب مؤكد</div></div>
       </div>
-
-      <!-- Per-service breakdown -->
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px">
-        <div class="table-header">
-          <div class="table-title">📊 الأرباح حسب الخدمة</div>
-        </div>
+        <div class="table-header"><div class="table-title">📊 الأرباح حسب الخدمة</div></div>
         <table class="acc-table">
-          <thead>
-            <tr>
-              <th>الخدمة</th>
-              <th>عدد الطلبات</th>
-              <th>المؤكدة</th>
-              <th>إجمالي الأرباح</th>
-              <th>متوسط الربح</th>
-            </tr>
-          </thead>
+          <thead><tr><th>الخدمة</th><th>عدد الطلبات</th><th>المؤكدة</th><th>إجمالي الأرباح</th><th>متوسط الربح</th></tr></thead>
           <tbody id="service-breakdown"></tbody>
         </table>
       </div>
     </div>
 
-    <!-- TRANSACTIONS PAGE -->
     <div class="page" id="page-transactions">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
         <div style="font-size:1.3rem;font-weight:700">كل المعاملات</div>
@@ -285,17 +200,11 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-h
             <button class="period-btn" id="t-period-all" onclick="setTPeriod('all')">الكل</button>
           </div>
           <div style="display:flex;gap:8px">
-            <button class="export-btn" onclick="exportCSV()" title="تصدير الطلبات الجديدة فقط">
-              <i class="fa-solid fa-file-arrow-down"></i> جديد فقط
-            </button>
-            <button class="export-btn" onclick="exportAllConfirmed()" style="border-color:var(--green);color:var(--green)" title="تصدير كل المؤكدة">
-              <i class="fa-solid fa-file-csv"></i> كل المؤكدة
-            </button>
+            <button class="export-btn" onclick="exportCSV()"><i class="fa-solid fa-file-arrow-down"></i> جديد فقط</button>
+            <button class="export-btn" onclick="exportAllConfirmed()" style="border-color:var(--green);color:var(--green)"><i class="fa-solid fa-file-csv"></i> كل المؤكدة</button>
           </div>
         </div>
       </div>
-
-      <!-- Service tabs -->
       <div class="svc-tabs" id="svc-tabs">
         <button class="svc-tab active" data-svc="all" onclick="setTSvc('all')">الكل</button>
         <button class="svc-tab" data-svc="flight" onclick="setTSvc('flight')">✈️ طيران</button>
@@ -305,15 +214,11 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-h
         <button class="svc-tab" data-svc="transfer" onclick="setTSvc('transfer')">🚖 توصيل</button>
         <button class="svc-tab" data-svc="package" onclick="setTSvc('package')">🌍 برامج</button>
       </div>
-
       <div class="table-wrap">
-        <div class="table-header">
-          <div class="table-title" id="trans-title">سجل المعاملات</div>
-        </div>
+        <div class="table-header"><div class="table-title" id="trans-title">سجل المعاملات</div></div>
         <div id="trans-table-wrap"></div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -321,6 +226,7 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-h
 
 <script>
 const ADMIN_PASS = 'matarist2025';
+const BLOBS_URL = '/.netlify/functions/orders';
 let currentCurrency = 'TRY';
 let currentPeriod = 'today';
 let tPeriod = 'today';
@@ -336,74 +242,84 @@ const typeLabels = {
   transfer:'🚖 توصيل', package:'🌍 برامج'
 };
 
-// ── Sound (نغمة مختلفة عن العمليات - نغمة صندوق النقود 💰) ──
-function getAudioContext(){
-  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  return audioCtx;
-}
+// ── Sound ──
+function getAudioContext(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
 function playCashSound(){
   if(!soundEnabled) return;
   try{
     const ctx = getAudioContext();
-    // نغمة "كاشير" - نوتتان صاعدتان متتاليتان
-    const notes = [392, 523.25, 659.25, 880];
-    notes.forEach((freq, i) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
+    [392,523.25,659.25,880].forEach((freq,i)=>{
+      const osc=ctx.createOscillator(), gain=ctx.createGain();
       osc.connect(gain); gain.connect(ctx.destination);
-      osc.type = 'triangle'; // صوت مختلف عن العمليات (sine)
-      osc.frequency.setValueAtTime(freq, ctx.currentTime + i*0.1);
-      gain.gain.setValueAtTime(0, ctx.currentTime + i*0.1);
-      gain.gain.linearRampToValueAtTime(0.25, ctx.currentTime + i*0.1 + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i*0.1 + 0.35);
-      osc.start(ctx.currentTime + i*0.1);
-      osc.stop(ctx.currentTime + i*0.1 + 0.35);
+      osc.type='triangle';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime+i*0.1);
+      gain.gain.setValueAtTime(0, ctx.currentTime+i*0.1);
+      gain.gain.linearRampToValueAtTime(0.25, ctx.currentTime+i*0.1+0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+i*0.1+0.35);
+      osc.start(ctx.currentTime+i*0.1); osc.stop(ctx.currentTime+i*0.1+0.35);
     });
-    // نغمة ختامية "كاش"
-    setTimeout(()=>{
-      try{
-        const osc2 = ctx.createOscillator();
-        const gain2 = ctx.createGain();
-        osc2.connect(gain2); gain2.connect(ctx.destination);
-        osc2.type = 'square';
-        osc2.frequency.setValueAtTime(1200, ctx.currentTime);
-        gain2.gain.setValueAtTime(0.15, ctx.currentTime);
-        gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
-        osc2.start(ctx.currentTime);
-        osc2.stop(ctx.currentTime + 0.15);
-      }catch(e){}
-    }, 450);
   } catch(e){}
 }
-
 function toggleSound(){
-  soundEnabled = !soundEnabled;
-  const btn = document.getElementById('sound-toggle-btn');
-  const label = document.getElementById('sound-label');
+  soundEnabled=!soundEnabled;
+  const btn=document.getElementById('sound-toggle-btn'), label=document.getElementById('sound-label');
   if(soundEnabled){ btn.classList.add('on'); label.textContent='💰 صوت الحسابات شغال'; playCashSound(); }
   else { btn.classList.remove('on'); label.textContent='🔕 الصوت موقف'; }
 }
 
 // ── Notification ──
 function showNotification(order){
-  document.getElementById('notif-ref').textContent = order.order_ref || '#جديد';
-  document.getElementById('notif-name').textContent = '✅ تأكيد — ' + (order.name||'عميل');
-  document.getElementById('notif-type').textContent = (typeLabels[order.type]||order.type) + ' | ' + (order.final_price ? '₺'+Number(order.final_price).toLocaleString() : '');
-  const bar = document.getElementById('notif-bar');
-  bar.style.animation='none'; bar.offsetHeight;
-  bar.style.animation='notif-timer 5s linear forwards';
+  document.getElementById('notif-ref').textContent = order.order_ref||'#جديد';
+  document.getElementById('notif-name').textContent = '✅ تأكيد — '+(order.name||'عميل');
+  document.getElementById('notif-type').textContent = (typeLabels[order.type]||order.type)+' | '+(order.final_price?'₺'+Number(order.final_price).toLocaleString():'');
+  const bar=document.getElementById('notif-bar');
+  bar.style.animation='none'; bar.offsetHeight; bar.style.animation='notif-timer 5s linear forwards';
   document.getElementById('notif-popup').classList.add('show');
-  playCashSound();
-  renderAll();
+  playCashSound(); renderAll();
   if(notifTimer) clearTimeout(notifTimer);
   notifTimer = setTimeout(closeNotif, 5000);
 }
-function closeNotif(){
-  document.getElementById('notif-popup').classList.remove('show');
-  if(notifTimer){ clearTimeout(notifTimer); notifTimer=null; }
+function closeNotif(){ document.getElementById('notif-popup').classList.remove('show'); if(notifTimer){clearTimeout(notifTimer);notifTimer=null;} }
+
+// ── Data from Netlify Blobs (FIX: this was missing!) ──
+function getOrders(){
+  try{ return JSON.parse(localStorage.getItem('matarist_orders')||'[]'); }
+  catch(e){ return []; }
 }
 
-// ── Real-time: فحص الطلبات المؤكدة الجديدة فقط ──
+async function loadFromBlobs(){
+  try{
+    const res = await fetch(BLOBS_URL);
+    const data = await res.json();
+    if(data.orders && data.orders.length > 0){
+      const local = getOrders();
+      // خد النسخة الأكبر دايماً (الأحدث)
+      if(data.orders.length >= local.length){
+        localStorage.setItem('matarist_orders', JSON.stringify(data.orders));
+        return true;
+      }
+    }
+  } catch(e){ console.log('Blobs load error:', e); }
+  return false;
+}
+
+// تحديث يدوي - زرار في الـ sidebar
+async function manualSync(){
+  const statusEl = document.getElementById('sync-status');
+  statusEl.textContent = '⏳ جاري التحديث...';
+  const ok = await loadFromBlobs();
+  if(ok){
+    renderAll();
+    checkConfirmedOrders();
+    const now = new Date().toLocaleTimeString('ar-EG');
+    statusEl.textContent = '✅ آخر تحديث: '+now;
+    showToast('✅ تم تحديث البيانات من السيرفر!', 'success');
+  } else {
+    statusEl.textContent = '⚠️ لا توجد بيانات جديدة';
+  }
+}
+
+// فحص الطلبات المؤكدة الجديدة
 function checkConfirmedOrders(){
   const orders = getOrders();
   const confirmed = orders.filter(o=>o.status==='تم التأكيد');
@@ -411,6 +327,19 @@ function checkConfirmedOrders(){
   if(newConfirmed.length > 0){
     showNotification(newConfirmed[0]);
     newConfirmed.forEach(o=>lastConfirmedIds.add(String(o.id)));
+    renderAll();
+  }
+}
+
+// فحص دوري من السيرفر كل 10 ثواني
+async function pollServer(){
+  const ok = await loadFromBlobs();
+  if(ok){
+    checkConfirmedOrders();
+    renderAll();
+    const now = new Date().toLocaleTimeString('ar-EG');
+    const statusEl = document.getElementById('sync-status');
+    if(statusEl) statusEl.textContent = 'آخر تحديث: '+now;
   }
 }
 
@@ -432,98 +361,116 @@ function doLogout(){
 }
 
 // ── Init ──
-function initApp(){
+async function initApp(){
   document.getElementById('dash-date2').textContent = new Date().toLocaleDateString('ar-EG',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+  // ✅ الإصلاح الأساسي: جيب البيانات من السيرفر أول ما الصفحة تفتح
+  const statusEl = document.getElementById('sync-status');
+  statusEl.textContent = '⏳ جاري تحميل البيانات...';
+  const ok = await loadFromBlobs();
+  if(ok){
+    const now = new Date().toLocaleTimeString('ar-EG');
+    statusEl.textContent = 'آخر تحديث: '+now;
+  } else {
+    statusEl.textContent = 'يعمل من النسخة المحلية';
+  }
+
   renderAll();
+
   // حفظ الـ IDs المؤكدة الحالية كـ baseline
   const confirmed = getOrders().filter(o=>o.status==='تم التأكيد');
   lastConfirmedIds = new Set(confirmed.map(o=>String(o.id)));
-  // فحص كل 5 ثواني للطلبات المؤكدة الجديدة فقط
-  setInterval(checkConfirmedOrders, 5000);
-  setInterval(renderAll, 30000);
-}
 
-// ── Data ──
-function getOrders(){
-  try{ return JSON.parse(localStorage.getItem('matarist_orders')||'[]'); }
-  catch(e){ return []; }
+  // ✅ فحص كل 10 ثواني من السيرفر مباشرة
+  setInterval(pollServer, 10000);
+  setInterval(renderAll, 30000);
 }
 
 // ── Currency ──
 function setCurrency(cur){
-  currentCurrency = cur;
+  currentCurrency=cur;
   document.querySelectorAll('.cur-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('cur-'+cur).classList.add('active');
   renderAll();
 }
-
 function convertAmount(amountTRY){
-  const r = {
-    TRY: 1,
-    USD: 1 / parseFloat(document.getElementById('rate-USD').value||32.5),
-    EUR: 1 / parseFloat(document.getElementById('rate-EUR').value||35.2),
-    EGP: 1 / parseFloat(document.getElementById('rate-EGP').value||0.65)
-  };
-  return amountTRY * (r[currentCurrency]||1);
+  const r={TRY:1,USD:1/parseFloat(document.getElementById('rate-USD').value||32.5),EUR:1/parseFloat(document.getElementById('rate-EUR').value||35.2),EGP:1/parseFloat(document.getElementById('rate-EGP').value||0.65)};
+  return amountTRY*(r[currentCurrency]||1);
 }
-
 function formatAmount(amountTRY){
-  const converted = convertAmount(amountTRY);
-  const symbols = {TRY:'₺', USD:'$', EUR:'€', EGP:'ج'};
-  return symbols[currentCurrency] + ' ' + converted.toLocaleString('ar-EG', {maximumFractionDigits:2});
+  const converted=convertAmount(amountTRY);
+  const symbols={TRY:'₺',USD:'$',EUR:'€',EGP:'ج'};
+  return symbols[currentCurrency]+' '+converted.toLocaleString('ar-EG',{maximumFractionDigits:2});
 }
 
 // ── Period ──
 function setPeriod(p){
-  currentPeriod = p;
+  currentPeriod=p;
   document.querySelectorAll('[id^="period-"]').forEach(b=>b.classList.remove('active'));
   document.getElementById('period-'+p)?.classList.add('active');
   renderOverview();
 }
-
 function setTPeriod(p){
-  tPeriod = p;
+  tPeriod=p;
   document.querySelectorAll('[id^="t-period-"]').forEach(b=>b.classList.remove('active'));
   document.getElementById('t-period-'+p)?.classList.add('active');
   renderTransactions();
 }
-
 function setTSvc(svc){
-  tSvc = svc;
+  tSvc=svc;
   document.querySelectorAll('.svc-tab').forEach(b=>b.classList.remove('active'));
-  document.querySelector(`.svc-tab[data-svc="${svc}"]`)?.classList.add('active');
+  document.querySelector('.svc-tab[data-svc="'+svc+'"]')?.classList.add('active');
   renderTransactions();
 }
 
 function filterByPeriod(orders, period){
-  if(period === 'all') return orders;
+  if(period==='all') return orders;
   const now = new Date();
   return orders.filter(o=>{
-    // جرب confirmed_at أو date
+    // ✅ استخدم confirmed_at للمؤكدين، وdate للباقين
     const rawDate = o.confirmed_at || o.date || '';
-    if(!rawDate) return false;
-    // حاول تحويل التاريخ
+    if(!rawDate) return period==='today';
     const d = new Date(rawDate);
-    // لو فشل (تاريخ عربي) - اعتبره اليوم
-    if(isNaN(d.getTime())){
-      // مؤكد بدون تاريخ صالح - اعرضه في الكل واليوم فقط
-      return period === 'today';
-    }
+    if(isNaN(d.getTime())) return period==='today';
     switch(period){
-      case 'today':  return d.toDateString() === now.toDateString();
-      case 'week':   return (now - d) <= 7*24*3600*1000;
-      case 'month':  return d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear();
+      case 'today':  return d.toDateString()===now.toDateString();
+      case 'week':   return (now-d)<=7*24*3600*1000;
+      case 'month':  return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();
       case 'year':   return d.getFullYear()===now.getFullYear();
       default:       return true;
     }
   });
 }
 
-// ── Render All ──
-function renderAll(){
-  renderOverview();
-  renderTransactions();
+function filterTransactionsByPeriod(orders, period){
+  if(period==='all') return orders;
+  const now = new Date();
+  return orders.filter(o=>{
+    // للمعاملات: استخدم date التسجيل
+    const rawDate = o.date || o.confirmed_at || '';
+    if(!rawDate) return period==='today';
+    const d = new Date(rawDate);
+    if(isNaN(d.getTime())) return period==='today';
+    switch(period){
+      case 'today':  return d.toDateString()===now.toDateString();
+      case 'week':   return (now-d)<=7*24*3600*1000;
+      case 'month':  return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();
+      case 'year':   return d.getFullYear()===now.getFullYear();
+      default:       return true;
+    }
+  });
 }
+
+function calcProfit(o){
+  const base = parseFloat(o.base_price||0);
+  const final = parseFloat(o.final_price||0);
+  if(base > 0 && final > 0) return Math.max(0, final - base);
+  if(o.profit_amount) return Math.max(0, parseFloat(o.profit_amount));
+  return 0;
+}
+
+// ── Render All ──
+function renderAll(){ renderOverview(); renderTransactions(); }
 
 // ── Overview ──
 function renderOverview(){
@@ -531,12 +478,7 @@ function renderOverview(){
   const confirmed = allOrders.filter(o=>o.status==='تم التأكيد');
   const filtered = filterByPeriod(confirmed, currentPeriod);
 
-  const totalProfit = filtered.reduce((s,o)=>{
-    const base = parseFloat(o.base_price||0);
-    const final = parseFloat(o.final_price||0);
-    const profit = base > 0 ? (final - base) : (o.profit_amount ? parseFloat(o.profit_amount) : 0);
-    return s + Math.max(0, profit);
-  }, 0);
+  const totalProfit = filtered.reduce((s,o)=>s+calcProfit(o), 0);
   const avgProfit = filtered.length ? totalProfit/filtered.length : 0;
 
   document.getElementById('total-profit').textContent = formatAmount(Math.max(0,totalProfit));
@@ -544,7 +486,6 @@ function renderOverview(){
   document.getElementById('total-orders').textContent = allOrders.length;
   document.getElementById('avg-profit').textContent = formatAmount(Math.max(0,avgProfit));
 
-  // Service breakdown
   const types = ['flight','hotel','visa','cargo','transfer','package'];
   const tbody = document.getElementById('service-breakdown');
   const allPeriodOrders = filterByPeriod(allOrders, currentPeriod);
@@ -552,228 +493,94 @@ function renderOverview(){
   tbody.innerHTML = types.map(t=>{
     const svcOrders = allPeriodOrders.filter(o=>o.type===t);
     const svcConfirmed = svcOrders.filter(o=>o.status==='تم التأكيد');
-    const profit = svcConfirmed.reduce((s,o)=>s+(parseFloat(o.final_price||0)-parseFloat(o.base_price||0)),0);
+    const profit = svcConfirmed.reduce((s,o)=>s+calcProfit(o),0);
     const avg = svcConfirmed.length ? profit/svcConfirmed.length : 0;
-    return `<tr>
-      <td><strong>${typeLabels[t]||t}</strong></td>
-      <td>${svcOrders.length}</td>
-      <td><span style="color:var(--green);font-weight:700">${svcConfirmed.length}</span></td>
-      <td class="profit-cell">${formatAmount(Math.max(0,profit))}</td>
-      <td style="color:var(--text-muted)">${svcConfirmed.length ? formatAmount(Math.max(0,avg)) : '—'}</td>
-    </tr>`;
+    return '<tr><td><strong>'+(typeLabels[t]||t)+'</strong></td><td>'+svcOrders.length+'</td><td><span style="color:var(--green);font-weight:700">'+svcConfirmed.length+'</span></td><td class="profit-cell">'+formatAmount(Math.max(0,profit))+'</td><td style="color:var(--text-muted)">'+(svcConfirmed.length?formatAmount(Math.max(0,avg)):'—')+'</td></tr>';
   }).join('');
 }
 
 // ── Transactions ──
 function renderTransactions(){
   const allOrders = getOrders();
-
-  // فلترة حسب الفترة - نعرض كل الطلبات
-  let filtered = allOrders.filter(o=>{
-    if(tPeriod === 'all') return true;
-    const rawDate = o.date || o.confirmed_at || '';
-    if(!rawDate) return tPeriod === 'today';
-    const d = new Date(rawDate);
-    const now = new Date();
-    if(isNaN(d.getTime())) return tPeriod === 'today';
-    switch(tPeriod){
-      case 'today':  return d.toDateString() === now.toDateString();
-      case 'week':   return (now - d) <= 7*24*3600*1000;
-      case 'month':  return d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear();
-      case 'year':   return d.getFullYear()===now.getFullYear();
-      default:       return true;
-    }
-  });
-
-  // فلترة حسب الخدمة
-  if(tSvc !== 'all') filtered = filtered.filter(o=>o.type===tSvc);
+  let filtered = filterTransactionsByPeriod(allOrders, tPeriod);
+  if(tSvc!=='all') filtered = filtered.filter(o=>o.type===tSvc);
 
   const wrap = document.getElementById('trans-table-wrap');
   const title = document.getElementById('trans-title');
-
-  // حساب الإجمالي
   const confirmedFiltered = filtered.filter(o=>o.status==='تم التأكيد');
-  const totalProfit = confirmedFiltered.reduce((s,o)=>s+(parseFloat(o.final_price||0)-parseFloat(o.base_price||0)),0);
+  const totalProfit = confirmedFiltered.reduce((s,o)=>s+calcProfit(o),0);
   const totalRevenue = confirmedFiltered.reduce((s,o)=>s+parseFloat(o.final_price||0),0);
 
-  title.textContent = `سجل المعاملات — ${filtered.length} طلب`;
+  title.textContent = 'سجل المعاملات — '+filtered.length+' طلب';
 
-  if(filtered.length === 0){
-    wrap.innerHTML = `<div class="empty-state"><i class="fa-solid fa-inbox"></i>لا توجد معاملات في هذه الفترة</div>`;
+  if(filtered.length===0){
+    wrap.innerHTML='<div class="empty-state"><i class="fa-solid fa-inbox"></i>لا توجد معاملات في هذه الفترة</div>';
     return;
   }
 
-  const statusMap = {'جديد':'🔵','جاري العمل':'🟡','تم إرسال العرض':'🟣','تم التأكيد':'🟢','ملغي':'🔴'};
+  const statusMap={'جديد':'🔵','جاري العمل':'🟡','تم إرسال العرض':'🟣','تم التأكيد':'🟢','ملغي':'🔴'};
+  const sorted = [...filtered].sort((a,b)=>b.id-a.id);
 
-  wrap.innerHTML = `
-  <table class="acc-table">
-    <thead>
-      <tr>
-        <th>رقم الطلب</th>
-        <th>التاريخ</th>
-        <th>العميل</th>
-        <th>الخدمة</th>
-        <th>سعر الخدمة</th>
-        <th>الربح</th>
-        <th>السعر النهائي</th>
-        <th>الحالة</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${filtered.map(o=>{
-        const base = parseFloat(o.base_price||0);
-        const final = parseFloat(o.final_price||0);
-        const profit = final - base;
-        const isConfirmed = o.status==='تم التأكيد';
-        return `<tr style="${isConfirmed?'':'opacity:0.6'}">
-          <td style="color:var(--gold);font-weight:700;font-size:0.8rem">${o.order_ref||'—'}</td>
-          <td style="color:var(--text-muted);font-size:0.8rem">${o.confirmed_at||o.date||'—'}</td>
-          <td><strong>${o.name||'—'}</strong></td>
-          <td>${typeLabels[o.type]||o.type}</td>
-          <td style="color:var(--text-muted)">${base ? formatAmount(base) : '—'}</td>
-          <td class="profit-cell">${isConfirmed && profit>0 ? formatAmount(profit) : '—'}</td>
-          <td>${final ? formatAmount(final) : '—'}</td>
-          <td>${statusMap[o.status]||'⚪'} ${o.status||'—'}</td>
-        </tr>`;
-      }).join('')}
-    </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="5" style="text-align:right;color:var(--text-muted);font-size:0.85rem">
-          إجمالي المؤكدة: ${confirmedFiltered.length} طلب
-        </td>
-        <td class="profit-cell">${totalProfit>0 ? formatAmount(totalProfit) : '—'}</td>
-        <td style="color:var(--gold);font-weight:900">${totalRevenue>0 ? formatAmount(totalRevenue) : '—'}</td>
-        <td></td>
-      </tr>
-    </tfoot>
-  </table>`;
+  wrap.innerHTML = '<table class="acc-table"><thead><tr><th>رقم الطلب</th><th>تاريخ التأكيد</th><th>العميل</th><th>الخدمة</th><th>سعر الخدمة</th><th>الربح</th><th>السعر النهائي</th><th>الحالة</th></tr></thead><tbody>'+
+    sorted.map(o=>{
+      const base=parseFloat(o.base_price||0);
+      const final=parseFloat(o.final_price||0);
+      const profit=calcProfit(o);
+      const isConfirmed=o.status==='تم التأكيد';
+      const confirmDate = o.confirmed_at ? new Date(o.confirmed_at).toLocaleDateString('ar-EG') : (o.confirmed_at_display||o.date||'—');
+      return '<tr style="'+(isConfirmed?'':'opacity:0.6')+'"><td style="color:var(--gold);font-weight:700;font-size:0.8rem">'+(o.order_ref||'—')+'</td><td style="color:var(--text-muted);font-size:0.8rem">'+confirmDate+'</td><td><strong>'+(o.name||'—')+'</strong></td><td>'+(typeLabels[o.type]||o.type)+'</td><td style="color:var(--text-muted)">'+(base?formatAmount(base):'—')+'</td><td class="profit-cell">'+(isConfirmed&&profit>0?formatAmount(profit):'—')+'</td><td>'+(final?formatAmount(final):'—')+'</td><td>'+(statusMap[o.status]||'⚪')+' '+(o.status||'—')+'</td></tr>';
+    }).join('')+
+    '</tbody><tfoot><tr><td colspan="5" style="text-align:right;color:var(--text-muted);font-size:0.85rem">إجمالي المؤكدة: '+confirmedFiltered.length+' طلب</td><td class="profit-cell">'+(totalProfit>0?formatAmount(totalProfit):'—')+'</td><td style="color:var(--gold);font-weight:900">'+(totalRevenue>0?formatAmount(totalRevenue):'—')+'</td><td></td></tr></tfoot></table>';
 }
 
-// ── Google Sheets Integration ──
+// ── Google Sheets ──
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwgZ4KU97bjG6KfAxBRMwW7AmWVhqJI7cgdUSWRfjVQSVuZCerluyR1bATGKhETOLhdOQ/exec';
-
-const SHEET_NAMES = {
-  flight: '✈️ طيران',
-  hotel: '🏨 فنادق',
-  visa: '🛂 تأشيرة',
-  cargo: '📦 كارجو',
-  transfer: '🚖 توصيل',
-  package: '🌍 برامج'
-};
+const SHEET_NAMES = {flight:'✈️ طيران',hotel:'🏨 فنادق',visa:'🛂 تأشيرة',cargo:'📦 كارجو',transfer:'🚖 توصيل',package:'🌍 برامج'};
 
 function buildRow(o){
-  const base = parseFloat(o.base_price||0);
-  const final = parseFloat(o.final_price||0);
-  const profit = Math.max(0, final - base) || parseFloat(o.profit_amount||0);
-  const confirmedDate = o.confirmed_at
-    ? new Date(o.confirmed_at).toLocaleDateString('ar-EG')
-    : new Date().toLocaleDateString('ar-EG');
-  return [
-    o.order_ref||'—',
-    o.date||'—',
-    confirmedDate,
-    o.name||'—',
-    o.phone||'—',
-    typeLabels[o.type]||o.type,
-    o.admin_from||o.from||o.city||o.destination||'—',
-    o.admin_to||o.to||o.country||'—',
-    o.admin_date||o.date_travel||o.checkin||'—',
-    o.pax||o.guests||'1',
-    base||0,
-    profit||0,
-    final||0,
-    o.notes||o.client_msg||''
-  ];
+  const base=parseFloat(o.base_price||0), final=parseFloat(o.final_price||0);
+  const profit=Math.max(0,calcProfit(o));
+  const confirmedDate=o.confirmed_at?new Date(o.confirmed_at).toLocaleDateString('ar-EG'):new Date().toLocaleDateString('ar-EG');
+  return [o.order_ref||'—',o.date||'—',confirmedDate,o.name||'—',o.phone||'—',typeLabels[o.type]||o.type,o.admin_from||o.from||o.city||o.destination||'—',o.admin_to||o.to||o.country||'—',o.admin_date||o.date_travel||o.checkin||'—',o.pax||o.guests||'1',base||0,profit||0,final||0,o.notes||o.client_msg||''];
 }
 
 async function sendToSheet(order){
-  const sheetName = SHEET_NAMES[order.type] || 'الكل';
-  const row = buildRow(order);
-  try {
-    await fetch(SHEETS_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ sheet: sheetName, row })
-    });
+  try{
+    await fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({sheet:SHEET_NAMES[order.type]||'الكل',row:buildRow(order)})});
     return true;
-  } catch(e){
-    console.error('Sheets error:', e);
-    return false;
-  }
+  } catch(e){ return false; }
 }
 
-// ── تصدير الجديدة فقط لـ Google Sheets ──
 async function exportCSV(){
-  const allOrders = getOrders();
-  let confirmed = allOrders.filter(o=>o.status==='تم التأكيد');
-  if(tSvc !== 'all') confirmed = confirmed.filter(o=>o.type===tSvc);
-
-  if(confirmed.length === 0){
-    showToast('⚠️ لا توجد طلبات مؤكدة!', 'error');
-    return;
-  }
-
-  let exported = JSON.parse(localStorage.getItem('matarist_exported_ids')||'[]');
-  const newOrders = confirmed.filter(o=>!exported.includes(String(o.id)));
-
-  if(newOrders.length === 0){
-    showToast('✅ كل الطلبات المؤكدة مُصدَّرة مسبقاً!', 'success');
-    return;
-  }
-
-  // تغيير الزر
-  const btn = document.querySelector('.export-btn');
-  if(btn){ btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...'; btn.disabled = true; }
-
-  let success = 0;
-  for(const order of newOrders){
-    const ok = await sendToSheet(order);
-    if(ok){
-      exported.push(String(order.id));
-      success++;
-    }
-    await new Promise(r=>setTimeout(r,300)); // انتظر بين الطلبات
-  }
-
-  localStorage.setItem('matarist_exported_ids', JSON.stringify(exported));
-
-  if(btn){ btn.innerHTML = '<i class="fa-solid fa-file-arrow-down"></i> جديد فقط'; btn.disabled = false; }
-
-  showToast(`✅ تم إرسال ${success} طلب لـ Google Sheets!`, 'success');
+  const allOrders=getOrders();
+  let confirmed=allOrders.filter(o=>o.status==='تم التأكيد');
+  if(tSvc!=='all') confirmed=confirmed.filter(o=>o.type===tSvc);
+  if(confirmed.length===0){showToast('⚠️ لا توجد طلبات مؤكدة!','error');return;}
+  let exported=JSON.parse(localStorage.getItem('matarist_exported_ids')||'[]');
+  const newOrders=confirmed.filter(o=>!exported.includes(String(o.id)));
+  if(newOrders.length===0){showToast('✅ كل الطلبات المؤكدة مُصدَّرة مسبقاً!','success');return;}
+  const btn=document.querySelectorAll('.export-btn')[0];
+  if(btn){btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...';btn.disabled=true;}
+  let success=0;
+  for(const order of newOrders){const ok=await sendToSheet(order);if(ok){exported.push(String(order.id));success++;}await new Promise(r=>setTimeout(r,300));}
+  localStorage.setItem('matarist_exported_ids',JSON.stringify(exported));
+  if(btn){btn.innerHTML='<i class="fa-solid fa-file-arrow-down"></i> جديد فقط';btn.disabled=false;}
+  showToast('✅ تم إرسال '+success+' طلب لـ Google Sheets!','success');
 }
 
-// ── تصدير كل المؤكدة لـ Google Sheets ──
 async function exportAllConfirmed(){
-  const allOrders = getOrders();
-  let confirmed = allOrders.filter(o=>o.status==='تم التأكيد');
-  if(tSvc !== 'all') confirmed = confirmed.filter(o=>o.type===tSvc);
-
-  if(confirmed.length === 0){
-    showToast('⚠️ لا توجد طلبات مؤكدة!', 'error');
-    return;
-  }
-
-  if(!confirm(`هل تريد إرسال ${confirmed.length} طلب مؤكد لـ Google Sheets؟ (سيتم إرسال الكل من جديد)`)) return;
-
-  const btn = document.querySelectorAll('.export-btn')[1];
-  if(btn){ btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...'; btn.disabled = true; }
-
-  let success = 0;
-  for(const order of [...confirmed].reverse()){
-    const ok = await sendToSheet(order);
-    if(ok) success++;
-    await new Promise(r=>setTimeout(r,300));
-  }
-
-  // تحديث الـ IDs
-  const ids = confirmed.map(o=>String(o.id));
-  localStorage.setItem('matarist_exported_ids', JSON.stringify(ids));
-
-  if(btn){ btn.innerHTML = '<i class="fa-solid fa-file-csv"></i> كل المؤكدة'; btn.disabled = false; }
-
-  showToast(`✅ تم إرسال ${success} طلب لـ Google Sheets!`, 'success');
+  const allOrders=getOrders();
+  let confirmed=allOrders.filter(o=>o.status==='تم التأكيد');
+  if(tSvc!=='all') confirmed=confirmed.filter(o=>o.type===tSvc);
+  if(confirmed.length===0){showToast('⚠️ لا توجد طلبات مؤكدة!','error');return;}
+  if(!confirm('هل تريد إرسال '+confirmed.length+' طلب مؤكد لـ Google Sheets؟'))return;
+  const btn=document.querySelectorAll('.export-btn')[1];
+  if(btn){btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...';btn.disabled=true;}
+  let success=0;
+  for(const order of [...confirmed].reverse()){const ok=await sendToSheet(order);if(ok)success++;await new Promise(r=>setTimeout(r,300));}
+  localStorage.setItem('matarist_exported_ids',JSON.stringify(confirmed.map(o=>String(o.id))));
+  if(btn){btn.innerHTML='<i class="fa-solid fa-file-csv"></i> كل المؤكدة';btn.disabled=false;}
+  showToast('✅ تم إرسال '+success+' طلب لـ Google Sheets!','success');
 }
 
 // ── Navigation ──
@@ -786,11 +593,10 @@ function showPage(page){
 }
 
 // ── Toast ──
-function showToast(msg, type='success'){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast '+type+' show';
-  setTimeout(()=>t.classList.remove('show'), 3000);
+function showToast(msg,type='success'){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast '+type+' show';
+  setTimeout(()=>t.classList.remove('show'),3000);
 }
 </script>
 </body>
