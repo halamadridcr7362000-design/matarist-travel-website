@@ -537,114 +537,114 @@ footer{background:var(--navy-dark);border-top:1px solid rgba(201,168,76,0.2);pad
 
     <!-- FLIGHT -->
     <div id="modal-flight" style="display:none">
-      <div class="modal-header"><h3>✈️ حجز تذكرة طيران</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="modal-header"><h3 data-i18n="fm_flight_title">✈️ حجز تذكرة طيران</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
       <div class="modal-body">
         <div id="form-flight">
-          <div class="form-row"><div class="form-group"><label>الاسم الكامل</label><input type="text" id="f-name" placeholder="الاسم كامل" required></div><div class="form-group"><label>رقم الواتساب</label><input type="tel" id="f-phone" placeholder="+905xxxxxxxxx" required></div></div>
-          <div class="form-row"><div class="form-group"><label>من (مدينة المغادرة)</label><input type="text" id="f-from" placeholder="إسطنبول" required></div><div class="form-group"><label>إلى (مدينة الوصول)</label><input type="text" id="f-to" placeholder="القاهرة" required></div></div>
-          <div class="form-row"><div class="form-group"><label>تاريخ السفر</label><input type="date" id="f-date" required></div><div class="form-group"><label>عدد الركاب</label><input type="number" id="f-pax" min="1" max="20" value="1"></div></div>
-          <div class="form-row"><div class="form-group"><label>درجة السفر</label><select id="f-class"><option value="اقتصادية">اقتصادية</option><option value="رجال أعمال">رجال أعمال</option><option value="أولى">الدرجة الأولى</option></select></div><div class="form-group"><label>رحلة ذهاب فقط / ذهاب وإياب</label><select id="f-type" onchange="toggleReturnDate()"><option value="ذهاب فقط">ذهاب فقط</option><option value="ذهاب وإياب">ذهاب وإياب</option></select></div></div>
-          <div class="form-row" id="f-return-row" style="display:none"><div class="form-group"><label>تاريخ العودة</label><input type="date" id="f-date-return"></div></div>
-          <div class="form-row single"><div class="form-group"><label>الأمتعة الإضافية (اختياري)</label><textarea id="f-notes" placeholder="هل تحتاج إضافة أمتعة إضافية؟ يرجى كتابة الوزن المطلوب أو أي تفاصيل متعلقة بالأمتعة إن وجدت."></textarea></div></div>
-          <button class="modal-submit" onclick="submitOrder('flight')">✅ إرسال الطلب</button>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_name">الاسم الكامل</label><input type="text" id="f-name" placeholder="الاسم كامل" data-placeholder-i18n="fm_name_p" required></div><div class="form-group"><label data-i18n="fm_phone">رقم الواتساب</label><input type="tel" id="f-phone" placeholder="+905xxxxxxxxx" data-placeholder-i18n="fm_phone_p" required></div></div>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_from">من (مدينة المغادرة)</label><input type="text" id="f-from" placeholder="إسطنبول" data-placeholder-i18n="fm_from_p" required></div><div class="form-group"><label data-i18n="fm_to">إلى (مدينة الوصول)</label><input type="text" id="f-to" placeholder="القاهرة" data-placeholder-i18n="fm_to_p" required></div></div>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_date">تاريخ السفر</label><input type="date" id="f-date" required></div><div class="form-group"><label data-i18n="fm_pax">عدد الركاب</label><input type="number" id="f-pax" min="1" max="20" value="1"></div></div>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_class">درجة السفر</label><select id="f-class" data-option-keys="fc_eco,fc_biz,fc_first"></select></div><div class="form-group"><label data-i18n="fm_type">رحلة ذهاب فقط / ذهاب وإياب</label><select id="f-type" onchange="toggleReturnDate()" data-option-keys="ft_oneway,ft_return"></select></div></div>
+          <div class="form-row" id="f-return-row" style="display:none"><div class="form-group"><label data-i18n="fm_return_date">تاريخ العودة</label><input type="date" id="f-date-return"></div></div>
+          <div class="form-row single"><div class="form-group"><label data-i18n="fm_notes">الأمتعة الإضافية (اختياري)</label><textarea id="f-notes" placeholder="هل تحتاج إضافة أمتعة إضافية؟ يرجى كتابة الوزن المطلوب أو أي تفاصيل متعلقة بالأمتعة إن وجدت." data-placeholder-i18n="fm_notes_p"></textarea></div></div>
+          <button class="modal-submit" onclick="submitOrder('flight')" data-i18n="fm_submit">✅ إرسال الطلب</button>
         </div>
-        <div class="success-msg" id="success-flight"><div class="success-icon">🎉</div><h4>شكراً لكم!</h4><p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
+        <div class="success-msg" id="success-flight"><div class="success-icon">🎉</div><h4 data-i18n="fm_success_title">شكراً لكم!</h4><p data-i18n="fm_success_msg">تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
       </div>
     </div>
 
     <!-- VISA -->
     <div id="modal-visa" style="display:none">
-      <div class="modal-header"><h3>🛂 طلب تأشيرة</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="modal-header"><h3 data-i18n="fm_visa_title">🛂 طلب تأشيرة</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
       <div class="modal-body">
         <div id="form-visa">
-          <div class="form-row"><div class="form-group"><label>الاسم الكامل</label><input type="text" id="v-name" placeholder="الاسم كامل" required></div><div class="form-group"><label>رقم الواتساب</label><input type="tel" id="v-phone" placeholder="+905xxxxxxxxx" required></div></div>
-          <div class="form-row"><div class="form-group"><label>الجنسية</label><input type="text" id="v-nationality" placeholder="مصري / تركي ..."></div><div class="form-group"><label>الدولة المراد السفر إليها</label><input type="text" id="v-country" placeholder="تركيا / مصر / أوروبا..."></div></div>
-          <div class="form-row"><div class="form-group"><label>نوع التأشيرة</label><select id="v-type"><option value="سياحية">سياحية</option><option value="عمل">عمل</option><option value="دراسة">دراسة</option><option value="إقامة">إقامة</option></select></div><div class="form-group"><label>تاريخ السفر المتوقع</label><input type="date" id="v-date"></div></div>
-          <div class="form-row single"><div class="form-group"><label>ملاحظات</label><textarea id="v-notes" placeholder="أي تفاصيل إضافية..."></textarea></div></div>
-          <button class="modal-submit" onclick="submitOrder('visa')">✅ إرسال الطلب</button>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_name">الاسم الكامل</label><input type="text" id="v-name" placeholder="الاسم كامل" data-placeholder-i18n="fm_name_p" required></div><div class="form-group"><label data-i18n="fm_phone">رقم الواتساب</label><input type="tel" id="v-phone" placeholder="+905xxxxxxxxx" data-placeholder-i18n="fm_phone_p" required></div></div>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_nationality">الجنسية</label><input type="text" id="v-nationality" placeholder="مصري / تركي ..." data-placeholder-i18n="fm_nationality_p"></div><div class="form-group"><label data-i18n="fm_country">الدولة المراد السفر إليها</label><input type="text" id="v-country" placeholder="تركيا / مصر / أوروبا..." data-placeholder-i18n="fm_country_p"></div></div>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_visa_type">نوع التأشيرة</label><select id="v-type" data-option-keys="fv_tourist,fv_work,fv_study,fv_residence"></select></div><div class="form-group"><label data-i18n="fm_visa_date">تاريخ السفر المتوقع</label><input type="date" id="v-date"></div></div>
+          <div class="form-row single"><div class="form-group"><label data-i18n="fm_notes">ملاحظات</label><textarea id="v-notes" placeholder="أي تفاصيل إضافية..." data-placeholder-i18n="fm_notes_p"></textarea></div></div>
+          <button class="modal-submit" onclick="submitOrder('visa')" data-i18n="fm_submit">✅ إرسال الطلب</button>
         </div>
-        <div class="success-msg" id="success-visa"><div class="success-icon">🎉</div><h4>شكراً لكم!</h4><p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
+        <div class="success-msg" id="success-visa"><div class="success-icon">🎉</div><h4 data-i18n="fm_success_title">شكراً لكم!</h4><p data-i18n="fm_success_msg">تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
       </div>
     </div>
 
     <!-- HOTEL -->
     <div id="modal-hotel" style="display:none">
-      <div class="modal-header"><h3>🏨 حجز فندق</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="modal-header"><h3 data-i18n="fm_hotel_title">🏨 حجز فندق</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
       <div class="modal-body">
         <div id="form-hotel">
-          <div class="form-row"><div class="form-group"><label>الاسم الكامل</label><input type="text" id="h-name" placeholder="الاسم كامل" required></div><div class="form-group"><label>رقم الواتساب</label><input type="tel" id="h-phone" placeholder="+905xxxxxxxxx" required></div></div>
-          <div class="form-row"><div class="form-group"><label>المدينة / الوجهة</label><input type="text" id="h-city" placeholder="شرم الشيخ / الغردقة..." required></div><div class="form-group"><label>اسم الفندق (اختياري)</label><input type="text" id="h-hotel" placeholder="أي فندق مناسب"></div></div>
-          <div class="form-row"><div class="form-group"><label>تاريخ الدخول</label><input type="date" id="h-checkin" required></div><div class="form-group"><label>تاريخ الخروج</label><input type="date" id="h-checkout" required></div></div>
-          <div class="form-row"><div class="form-group"><label>عدد الأشخاص</label><input type="number" id="h-guests" min="1" value="2"></div><div class="form-group"><label>نوع الإقامة</label><select id="h-board"><option value="نصف إقامة">نصف إقامة</option><option value="إقامة كاملة">إقامة كاملة</option><option value="غرفة فقط">غرفة فقط</option></select></div></div>
-          <div class="form-row single"><div class="form-group"><label>ملاحظات</label><textarea id="h-notes" placeholder="تفضيلات خاصة..."></textarea></div></div>
-          <button class="modal-submit" onclick="submitOrder('hotel')">✅ إرسال الطلب</button>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_name">الاسم الكامل</label><input type="text" id="h-name" placeholder="الاسم كامل" data-placeholder-i18n="fm_name_p" required></div><div class="form-group"><label data-i18n="fm_phone">رقم الواتساب</label><input type="tel" id="h-phone" placeholder="+905xxxxxxxxx" data-placeholder-i18n="fm_phone_p" required></div></div>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_city">المدينة / الوجهة</label><input type="text" id="h-city" placeholder="شرم الشيخ / الغردقة..." data-placeholder-i18n="fm_city_p" required></div><div class="form-group"><label data-i18n="fm_hotel_name">اسم الفندق (اختياري)</label><input type="text" id="h-hotel" placeholder="أي فندق مناسب" data-placeholder-i18n="fm_hotel_name_p"></div></div>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_checkin">تاريخ الدخول</label><input type="date" id="h-checkin" required></div><div class="form-group"><label data-i18n="fm_checkout">تاريخ الخروج</label><input type="date" id="h-checkout" required></div></div>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_guests">عدد الأشخاص</label><input type="number" id="h-guests" min="1" value="2"></div><div class="form-group"><label data-i18n="fm_board">نوع الإقامة</label><select id="h-board" data-option-keys="fh_half,fh_full,fh_room"></select></div></div>
+          <div class="form-row single"><div class="form-group"><label data-i18n="fm_notes">ملاحظات</label><textarea id="h-notes" placeholder="تفضيلات خاصة..." data-placeholder-i18n="fm_notes_p"></textarea></div></div>
+          <button class="modal-submit" onclick="submitOrder('hotel')" data-i18n="fm_submit">✅ إرسال الطلب</button>
         </div>
-        <div class="success-msg" id="success-hotel"><div class="success-icon">🎉</div><h4>شكراً لكم!</h4><p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
+        <div class="success-msg" id="success-hotel"><div class="success-icon">🎉</div><h4 data-i18n="fm_success_title">شكراً لكم!</h4><p data-i18n="fm_success_msg">تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
       </div>
     </div>
 
     <!-- CARGO -->
     <div id="modal-cargo" style="display:none">
-      <div class="modal-header"><h3>📦 طلب شحن / كارجو</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="modal-header"><h3 data-i18n="fm_cargo_title">📦 طلب شحن / كارجو</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
       <div class="modal-body">
         <div id="form-cargo">
-          <div class="form-row"><div class="form-group"><label>الاسم الكامل</label><input type="text" id="c-name" placeholder="الاسم كامل" required></div><div class="form-group"><label>رقم الواتساب</label><input type="tel" id="c-phone" placeholder="+905xxxxxxxxx" required></div></div>
-          <div class="form-row"><div class="form-group"><label>من (دولة الشحن)</label><input type="text" id="c-from" placeholder="تركيا" required></div><div class="form-group"><label>إلى (دولة الوصول)</label><input type="text" id="c-to" placeholder="مصر" required></div></div>
-          <div class="form-row"><div class="form-group"><label>نوع البضاعة</label><input type="text" id="c-goods" placeholder="ملابس / إلكترونيات..."></div><div class="form-group"><label>الوزن التقريبي (كجم)</label><input type="number" id="c-weight" placeholder="50"></div></div>
-          <div class="form-row single"><div class="form-group"><label>ملاحظات</label><textarea id="c-notes" placeholder="أبعاد، تفاصيل التسليم..."></textarea></div></div>
-          <button class="modal-submit" onclick="submitOrder('cargo')">✅ إرسال الطلب</button>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_name">الاسم الكامل</label><input type="text" id="c-name" placeholder="الاسم كامل" data-placeholder-i18n="fm_name_p" required></div><div class="form-group"><label data-i18n="fm_phone">رقم الواتساب</label><input type="tel" id="c-phone" placeholder="+905xxxxxxxxx" data-placeholder-i18n="fm_phone_p" required></div></div>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_cargo_from">من (دولة الشحن)</label><input type="text" id="c-from" placeholder="تركيا" data-placeholder-i18n="fm_cargo_from_p" required></div><div class="form-group"><label data-i18n="fm_cargo_to">إلى (دولة الوصول)</label><input type="text" id="c-to" placeholder="مصر" data-placeholder-i18n="fm_cargo_to_p" required></div></div>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_goods">نوع البضاعة</label><input type="text" id="c-goods" placeholder="ملابس / إلكترونيات..." data-placeholder-i18n="fm_goods_p"></div><div class="form-group"><label data-i18n="fm_weight">الوزن التقريبي (كجم)</label><input type="number" id="c-weight" placeholder="50" data-placeholder-i18n="fm_weight_p"></div></div>
+          <div class="form-row single"><div class="form-group"><label data-i18n="fm_notes">ملاحظات</label><textarea id="c-notes" placeholder="أبعاد، تفاصيل التسليم..." data-placeholder-i18n="fm_notes_p"></textarea></div></div>
+          <button class="modal-submit" onclick="submitOrder('cargo')" data-i18n="fm_submit">✅ إرسال الطلب</button>
         </div>
-        <div class="success-msg" id="success-cargo"><div class="success-icon">🎉</div><h4>شكراً لكم!</h4><p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
+        <div class="success-msg" id="success-cargo"><div class="success-icon">🎉</div><h4 data-i18n="fm_success_title">شكراً لكم!</h4><p data-i18n="fm_success_msg">تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
       </div>
     </div>
 
     <!-- TRANSFER -->
     <div id="modal-transfer" style="display:none">
-      <div class="modal-header"><h3>🚖 طلب توصيل VIP</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="modal-header"><h3 data-i18n="fm_transfer_title">🚖 طلب توصيل VIP</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
       <div class="modal-body">
         <div id="form-transfer">
-          <div class="form-row"><div class="form-group"><label>الاسم الكامل</label><input type="text" id="t-name" placeholder="الاسم كامل" required></div><div class="form-group"><label>رقم الواتساب</label><input type="tel" id="t-phone" placeholder="+905xxxxxxxxx" required></div></div>
-          <div class="form-row"><div class="form-group"><label>المطار</label><input type="text" id="t-airport" placeholder="مطار صبيحة / أتاتورك..."></div><div class="form-group"><label>تاريخ ووقت الرحلة</label><input type="datetime-local" id="t-datetime"></div></div>
-          <div class="form-row"><div class="form-group"><label>نوع الخدمة</label><select id="t-type"><option value="استقبال من المطار">استقبال من المطار</option><option value="توصيل للمطار">توصيل للمطار</option><option value="ذهاب وإياب">ذهاب وإياب</option></select></div><div class="form-group"><label>عدد الأشخاص</label><input type="number" id="t-pax" min="1" value="1"></div></div>
-          <div class="form-row single"><div class="form-group"><label>العنوان (الفندق / المنزل)</label><input type="text" id="t-address" placeholder="اسم الفندق أو العنوان"></div></div>
-          <div class="form-row single"><div class="form-group"><label>ملاحظات</label><textarea id="t-notes" placeholder="أي تفاصيل إضافية..."></textarea></div></div>
-          <button class="modal-submit" onclick="submitOrder('transfer')">✅ إرسال الطلب</button>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_name">الاسم الكامل</label><input type="text" id="t-name" placeholder="الاسم كامل" data-placeholder-i18n="fm_name_p" required></div><div class="form-group"><label data-i18n="fm_phone">رقم الواتساب</label><input type="tel" id="t-phone" placeholder="+905xxxxxxxxx" data-placeholder-i18n="fm_phone_p" required></div></div>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_airport">المطار</label><input type="text" id="t-airport" placeholder="مطار صبيحة / أتاتورك..." data-placeholder-i18n="fm_airport_p"></div><div class="form-group"><label data-i18n="fm_datetime">تاريخ ووقت الرحلة</label><input type="datetime-local" id="t-datetime"></div></div>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_transfer_type">نوع الخدمة</label><select id="t-type" data-option-keys="ft_pickup,ft_dropoff,ft_round"></select></div><div class="form-group"><label data-i18n="fm_pax">عدد الأشخاص</label><input type="number" id="t-pax" min="1" value="1"></div></div>
+          <div class="form-row single"><div class="form-group"><label data-i18n="fm_address">العنوان (الفندق / المنزل)</label><input type="text" id="t-address" placeholder="اسم الفندق أو العنوان" data-placeholder-i18n="fm_address_p"></div></div>
+          <div class="form-row single"><div class="form-group"><label data-i18n="fm_notes">ملاحظات</label><textarea id="t-notes" placeholder="أي تفاصيل إضافية..." data-placeholder-i18n="fm_notes_p"></textarea></div></div>
+          <button class="modal-submit" onclick="submitOrder('transfer')" data-i18n="fm_submit">✅ إرسال الطلب</button>
         </div>
-        <div class="success-msg" id="success-transfer"><div class="success-icon">🎉</div><h4>شكراً لكم!</h4><p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
+        <div class="success-msg" id="success-transfer"><div class="success-icon">🎉</div><h4 data-i18n="fm_success_title">شكراً لكم!</h4><p data-i18n="fm_success_msg">تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
       </div>
     </div>
 
     <!-- PACKAGE -->
     <div id="modal-package" style="display:none">
-      <div class="modal-header"><h3>🌍 طلب برنامج سياحي</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="modal-header"><h3 data-i18n="fm_package_title">🌍 طلب برنامج سياحي</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
       <div class="modal-body">
         <div id="form-package">
-          <div class="form-row"><div class="form-group"><label>الاسم الكامل</label><input type="text" id="p-name" placeholder="الاسم كامل" required></div><div class="form-group"><label>رقم الواتساب</label><input type="tel" id="p-phone" placeholder="+905xxxxxxxxx" required></div></div>
-          <div class="form-row"><div class="form-group"><label>الوجهة المطلوبة</label><input type="text" id="p-dest" placeholder="شرم الشيخ / أنطاليا..."></div><div class="form-group"><label>عدد الأشخاص</label><input type="number" id="p-pax" min="1" value="2"></div></div>
-          <div class="form-row"><div class="form-group"><label>تاريخ السفر</label><input type="date" id="p-date"></div><div class="form-group"><label>مدة الرحلة</label><select id="p-duration"><option value="3 أيام">3 أيام</option><option value="4 أيام">4 أيام</option><option value="5 أيام">5 أيام</option><option value="أسبوع">أسبوع</option><option value="أكثر من أسبوع">أكثر من أسبوع</option></select></div></div>
-          <div class="form-row single"><div class="form-group"><label>ما يشمله البرنامج</label><select id="p-includes"><option value="فندق + طيران + توصيل">فندق + طيران + توصيل</option><option value="فندق + طيران">فندق + طيران</option><option value="فندق فقط">فندق فقط</option><option value="حسب الميزانية">حسب الميزانية</option></select></div></div>
-          <div class="form-row single"><div class="form-group"><label>الميزانية التقريبية</label><input type="text" id="p-budget" placeholder="مثال: 5000 جنيه للشخص"></div></div>
-          <div class="form-row single"><div class="form-group"><label>ملاحظات</label><textarea id="p-notes" placeholder="أي تفاصيل إضافية..."></textarea></div></div>
-          <button class="modal-submit" onclick="submitOrder('package')">✅ إرسال الطلب</button>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_name">الاسم الكامل</label><input type="text" id="p-name" placeholder="الاسم كامل" data-placeholder-i18n="fm_name_p" required></div><div class="form-group"><label data-i18n="fm_phone">رقم الواتساب</label><input type="tel" id="p-phone" placeholder="+905xxxxxxxxx" data-placeholder-i18n="fm_phone_p" required></div></div>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_destination">الوجهة المطلوبة</label><input type="text" id="p-dest" placeholder="شرم الشيخ / أنطاليا..." data-placeholder-i18n="fm_destination_p"></div><div class="form-group"><label data-i18n="fm_pax">عدد الأشخاص</label><input type="number" id="p-pax" min="1" value="2"></div></div>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_date">تاريخ السفر</label><input type="date" id="p-date"></div><div class="form-group"><label data-i18n="fm_duration">مدة الرحلة</label><select id="p-duration" data-option-keys="fd_3,fd_4,fd_5,fd_week,fd_more"></select></div></div>
+          <div class="form-row single"><div class="form-group"><label data-i18n="fm_includes">ما يشمله البرنامج</label><select id="p-includes" data-option-keys="fp_all,fp_flight,fp_hotel,fp_budget"></select></div></div>
+          <div class="form-row single"><div class="form-group"><label data-i18n="fm_budget">الميزانية التقريبية</label><input type="text" id="p-budget" placeholder="مثال: 5000 جنيه للشخص" data-placeholder-i18n="fm_budget_p"></div></div>
+          <div class="form-row single"><div class="form-group"><label data-i18n="fm_notes">ملاحظات</label><textarea id="p-notes" placeholder="أي تفاصيل إضافية..." data-placeholder-i18n="fm_notes_p"></textarea></div></div>
+          <button class="modal-submit" onclick="submitOrder('package')" data-i18n="fm_submit">✅ إرسال الطلب</button>
         </div>
-        <div class="success-msg" id="success-package"><div class="success-icon">🎉</div><h4>شكراً لكم!</h4><p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
+        <div class="success-msg" id="success-package"><div class="success-icon">🎉</div><h4 data-i18n="fm_success_title">شكراً لكم!</h4><p data-i18n="fm_success_msg">تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
       </div>
     </div>
 
     <!-- ✅ NEW: UMRAH MODAL (saves as 'package' type internally — same workflow as Programs) -->
     <div id="modal-umrah" style="display:none">
-      <div class="modal-header"><h3>🕌 طلب باقة عمرة</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="modal-header"><h3 data-i18n="fm_umrah_title">🕌 طلب باقة عمرة</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
       <div class="modal-body">
         <div id="form-umrah">
-          <div class="form-row"><div class="form-group"><label>الاسم الكامل</label><input type="text" id="u-name" placeholder="الاسم كامل" required></div><div class="form-group"><label>رقم الواتساب</label><input type="tel" id="u-phone" placeholder="+905xxxxxxxxx" required></div></div>
-          <div class="form-row"><div class="form-group"><label>عدد المعتمرين</label><input type="number" id="u-pax" min="1" value="2"></div><div class="form-group"><label>تاريخ السفر التقريبي</label><input type="date" id="u-date"></div></div>
-          <div class="form-row"><div class="form-group"><label>مدة الرحلة</label><select id="u-duration"><option value="7 أيام">7 أيام</option><option value="10 أيام">10 أيام</option><option value="14 يوم">14 يوم</option><option value="أكثر">أكثر</option></select></div><div class="form-group"><label>الإقامة</label><select id="u-rooming"><option value="غرفة ثنائية">غرفة ثنائية</option><option value="غرفة ثلاثية">غرفة ثلاثية</option><option value="غرفة رباعية">غرفة رباعية</option><option value="غرفة فردية">غرفة فردية</option></select></div></div>
-          <div class="form-row single"><div class="form-group"><label>الباقة المطلوبة</label><select id="u-includes"><option value="طيران + فندق قرب الحرم + توصيل داخلي">طيران + فندق قرب الحرم + توصيل داخلي</option><option value="طيران + فندق فقط">طيران + فندق فقط</option><option value="فندق + توصيل فقط (بدون طيران)">فندق + توصيل فقط (بدون طيران)</option></select></div></div>
-          <div class="form-row single"><div class="form-group"><label>الميزانية التقريبية للشخص</label><input type="text" id="u-budget" placeholder="مثال: $700 للشخص"></div></div>
-          <div class="form-row single"><div class="form-group"><label>ملاحظات / طلبات خاصة</label><textarea id="u-notes" placeholder="مثل: قرب الحرم، كرسي متحرك، احتياجات صحية..."></textarea></div></div>
-          <button class="modal-submit" onclick="submitOrder('umrah')">✅ إرسال الطلب</button>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_name">الاسم الكامل</label><input type="text" id="u-name" placeholder="الاسم كامل" data-placeholder-i18n="fm_name_p" required></div><div class="form-group"><label data-i18n="fm_phone">رقم الواتساب</label><input type="tel" id="u-phone" placeholder="+905xxxxxxxxx" data-placeholder-i18n="fm_phone_p" required></div></div>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_umrah_pilgrims">عدد المعتمرين</label><input type="number" id="u-pax" min="1" value="2"></div><div class="form-group"><label data-i18n="fm_umrah_travel_date">تاريخ السفر التقريبي</label><input type="date" id="u-date"></div></div>
+          <div class="form-row"><div class="form-group"><label data-i18n="fm_umrah_duration">مدة الرحلة</label><select id="u-duration" data-option-keys="fu_7,fu_10,fu_14,fu_more"></select></div><div class="form-group"><label data-i18n="fm_umrah_rooming">الإقامة</label><select id="u-rooming" data-option-keys="fu_double,fu_triple,fu_quad,fu_single"></select></div></div>
+          <div class="form-row single"><div class="form-group"><label data-i18n="fm_umrah_package">الباقة المطلوبة</label><select id="u-includes" data-option-keys="fu_full,fu_flight,fu_hotel"></select></div></div>
+          <div class="form-row single"><div class="form-group"><label data-i18n="fm_umrah_budget">الميزانية التقريبية للشخص</label><input type="text" id="u-budget" placeholder="مثال: $700 للشخص" data-placeholder-i18n="fm_umrah_budget_p"></div></div>
+          <div class="form-row single"><div class="form-group"><label data-i18n="fm_umrah_special">ملاحظات / طلبات خاصة</label><textarea id="u-notes" placeholder="مثل: قرب الحرم، كرسي متحرك، احتياجات صحية..." data-placeholder-i18n="fm_umrah_special_p"></textarea></div></div>
+          <button class="modal-submit" onclick="submitOrder('umrah')" data-i18n="fm_submit">✅ إرسال الطلب</button>
         </div>
-        <div class="success-msg" id="success-umrah"><div class="success-icon">🕌</div><h4>تقبل الله منكم!</h4><p>تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
+        <div class="success-msg" id="success-umrah"><div class="success-icon">🕌</div><h4 data-i18n="fm_umrah_success_title">تقبل الله منكم!</h4><p data-i18n="fm_umrah_success_msg">تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن</p></div>
       </div>
     </div>
 
@@ -872,7 +872,35 @@ const translations = {
     wa_block_p:"Skip the forms. Send us a message and get a confirmed quote fast. Our team responds in Arabic, English and Turkish — around the clock.",
     wa_block_btn:"Chat Now on WhatsApp",
     footer_tagline:"Istanbul, Turkey — Online Travel Services",
-    footer_copy:"© 2025 Matarist Travel. Based in Istanbul, serving the world."
+    footer_copy:"© 2025 Matarist Travel. Based in Istanbul, serving the world.",
+    fm_flight_title:"✈️ Flight Booking",fm_name:"Full Name",fm_name_p:"Full name",fm_phone:"WhatsApp Number",fm_phone_p:"+905xxxxxxxxx",
+    fm_from:"From (Departure City)",fm_from_p:"Istanbul",fm_to:"To (Arrival City)",fm_to_p:"Cairo",
+    fm_date:"Travel Date",fm_pax:"Number of Passengers",fm_class:"Travel Class",fm_type:"Trip Type",fm_return_date:"Return Date",
+    fm_notes:"Additional Luggage (Optional)",fm_notes_p:"Do you need additional luggage? Please specify the weight or any luggage details.",
+    fm_submit:"✅ Submit Request",fm_success_title:"Thank You!",fm_success_msg:"Your request has been registered successfully<br>We will contact you shortly",
+    fc_eco:"Economy",fc_biz:"Business",fc_first:"First Class",ft_oneway:"One Way",ft_return:"Round Trip",
+    fm_visa_title:"🛂 Visa Request",fm_nationality:"Nationality",fm_nationality_p:"Egyptian / Turkish...",fm_country:"Destination Country",fm_country_p:"Turkey / Egypt / Europe...",
+    fm_visa_type:"Visa Type",fm_visa_type_p:"Tourist / Work / Study / Residence",fm_visa_date:"Expected Travel Date",
+    fv_tourist:"Tourist",fv_work:"Work",fv_study:"Study",fv_residence:"Residence",
+    fm_hotel_title:"🏨 Hotel Booking",fm_city:"City / Destination",fm_city_p:"Sharm El-Sheikh / Hurghada...",
+    fm_hotel_name:"Hotel Name (Optional)",fm_hotel_name_p:"Any suitable hotel",fm_checkin:"Check-in Date",fm_checkout:"Check-out Date",
+    fm_guests:"Number of Guests",fm_board:"Accommodation Type",fh_half:"Half Board",fh_full:"Full Board",fh_room:"Room Only",
+    fm_cargo_title:"📦 Cargo / Shipping Request",fm_cargo_from:"From (Shipping Country)",fm_cargo_from_p:"Turkey",fm_cargo_to:"To (Destination Country)",fm_cargo_to_p:"Egypt",
+    fm_goods:"Type of Goods",fm_goods_p:"Clothing / Electronics...",fm_weight:"Approximate Weight (kg)",fm_weight_p:"50",
+    fm_transfer_title:"🚖 VIP Transfer Request",fm_airport:"Airport",fm_airport_p:"Sabiha / Ataturk...",fm_datetime:"Flight Date and Time",
+    fm_transfer_type:"Service Type",ft_pickup:"Airport Pickup",ft_dropoff:"Airport Dropoff",ft_round:"Round Trip",
+    fm_address:"Address (Hotel / Home)",fm_address_p:"Hotel name or address",
+    fm_package_title:"🌍 Travel Package Request",fm_destination:"Desired Destination",fm_destination_p:"Sharm El-Sheikh / Antalya...",
+    fm_duration:"Trip Duration",fd_3:"3 Days",fd_4:"4 Days",fd_5:"5 Days",fd_week:"1 Week",fd_more:"More than 1 Week",
+    fm_includes:"Package Includes",fp_all:"Hotel + Flight + Transfer",fp_flight:"Hotel + Flight",fp_hotel:"Hotel Only",fp_budget:"By Budget",
+    fm_budget:"Approximate Budget",fm_budget_p:"Example: 5000 per person",
+    fm_umrah_title:"🕌 Umrah Package Request",fm_umrah_pilgrims:"Number of Pilgrims",fm_umrah_travel_date:"Approximate Travel Date",
+    fm_umrah_duration:"Trip Duration",fu_7:"7 Days",fu_10:"10 Days",fu_14:"14 Days",fu_more:"More",
+    fm_umrah_rooming:"Accommodation",fu_double:"Double Room",fu_triple:"Triple Room",fu_quad:"Quad Room",fu_single:"Single Room",
+    fm_umrah_package:"Package Type",fu_full:"Flight + Hotel near Haram + Transfer",fu_flight:"Flight + Hotel Only",fu_hotel:"Hotel + Transfer Only (No Flight)",
+    fm_umrah_budget:"Approximate Budget per Person",fm_umrah_budget_p:"Example: $700 per person",
+    fm_umrah_special:"Special Requests / Notes",fm_umrah_special_p:"e.g., Near Haram, Wheelchair, Health needs...",
+    fm_umrah_success_title:"May Allah Accept!",fm_umrah_success_msg:"Your request has been registered successfully<br>We will contact you shortly"
   },
   ar: {
     brand_name:"مطارست",brand_sub:"للسفر",
@@ -923,7 +951,35 @@ const translations = {
     wa_block_p:"تجاوز النماذج. أرسل رسالة واحصل على عرض سعر مؤكد بسرعة. فريقنا يرد بالعربية والإنجليزية والتركية على مدار الساعة.",
     wa_block_btn:"تواصل الآن عبر واتساب",
     footer_tagline:"إسطنبول، تركيا — خدمات سفر إلكترونية",
-    footer_copy:"© 2025 مطارست للسفر. مقرنا إسطنبول ونخدم العالم."
+    footer_copy:"© 2025 مطارست للسفر. مقرنا إسطنبول ونخدم العالم.",
+    fm_flight_title:"✈️ حجز تذكرة طيران",fm_name:"الاسم الكامل",fm_name_p:"الاسم كامل",fm_phone:"رقم الواتساب",fm_phone_p:"+905xxxxxxxxx",
+    fm_from:"من (مدينة المغادرة)",fm_from_p:"إسطنبول",fm_to:"إلى (مدينة الوصول)",fm_to_p:"القاهرة",
+    fm_date:"تاريخ السفر",fm_pax:"عدد الركاب",fm_class:"درجة السفر",fm_type:"رحلة ذهاب فقط / ذهاب وإياب",fm_return_date:"تاريخ العودة",
+    fm_notes:"الأمتعة الإضافية (اختياري)",fm_notes_p:"هل تحتاج إضافة أمتعة إضافية؟ يرجى كتابة الوزن المطلوب أو أي تفاصيل متعلقة بالأمتعة إن وجدت.",
+    fm_submit:"✅ إرسال الطلب",fm_success_title:"شكراً لكم!",fm_success_msg:"تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن",
+    fc_eco:"اقتصادية",fc_biz:"رجال أعمال",fc_first:"الدرجة الأولى",ft_oneway:"ذهاب فقط",ft_return:"ذهاب وإياب",
+    fm_visa_title:"🛂 طلب تأشيرة",fm_nationality:"الجنسية",fm_nationality_p:"مصري / تركي ...",fm_country:"الدولة المراد السفر إليها",fm_country_p:"تركيا / مصر / أوروبا...",
+    fm_visa_type:"نوع التأشيرة",fm_visa_type_p:"سياحية / عمل / دراسة / إقامة",fm_visa_date:"تاريخ السفر المتوقع",
+    fv_tourist:"سياحية",fv_work:"عمل",fv_study:"دراسة",fv_residence:"إقامة",
+    fm_hotel_title:"🏨 حجز فندق",fm_city:"المدينة / الوجهة",fm_city_p:"شرم الشيخ / الغردقة...",
+    fm_hotel_name:"اسم الفندق (اختياري)",fm_hotel_name_p:"أي فندق مناسب",fm_checkin:"تاريخ الدخول",fm_checkout:"تاريخ الخروج",
+    fm_guests:"عدد الأشخاص",fm_board:"نوع الإقامة",fh_half:"نصف إقامة",fh_full:"إقامة كاملة",fh_room:"غرفة فقط",
+    fm_cargo_title:"📦 طلب شحن / كارجو",fm_cargo_from:"من (دولة الشحن)",fm_cargo_from_p:"تركيا",fm_cargo_to:"إلى (دولة الوصول)",fm_cargo_to_p:"مصر",
+    fm_goods:"نوع البضاعة",fm_goods_p:"ملابس / إلكترونيات...",fm_weight:"الوزن التقريبي (كجم)",fm_weight_p:"50",
+    fm_transfer_title:"🚖 طلب توصيل VIP",fm_airport:"المطار",fm_airport_p:"مطار صبيحة / أتاتورك...",fm_datetime:"تاريخ ووقت الرحلة",
+    fm_transfer_type:"نوع الخدمة",ft_pickup:"استقبال من المطار",ft_dropoff:"توصيل للمطار",ft_round:"ذهاب وإياب",
+    fm_address:"العنوان (الفندق / المنزل)",fm_address_p:"اسم الفندق أو العنوان",
+    fm_package_title:"🌍 طلب برنامج سياحي",fm_destination:"الوجهة المطلوبة",fm_destination_p:"شرم الشيخ / أنطاليا...",
+    fm_duration:"مدة الرحلة",fd_3:"3 أيام",fd_4:"4 أيام",fd_5:"5 أيام",fd_week:"أسبوع",fd_more:"أكثر من أسبوع",
+    fm_includes:"ما يشمله البرنامج",fp_all:"فندق + طيران + توصيل",fp_flight:"فندق + طيران",fp_hotel:"فندق فقط",fp_budget:"حسب الميزانية",
+    fm_budget:"الميزانية التقريبية",fm_budget_p:"مثال: 5000 جنيه للشخص",
+    fm_umrah_title:"🕌 طلب باقة عمرة",fm_umrah_pilgrims:"عدد المعتمرين",fm_umrah_travel_date:"تاريخ السفر التقريبي",
+    fm_umrah_duration:"مدة الرحلة",fu_7:"7 أيام",fu_10:"10 أيام",fu_14:"14 يوم",fu_more:"أكثر",
+    fm_umrah_rooming:"الإقامة",fu_double:"غرفة ثنائية",fu_triple:"غرفة ثلاثية",fu_quad:"غرفة رباعية",fu_single:"غرفة فردية",
+    fm_umrah_package:"الباقة المطلوبة",fu_full:"طيران + فندق قرب الحرم + توصيل داخلي",fu_flight:"طيران + فندق فقط",fu_hotel:"فندق + توصيل فقط (بدون طيران)",
+    fm_umrah_budget:"الميزانية التقريبية للشخص",fm_umrah_budget_p:"مثال: $700 للشخص",
+    fm_umrah_special:"ملاحظات / طلبات خاصة",fm_umrah_special_p:"مثل: قرب الحرم، كرسي متحرك، احتياجات صحية...",
+    fm_umrah_success_title:"تقبل الله منكم!",fm_umrah_success_msg:"تم تسجيل طلبكم بنجاح<br>سوف يتم الرد عليكم في أقرب وقت ممكن"
   },
   tr: {
     brand_name:"Matarist",brand_sub:"Seyahat",
@@ -974,9 +1030,56 @@ const translations = {
     wa_block_p:"Form doldurmayın. Mesaj gönderin, hızlıca onaylanmış teklifinizi alın. 7/24 Arapça, İngilizce ve Türkçe yanıt.",
     wa_block_btn:"WhatsApp'tan Şimdi Yaz",
     footer_tagline:"İstanbul, Türkiye — Çevrimiçi Seyahat Hizmetleri",
-    footer_copy:"© 2025 Matarist Travel. İstanbul merkezli, dünyaya hizmet."
+    footer_copy:"© 2025 Matarist Travel. İstanbul merkezli, dünyaya hizmet.",
+    fm_flight_title:"✈️ Uçak Bileti Rezervasyonu",fm_name:"Adı Soyadı",fm_name_p:"Adı soyadı",fm_phone:"WhatsApp Numarası",fm_phone_p:"+905xxxxxxxxx",
+    fm_from:"Nereden (Kalkış Şehri)",fm_from_p:"İstanbul",fm_to:"Nereye (Varış Şehri)",fm_to_p:"Kahire",
+    fm_date:"Seyahat Tarihi",fm_pax:"Yolcu Sayısı",fm_class:"Seyahat Sınıfı",fm_type:"Gidiş Dönüş Tipi",fm_return_date:"Dönüş Tarihi",
+    fm_notes:"Ek Bagaj (İsteğe Bağlı)",fm_notes_p:"Ek bagaj istiyorsanız lütfen kilogram cinsinden ağırlığını veya bagajla ilgili detayları yazınız.",
+    fm_submit:"✅ Talebimi Gönder",fm_success_title:"Teşekkürler!",fm_success_msg:"Talebiniz başarıyla kaydedildi<br>Kısa sürede sizinle iletişime geçeceğiz",
+    fc_eco:"Ekonomi",fc_biz:"İşletme",fc_first:"Birinci Sınıf",ft_oneway:"Tek Yön",ft_return:"Gidiş Dönüş",
+    fm_visa_title:"🛂 Vize Talebı",fm_nationality:"Uyruk",fm_nationality_p:"Mısırlı / Türk ...",fm_country:"Hedef Ülke",fm_country_p:"Türkiye / Mısır / Avrupa...",
+    fm_visa_type:"Vize Türü",fm_visa_type_p:"Turizm / İş / Eğitim / İkamet",fm_visa_date:"Tahmini Seyahat Tarihi",
+    fv_tourist:"Turizm",fv_work:"İş",fv_study:"Eğitim",fv_residence:"İkamet",
+    fm_hotel_title:"🏨 Otel Rezervasyonu",fm_city:"Şehir / Destinasyon",fm_city_p:"Şarm El Şeyk / Hurgada...",
+    fm_hotel_name:"Otel Adı (İsteğe Bağlı)",fm_hotel_name_p:"Uygun herhangi bir otel",fm_checkin:"Giriş Tarihi",fm_checkout:"Çıkış Tarihi",
+    fm_guests:"Misafir Sayısı",fm_board:"Konaklama Türü",fh_half:"Yarım Pansiyon",fh_full:"Tam Pansiyon",fh_room:"Yalnız Oda",
+    fm_cargo_title:"📦 Kargo / Nakliye Talebı",fm_cargo_from:"Nereden (Gönderen Ülke)",fm_cargo_from_p:"Türkiye",fm_cargo_to:"Nereye (Hedef Ülke)",fm_cargo_to_p:"Mısır",
+    fm_goods:"Mal Türü",fm_goods_p:"Giysi / Elektronik...",fm_weight:"Tahmini Ağırlık (kg)",fm_weight_p:"50",
+    fm_transfer_title:"🚖 VIP Transfer Talebı",fm_airport:"Havalimanı",fm_airport_p:"Sabiha / Atatürk...",fm_datetime:"Uçuş Tarihi ve Saati",
+    fm_transfer_type:"Hizmet Türü",ft_pickup:"Havalimanından Karşılama",ft_dropoff:"Havalimanına Bırakma",ft_round:"Gidiş Dönüş",
+    fm_address:"Adres (Otel / Ev)",fm_address_p:"Otel adı veya adres",
+    fm_package_title:"🌍 Seyahat Paketi Talebı",fm_destination:"İstenilen Destinasyon",fm_destination_p:"Şarm El Şeyk / Antalya...",
+    fm_duration:"Gezi Süresi",fd_3:"3 Gün",fd_4:"4 Gün",fd_5:"5 Gün",fd_week:"1 Hafta",fd_more:"1 Haftadan Fazla",
+    fm_includes:"Pakete Dahil",fp_all:"Otel + Uçak + Transfer",fp_flight:"Otel + Uçak",fp_hotel:"Yalnız Otel",fp_budget:"Bütçeye Göre",
+    fm_budget:"Tahmini Bütçe",fm_budget_p:"Örnek: Kişi başına 5000",
+    fm_umrah_title:"🕌 Umre Paketi Talebı",fm_umrah_pilgrims:"Hacı Sayısı",fm_umrah_travel_date:"Tahmini Seyahat Tarihi",
+    fm_umrah_duration:"Gezi Süresi",fu_7:"7 Gün",fu_10:"10 Gün",fu_14:"14 Gün",fu_more:"Daha Fazla",
+    fm_umrah_rooming:"Konaklama",fu_double:"Çift Kişilik Oda",fu_triple:"Üç Kişilik Oda",fu_quad:"Dört Kişilik Oda",fu_single:"Tek Kişilik Oda",
+    fm_umrah_package:"Paket Türü",fu_full:"Uçak + Harem Yakını Otel + Transfer",fu_flight:"Uçak + Otel Yalnız",fu_hotel:"Otel + Transfer Yalnız (Uçaksız)",
+    fm_umrah_budget:"Kişi Başına Tahmini Bütçe",fm_umrah_budget_p:"Örnek: Kişi başına $700",
+    fm_umrah_special:"Özel Talepler / Notlar",fm_umrah_special_p:"Örn., Harem Yakını, Tekerlekli Sandalye, Sağlık İhtiyaçları...",
+    fm_umrah_success_title:"Allah Kabul Etsin!",fm_umrah_success_msg:"Talebiniz başarıyla kaydedildi<br>Kısa sürede sizinle iletişime geçeceğiz"
   }
 };
+
+function updateFormElements(lang){
+  const t = translations[lang]; if(!t) return;
+  // Update placeholders
+  document.querySelectorAll('[data-placeholder-i18n]').forEach(el => {
+    const key = el.getAttribute('data-placeholder-i18n');
+    if(t[key] !== undefined) el.placeholder = t[key];
+  });
+  // Update select options
+  document.querySelectorAll('[data-option-keys]').forEach(select => {
+    const keys = select.getAttribute('data-option-keys').split(',');
+    const options = select.querySelectorAll('option');
+    keys.forEach((key, idx) => {
+      if(options[idx] && t[key] !== undefined) {
+        options[idx].textContent = t[key];
+      }
+    });
+  });
+}
 
 function setLang(lang){
   const t = translations[lang]; if(!t) return;
@@ -990,6 +1093,7 @@ function setLang(lang){
   document.querySelectorAll('.lang-btn, .mobile-lang button').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.lang === lang);
   });
+  updateFormElements(lang);
 }
 const savedLang = localStorage.getItem('matarist_lang') || 'en';
 setLang(savedLang);
