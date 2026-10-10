@@ -116,44 +116,33 @@ ${mapHtml}
 
 exports.handler = async function (event) {
   const qs = event.queryStringParameters || {};
-  const slug = qs.slug;
   const lang = ["ar", "en", "tr"].includes(qs.lang) ? qs.lang : "en";
 
-  // Netlify's edge cached an earlier 404 for a path+query combo indefinitely
-  // (confirmed live: response headers showed "Netlify Durable" ... fwd=bypass
-  // serving a stale response even after a redeploy and cache-busted fetches).
-  // None of these responses set Cache-Control before, which let that
-  // happen — every response here now explicitly opts out of caching, since
-  // "changes reflected correctly" (publish/unpublish/rent) is a hard
+  // Netlify's netlify.toml placeholder substitution in a redirect's `to`
+  // query string (to = ".../listing-page?slug=:slug") was confirmed live
+  // to NOT reach the function — event.queryStringParameters never contained
+  // `slug` when requested through the /accommodation/:slug redirect, even
+  // though `force = true` was set. event.path DOES correctly reflect the
+  // original request path through that same redirect, so the slug is
+  // derived from there instead, with qs.slug kept as a fallback for direct
+  // function calls (e.g. from admin-listings.html's own fetches).
+  const pathSlug = decodeURIComponent((event.path || "").replace(/^\/accommodation\/?/, ""));
+  const slug = qs.slug || pathSlug;
+
+  // Every response here explicitly opts out of caching — "changes reflected
+  // correctly" when publishing/unpublishing/renting a listing is a hard
   // requirement and nothing here is expensive enough to need edge caching.
   const NO_STORE = { "Cache-Control": "no-store" };
 
   if (!slug) {
-    return {
-      statusCode: 200,
-      headers: { "Content-Type": "application/json", ...NO_STORE },
-      body: JSON.stringify({
-        branch: "empty-slug",
-        qs,
-        rawEvent: { path: event.path, rawUrl: event.rawUrl, rawQuery: event.rawQuery, qsp: event.queryStringParameters, multi: event.multiValueQueryStringParameters, httpMethod: event.httpMethod },
-      }),
-    };
+    return { statusCode: 404, headers: { "Content-Type": "text/html; charset=utf-8", ...NO_STORE }, body: page404(lang) };
   }
 
   const listings = await getAllListings();
   const listing = listings.find((l) => l.slug === slug);
 
   if (!listing) {
-    return {
-      statusCode: 200,
-      headers: { "Content-Type": "application/json", ...NO_STORE },
-      body: JSON.stringify({
-        receivedSlug: slug,
-        receivedSlugJSON: JSON.stringify(slug),
-        knownSlugs: listings.map((l) => l.slug),
-        rawEvent: { path: event.path, rawUrl: event.rawUrl, rawQuery: event.rawQuery, qsp: event.queryStringParameters, multi: event.multiValueQueryStringParameters },
-      }),
-    };
+    return { statusCode: 404, headers: { "Content-Type": "text/html; charset=utf-8", ...NO_STORE }, body: page404(lang) };
   }
 
   if (listing.status === "deleted") {

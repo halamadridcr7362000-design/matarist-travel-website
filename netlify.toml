@@ -7,8 +7,12 @@
   to = "/.netlify/functions/accommodation-sitemap"
   status = 200
 
+# The ?slug=:slug placeholder substitution here was tested live and
+# confirmed NOT to reach the function (queryStringParameters.slug was
+# absent) — listing-page.js instead derives the slug from the original
+# request path (event.path), which IS passed through correctly.
 [[redirects]]
   from = "/accommodation/:slug"
-  to = "/.netlify/functions/listing-page?slug=:slug"
+  to = "/.netlify/functions/listing-page"
   status = 200
   force = true
