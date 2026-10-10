@@ -53,28 +53,36 @@ function isPubliclyVisible(listing) {
 
 // --- Transactions store, with ETag-guarded conditional writes ---
 // Netlify Blobs documents onlyIfMatch/onlyIfNew as an optimistic-concurrency
-// check (not a database transaction). We use it to detect a conflicting
-// concurrent write and retry with a fresh read rather than silently
-// overwriting another write.
+// check. Tested live against this account's actual Blobs setup (manual
+// siteID/token credentials, same as orders.js uses) and setJSON did not
+// return the documented {modified, etag} result — it came back undefined,
+// so relying on that contract broke every write. Using a version counter
+// stored in the data itself instead: fully application-level, works
+// regardless of what the SDK does internally, and needs no particular
+// Blobs feature to be present. It is a best-effort check (there's a small
+// window between the verifying re-read and another write), not a true
+// atomic guarantee — reasonable for a solo admin's occasional writes,
+// which is the actual usage pattern here.
+async function getTransactionsRaw() {
+  const data = await transactionsStore().get(TRANSACTIONS_KEY, { type: "json" });
+  return data && Array.isArray(data.items) ? data : { version: 0, items: [] };
+}
+
 async function getTransactionsWithEtag() {
-  const res = await transactionsStore().getWithMetadata(TRANSACTIONS_KEY, { type: "json" });
-  if (!res) return { data: [], etag: null };
-  return { data: res.data || [], etag: res.etag };
+  const raw = await getTransactionsRaw();
+  return { data: raw.items, etag: String(raw.version) };
 }
 
-async function trySaveTransactions(data, etag) {
-  const opts = etag ? { onlyIfMatch: etag } : { onlyIfNew: true };
-  return transactionsStore().setJSON(TRANSACTIONS_KEY, data, opts);
-}
-
-// mutateFn(currentArray) -> newArray. Retries on conflict up to maxAttempts.
+// mutateFn(currentArray) -> newArray. Retries on a detected conflict.
 async function updateTransactions(mutateFn, maxAttempts = 4) {
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    const { data, etag } = await getTransactionsWithEtag();
-    const next = mutateFn(data);
-    const result = await trySaveTransactions(next, etag);
-    if (result.modified) return next;
-    // Conflict: someone else wrote in between. Re-read and retry.
+    const current = await getTransactionsRaw();
+    const nextItems = mutateFn(current.items);
+    const nextVersion = current.version + 1;
+    await transactionsStore().setJSON(TRANSACTIONS_KEY, { version: nextVersion, items: nextItems });
+    const verify = await getTransactionsRaw();
+    if (verify.version === nextVersion) return nextItems;
+    // Someone else wrote in between (their version won) — retry from fresh data.
   }
   throw new Error("Could not save transaction after several attempts due to concurrent writes. Please retry.");
 }
