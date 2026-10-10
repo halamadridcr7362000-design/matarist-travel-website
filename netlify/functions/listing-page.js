@@ -136,7 +136,16 @@ exports.handler = async function (event) {
   const listing = listings.find((l) => l.slug === slug);
 
   if (!listing) {
-    return { statusCode: 404, headers: { "Content-Type": "text/html; charset=utf-8", ...NO_STORE }, body: page404(lang) };
+    return {
+      statusCode: 200,
+      headers: { "Content-Type": "application/json", ...NO_STORE },
+      body: JSON.stringify({
+        receivedSlug: slug,
+        receivedSlugJSON: JSON.stringify(slug),
+        knownSlugs: listings.map((l) => l.slug),
+        rawEvent: { path: event.path, rawUrl: event.rawUrl, rawQuery: event.rawQuery, qsp: event.queryStringParameters, multi: event.multiValueQueryStringParameters },
+      }),
+    };
   }
 
   if (listing.status === "deleted") {
