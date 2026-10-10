@@ -7,12 +7,21 @@ const { getStore } = require("@netlify/blobs");
 const LISTINGS_KEY = "all-listings";
 const TRANSACTIONS_KEY = "all-transactions";
 
+// This site's Blobs automatic context injection isn't active (confirmed by
+// testing against a live deploy preview) — the existing orders.js already
+// works around this by passing siteID/token explicitly from the same env
+// vars Netlify Blobs is already configured with here. Reusing that exact
+// pattern, so no new environment variables are needed for storage.
+function blobsCreds() {
+  return { siteID: process.env.NETLIFY_SITE_ID, token: process.env.NETLIFY_BLOBS_TOKEN };
+}
+
 function listingsStore() {
-  return getStore({ name: "accommodation-listings", consistency: "strong" });
+  return getStore({ name: "accommodation-listings", consistency: "strong", ...blobsCreds() });
 }
 
 function transactionsStore() {
-  return getStore({ name: "accommodation-transactions", consistency: "strong" });
+  return getStore({ name: "accommodation-transactions", consistency: "strong", ...blobsCreds() });
 }
 
 async function getAllListings() {
