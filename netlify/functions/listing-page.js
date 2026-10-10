@@ -5,6 +5,7 @@
 // /accommodation/:slug — works identically for a direct visit, a shared
 // link, or a page refresh, since the redirect applies at every request.
 const { getAllListings, toPublicListing, isPubliclyVisible } = require("./_lib/accommodation-store");
+const { verifyToken } = require("./_lib/accommodation-security");
 
 const SITE = "https://mataristtravel.com";
 const WHATSAPP = "905451218167";
@@ -37,7 +38,7 @@ function page410(lang) {
   </body></html>`;
 }
 
-function renderListing(listing, lang) {
+function renderListing(listing, lang, isPreview) {
   const t = LABELS[lang] || LABELS.en;
   const pub = toPublicListing(listing);
   const title = `${escapeHtml(pub.title)} — ${escapeHtml(pub.district)} | MATARIST Accommodation`;
@@ -70,6 +71,7 @@ function renderListing(listing, lang) {
 <meta property="og:type" content="website">
 <meta property="og:url" content="${canonical}">
 ${firstPhoto ? `<meta property="og:image" content="${firstPhoto}">` : ""}
+${isPreview ? `<meta name="robots" content="noindex, nofollow">` : ""}
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 body{font-family:'DM Sans',sans-serif;background:#0f1d3d;color:#fff;margin:0;padding:0}
@@ -88,6 +90,7 @@ h1{font-size:1.6rem;margin:14px 0 4px}
 <body>
 <div class="wrap">
 <a class="back" href="/accommodation/">&larr; ${t.back}</a>
+${isPreview ? `<div style="background:#1f6feb;color:#fff;padding:8px 16px;border-radius:6px;display:inline-block;margin-bottom:16px;font-weight:700">PREVIEW — status: ${escapeHtml(listing.status)}, not publicly visible</div>` : ""}
 ${rentedBadge}
 <h1>${escapeHtml(pub.title)}</h1>
 <div class="meta">${escapeHtml(pub.district)} · ${escapeHtml(ROOM_TYPE_LABEL[pub.roomType] || pub.roomType)}</div>
@@ -132,7 +135,17 @@ exports.handler = async function (event) {
   }
 
   if (listing.status === "draft" || listing.status === "unpublished") {
-    return { statusCode: 404, headers: { "Content-Type": "text/html; charset=utf-8" }, body: page404(lang) };
+    const secret = process.env.ACCOMMODATION_SESSION_SECRET;
+    const previewPayload = secret ? verifyToken(qs.preview, secret) : null;
+    const validPreview = previewPayload && previewPayload.listingId === listing.id;
+    if (!validPreview) {
+      return { statusCode: 404, headers: { "Content-Type": "text/html; charset=utf-8" }, body: page404(lang) };
+    }
+    return {
+      statusCode: 200,
+      headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" },
+      body: renderListing(listing, lang, true),
+    };
   }
 
   return {

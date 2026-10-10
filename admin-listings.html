@@ -441,10 +441,23 @@ async function deleteListing(){
   loadListings();
 }
 
-function previewListing(){
+async function previewListing(){
   if(!currentListingId){ showToast('Save the listing first', 'error'); return; }
   const l = listingsCache.find(x=>x.id===currentListingId);
-  if(l) window.open('/accommodation/'+l.slug, '_blank');
+  if(!l) return;
+  if(l.status === 'published' || l.status === 'rented'){
+    window.open('/accommodation/'+l.slug, '_blank');
+    return;
+  }
+  // Draft/unpublished listings aren't publicly reachable — mint a short-lived
+  // preview token so the new tab (a plain navigation, no Authorization header)
+  // can still render it.
+  try{
+    const res = await fetch(LISTINGS_URL+'?action=previewToken&id='+encodeURIComponent(currentListingId), {headers: authHeaders()});
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error||'Could not create preview link');
+    window.open('/accommodation/'+data.slug+'?preview='+encodeURIComponent(data.token), '_blank');
+  }catch(e){ showToast(e.message, 'error'); }
 }
 
 /* ---------------- TRANSACTIONS ---------------- */

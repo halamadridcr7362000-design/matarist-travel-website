@@ -4,7 +4,7 @@
 // Every write requires a valid signed session token (server-side check),
 // never a client-side password check.
 const crypto = require("crypto");
-const { requireSession } = require("./_lib/accommodation-security");
+const { requireSession, sign } = require("./_lib/accommodation-security");
 const {
   getAllListings,
   saveAllListings,
@@ -49,6 +49,11 @@ function uniqueSlug(base, existingSlugs) {
   return slug;
 }
 
+// Exported for testing; Netlify Functions only ever invoke exports.handler,
+// so these extra exports have no effect in production.
+exports.slugify = slugify;
+exports.uniqueSlug = uniqueSlug;
+
 exports.handler = async function (event) {
   if (event.httpMethod === "OPTIONS") {
     return { statusCode: 200, headers, body: "" };
@@ -77,6 +82,22 @@ async function handleGet(event) {
 
   const session = requireSession(event);
   const listings = await getAllListings();
+
+  // Lets admin-listings.html open a "Preview" tab for a draft/unpublished
+  // listing. window.open() can't carry an Authorization header, so this
+  // mints a short-lived signed token instead, scoped to one listing.
+  if (qs.action === "previewToken") {
+    if (!session) {
+      return { statusCode: 401, headers: jsonHeaders(), body: JSON.stringify({ error: "Unauthorized" }) };
+    }
+    const listing = listings.find((l) => l.id === qs.id);
+    if (!listing) {
+      return { statusCode: 404, headers: jsonHeaders(), body: JSON.stringify({ error: "Listing not found" }) };
+    }
+    const secret = process.env.ACCOMMODATION_SESSION_SECRET;
+    const token = sign({ listingId: listing.id, exp: Date.now() + 10 * 60 * 1000 }, secret);
+    return { statusCode: 200, headers: jsonHeaders(), body: JSON.stringify({ token, slug: listing.slug }) };
+  }
 
   if (qs.admin) {
     if (!session) {
