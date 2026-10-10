@@ -456,7 +456,11 @@ async function previewListing(){
     const res = await fetch(LISTINGS_URL+'?action=previewToken&id='+encodeURIComponent(currentListingId), {headers: authHeaders()});
     const data = await res.json();
     if(!res.ok) throw new Error(data.error||'Could not create preview link');
-    window.open('/accommodation/'+data.slug+'?preview='+encodeURIComponent(data.token), '_blank');
+    // Hit the function directly rather than the pretty /accommodation/:slug
+    // URL — the Netlify redirect for that route doesn't forward this extra
+    // query param through (confirmed against a live deploy), so the pretty
+    // URL would 404 here even though the token itself is valid.
+    window.open('/.netlify/functions/listing-page?slug='+encodeURIComponent(data.slug)+'&preview='+encodeURIComponent(data.token), '_blank');
   }catch(e){ showToast(e.message, 'error'); }
 }
 
