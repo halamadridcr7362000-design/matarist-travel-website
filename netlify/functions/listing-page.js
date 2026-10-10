@@ -127,6 +127,16 @@ exports.handler = async function (event) {
   const listing = listings.find((l) => l.slug === slug);
 
   if (!listing) {
+    // TEMPORARY diagnostic (remove once the redirect bug is confirmed fixed):
+    // shows the raw received slug + known slugs so a routing mismatch is
+    // visible without needing live server log access.
+    if (qs.debug) {
+      return {
+        statusCode: 200,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ receivedSlug: slug, receivedSlugJSON: JSON.stringify(slug), knownSlugs: listings.map((l) => l.slug) }),
+      };
+    }
     return { statusCode: 404, headers: { "Content-Type": "text/html; charset=utf-8" }, body: page404(lang) };
   }
 

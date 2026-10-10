@@ -11,3 +11,4 @@
   from = "/accommodation/:slug"
   to = "/.netlify/functions/listing-page?slug=:slug"
   status = 200
+  force = true
