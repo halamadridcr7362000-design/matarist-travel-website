@@ -119,34 +119,28 @@ exports.handler = async function (event) {
   const slug = qs.slug;
   const lang = ["ar", "en", "tr"].includes(qs.lang) ? qs.lang : "en";
 
+  // Netlify's edge cached an earlier 404 for a path+query combo indefinitely
+  // (confirmed live: response headers showed "Netlify Durable" ... fwd=bypass
+  // serving a stale response even after a redeploy and cache-busted fetches).
+  // None of these responses set Cache-Control before, which let that
+  // happen — every response here now explicitly opts out of caching, since
+  // "changes reflected correctly" (publish/unpublish/rent) is a hard
+  // requirement and nothing here is expensive enough to need edge caching.
+  const NO_STORE = { "Cache-Control": "no-store" };
+
   if (!slug) {
-    return { statusCode: 404, headers: { "Content-Type": "text/html; charset=utf-8" }, body: page404(lang) };
+    return { statusCode: 404, headers: { "Content-Type": "text/html; charset=utf-8", ...NO_STORE }, body: page404(lang) };
   }
 
   const listings = await getAllListings();
   const listing = listings.find((l) => l.slug === slug);
 
   if (!listing) {
-    // TEMPORARY diagnostic (remove once the redirect bug is confirmed fixed):
-    // unconditional (not gated on a query param, since query passthrough
-    // through the redirect is itself in question) — shows the raw received
-    // slug + known slugs + the full event query object.
-    return {
-      statusCode: 200,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        receivedSlug: slug,
-        receivedSlugJSON: JSON.stringify(slug),
-        knownSlugs: listings.map((l) => l.slug),
-        rawQueryStringParameters: event.queryStringParameters,
-        rawPath: event.path,
-        rawRawUrl: event.rawUrl,
-      }),
-    };
+    return { statusCode: 404, headers: { "Content-Type": "text/html; charset=utf-8", ...NO_STORE }, body: page404(lang) };
   }
 
   if (listing.status === "deleted") {
-    return { statusCode: 410, headers: { "Content-Type": "text/html; charset=utf-8" }, body: page410(lang) };
+    return { statusCode: 410, headers: { "Content-Type": "text/html; charset=utf-8", ...NO_STORE }, body: page410(lang) };
   }
 
   if (listing.status === "draft" || listing.status === "unpublished") {
@@ -154,18 +148,18 @@ exports.handler = async function (event) {
     const previewPayload = secret ? verifyToken(qs.preview, secret) : null;
     const validPreview = previewPayload && previewPayload.listingId === listing.id;
     if (!validPreview) {
-      return { statusCode: 404, headers: { "Content-Type": "text/html; charset=utf-8" }, body: page404(lang) };
+      return { statusCode: 404, headers: { "Content-Type": "text/html; charset=utf-8", ...NO_STORE }, body: page404(lang) };
     }
     return {
       statusCode: 200,
-      headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" },
+      headers: { "Content-Type": "text/html; charset=utf-8", ...NO_STORE },
       body: renderListing(listing, lang, true),
     };
   }
 
   return {
     statusCode: 200,
-    headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=60" },
+    headers: { "Content-Type": "text/html; charset=utf-8", ...NO_STORE },
     body: renderListing(listing, lang),
   };
 };
