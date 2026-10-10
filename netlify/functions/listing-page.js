@@ -129,7 +129,15 @@ exports.handler = async function (event) {
   const NO_STORE = { "Cache-Control": "no-store" };
 
   if (!slug) {
-    return { statusCode: 404, headers: { "Content-Type": "text/html; charset=utf-8", ...NO_STORE }, body: page404(lang) };
+    return {
+      statusCode: 200,
+      headers: { "Content-Type": "application/json", ...NO_STORE },
+      body: JSON.stringify({
+        branch: "empty-slug",
+        qs,
+        rawEvent: { path: event.path, rawUrl: event.rawUrl, rawQuery: event.rawQuery, qsp: event.queryStringParameters, multi: event.multiValueQueryStringParameters, httpMethod: event.httpMethod },
+      }),
+    };
   }
 
   const listings = await getAllListings();
