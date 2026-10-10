@@ -524,6 +524,18 @@ footer{background:var(--navy-dark);border-top:1px solid rgba(201,168,76,0.2);pad
       </div>
     </div>
 
+    <!-- ✅ NEW: 8th Service — Accommodation (links to dedicated /accommodation/ section) -->
+    <div class="service-card reveal" onclick="window.location.href='/accommodation/'">
+      <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=900&q=80" alt="Accommodation in Istanbul" loading="lazy">
+      <div class="service-card-overlay"></div>
+      <div class="service-card-content">
+        <div class="service-card-tag" data-i18n="s8_tag">Istanbul Rentals</div>
+        <h3 data-i18n="s8_title">Accommodation</h3>
+        <p data-i18n="s8_desc">Rooms and apartments for rent in Istanbul — students, shared rooms, and monthly rentals, organized by district.</p>
+        <span class="service-card-cta"><span data-i18n="view_listings">View Listings</span> <i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+    </div>
+
   </div>
 </section>
 <!-- ═══ MODALS ═══ -->
@@ -836,7 +848,8 @@ const translations = {
     s5_tag:"VIP Private",s5_title:"Airport Transfers",s5_desc:"VIP private pickups and drop-offs. Individual or group transfers handled with professionalism and reliability.",
     s6_tag:"Tailored Packages",s6_title:"Travel Packages",s6_desc:"Custom bundles combining flights, hotels and transfers. Perfect for Eid holidays, summer trips and business travel.",
     s7_tag:"🕌 Spiritual Journey",s7_title:"Umrah Packages",s7_desc:"Complete Umrah packages from Istanbul. Flights, hotels near Haram, transfers and full logistical support.",
-    book_now:"Book Now",get_quote:"Get Quote",
+    s8_tag:"Istanbul Rentals",s8_title:"Accommodation",s8_desc:"Rooms and apartments for rent in Istanbul — students, shared rooms, and monthly rentals, organized by district.",
+    book_now:"Book Now",get_quote:"Get Quote",view_listings:"View Listings",
     about_label:"Who We Are",about_title:"Istanbul-Based,<br>Globally Connected",
     about_sub:"Matarist Travel is a professional online travel and logistics agency based in Istanbul, Turkey. We specialize in the Turkey–Egypt corridor while delivering Umrah packages, global cargo shipping and worldwide booking services.",
     about_tagline:'Your <em>Journey</em>,<br>Our Responsibility',about_card:"WhatsApp Support",
@@ -915,7 +928,8 @@ const translations = {
     s5_tag:"VIP خاص",s5_title:"توصيل المطار",s5_desc:"خدمات استقبال وتوديع VIP. نقل فردي وجماعي باحترافية عالية وموثوقية.",
     s6_tag:"باقات مخصصة",s6_title:"باقات السفر",s6_desc:"باقات تجمع الطيران والفنادق والنقل. مثالية لعطل العيد والصيف ورحلات الأعمال.",
     s7_tag:"🕌 رحلة روحانية",s7_title:"باقات العمرة",s7_desc:"باقات عمرة متكاملة من إسطنبول. طيران، فنادق قرب الحرم، توصيل ودعم لوجستي كامل.",
-    book_now:"احجز الآن",get_quote:"عرض سعر",
+    s8_tag:"سكن إسطنبول",s8_title:"سكن وإيجارات",s8_desc:"غرف وشقق للإيجار في إسطنبول — للطلاب والسكن المشترك والإيجار الشهري، مصنفة حسب المنطقة.",
+    book_now:"احجز الآن",get_quote:"عرض سعر",view_listings:"عرض السكنات",
     about_label:"من نحن",about_title:"مقرنا إسطنبول،<br>خدماتنا عالمية",
     about_sub:"مطارست للسفر وكالة سياحة ولوجستيات إلكترونية محترفة مقرها إسطنبول، تركيا. متخصصون في محور تركيا–مصر مع باقات العمرة وشحن بضائع عالمي وخدمات حجز دولية.",
     about_tagline:'رحلتك <em>مسؤوليتنا</em>',about_card:"دعم واتساب",
@@ -994,7 +1008,8 @@ const translations = {
     s5_tag:"VIP Özel",s5_title:"Havalimanı Transferi",s5_desc:"VIP özel karşılama ve uğurlama. Bireysel veya grup transferleri en yüksek profesyonellikle.",
     s6_tag:"Özel Paketler",s6_title:"Seyahat Paketleri",s6_desc:"Uçuş, otel ve transferi birleştiren paketler. Kurban Bayramı, yaz tatili ve iş seyahatleri için ideal.",
     s7_tag:"🕌 Manevi Yolculuk",s7_title:"Umre Paketleri",s7_desc:"İstanbul'dan eksiksiz Umre paketleri. Uçuş, Harem yakını oteller, transferler ve tam destek.",
-    book_now:"Rezervasyon",get_quote:"Teklif Al",
+    s8_tag:"İstanbul Kiralık",s8_title:"Konaklama",s8_desc:"İstanbul'da kiralık oda ve daireler — öğrenciler, paylaşımlı odalar ve aylık kiralama, semte göre düzenlenmiş.",
+    book_now:"Rezervasyon",get_quote:"Teklif Al",view_listings:"İlanları Gör",
     about_label:"Biz Kimiz",about_title:"İstanbul Merkezli,<br>Küresel Bağlantılı",
     about_sub:"Matarist Travel, İstanbul merkezli profesyonel bir çevrimiçi seyahat ve lojistik ajansıdır. Türkiye–Mısır güzergahında uzmanlaşmış olarak Umre paketleri, küresel kargo ve dünya geneli rezervasyon hizmetleri sunuyoruz.",
     about_tagline:'Yolculuğunuz<br><em>Sorumluluğumuz</em>',about_card:"WhatsApp Destek",

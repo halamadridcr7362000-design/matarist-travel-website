@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="html-root">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accommodation in Istanbul | MATARIST</title>
+<meta name="description" content="Browse rooms and apartments for rent in Istanbul — students, shared rooms, monthly rentals. Contact MATARIST directly on WhatsApp.">
+<link rel="canonical" href="https://mataristtravel.com/accommodation/">
+<meta property="og:title" content="Accommodation in Istanbul | MATARIST">
+<meta property="og:description" content="Browse rooms and apartments for rent in Istanbul, organized by district.">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{--navy:#1a2d5a;--navy-dark:#0f1d3d;--gold:#c9a84c;--gold-light:#e8c97a;--cream:#f8f5ef;--white:#fff;--text-dark:#1a1a2e;--text-mid:#3d4a6b;--text-light:#7a8aaa;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text-dark)}
+[dir="rtl"] body{font-family:'Cairo','DM Sans',sans-serif}
+h1,h2{font-family:'Cormorant Garamond',serif;font-weight:700}
+[dir="rtl"] h1,[dir="rtl"] h2{font-family:'Cairo',sans-serif}
+header{background:var(--navy-dark);color:#fff;padding:16px 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.logo{font-weight:800;letter-spacing:0.05em;color:var(--gold);text-decoration:none;font-size:1.2rem}
+.logo span{color:#fff}
+header nav a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;margin-inline-start:18px}
+.lang-row{display:flex;gap:6px}
+.lang-row button{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;border-radius:14px;padding:4px 10px;font-size:0.75rem;cursor:pointer}
+.lang-row button.active{background:var(--gold);color:#000;border-color:var(--gold)}
+.hero{background:linear-gradient(135deg,var(--navy-dark),var(--navy));color:#fff;padding:48px 5% 30px;text-align:center}
+.hero h1{font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:8px}
+.hero p{color:rgba(255,255,255,0.75);max-width:560px;margin:0 auto}
+.filters{max-width:1100px;margin:-22px auto 0;background:#fff;border-radius:14px;box-shadow:0 14px 40px rgba(26,45,90,0.15);padding:18px;display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:5}
+.filters select,.filters input{flex:1;min-width:120px;padding:10px 12px;border:1px solid #e3e3e3;border-radius:8px;font-family:inherit;font-size:0.88rem}
+.filters button{background:var(--gold);border:none;color:#000;font-weight:700;padding:10px 20px;border-radius:8px;cursor:pointer}
+.wrap{max-width:1100px;margin:0 auto;padding:40px 5%}
+#map{height:320px;border-radius:12px;margin-bottom:28px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(26,45,90,0.1);text-decoration:none;color:inherit;display:block;transition:transform 0.25s}
+.card:hover{transform:translateY(-4px)}
+.card img{width:100%;height:170px;object-fit:cover;background:#eee}
+.card-body{padding:14px 16px}
+.card-badge{display:inline-block;background:var(--gold);color:#000;font-size:0.68rem;font-weight:700;padding:3px 9px;border-radius:10px;margin-bottom:6px;text-transform:uppercase}
+.card-badge.rented{background:#da3633;color:#fff}
+.card h3{font-family:'DM Sans',sans-serif;font-size:1.02rem;font-weight:700;margin-bottom:2px;color:var(--navy-dark)}
+.card .district{color:var(--text-light);font-size:0.82rem;margin-bottom:8px}
+.card .price{color:var(--navy-dark);font-weight:800}
+.empty{text-align:center;color:var(--text-light);padding:50px}
+footer{text-align:center;padding:30px;color:var(--text-light);font-size:0.8rem}
+@media(max-width:640px){.filters{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/">MATARIST <span data-i18n="brand">Accommodation</span></a>
+  <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+    <nav><a href="/" data-i18n="back_home">&larr; Back to MATARIST</a></nav>
+    <div class="lang-row">
+      <button data-lang="en" onclick="setLang('en')">EN</button>
+      <button data-lang="ar" onclick="setLang('ar')">AR</button>
+      <button data-lang="tr" onclick="setLang('tr')">TR</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <h1 data-i18n="hero_title">Rooms & Apartments in Istanbul</h1>
+  <p data-i18n="hero_sub">Browse available rooms, shared accommodation and apartments — organized by district. Contact us directly on WhatsApp.</p>
+</section>
+
+<div class="filters">
+  <select id="f-district"><option value="" data-i18n="f_all_districts">All districts</option></select>
+  <select id="f-type">
+    <option value="" data-i18n="f_all_types">All room types</option>
+    <option value="single" data-i18n="type_single">Single room</option>
+    <option value="double" data-i18n="type_double">Double room</option>
+    <option value="shared" data-i18n="type_shared">Shared room</option>
+    <option value="apartment" data-i18n="type_apartment">Entire apartment</option>
+  </select>
+  <input type="number" id="f-max-price" data-i18n-ph="f_max_price" placeholder="Max price (TRY)">
+  <button onclick="applyFilters()" data-i18n="f_search">Search</button>
+</div>
+
+<div class="wrap">
+  <div id="map"></div>
+  <div id="grid" class="grid"><div class="empty" data-i18n="loading">Loading listings…</div></div>
+</div>
+
+<footer>MATARIST Travel &middot; Istanbul &middot; <a href="https://wa.me/905451218167" style="color:var(--gold)">WhatsApp</a></footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const translations = {
+  en:{brand:"Accommodation",back_home:"← Back to MATARIST",hero_title:"Rooms & Apartments in Istanbul",hero_sub:"Browse available rooms, shared accommodation and apartments — organized by district. Contact us directly on WhatsApp.",f_all_districts:"All districts",f_all_types:"All room types",type_single:"Single room",type_double:"Double room",type_shared:"Shared room",type_apartment:"Entire apartment",f_max_price:"Max price (TRY)",f_search:"Search",loading:"Loading listings…",no_results:"No listings match your search.",rented:"Rented",per_month:"/month"},
+  ar:{brand:"سكن",back_home:"← رجوع إلى ماتاريست",hero_title:"غرف وشقق للإيجار في إسطنبول",hero_sub:"تصفح الغرف والشقق المتاحة — مصنفة حسب المنطقة. تواصل معنا مباشرة عبر واتساب.",f_all_districts:"كل المناطق",f_all_types:"كل أنواع الغرف",type_single:"غرفة مفردة",type_double:"غرفة مزدوجة",type_shared:"غرفة مشتركة",type_apartment:"شقة كاملة",f_max_price:"أقصى سعر (ليرة)",f_search:"بحث",loading:"جاري تحميل السكنات…",no_results:"لا توجد سكنات مطابقة.",rented:"مؤجرة",per_month:"/شهرياً"},
+  tr:{brand:"Konaklama",back_home:"← MATARIST'e dön",hero_title:"İstanbul'da Oda ve Daireler",hero_sub:"Mevcut odaları ve daireleri semte göre inceleyin. Bizimle doğrudan WhatsApp'tan iletişime geçin.",f_all_districts:"Tüm semtler",f_all_types:"Tüm oda tipleri",type_single:"Tek kişilik oda",type_double:"Çift kişilik oda",type_shared:"Paylaşımlı oda",type_apartment:"Müstakil daire",f_max_price:"Maks. fiyat (TRY)",f_search:"Ara",loading:"İlanlar yükleniyor…",no_results:"Aramanızla eşleşen ilan yok.",rented:"Kiralandı",per_month:"/ay"}
+};
+function setLang(lang){
+  localStorage.setItem('acc_lang', lang);
+  document.getElementById('html-root').lang = lang;
+  document.getElementById('html-root').dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ const k=el.getAttribute('data-i18n'); if(translations[lang][k]) el.textContent = translations[lang][k]; });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ const k=el.getAttribute('data-i18n-ph'); if(translations[lang][k]) el.placeholder = translations[lang][k]; });
+  document.querySelectorAll('.lang-row button').forEach(b=>b.classList.toggle('active', b.dataset.lang===lang));
+  window.currentLang = lang;
+  renderGrid();
+}
+
+let allListings = [];
+let map, markersLayer;
+
+async function loadListings(){
+  try{
+    const res = await fetch('/.netlify/functions/accommodation-listings');
+    const data = await res.json();
+    allListings = data.listings || [];
+  }catch(e){ allListings = []; }
+  populateDistricts();
+  renderGrid();
+  renderMap();
+}
+
+function populateDistricts(){
+  const sel = document.getElementById('f-district');
+  const districts = [...new Set(allListings.map(l=>l.district).filter(Boolean))].sort();
+  districts.forEach(d=>{
+    const opt = document.createElement('option');
+    opt.value = d; opt.textContent = d;
+    sel.appendChild(opt);
+  });
+}
+
+function filteredListings(){
+  const district = document.getElementById('f-district').value;
+  const type = document.getElementById('f-type').value;
+  const maxPrice = parseFloat(document.getElementById('f-max-price').value) || Infinity;
+  return allListings.filter(l=>{
+    if(l.status === 'rented') return false; // rented listings don't show in default results
+    if(district && l.district !== district) return false;
+    if(type && l.roomType !== type) return false;
+    if(l.monthlyRent > maxPrice) return false;
+    return true;
+  });
+}
+
+function applyFilters(){ renderGrid(); }
+
+function renderGrid(){
+  const lang = window.currentLang || 'en';
+  const t = translations[lang];
+  const grid = document.getElementById('grid');
+  const items = filteredListings();
+  if(!items.length){
+    grid.innerHTML = `<div class="empty">${t.no_results}</div>`;
+    return;
+  }
+  grid.innerHTML = items.map(l=>{
+    const photo = l.photos && l.photos[0] ? `/.netlify/functions/accommodation-listings?photo=${encodeURIComponent(l.photos[0])}` : '';
+    return `<a class="card" href="/accommodation/${l.slug}">
+      <img src="${photo}" loading="lazy" alt="${escapeHtml(l.title)}" onerror="this.style.display='none'">
+      <div class="card-body">
+        <div class="card-badge">${escapeHtml(l.district||'')}</div>
+        <h3>${escapeHtml(l.title||'')}</h3>
+        <div class="district">${escapeHtml(l.roomType||'')}</div>
+        <div class="price">${l.monthlyRent||''} ${escapeHtml(l.currency||'TRY')}<small>${t.per_month}</small></div>
+      </div>
+    </a>`;
+  }).join('');
+}
+
+function renderMap(){
+  if(!map){
+    map = L.map('map').setView([41.0082,28.9784],11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
+    markersLayer = L.layerGroup().addTo(map);
+  }
+  markersLayer.clearLayers();
+  allListings.filter(l=>typeof l.lat==='number' && typeof l.lng==='number' && l.status!=='rented').forEach(l=>{
+    const m = L.marker([l.lat,l.lng]).addTo(markersLayer);
+    m.bindPopup(`<a href="/accommodation/${l.slug}">${escapeHtml(l.title)}</a>`);
+  });
+}
+
+function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+const savedLang = localStorage.getItem('acc_lang') || 'en';
+setLang(savedLang);
+loadListings();
+</script>
+</body>
+</html>

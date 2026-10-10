@@ -1,0 +1,13 @@
+# Routing for the accommodation section only. Nothing else on the site
+# is affected — existing pages are served as static files as before and
+# take precedence over these rules automatically.
+
+[[redirects]]
+  from = "/accommodation/sitemap.xml"
+  to = "/.netlify/functions/accommodation-sitemap"
+  status = 200
+
+[[redirects]]
+  from = "/accommodation/:slug"
+  to = "/.netlify/functions/listing-page?slug=:slug"
+  status = 200
