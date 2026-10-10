@@ -128,16 +128,21 @@ exports.handler = async function (event) {
 
   if (!listing) {
     // TEMPORARY diagnostic (remove once the redirect bug is confirmed fixed):
-    // shows the raw received slug + known slugs so a routing mismatch is
-    // visible without needing live server log access.
-    if (qs.debug) {
-      return {
-        statusCode: 200,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ receivedSlug: slug, receivedSlugJSON: JSON.stringify(slug), knownSlugs: listings.map((l) => l.slug) }),
-      };
-    }
-    return { statusCode: 404, headers: { "Content-Type": "text/html; charset=utf-8" }, body: page404(lang) };
+    // unconditional (not gated on a query param, since query passthrough
+    // through the redirect is itself in question) — shows the raw received
+    // slug + known slugs + the full event query object.
+    return {
+      statusCode: 200,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        receivedSlug: slug,
+        receivedSlugJSON: JSON.stringify(slug),
+        knownSlugs: listings.map((l) => l.slug),
+        rawQueryStringParameters: event.queryStringParameters,
+        rawPath: event.path,
+        rawRawUrl: event.rawUrl,
+      }),
+    };
   }
 
   if (listing.status === "deleted") {
