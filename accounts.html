@@ -213,6 +213,7 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-h
         <button class="svc-tab" data-svc="cargo" onclick="setTSvc('cargo')">📦 كارجو</button>
         <button class="svc-tab" data-svc="transfer" onclick="setTSvc('transfer')">🚖 توصيل</button>
         <button class="svc-tab" data-svc="package" onclick="setTSvc('package')">🌍 برامج</button>
+        <button class="svc-tab" data-svc="accommodation" onclick="setTSvc('accommodation')">🏠 سكن</button>
       </div>
       <div class="table-wrap">
         <div class="table-header"><div class="table-title" id="trans-title">سجل المعاملات</div></div>
@@ -239,8 +240,32 @@ let lastConfirmedIds = new Set();
 const typeLabels = {
   flight:'✈️ طيران', hotel:'🏨 فنادق',
   visa:'🛂 تأشيرة', cargo:'📦 كارجو',
-  transfer:'🚖 توصيل', package:'🌍 برامج'
+  transfer:'🚖 توصيل', package:'🌍 برامج',
+  accommodation:'🏠 سكن'
 };
+
+// Accommodation transactions live in a separate Netlify Blobs store
+// (netlify/functions/accommodation-transactions.js), not in the aviation
+// "orders" store — this keeps a full-array rewrite on either side from
+// ever clobbering the other. This fetches only the reduced accounting
+// summary (collected revenue + realized profit, no client/landlord
+// identity, no payment line items) and maps it into the same shape the
+// existing rendering functions below already expect, so none of their
+// math changes.
+const ACCOMMODATION_TX_URL = '/.netlify/functions/accommodation-transactions?action=accounting-summary';
+let accommodationOrdersCache = [];
+
+async function loadAccommodationOrders(){
+  try{
+    const res = await fetch(ACCOMMODATION_TX_URL);
+    const data = await res.json();
+    accommodationOrdersCache = (data.transactions||[]).map(t=>({...t, type:'accommodation'}));
+  }catch(e){ accommodationOrdersCache = []; }
+}
+
+function getCombinedOrders(){
+  return getOrders().concat(accommodationOrdersCache);
+}
 
 // ── Sound ──
 function getAudioContext(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
@@ -368,6 +393,7 @@ async function initApp(){
   const statusEl = document.getElementById('sync-status');
   statusEl.textContent = '⏳ جاري تحميل البيانات...';
   const ok = await loadFromBlobs();
+  await loadAccommodationOrders();
   if(ok){
     const now = new Date().toLocaleTimeString('ar-EG');
     statusEl.textContent = 'آخر تحديث: '+now;
@@ -384,6 +410,7 @@ async function initApp(){
   // ✅ فحص كل 10 ثواني من السيرفر مباشرة
   setInterval(pollServer, 10000);
   setInterval(renderAll, 30000);
+  setInterval(async ()=>{ await loadAccommodationOrders(); renderAll(); }, 30000);
 }
 
 // ── Currency ──
@@ -474,7 +501,7 @@ function renderAll(){ renderOverview(); renderTransactions(); }
 
 // ── Overview ──
 function renderOverview(){
-  const allOrders = getOrders();
+  const allOrders = getCombinedOrders();
   const confirmed = allOrders.filter(o=>o.status==='تم التأكيد');
   const filtered = filterByPeriod(confirmed, currentPeriod);
 
@@ -486,7 +513,7 @@ function renderOverview(){
   document.getElementById('total-orders').textContent = allOrders.length;
   document.getElementById('avg-profit').textContent = formatAmount(Math.max(0,avgProfit));
 
-  const types = ['flight','hotel','visa','cargo','transfer','package'];
+  const types = ['flight','hotel','visa','cargo','transfer','package','accommodation'];
   const tbody = document.getElementById('service-breakdown');
   const allPeriodOrders = filterByPeriod(allOrders, currentPeriod);
 
@@ -501,7 +528,7 @@ function renderOverview(){
 
 // ── Transactions ──
 function renderTransactions(){
-  const allOrders = getOrders();
+  const allOrders = getCombinedOrders();
   let filtered = filterTransactionsByPeriod(allOrders, tPeriod);
   if(tSvc!=='all') filtered = filtered.filter(o=>o.type===tSvc);
 
@@ -535,7 +562,7 @@ function renderTransactions(){
 
 // ── Google Sheets ──
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwgZ4KU97bjG6KfAxBRMwW7AmWVhqJI7cgdUSWRfjVQSVuZCerluyR1bATGKhETOLhdOQ/exec';
-const SHEET_NAMES = {flight:'✈️ طيران',hotel:'🏨 فنادق',visa:'🛂 تأشيرة',cargo:'📦 كارجو',transfer:'🚖 توصيل',package:'🌍 برامج'};
+const SHEET_NAMES = {flight:'✈️ طيران',hotel:'🏨 فنادق',visa:'🛂 تأشيرة',cargo:'📦 كارجو',transfer:'🚖 توصيل',package:'🌍 برامج',accommodation:'🏠 سكن'};
 
 function buildRow(o){
   const base=parseFloat(o.base_price||0), final=parseFloat(o.final_price||0);

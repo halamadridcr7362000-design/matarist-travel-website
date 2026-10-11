@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MATARIST — Accommodation Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--surface2:#1c2330;--border:#30363d;--gold:#c9a84c;--gold-light:#e8c97a;--text:#e6edf3;--text-muted:#7d8590;--green:#2ea043;--red:#da3633;--blue:#1f6feb;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+#login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999}
+.login-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:48px 40px;width:360px;text-align:center}
+.login-logo{font-size:1.6rem;font-weight:800;color:var(--gold);margin-bottom:4px}
+.login-sub{color:var(--text-muted);font-size:0.85rem;margin-bottom:28px}
+.login-input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;color:var(--text);font-size:1rem;outline:none;margin-bottom:12px}
+.login-input:focus{border-color:var(--gold)}
+.login-btn{width:100%;background:var(--gold);color:#000;border:none;padding:13px;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer}
+.login-error{color:var(--red);font-size:0.85rem;margin-top:8px;display:none}
+#app{display:none}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:210px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column}
+.sidebar-logo{padding:20px 16px;border-bottom:1px solid var(--border)}
+.sidebar-logo b{color:var(--gold);font-size:1.05rem}
+.sidebar-logo div{color:var(--text-muted);font-size:0.72rem;margin-top:2px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;color:var(--text-muted);border-bottom:1px solid var(--border)}
+.nav-item.active{color:var(--gold);background:var(--surface2)}
+.sidebar-footer{margin-top:auto;padding:14px}
+.logout-btn{width:100%;background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:8px;border-radius:8px;cursor:pointer}
+.main{margin-left:210px;padding:26px}
+.page{display:none}.page.active{display:block}
+.page-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.page-head h2{font-size:1.3rem}
+.btn{background:var(--gold);color:#000;border:none;padding:9px 18px;border-radius:8px;font-weight:700;cursor:pointer;font-size:0.88rem}
+.btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.btn.danger{background:transparent;color:var(--red);border:1px solid var(--red)}
+.btn.small{padding:5px 12px;font-size:0.78rem}
+table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:10px;overflow:hidden}
+th,td{padding:10px 14px;text-align:left;font-size:0.85rem;border-bottom:1px solid var(--border)}
+th{color:var(--text-muted);background:var(--surface2);font-weight:600}
+tr.clickable{cursor:pointer}
+tr.clickable:hover td{background:var(--surface2)}
+.badge{padding:2px 9px;border-radius:10px;font-size:0.72rem;font-weight:700}
+.badge.draft{background:#3333;color:#bbb}
+.badge.published{background:rgba(46,160,67,0.18);color:#3fb950}
+.badge.rented{background:rgba(218,54,51,0.18);color:#f85149}
+.badge.unpublished{background:rgba(210,153,34,0.18);color:#e3b341}
+.badge.deleted{background:#222;color:#666}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;display:none;align-items:center;justify-content:center;padding:16px}
+.modal.open{display:flex}
+.modal-panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto}
+.modal-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--surface)}
+.modal-body{padding:20px}
+.form-row{margin-bottom:12px}
+.form-row label{display:block;font-size:0.78rem;color:var(--text-muted);margin-bottom:4px}
+.form-row input,.form-row select,.form-row textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:inherit;font-size:0.9rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#mini-map{height:200px;border-radius:8px;margin-bottom:12px}
+.photo-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.photo-thumb{position:relative;width:90px;height:70px;border-radius:6px;overflow:hidden;background:#000}
+.photo-thumb img{width:100%;height:100%;object-fit:cover}
+.photo-thumb .ctrl{position:absolute;bottom:2px;right:2px;display:flex;gap:2px}
+.photo-thumb button{background:rgba(0,0,0,0.7);color:#fff;border:none;border-radius:4px;width:18px;height:18px;font-size:10px;cursor:pointer}
+.toast{position:fixed;bottom:20px;left:20px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 18px;font-size:0.88rem;z-index:9999;opacity:0;transform:translateY(10px);transition:all 0.3s}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.success{border-color:var(--green)}
+.toast.error{border-color:var(--red)}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
+.detail-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px}
+.detail-card label{font-size:0.72rem;color:var(--text-muted);display:block}
+.detail-card span{font-size:1.1rem;font-weight:800}
+.payment-list{list-style:none;margin:10px 0}
+.payment-list li{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:0.85rem}
+.tag{font-size:0.7rem;padding:2px 8px;border-radius:8px;background:var(--surface2);color:var(--text-muted)}
+</style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">MATARIST</div>
+    <div class="login-sub">Accommodation Admin</div>
+    <input type="password" id="login-pass" class="login-input" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Log in</button>
+    <div class="login-error" id="login-error">Incorrect password</div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="sidebar">
+    <div class="sidebar-logo"><b>MATARIST</b><div>Accommodation Admin</div></div>
+    <div class="nav-item active" data-page="listings" onclick="showPage('listings')"><i class="fa-solid fa-house"></i> Listings</div>
+    <div class="nav-item" data-page="transactions" onclick="showPage('transactions')"><i class="fa-solid fa-sack-dollar"></i> Transactions</div>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="doLogout()">Log out</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <!-- LISTINGS PAGE -->
+    <div class="page active" id="page-listings">
+      <div class="page-head">
+        <h2>Listings</h2>
+        <button class="btn" onclick="openListingForm()">+ New listing</button>
+      </div>
+      <table>
+        <thead><tr><th>Title</th><th>District</th><th>Type</th><th>Rent</th><th>Status</th><th></th></tr></thead>
+        <tbody id="listings-tbody"><tr><td colspan="6">Loading…</td></tr></tbody>
+      </table>
+    </div>
+
+    <!-- TRANSACTIONS PAGE -->
+    <div class="page" id="page-transactions">
+      <div class="page-head">
+        <h2>Accommodation Transactions</h2>
+        <button class="btn" onclick="openTransactionForm()">+ New transaction</button>
+      </div>
+      <table>
+        <thead><tr><th>Ref</th><th>Client</th><th>Listing</th><th>Collected</th><th>Outstanding</th><th>Realized profit</th><th>Status</th></tr></thead>
+        <tbody id="tx-tbody"><tr><td colspan="7">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- LISTING FORM MODAL -->
+<div class="modal" id="listing-modal">
+  <div class="modal-panel">
+    <div class="modal-head"><h3 id="listing-modal-title">New listing</h3><button class="btn secondary small" onclick="closeModal('listing-modal')">Close</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-row"><label>Title</label><input id="lf-title"></div>
+        <div class="form-row"><label>District</label><input id="lf-district"></div>
+        <div class="form-row"><label>Room type</label>
+          <select id="lf-roomtype"><option value="single">Single room</option><option value="double">Double room</option><option value="shared">Shared room</option><option value="apartment">Entire apartment</option></select>
+        </div>
+        <div class="form-row"><label>Monthly rent (TRY)</label><input id="lf-rent" type="number"></div>
+        <div class="form-row"><label>Deposit</label><input id="lf-deposit"></div>
+        <div class="form-row"><label>Bills / utilities</label><input id="lf-bills"></div>
+        <div class="form-row"><label>Furnishing</label><input id="lf-furnishing" placeholder="furnished / unfurnished"></div>
+        <div class="form-row"><label>Gender preference</label><input id="lf-gender" placeholder="male / female / mixed"></div>
+        <div class="form-row"><label>Nearby transport</label><input id="lf-transport"></div>
+        <div class="form-row"><label>Status</label>
+          <select id="lf-status"><option value="draft">Draft</option><option value="published">Published</option><option value="rented">Rented</option><option value="unpublished">Unpublished</option></select>
+        </div>
+      </div>
+      <div class="form-row"><label>Description</label><textarea id="lf-description" rows="3"></textarea></div>
+      <div class="form-row"><label>Rules</label><textarea id="lf-rules" rows="2"></textarea></div>
+      <div class="form-row"><label>Owner / landlord contact (private — never shown publicly)</label><input id="lf-owner"></div>
+      <div class="form-row"><label>Approximate location — click the map to set the pin</label><div id="mini-map"></div></div>
+      <div class="form-row"><label>Photos</label>
+        <div class="photo-row" id="lf-photos"></div>
+        <input type="file" id="lf-photo-input" accept="image/*" multiple onchange="handlePhotoUpload(event)">
+      </div>
+      <div style="display:flex;gap:10px;margin-top:16px">
+        <button class="btn" onclick="saveListing()">Save</button>
+        <button class="btn secondary" onclick="previewListing()">Preview</button>
+        <button class="btn danger" id="lf-delete-btn" style="display:none" onclick="deleteListing()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRANSACTION FORM MODAL -->
+<div class="modal" id="tx-modal">
+  <div class="modal-panel">
+    <div class="modal-head"><h3>New accommodation transaction</h3><button class="btn secondary small" onclick="closeModal('tx-modal')">Close</button></div>
+    <div class="modal-body">
+      <div class="form-row"><label>Listing</label><select id="tf-listing"></select></div>
+      <div class="form-grid">
+        <div class="form-row"><label>Client name</label><input id="tf-client"></div>
+        <div class="form-row"><label>Client phone</label><input id="tf-phone"></div>
+        <div class="form-row"><label>Monthly rent (reference, not revenue)</label><input id="tf-rent" type="number"></div>
+        <div class="form-row"><label>Commission method</label>
+          <select id="tf-method" onchange="updateExpectedCommission()"><option value="percentage">% of monthly rent</option><option value="fixed">Fixed amount</option></select>
+        </div>
+        <div class="form-row"><label>Commission percentage</label><input id="tf-pct" type="number" value="50" oninput="updateExpectedCommission()"></div>
+        <div class="form-row"><label>Commission agreed (TRY)</label><input id="tf-commission" type="number" oninput="window.manualCommission=true"></div>
+        <div class="form-row"><label>Landlord share agreed (default 0)</label><input id="tf-landlord" type="number" value="0"></div>
+      </div>
+      <div class="form-row"><label>Notes</label><textarea id="tf-notes" rows="2"></textarea></div>
+      <button class="btn" onclick="createTransaction()">Create transaction</button>
+    </div>
+  </div>
+</div>
+
+<!-- TRANSACTION DETAIL MODAL -->
+<div class="modal" id="tx-detail-modal">
+  <div class="modal-panel">
+    <div class="modal-head"><h3 id="txd-title">Transaction</h3><button class="btn secondary small" onclick="closeModal('tx-detail-modal')">Close</button></div>
+    <div class="modal-body" id="txd-body"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const AUTH_URL='/.netlify/functions/accommodation-auth';
+const LISTINGS_URL='/.netlify/functions/accommodation-listings';
+const TX_URL='/.netlify/functions/accommodation-transactions';
+
+function getToken(){ return sessionStorage.getItem('acc_token'); }
+function authHeaders(){ return {'Authorization':'Bearer '+getToken(),'Content-Type':'application/json'}; }
+
+async function doLogin(){
+  const pass = document.getElementById('login-pass').value;
+  try{
+    const res = await fetch(AUTH_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pass})});
+    const data = await res.json();
+    if(res.ok && data.token){
+      sessionStorage.setItem('acc_token', data.token);
+      sessionStorage.setItem('acc_expires', data.expiresAt);
+      document.getElementById('login-screen').style.display='none';
+      document.getElementById('app').style.display='block';
+      initApp();
+    } else {
+      document.getElementById('login-error').style.display='block';
+    }
+  }catch(e){ document.getElementById('login-error').style.display='block'; }
+}
+function doLogout(){
+  sessionStorage.removeItem('acc_token');
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+}
+function checkSession(){
+  const exp = parseInt(sessionStorage.getItem('acc_expires')||'0',10);
+  if(getToken() && exp > Date.now()){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='block';
+    initApp();
+  }
+}
+
+function showToast(msg, type){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show '+(type||'');
+  setTimeout(()=>t.classList.remove('show'), 3500);
+}
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+function openModalEl(id){ document.getElementById(id).classList.add('open'); }
+
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelector('.nav-item[data-page="'+name+'"]').classList.add('active');
+  if(name==='transactions') loadTransactions();
+}
+
+function initApp(){ loadListings(); loadTransactions(); }
+
+/* ---------------- LISTINGS ---------------- */
+let listingsCache = [];
+let currentListingId = null;
+let miniMap, miniMarker, pinLat=null, pinLng=null;
+
+async function loadListings(){
+  const res = await fetch(LISTINGS_URL+'?admin=1', {headers: authHeaders()});
+  if(res.status===401){ doLogout(); return; }
+  const data = await res.json();
+  listingsCache = data.listings || [];
+  renderListingsTable();
+  populateListingSelect();
+}
+
+function renderListingsTable(){
+  const tbody = document.getElementById('listings-tbody');
+  if(!listingsCache.length){ tbody.innerHTML='<tr><td colspan="6">No listings yet.</td></tr>'; return; }
+  tbody.innerHTML = listingsCache.map(l=>`
+    <tr class="clickable" onclick="openListingForm('${l.id}')">
+      <td>${escapeHtml(l.title)}</td>
+      <td>${escapeHtml(l.district)}</td>
+      <td>${escapeHtml(l.roomType)}</td>
+      <td>${l.monthlyRent} ${escapeHtml(l.currency)}</td>
+      <td><span class="badge ${l.status}">${l.status}</span></td>
+      <td><a href="/accommodation/${l.slug}" target="_blank" onclick="event.stopPropagation()">view</a></td>
+    </tr>`).join('');
+}
+
+function openListingForm(id){
+  currentListingId = id || null;
+  const l = id ? listingsCache.find(x=>x.id===id) : null;
+  document.getElementById('listing-modal-title').textContent = l ? 'Edit listing' : 'New listing';
+  document.getElementById('lf-title').value = l ? l.title : '';
+  document.getElementById('lf-district').value = l ? l.district : '';
+  document.getElementById('lf-roomtype').value = l ? l.roomType : 'single';
+  document.getElementById('lf-rent').value = l ? l.monthlyRent : '';
+  document.getElementById('lf-deposit').value = l ? l.deposit : '';
+  document.getElementById('lf-bills').value = l ? l.bills : '';
+  document.getElementById('lf-furnishing').value = l ? l.furnishing : '';
+  document.getElementById('lf-gender').value = l ? l.genderPolicy : '';
+  document.getElementById('lf-transport').value = l ? l.transport : '';
+  document.getElementById('lf-status').value = l ? l.status : 'draft';
+  document.getElementById('lf-description').value = l ? l.description : '';
+  document.getElementById('lf-rules').value = l ? l.rules : '';
+  document.getElementById('lf-owner').value = l ? l.ownerContact : '';
+  document.getElementById('lf-delete-btn').style.display = l ? 'inline-block' : 'none';
+  pinLat = l && typeof l.lat==='number' ? l.lat : null;
+  pinLng = l && typeof l.lng==='number' ? l.lng : null;
+  renderPhotos(l ? l.photos||[] : []);
+  openModalEl('listing-modal');
+  setTimeout(initMiniMap, 50);
+}
+
+function initMiniMap(){
+  if(miniMap){ miniMap.remove(); miniMap=null; }
+  miniMap = L.map('mini-map').setView([pinLat||41.0082, pinLng||28.9784], pinLat?14:10);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap'}).addTo(miniMap);
+  if(pinLat) miniMarker = L.marker([pinLat,pinLng]).addTo(miniMap);
+  miniMap.on('click', e=>{
+    pinLat = e.latlng.lat; pinLng = e.latlng.lng;
+    if(miniMarker) miniMap.removeLayer(miniMarker);
+    miniMarker = L.marker([pinLat,pinLng]).addTo(miniMap);
+  });
+}
+
+function renderPhotos(photos){
+  const row = document.getElementById('lf-photos');
+  row.innerHTML = photos.map((key,i)=>`
+    <div class="photo-thumb" data-key="${key}">
+      <img src="${LISTINGS_URL}?photo=${encodeURIComponent(key)}">
+      <div class="ctrl">
+        ${i>0?`<button onclick="movePhoto('${key}',-1)">&larr;</button>`:''}
+        ${i<photos.length-1?`<button onclick="movePhoto('${key}',1)">&rarr;</button>`:''}
+        <button onclick="removePhoto('${key}')">&times;</button>
+      </div>
+    </div>`).join('');
+}
+
+function currentPhotoKeys(){
+  return [...document.querySelectorAll('#lf-photos .photo-thumb')].map(d=>d.dataset.key);
+}
+
+async function handlePhotoUpload(e){
+  if(!currentListingId){
+    showToast('Save the listing first, then add photos', 'error');
+    e.target.value='';
+    return;
+  }
+  const files = [...e.target.files];
+  for(const file of files){
+    const compressed = await compressImage(file);
+    const res = await fetch(LISTINGS_URL, {method:'POST', headers:authHeaders(), body:JSON.stringify({
+      action:'uploadPhoto', id:currentListingId, imageBase64:compressed.base64, contentType:compressed.type
+    })});
+    const data = await res.json();
+    if(res.ok){
+      const idx = listingsCache.findIndex(x=>x.id===currentListingId);
+      listingsCache[idx] = data.listing;
+      renderPhotos(data.listing.photos);
+    }
+  }
+  e.target.value='';
+}
+
+function compressImage(file){
+  return new Promise(resolve=>{
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = ev => { img.src = ev.target.result; };
+    img.onload = () => {
+      const maxDim = 1600;
+      let w=img.width, h=img.height;
+      if(w>h && w>maxDim){ h=Math.round(h*maxDim/w); w=maxDim; }
+      else if(h>maxDim){ w=Math.round(w*maxDim/h); h=maxDim; }
+      const canvas = document.createElement('canvas');
+      canvas.width=w; canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.75);
+      resolve({ base64: dataUrl.split(',')[1], type: 'image/jpeg' });
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function movePhoto(key, dir){
+  const keys = currentPhotoKeys();
+  const i = keys.indexOf(key);
+  const j = i+dir;
+  if(j<0||j>=keys.length) return;
+  [keys[i],keys[j]] = [keys[j],keys[i]];
+  const res = await fetch(LISTINGS_URL,{method:'POST',headers:authHeaders(),body:JSON.stringify({action:'reorderPhotos',id:currentListingId,photos:keys})});
+  const data = await res.json();
+  if(res.ok){ renderPhotos(data.listing.photos); const idx=listingsCache.findIndex(x=>x.id===currentListingId); listingsCache[idx]=data.listing; }
+}
+
+async function removePhoto(key){
+  const res = await fetch(LISTINGS_URL,{method:'POST',headers:authHeaders(),body:JSON.stringify({action:'removePhoto',id:currentListingId,photoKey:key})});
+  const data = await res.json();
+  if(res.ok){ renderPhotos(data.listing.photos); const idx=listingsCache.findIndex(x=>x.id===currentListingId); listingsCache[idx]=data.listing; }
+}
+
+async function saveListing(){
+  const payload = {
+    title: document.getElementById('lf-title').value,
+    district: document.getElementById('lf-district').value,
+    roomType: document.getElementById('lf-roomtype').value,
+    monthlyRent: parseFloat(document.getElementById('lf-rent').value)||0,
+    deposit: document.getElementById('lf-deposit').value,
+    bills: document.getElementById('lf-bills').value,
+    furnishing: document.getElementById('lf-furnishing').value,
+    genderPolicy: document.getElementById('lf-gender').value,
+    transport: document.getElementById('lf-transport').value,
+    description: document.getElementById('lf-description').value,
+    rules: document.getElementById('lf-rules').value,
+    ownerContact: document.getElementById('lf-owner').value,
+    lat: pinLat, lng: pinLng,
+  };
+  try{
+    let res, data;
+    if(currentListingId){
+      payload.id = currentListingId; payload.action='update';
+      res = await fetch(LISTINGS_URL,{method:'POST',headers:authHeaders(),body:JSON.stringify(payload)});
+      data = await res.json();
+      if(res.ok){
+        const statusRes = await fetch(LISTINGS_URL,{method:'POST',headers:authHeaders(),body:JSON.stringify({action:'setStatus',id:currentListingId,status:document.getElementById('lf-status').value})});
+        data = await statusRes.json();
+      }
+    } else {
+      payload.action='create';
+      res = await fetch(LISTINGS_URL,{method:'POST',headers:authHeaders(),body:JSON.stringify(payload)});
+      data = await res.json();
+      if(res.ok) currentListingId = data.listing.id;
+    }
+    if(!res.ok) throw new Error(data.error||'Save failed');
+    showToast('Listing saved', 'success');
+    await loadListings();
+    openListingForm(currentListingId);
+  }catch(e){ showToast(e.message, 'error'); }
+}
+
+async function deleteListing(){
+  if(!confirm('Delete this listing? It will stop being publicly reachable (410 Gone) but is kept for record-keeping.')) return;
+  await fetch(LISTINGS_URL,{method:'POST',headers:authHeaders(),body:JSON.stringify({action:'setStatus',id:currentListingId,status:'deleted'})});
+  showToast('Listing deleted', 'success');
+  closeModal('listing-modal');
+  loadListings();
+}
+
+async function previewListing(){
+  if(!currentListingId){ showToast('Save the listing first', 'error'); return; }
+  const l = listingsCache.find(x=>x.id===currentListingId);
+  if(!l) return;
+  if(l.status === 'published' || l.status === 'rented'){
+    window.open('/accommodation/'+l.slug, '_blank');
+    return;
+  }
+  // Draft/unpublished listings aren't publicly reachable — mint a short-lived
+  // preview token so the new tab (a plain navigation, no Authorization header)
+  // can still render it.
+  try{
+    const res = await fetch(LISTINGS_URL+'?action=previewToken&id='+encodeURIComponent(currentListingId), {headers: authHeaders()});
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error||'Could not create preview link');
+    // Hit the function directly rather than the pretty /accommodation/:slug
+    // URL — the Netlify redirect for that route doesn't forward this extra
+    // query param through (confirmed against a live deploy), so the pretty
+    // URL would 404 here even though the token itself is valid.
+    window.open('/.netlify/functions/listing-page?slug='+encodeURIComponent(data.slug)+'&preview='+encodeURIComponent(data.token), '_blank');
+  }catch(e){ showToast(e.message, 'error'); }
+}
+
+/* ---------------- TRANSACTIONS ---------------- */
+let txCache = [];
+
+function populateListingSelect(){
+  const sel = document.getElementById('tf-listing');
+  sel.innerHTML = listingsCache.map(l=>`<option value="${l.id}" data-slug="${l.slug}" data-rent="${l.monthlyRent}">${escapeHtml(l.title)} — ${escapeHtml(l.district)}</option>`).join('');
+  sel.onchange = () => {
+    const opt = sel.options[sel.selectedIndex];
+    if(opt){ document.getElementById('tf-rent').value = opt.dataset.rent; updateExpectedCommission(); }
+  };
+  if(sel.options.length){ document.getElementById('tf-rent').value = sel.options[0].dataset.rent; }
+}
+
+function updateExpectedCommission(){
+  if(window.manualCommission) return;
+  const method = document.getElementById('tf-method').value;
+  if(method==='percentage'){
+    const rent = parseFloat(document.getElementById('tf-rent').value)||0;
+    const pct = parseFloat(document.getElementById('tf-pct').value)||0;
+    document.getElementById('tf-commission').value = Math.round(rent*pct/100);
+  }
+}
+
+function openTransactionForm(){
+  window.manualCommission = false;
+  document.getElementById('tf-client').value='';
+  document.getElementById('tf-phone').value='';
+  document.getElementById('tf-pct').value=50;
+  document.getElementById('tf-landlord').value=0;
+  document.getElementById('tf-notes').value='';
+  populateListingSelect();
+  updateExpectedCommission();
+  openModalEl('tx-modal');
+}
+
+async function createTransaction(){
+  const sel = document.getElementById('tf-listing');
+  const opt = sel.options[sel.selectedIndex];
+  const payload = {
+    action:'create',
+    listingId: sel.value,
+    listingSlug: opt ? opt.dataset.slug : '',
+    clientName: document.getElementById('tf-client').value,
+    clientPhone: document.getElementById('tf-phone').value,
+    monthlyRent: parseFloat(document.getElementById('tf-rent').value)||0,
+    commissionMethod: document.getElementById('tf-method').value,
+    commissionPercentage: parseFloat(document.getElementById('tf-pct').value)||0,
+    commissionAgreed: parseFloat(document.getElementById('tf-commission').value)||0,
+    landlordShareAgreed: parseFloat(document.getElementById('tf-landlord').value)||0,
+    notes: document.getElementById('tf-notes').value,
+  };
+  try{
+    const res = await fetch(TX_URL,{method:'POST',headers:authHeaders(),body:JSON.stringify(payload)});
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error||'Failed');
+    showToast('Transaction created: '+data.transaction.order_ref, 'success');
+    closeModal('tx-modal');
+    loadTransactions();
+  }catch(e){ showToast(e.message, 'error'); }
+}
+
+async function loadTransactions(){
+  const res = await fetch(TX_URL, {headers: authHeaders()});
+  if(res.status===401){ doLogout(); return; }
+  const data = await res.json();
+  txCache = data.transactions || [];
+  renderTxTable();
+}
+
+function renderTxTable(){
+  const tbody = document.getElementById('tx-tbody');
+  if(!txCache.length){ tbody.innerHTML='<tr><td colspan="7">No transactions yet.</td></tr>'; return; }
+  tbody.innerHTML = txCache.map(t=>`
+    <tr class="clickable" onclick="openTxDetail('${t.order_ref}')">
+      <td>${t.order_ref}</td>
+      <td>${escapeHtml(t.clientName)}</td>
+      <td>${escapeHtml(t.listingSlug)}</td>
+      <td>${t.commissionCollected.toLocaleString()} TRY</td>
+      <td>${t.commissionOutstanding.toLocaleString()} TRY</td>
+      <td>${t.realizedProfit.toLocaleString()} TRY</td>
+      <td><span class="tag">${t.status}</span></td>
+    </tr>`).join('');
+}
+
+function openTxDetail(ref){
+  const t = txCache.find(x=>x.order_ref===ref);
+  if(!t) return;
+  document.getElementById('txd-title').textContent = t.order_ref + ' — ' + t.clientName;
+  document.getElementById('txd-body').innerHTML = `
+    <div class="detail-grid">
+      <div class="detail-card"><label>Commission agreed</label><span>${t.commissionAgreed.toLocaleString()} TRY</span></div>
+      <div class="detail-card"><label>Collected</label><span>${t.commissionCollected.toLocaleString()} TRY</span></div>
+      <div class="detail-card"><label>Outstanding</label><span>${t.commissionOutstanding.toLocaleString()} TRY</span></div>
+      <div class="detail-card"><label>Expected profit</label><span>${t.expectedProfit.toLocaleString()} TRY</span></div>
+      <div class="detail-card"><label>Realized profit</label><span style="color:var(--green)">${t.realizedProfit.toLocaleString()} TRY</span></div>
+      <div class="detail-card"><label>Landlord share paid / agreed</label><span>${t.landlordSharePaid.toLocaleString()} / ${t.landlordShareAgreed.toLocaleString()} TRY</span></div>
+    </div>
+    <h4>Client payments</h4>
+    <ul class="payment-list">${(t.payments||[]).map(p=>`<li><span>${p.date} — ${p.note||''}</span><span>${p.amount.toLocaleString()} TRY</span></li>`).join('') || '<li>None yet</li>'}</ul>
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <input type="number" id="pay-amount" placeholder="Amount" style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text)">
+      <input id="pay-note" placeholder="Note" style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text)">
+      <button class="btn small" onclick="recordPayment('${ref}','commission')">Record payment</button>
+    </div>
+    <h4>Landlord share payouts</h4>
+    <ul class="payment-list">${(t.landlordSharePayments||[]).map(p=>`<li><span>${p.date} — ${p.note||''}</span><span>${p.amount.toLocaleString()} TRY</span></li>`).join('') || '<li>None yet</li>'}</ul>
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <input type="number" id="ls-amount" placeholder="Amount" style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text)">
+      <input id="ls-note" placeholder="Note" style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text)">
+      <button class="btn small" onclick="recordPayment('${ref}','landlordShare')">Record payout</button>
+    </div>
+    <h4>Expenses</h4>
+    <ul class="payment-list">${(t.expenses||[]).map(e=>`<li><span>${escapeHtml(e.description)} (paid ${e.amountPaid}/${e.amountAgreed})</span><button class="btn small secondary" onclick="payExpense('${ref}','${e.id}', ${e.amountAgreed - e.amountPaid})">Pay remaining</button></li>`).join('') || '<li>None</li>'}</ul>
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <input id="exp-desc" placeholder="Description" style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text)">
+      <input type="number" id="exp-amount" placeholder="Agreed amount" style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text)">
+      <button class="btn small" onclick="addExpense('${ref}')">Add expense</button>
+    </div>
+    <button class="btn danger" onclick="cancelTransaction('${ref}')">Cancel transaction</button>
+  `;
+  openModalEl('tx-detail-modal');
+}
+
+async function recordPayment(ref, kind){
+  const amountId = kind==='commission'?'pay-amount':'ls-amount';
+  const noteId = kind==='commission'?'pay-note':'ls-note';
+  const amount = parseFloat(document.getElementById(amountId).value);
+  if(!amount) return;
+  const payment_id = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()+Math.random()));
+  const res = await fetch(TX_URL,{method:'POST',headers:authHeaders(),body:JSON.stringify({
+    action:'addPayment', order_ref:ref, kind, amount, note:document.getElementById(noteId).value, payment_id
+  })});
+  const data = await res.json();
+  if(res.ok){ await loadTransactions(); openTxDetail(ref); showToast('Payment recorded','success'); }
+  else showToast(data.error,'error');
+}
+
+async function addExpense(ref){
+  const description = document.getElementById('exp-desc').value;
+  const amountAgreed = parseFloat(document.getElementById('exp-amount').value)||0;
+  const res = await fetch(TX_URL,{method:'POST',headers:authHeaders(),body:JSON.stringify({action:'addExpense',order_ref:ref,description,amountAgreed})});
+  if(res.ok){ await loadTransactions(); openTxDetail(ref); }
+}
+
+async function payExpense(ref, expenseId, amount){
+  if(amount<=0) return;
+  const payment_id = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()+Math.random()));
+  const res = await fetch(TX_URL,{method:'POST',headers:authHeaders(),body:JSON.stringify({action:'payExpense',order_ref:ref,expenseId,amount,payment_id})});
+  if(res.ok){ await loadTransactions(); openTxDetail(ref); showToast('Expense payment recorded','success'); }
+}
+
+async function cancelTransaction(ref){
+  if(!confirm('Cancel this transaction? History is kept, it will stop counting toward totals.')) return;
+  await fetch(TX_URL,{method:'POST',headers:authHeaders(),body:JSON.stringify({action:'setStatus',order_ref:ref,status:'cancelled'})});
+  closeModal('tx-detail-modal');
+  loadTransactions();
+}
+
+function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+checkSession();
+</script>
+</body>
+</html>
