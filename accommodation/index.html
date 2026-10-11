@@ -29,12 +29,16 @@
 [data-gender="girls"]{
   --accent:#e879ad; --accent-2:#b83275; --accent-blush:#f8dce8;
   --accent-soft:rgba(232,121,173,0.22); --accent-badge:rgba(184,52,117,0.65);
-  --accent-glow:rgba(232,121,173,0.32); --accent-wash:rgba(184,52,117,0.16);
+  --accent-glow:rgba(232,121,173,0.32); --accent-wash:rgba(232,121,173,0.30);
 }
 [data-gender="boys"]{
   --accent:#6b8fb8; --accent-2:#17243a; --accent-blush:#34465e;
   --accent-soft:rgba(107,143,184,0.22); --accent-badge:rgba(23,36,58,0.80);
-  --accent-glow:rgba(107,143,184,0.26); --accent-wash:rgba(23,36,58,0.42);
+  /* Blending a near-black navy into the already-near-black card surface
+     barely shifted anything (confirmed live: the blue card's body looked
+     unchanged next to the pink cards' visible tint). Using the bright
+     accent itself, same as girls, fixes that. */
+  --accent-glow:rgba(107,143,184,0.26); --accent-wash:rgba(107,143,184,0.30);
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
