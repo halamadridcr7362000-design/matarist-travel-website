@@ -64,10 +64,22 @@ header nav a:hover{color:var(--gold-light)}
 .lang-row button.active{background:var(--gold);color:#1a1420}
 
 /* ===== Hero ===== */
-.hero{position:relative;padding:90px 5% 130px;text-align:center;overflow:hidden;background-color:var(--bg);background-size:cover;background-position:center;transition:background-image 0.8s ease}
-.hero::before{content:"";position:absolute;inset:0;background:
-  linear-gradient(180deg, rgba(21,18,27,0.80) 0%, rgba(21,18,27,0.55) 45%, rgba(21,18,27,0.94) 100%),
-  radial-gradient(ellipse 700px 420px at 50% -10%, rgba(184,149,94,0.18), transparent 60%);pointer-events:none}
+/* Decorative/branded backdrop — a Bosphorus view through a window
+   (Unsplash, free license, photo by Xeyale Aliyeva), not a photo of any
+   specific listing. Desaturated + warmed via filter so it reads as a
+   designed backdrop rather than a plain dimmed photo, with a second
+   layer adding the gold glow/vignette on top. */
+.hero{position:relative;padding:90px 5% 130px;text-align:center;overflow:hidden;background-color:var(--bg)}
+.hero::before{content:"";position:absolute;inset:0;z-index:0;
+  background-image:url('https://images.unsplash.com/photo-1696019488468-5c6cd758ae2f?w=1600&q=70');
+  background-size:cover;background-position:center 35%;
+  filter:saturate(0.55) brightness(0.5) sepia(0.25);
+  transform:scale(1.03);}
+.hero::after{content:"";position:absolute;inset:0;z-index:0;background:
+  linear-gradient(180deg, rgba(21,18,27,0.55) 0%, rgba(21,18,27,0.35) 40%, rgba(21,18,27,0.95) 100%),
+  radial-gradient(ellipse 780px 460px at 50% -8%, rgba(184,149,94,0.30), transparent 62%),
+  linear-gradient(125deg, rgba(184,149,94,0.14) 0%, transparent 45%);
+  pointer-events:none}
 .hero > *{position:relative;z-index:1}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--gold);font-size:0.72rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;margin-bottom:18px}
 .eyebrow::before,.eyebrow::after{content:"";width:22px;height:1px;background:var(--gold);opacity:0.6}
@@ -262,16 +274,8 @@ function updateHeroStats(){
   const statDistricts = document.getElementById('stat-districts');
   if(statListings) statListings.textContent = allListings.length;
   if(statDistricts) statDistricts.textContent = new Set(allListings.map(l=>l.district).filter(Boolean)).size;
-  // Cinematic hero background: the first available listing's first photo,
-  // with a dark gradient (::before, already in the CSS) layered on top so
-  // the headline stays readable. Falls back to the existing gradient-only
-  // background (no inline backgroundImage set) if nothing has a photo yet.
-  const withPhoto = allListings.find(l => l.photos && l.photos.length);
-  if(withPhoto){
-    const url = `/.netlify/functions/accommodation-listings?photo=${encodeURIComponent(withPhoto.photos[0])}`;
-    const hero = document.getElementById('hero');
-    if(hero) hero.style.backgroundImage = `url('${url}')`;
-  }
+  // Hero backdrop is a static branded image set in CSS now (not tied to
+  // any specific listing's own photo) — nothing to do here for it.
 }
 
 function populateDistricts(){
