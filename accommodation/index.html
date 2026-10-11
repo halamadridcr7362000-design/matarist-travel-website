@@ -45,11 +45,13 @@
 
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-/* Page background: soft gold ambient glows + a large, faint MATARIST
-   mark (the icon only, no wordmark — extracted from the same logo used
-   on the main site) as a watermark, shifted off-center so it reads as a
-   deliberate brand watermark rather than a centered sticker. Kept behind
-   the surface-colored cards, so it only shows in the gaps/margins. */
+/* Page background, four kinds of layers (back to front):
+   1) soft gold + violet ambient glows (nebula-like haze)
+   2) a scattered star field (small white/gold dots, tiled)
+   3) the MATARIST icon mark (M + plane, no wordmark), sized/positioned
+      so the full mark stays on-screen instead of being cropped
+   All kept faint and behind the surface-colored cards, so it only shows
+   in the gaps/margins between content. */
 body{
   font-family:'DM Sans',sans-serif;
   color:var(--text);
@@ -59,10 +61,17 @@ body{
     radial-gradient(ellipse 950px 560px at 10% 0%, rgba(184,149,94,0.16), transparent 60%),
     radial-gradient(ellipse 760px 560px at 100% 25%, rgba(184,149,94,0.11), transparent 55%),
     radial-gradient(ellipse 860px 640px at 4% 85%, rgba(184,149,94,0.11), transparent 60%),
-    url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjI2MCAzMTAgNDkwIDM5MCI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC4wMDAwMDAsMTAyNC4wMDAwMDApIHNjYWxlKDAuMTAwMDAwLC0wLjEwMDAwMCkiIGZpbGw9InJnYmEoMTg0LDE0OSw5NCwwLjA5KSIgc3Ryb2tlPSJub25lIj48cGF0aCBkPSJNNjYxOSA2OTIxIGMtODYgLTI3IC0zMDMgLTE4NSAtNDE0IC0zMDAgLTI5IC0zMSAtNDcgLTQxIC03MCAtNDEgLTE2IDEgLTE4NyAyMCAtMzgwIDQ0IGwtMzUwIDQ0IC01MyAtNDUgYy0yOSAtMjUgLTUwIC00OSAtNDUgLTU0IDUgLTUgMTM3IC01OSAyOTQgLTEyMSAxNTcgLTYyIDI4NyAtMTE3IDI4OSAtMTIyIDMgLTEyIC02MzYgLTYwNCAtODIwIC03NTggLTMwMSAtMjUzIC02MTggLTQ1MyAtODI3IC01MjQgLTYxIC0yMSAtOTkgLTI3IC0xNzMgLTI4IC0xMjEgLTEgLTE1OSAxOCAtMTk5IDEwMyAtMjMgNTAgLTI2IDY4IC0yNSAxNjEgMCA4NyA1IDExOCAyNyAxNzkgbDI2IDczIC0yNiAtMjMgYy0xMzkgLTEzMCAtMjI2IC0zMzMgLTIwMyAtNDczIDM0IC0yMTEgMjI5IC0zMDEgNTQwIC0yNTEgNDAwIDY1IDc4NCAzMjUgMTY3OSAxMTM5IDExMyAxMDIgMjA4IDE4NiAyMTIgMTg2IDQgMCA1NSAtMTA5IDExNCAtMjQyIDU5IC0xMzQgMTE5IC0yNzAgMTM0IC0zMDIgbDI3IC02MCA1NiA1MCBjMzEgMjcgNTggNTQgNjAgNTkgMyA2IC0xMiAxMzQgLTMzIDI4NSAtMjEgMTUxIC00MyAzMjMgLTUwIDM4MiBsLTEyIDEwOCA5MCA5NCBjMTk4IDIwNiAyODQgMzU3IDIzNiA0MTQgLTIxIDI1IC02NiAzNSAtMTA0IDIzeiIvPjwvZz48L3N2Zz4=");
-  background-position:0 0, 0 0, 0 0, 88% 50%;
-  background-size:auto, auto, auto, 1050px auto;
-  background-repeat:no-repeat, no-repeat, no-repeat, no-repeat;
+    radial-gradient(ellipse 820px 600px at 78% 55%, rgba(120,90,170,0.08), transparent 62%),
+    radial-gradient(1.6px 1.6px at 20px 30px, rgba(243,237,228,0.8), transparent),
+    radial-gradient(1.2px 1.2px at 90px 110px, rgba(243,237,228,0.6), transparent),
+    radial-gradient(1.8px 1.8px at 150px 60px, rgba(212,180,128,0.7), transparent),
+    radial-gradient(1.2px 1.2px at 180px 150px, rgba(243,237,228,0.55), transparent),
+    radial-gradient(1.5px 1.5px at 50px 170px, rgba(212,180,128,0.6), transparent),
+    radial-gradient(1px 1px at 120px 20px, rgba(243,237,228,0.5), transparent),
+    url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjI2MCAzMTAgNDkwIDM5MCI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC4wMDAwMDAsMTAyNC4wMDAwMDApIHNjYWxlKDAuMTAwMDAwLC0wLjEwMDAwMCkiIGZpbGw9InJnYmEoMTg0LDE0OSw5NCwwLjExKSIgc3Ryb2tlPSJub25lIj48cGF0aCBkPSJNNjYxOSA2OTIxIGMtODYgLTI3IC0zMDMgLTE4NSAtNDE0IC0zMDAgLTI5IC0zMSAtNDcgLTQxIC03MCAtNDEgLTE2IDEgLTE4NyAyMCAtMzgwIDQ0IGwtMzUwIDQ0IC01MyAtNDUgYy0yOSAtMjUgLTUwIC00OSAtNDUgLTU0IDUgLTUgMTM3IC01OSAyOTQgLTEyMSAxNTcgLTYyIDI4NyAtMTE3IDI4OSAtMTIyIDMgLTEyIC02MzYgLTYwNCAtODIwIC03NTggLTMwMSAtMjUzIC02MTggLTQ1MyAtODI3IC01MjQgLTYxIC0yMSAtOTkgLTI3IC0xNzMgLTI4IC0xMjEgLTEgLTE1OSAxOCAtMTk5IDEwMyAtMjMgNTAgLTI2IDY4IC0yNSAxNjEgMCA4NyA1IDExOCAyNyAxNzkgbDI2IDczIC0yNiAtMjMgYy0xMzkgLTEzMCAtMjI2IC0zMzMgLTIwMyAtNDczIDM0IC0yMTEgMjI5IC0zMDEgNTQwIC0yNTEgNDAwIDY1IDc4NCAzMjUgMTY3OSAxMTM5IDExMyAxMDIgMjA4IDE4NiAyMTIgMTg2IDQgMCA1NSAtMTA5IDExNCAtMjQyIDU5IC0xMzQgMTE5IC0yNzAgMTM0IC0zMDIgbDI3IC02MCA1NiA1MCBjMzEgMjcgNTggNTQgNjAgNTkgMyA2IC0xMiAxMzQgLTMzIDI4NSAtMjEgMTUxIC00MyAzMjMgLTUwIDM4MiBsLTEyIDEwOCA5MCA5NCBjMTk4IDIwNiAyODQgMzU3IDIzNiA0MTQgLTIxIDI1IC02NiAzNSAtMTA0IDIzeiIvPjwvZz48L3N2Zz4=");
+  background-position:0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 74% 50%;
+  background-size:auto, auto, auto, auto, 220px 220px, 220px 220px, 220px 220px, 220px 220px, 220px 220px, 220px 220px, 780px auto;
+  background-repeat:no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat, repeat, repeat, repeat, repeat, no-repeat;
   background-attachment:fixed;
 }
 [dir="rtl"] body{font-family:'Cairo','DM Sans',sans-serif}
