@@ -121,12 +121,56 @@ ${isPreview ? `<meta name="robots" content="noindex, nofollow">` : ""}
   --gold:#b8955e; --gold-light:#d4b480;
   --text:#f3ede4; --text-muted:#a99bb0; --text-faint:#786a85;
   --border:#362c42; --border-soft:#2d2436;
-  --accent:#b8955e; --accent-soft:rgba(184,149,94,0.14); --accent-badge:rgba(184,149,94,0.30);
+  --accent:#b8955e; --accent-soft:rgba(184,149,94,0.14); --accent-badge:rgba(184,149,94,0.30); --accent-glow:rgba(184,149,94,0.25);
 }
-[data-gender="girls"]{ --accent:#e879ad; --accent-soft:rgba(232,121,173,0.22); --accent-badge:rgba(232,121,173,0.34); }
-[data-gender="boys"]{ --accent:#6b8fb8; --accent-soft:rgba(107,143,184,0.22); --accent-badge:rgba(107,143,184,0.34); }
+/* Same strength as the hub page: the gender theme overrides the card's
+   own --surface, not just the accent color, so "Women Only" / "Men Only"
+   listings read as genuinely different-colored pages at a glance. */
+[data-gender="girls"]{
+  --accent:#e879ad; --accent-soft:rgba(232,121,173,0.22); --accent-badge:rgba(184,52,117,0.65); --accent-glow:rgba(232,121,173,0.32);
+  --surface:#3a1a30; --surface-2:#49213c;
+}
+[data-gender="boys"]{
+  --accent:#6b8fb8; --accent-soft:rgba(107,143,184,0.22); --accent-badge:rgba(23,36,58,0.80); --accent-glow:rgba(107,143,184,0.26);
+  --surface:#142338; --surface-2:#1a2d47;
+}
 *{box-sizing:border-box}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);margin:0;padding:0;-webkit-font-smoothing:antialiased}
+/* Page background: same soft gold/violet/teal ambient glows, dense star
+   field, milky-way haze and MATARIST icon watermark as the hub page —
+   consistency across the whole accommodation section, not a flat fill. */
+body{
+  font-family:'DM Sans',sans-serif;background-color:var(--bg);color:var(--text);margin:0;padding:0;-webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(ellipse 950px 560px at 10% 0%, rgba(184,149,94,0.16), transparent 60%),
+    radial-gradient(ellipse 760px 560px at 100% 25%, rgba(184,149,94,0.11), transparent 55%),
+    radial-gradient(ellipse 860px 640px at 4% 85%, rgba(184,149,94,0.11), transparent 60%),
+    radial-gradient(ellipse 820px 600px at 78% 55%, rgba(120,90,170,0.09), transparent 62%),
+    radial-gradient(ellipse 700px 500px at 30% 70%, rgba(70,110,150,0.07), transparent 60%),
+    linear-gradient(115deg, transparent 32%, rgba(200,190,255,0.05) 45%, rgba(230,210,255,0.08) 50%, rgba(200,190,255,0.05) 55%, transparent 68%),
+    radial-gradient(circle 70px at 13% 16%, rgba(212,180,128,0.4), rgba(212,180,128,0.1) 60%, transparent 78%),
+    radial-gradient(circle 50px at 90% 72%, rgba(120,150,200,0.4), rgba(120,150,200,0.1) 60%, transparent 78%),
+    radial-gradient(1.4px 1.4px at 15px 25px, rgba(243,237,228,0.8), transparent),
+    radial-gradient(1px 1px at 55px 85px, rgba(243,237,228,0.55), transparent),
+    radial-gradient(1.6px 1.6px at 95px 40px, rgba(212,180,128,0.7), transparent),
+    radial-gradient(1px 1px at 120px 110px, rgba(243,237,228,0.5), transparent),
+    radial-gradient(1.3px 1.3px at 35px 140px, rgba(212,180,128,0.6), transparent),
+    radial-gradient(1.8px 1.8px at 20px 30px, rgba(243,237,228,0.8), transparent),
+    radial-gradient(1.2px 1.2px at 90px 110px, rgba(243,237,228,0.6), transparent),
+    radial-gradient(2px 2px at 150px 60px, rgba(212,180,128,0.7), transparent),
+    radial-gradient(1.2px 1.2px at 180px 150px, rgba(243,237,228,0.55), transparent),
+    radial-gradient(1.5px 1.5px at 50px 170px, rgba(212,180,128,0.6), transparent),
+    radial-gradient(1px 1px at 120px 20px, rgba(243,237,228,0.5), transparent),
+    radial-gradient(2.4px 2.4px at 60px 90px, rgba(243,237,228,0.75), transparent),
+    radial-gradient(1.2px 1.2px at 200px 210px, rgba(212,180,128,0.55), transparent),
+    radial-gradient(1.6px 1.6px at 260px 40px, rgba(243,237,228,0.5), transparent),
+    radial-gradient(1.2px 1.2px at 320px 260px, rgba(243,237,228,0.45), transparent),
+    radial-gradient(2px 2px at 380px 120px, rgba(212,180,128,0.5), transparent),
+    url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjM1NCAzMjAgMzM0IDI0MSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC4wMDAwMDAsMTAyNC4wMDAwMDApIHNjYWxlKDAuMTAwMDAwLC0wLjEwMDAwMCkiIGZpbGw9InJnYmEoMTg0LDE0OSw5NCwwLjEyKSIgc3Ryb2tlPSJub25lIj48cGF0aCBkPSJNNjYxOSA2OTIxIGMtODYgLTI3IC0zMDMgLTE4NSAtNDE0IC0zMDAgLTI5IC0zMSAtNDcgLTQxIC03MCAtNDEgLTE2IDEgLTE4NyAyMCAtMzgwIDQ0IGwtMzUwIDQ0IC01MyAtNDUgYy0yOSAtMjUgLTUwIC00OSAtNDUgLTU0IDUgLTUgMTM3IC01OSAyOTQgLTEyMSAxNTcgLTYyIDI4NyAtMTE3IDI4OSAtMTIyIDMgLTEyIC02MzYgLTYwNCAtODIwIC03NTggLTMwMSAtMjUzIC02MTggLTQ1MyAtODI3IC01MjQgLTYxIC0yMSAtOTkgLTI3IC0xNzMgLTI4IC0xMjEgLTEgLTE1OSAxOCAtMTk5IDEwMyAtMjMgNTAgLTI2IDY4IC0yNSAxNjEgMCA4NyA1IDExOCAyNyAxNzkgbDI2IDczIC0yNiAtMjMgYy0xMzkgLTEzMCAtMjI2IC0zMzMgLTIwMyAtNDczIDM0IC0yMTEgMjI5IC0zMDEgNTQwIC0yNTEgNDAwIDY1IDc4NCAzMjUgMTY3OSAxMTM5IDExMyAxMDIgMjA4IDE4NiAyMTIgMTg2IDQgMCA1NSAtMTA5IDExNCAtMjQyIDU5IC0xMzQgMTE5IC0yNzAgMTM0IC0zMDIgbDI3IC02MCA1NiA1MCBjMzEgMjcgNTggNTQgNjAgNTkgMyA2IC0xMiAxMzQgLTMzIDI4NSAtMjEgMTUxIC00MyAzMjMgLTUwIDM4MiBsLTEyIDEwOCA5MCA5NCBjMTk4IDIwNiAyODQgMzU3IDIzNiA0MTQgLTIxIDI1IC02NiAzNSAtMTA0IDIzeiIvPjxwYXRoIGQ9Ik00MDMwIDU3OTEgYzAgLTU4OSAyIC02ODAgMTUgLTY5MSAyMCAtMTcgNjkgLTcgMTg4IDM3IGw5NyAzNiAwIDM4NiAwIDM4NiAxNzkgLTI2OSBjOTkgLTE0NyAxODIgLTI3MCAxODUgLTI3MyA0IC00IDE1MiA4NSAyNDkgMTQ4IDggNiAtMTkzIDMxMSAtNTI3IDgwMiBsLTgwIDExNyAtMTUzIDAgLTE1MyAwIDAgLTY3OXoiLz48cGF0aCBkPSJNNTg2MyA1Nzg3IGwtMTQzIC0xMjIgMyAtNDMwIDIgLTQzMCAxNDUgMCAxNDUgMCAzIDU1MyBjMSAzMDMgLTEgNTUyIC01IDU1MSAtNSAwIC03MiAtNTUgLTE1MCAtMTIyeiIvPjwvZz48L3N2Zz4=");
+  background-position:0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 78% 60%;
+  background-size:auto, auto, auto, auto, auto, auto, auto, auto, 150px 150px, 150px 150px, 150px 150px, 150px 150px, 150px 150px, 260px 260px, 260px 260px, 260px 260px, 260px 260px, 260px 260px, 260px 260px, 420px 420px, 420px 420px, 420px 420px, 420px 420px, 420px 420px, 620px auto;
+  background-repeat:no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, no-repeat;
+  background-attachment:fixed;
+}
 [dir="rtl"] body{font-family:'Cairo','DM Sans',sans-serif}
 html[lang="ar"]{direction:rtl}
 h1,h3{font-family:'Cormorant Garamond',serif;font-weight:600}
@@ -142,13 +186,17 @@ a.back{color:var(--gold);text-decoration:none;font-size:0.85rem;font-weight:600}
 h1{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 6px;line-height:1.2}
 .meta{color:var(--text-muted);margin-bottom:22px;font-size:0.92rem}
 .meta .dot{margin:0 8px;opacity:0.5}
-.gallery{display:grid;grid-template-columns:1.5fr 1fr;grid-template-rows:380px;gap:8px;margin-bottom:28px;border-radius:16px;overflow:hidden;height:380px}
+.gallery{display:grid;grid-template-columns:1.5fr 1fr;grid-template-rows:380px;gap:8px;margin-bottom:28px;border-radius:16px;overflow:hidden;height:380px;border:2px solid var(--accent-soft);box-shadow:0 0 0 1px rgba(0,0,0,0.2),0 18px 44px rgba(0,0,0,0.4)}
 .gallery.single{grid-template-columns:1fr}
-.gallery-main{height:100%}
-.gallery-main img{width:100%;height:100%;object-fit:cover;display:block;cursor:pointer}
+.gallery-main{height:100%;overflow:hidden;position:relative}
+.gallery-main::after{content:"";position:absolute;inset:0;background:linear-gradient(to top, rgba(21,18,27,0.35) 0%, transparent 35%);pointer-events:none}
+.gallery-main img{width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;transition:transform 0.5s ease}
+.gallery-main:hover img{transform:scale(1.045)}
 .gallery-side{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(2,1fr);gap:8px;height:100%}
-.gallery-side img{width:100%;height:100%;object-fit:cover;display:block;cursor:pointer}
-.gallery-empty{height:260px;border-radius:16px;background:var(--surface);display:flex;align-items:center;justify-content:center;color:var(--text-faint);font-size:2rem;margin-bottom:28px}
+.gallery-side img{width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;transition:transform 0.5s ease}
+.gallery-side img:hover{transform:scale(1.08)}
+.gallery-empty{height:260px;border-radius:16px;background:var(--surface);border:2px solid var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--text-faint);font-size:2rem;margin-bottom:28px}
+@media(prefers-reduced-motion:reduce){.gallery-main img,.gallery-side img{transition:none}}
 @media(max-width:640px){.gallery{grid-template-columns:1fr;height:auto}.gallery-side{grid-template-columns:1fr 1fr;grid-template-rows:1fr;height:120px}.gallery-main img{height:220px}}
 .lightbox{position:fixed;inset:0;background:rgba(10,8,14,0.94);display:none;align-items:center;justify-content:center;z-index:1000;padding:24px}
 .lightbox.open{display:flex}
