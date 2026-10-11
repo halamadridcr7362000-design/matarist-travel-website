@@ -45,21 +45,22 @@
 
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-/* Page background: soft gold ambient glows + a faint diagonal hairline
-   lattice over the base dark color, so the whole page (not just the hero)
-   reads as a designed surface instead of a flat fill. Opacity kept low so
-   it never competes with cards/content sitting on top of it. */
+/* Page background: soft gold ambient glows + a bold gold diamond trellis
+   (mashrabiya-screen style) over the base dark color, so the whole page
+   (not just the hero) reads as a deliberately designed surface, not a
+   flat fill. Kept behind the surface-colored cards, so it only shows in
+   the gaps/margins between content. */
 body{
   font-family:'DM Sans',sans-serif;
   color:var(--text);
   -webkit-font-smoothing:antialiased;
   background-color:var(--bg);
   background-image:
-    radial-gradient(ellipse 900px 520px at 12% 0%, rgba(184,149,94,0.09), transparent 60%),
-    radial-gradient(ellipse 720px 520px at 100% 28%, rgba(184,149,94,0.06), transparent 55%),
-    radial-gradient(ellipse 820px 600px at 6% 82%, rgba(184,149,94,0.06), transparent 60%),
-    repeating-linear-gradient(135deg, rgba(243,237,228,0.025) 0px, rgba(243,237,228,0.025) 1px, transparent 1px, transparent 64px),
-    repeating-linear-gradient(45deg, rgba(243,237,228,0.025) 0px, rgba(243,237,228,0.025) 1px, transparent 1px, transparent 64px);
+    radial-gradient(ellipse 950px 560px at 10% 0%, rgba(184,149,94,0.16), transparent 60%),
+    radial-gradient(ellipse 760px 560px at 100% 25%, rgba(184,149,94,0.11), transparent 55%),
+    radial-gradient(ellipse 860px 640px at 4% 85%, rgba(184,149,94,0.11), transparent 60%),
+    repeating-linear-gradient(45deg, rgba(184,149,94,0.12) 0px, rgba(184,149,94,0.12) 1.5px, transparent 1.5px, transparent 48px),
+    repeating-linear-gradient(-45deg, rgba(184,149,94,0.12) 0px, rgba(184,149,94,0.12) 1.5px, transparent 1.5px, transparent 48px);
   background-attachment:fixed;
 }
 [dir="rtl"] body{font-family:'Cairo','DM Sans',sans-serif}
