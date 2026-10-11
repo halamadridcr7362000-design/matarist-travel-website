@@ -45,11 +45,14 @@
 
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-/* Page background, four kinds of layers (back to front):
-   1) soft gold + violet ambient glows (nebula-like haze)
-   2) a scattered star field (small white/gold dots, tiled)
-   3) the MATARIST icon mark (M + plane, no wordmark), sized/positioned
-      so the full mark stays on-screen instead of being cropped
+/* Page background, back to front:
+   1) soft gold + violet + teal ambient glows (nebula-like haze)
+   2) two star fields at different tile sizes (near/far) for depth
+   3) the MATARIST icon mark — the plane/swoosh path PLUS the two separate
+      paths that form the M's legs (all three together = the full mark;
+      easy to miss since the M legs are their own <path> elements, not
+      part of the swoosh path), tightly cropped so it isn't padded by
+      empty space, sized so the full mark stays on-screen.
    All kept faint and behind the surface-colored cards, so it only shows
    in the gaps/margins between content. */
 body{
@@ -61,17 +64,22 @@ body{
     radial-gradient(ellipse 950px 560px at 10% 0%, rgba(184,149,94,0.16), transparent 60%),
     radial-gradient(ellipse 760px 560px at 100% 25%, rgba(184,149,94,0.11), transparent 55%),
     radial-gradient(ellipse 860px 640px at 4% 85%, rgba(184,149,94,0.11), transparent 60%),
-    radial-gradient(ellipse 820px 600px at 78% 55%, rgba(120,90,170,0.08), transparent 62%),
+    radial-gradient(ellipse 820px 600px at 78% 55%, rgba(120,90,170,0.09), transparent 62%),
+    radial-gradient(ellipse 700px 500px at 30% 70%, rgba(70,110,150,0.07), transparent 60%),
     radial-gradient(1.6px 1.6px at 20px 30px, rgba(243,237,228,0.8), transparent),
     radial-gradient(1.2px 1.2px at 90px 110px, rgba(243,237,228,0.6), transparent),
     radial-gradient(1.8px 1.8px at 150px 60px, rgba(212,180,128,0.7), transparent),
     radial-gradient(1.2px 1.2px at 180px 150px, rgba(243,237,228,0.55), transparent),
     radial-gradient(1.5px 1.5px at 50px 170px, rgba(212,180,128,0.6), transparent),
     radial-gradient(1px 1px at 120px 20px, rgba(243,237,228,0.5), transparent),
-    url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjI2MCAzMTAgNDkwIDM5MCI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC4wMDAwMDAsMTAyNC4wMDAwMDApIHNjYWxlKDAuMTAwMDAwLC0wLjEwMDAwMCkiIGZpbGw9InJnYmEoMTg0LDE0OSw5NCwwLjExKSIgc3Ryb2tlPSJub25lIj48cGF0aCBkPSJNNjYxOSA2OTIxIGMtODYgLTI3IC0zMDMgLTE4NSAtNDE0IC0zMDAgLTI5IC0zMSAtNDcgLTQxIC03MCAtNDEgLTE2IDEgLTE4NyAyMCAtMzgwIDQ0IGwtMzUwIDQ0IC01MyAtNDUgYy0yOSAtMjUgLTUwIC00OSAtNDUgLTU0IDUgLTUgMTM3IC01OSAyOTQgLTEyMSAxNTcgLTYyIDI4NyAtMTE3IDI4OSAtMTIyIDMgLTEyIC02MzYgLTYwNCAtODIwIC03NTggLTMwMSAtMjUzIC02MTggLTQ1MyAtODI3IC01MjQgLTYxIC0yMSAtOTkgLTI3IC0xNzMgLTI4IC0xMjEgLTEgLTE1OSAxOCAtMTk5IDEwMyAtMjMgNTAgLTI2IDY4IC0yNSAxNjEgMCA4NyA1IDExOCAyNyAxNzkgbDI2IDczIC0yNiAtMjMgYy0xMzkgLTEzMCAtMjI2IC0zMzMgLTIwMyAtNDczIDM0IC0yMTEgMjI5IC0zMDEgNTQwIC0yNTEgNDAwIDY1IDc4NCAzMjUgMTY3OSAxMTM5IDExMyAxMDIgMjA4IDE4NiAyMTIgMTg2IDQgMCA1NSAtMTA5IDExNCAtMjQyIDU5IC0xMzQgMTE5IC0yNzAgMTM0IC0zMDIgbDI3IC02MCA1NiA1MCBjMzEgMjcgNTggNTQgNjAgNTkgMyA2IC0xMiAxMzQgLTMzIDI4NSAtMjEgMTUxIC00MyAzMjMgLTUwIDM4MiBsLTEyIDEwOCA5MCA5NCBjMTk4IDIwNiAyODQgMzU3IDIzNiA0MTQgLTIxIDI1IC02NiAzNSAtMTA0IDIzeiIvPjwvZz48L3N2Zz4=");
-  background-position:0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 74% 50%;
-  background-size:auto, auto, auto, auto, 220px 220px, 220px 220px, 220px 220px, 220px 220px, 220px 220px, 220px 220px, 780px auto;
-  background-repeat:no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat, repeat, repeat, repeat, repeat, no-repeat;
+    radial-gradient(2.2px 2.2px at 60px 90px, rgba(243,237,228,0.75), transparent),
+    radial-gradient(1px 1px at 200px 210px, rgba(212,180,128,0.55), transparent),
+    radial-gradient(1.4px 1.4px at 260px 40px, rgba(243,237,228,0.5), transparent),
+    radial-gradient(1px 1px at 320px 260px, rgba(243,237,228,0.45), transparent),
+    url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjM1NCAzMjAgMzM0IDI0MSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC4wMDAwMDAsMTAyNC4wMDAwMDApIHNjYWxlKDAuMTAwMDAwLC0wLjEwMDAwMCkiIGZpbGw9InJnYmEoMTg0LDE0OSw5NCwwLjEyKSIgc3Ryb2tlPSJub25lIj48cGF0aCBkPSJNNjYxOSA2OTIxIGMtODYgLTI3IC0zMDMgLTE4NSAtNDE0IC0zMDAgLTI5IC0zMSAtNDcgLTQxIC03MCAtNDEgLTE2IDEgLTE4NyAyMCAtMzgwIDQ0IGwtMzUwIDQ0IC01MyAtNDUgYy0yOSAtMjUgLTUwIC00OSAtNDUgLTU0IDUgLTUgMTM3IC01OSAyOTQgLTEyMSAxNTcgLTYyIDI4NyAtMTE3IDI4OSAtMTIyIDMgLTEyIC02MzYgLTYwNCAtODIwIC03NTggLTMwMSAtMjUzIC02MTggLTQ1MyAtODI3IC01MjQgLTYxIC0yMSAtOTkgLTI3IC0xNzMgLTI4IC0xMjEgLTEgLTE1OSAxOCAtMTk5IDEwMyAtMjMgNTAgLTI2IDY4IC0yNSAxNjEgMCA4NyA1IDExOCAyNyAxNzkgbDI2IDczIC0yNiAtMjMgYy0xMzkgLTEzMCAtMjI2IC0zMzMgLTIwMyAtNDczIDM0IC0yMTEgMjI5IC0zMDEgNTQwIC0yNTEgNDAwIDY1IDc4NCAzMjUgMTY3OSAxMTM5IDExMyAxMDIgMjA4IDE4NiAyMTIgMTg2IDQgMCA1NSAtMTA5IDExNCAtMjQyIDU5IC0xMzQgMTE5IC0yNzAgMTM0IC0zMDIgbDI3IC02MCA1NiA1MCBjMzEgMjcgNTggNTQgNjAgNTkgMyA2IC0xMiAxMzQgLTMzIDI4NSAtMjEgMTUxIC00MyAzMjMgLTUwIDM4MiBsLTEyIDEwOCA5MCA5NCBjMTk4IDIwNiAyODQgMzU3IDIzNiA0MTQgLTIxIDI1IC02NiAzNSAtMTA0IDIzeiIvPjxwYXRoIGQ9Ik00MDMwIDU3OTEgYzAgLTU4OSAyIC02ODAgMTUgLTY5MSAyMCAtMTcgNjkgLTcgMTg4IDM3IGw5NyAzNiAwIDM4NiAwIDM4NiAxNzkgLTI2OSBjOTkgLTE0NyAxODIgLTI3MCAxODUgLTI3MyA0IC00IDE1MiA4NSAyNDkgMTQ4IDggNiAtMTkzIDMxMSAtNTI3IDgwMiBsLTgwIDExNyAtMTUzIDAgLTE1MyAwIDAgLTY3OXoiLz48cGF0aCBkPSJNNTg2MyA1Nzg3IGwtMTQzIC0xMjIgMyAtNDMwIDIgLTQzMCAxNDUgMCAxNDUgMCAzIDU1MyBjMSAzMDMgLTEgNTUyIC01IDU1MSAtNSAwIC03MiAtNTUgLTE1MCAtMTIyeiIvPjwvZz48L3N2Zz4=");
+  background-position:0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 70% 42%;
+  background-size:auto, auto, auto, auto, auto, 220px 220px, 220px 220px, 220px 220px, 220px 220px, 220px 220px, 220px 220px, 380px 380px, 380px 380px, 380px 380px, 380px 380px, 820px auto;
+  background-repeat:no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, no-repeat;
   background-attachment:fixed;
 }
 [dir="rtl"] body{font-family:'Cairo','DM Sans',sans-serif}
@@ -92,18 +100,19 @@ header nav a:hover{color:var(--gold-light)}
 .lang-row button.active{background:var(--gold);color:#1a1420}
 
 /* ===== Hero ===== */
-/* Decorative/branded backdrop — a rooftop terrace view of the
-   Bosphorus and a mosque dome/minaret (Unsplash, free license, "Majestic
-   Süleymaniye Mosque & Galata Bridge" by Scorn Pion), not a photo of any
-   specific listing. Desaturated + warmed via filter so it reads as a
-   designed backdrop rather than a plain dimmed photo, with a second
-   layer adding the gold glow/vignette on top. */
+/* Decorative/branded backdrop — rotates between two Istanbul shots
+   (Unsplash, free license): Süleymaniye Mosque & Galata Bridge by Scorn
+   Pion, and a Galata Tower sunset silhouette by Kevin Charit. Neither is
+   a photo of any specific listing. Desaturated + warmed via filter so it
+   reads as a designed backdrop, with a crossfade between slides (same
+   pattern as the listing-card photo carousel) and a gold glow/vignette
+   layer on top of both. */
 .hero{position:relative;padding:90px 5% 130px;text-align:center;overflow:hidden;background-color:var(--bg)}
-.hero::before{content:"";position:absolute;inset:0;z-index:0;
-  background-image:url('https://images.unsplash.com/photo-1710162518260-1d200de27e1f?w=1600&q=70');
-  background-size:cover;background-position:center 40%;
-  filter:saturate(0.55) brightness(0.5) sepia(0.25);
-  transform:scale(1.03);}
+.hero-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center 40%;
+  filter:saturate(0.55) brightness(0.5) sepia(0.25);transform:scale(1.03);
+  opacity:0;transition:opacity 1.6s ease}
+.hero-bg.active{opacity:1}
+@media(prefers-reduced-motion:reduce){.hero-bg{transition:none}}
 .hero::after{content:"";position:absolute;inset:0;z-index:0;background:
   linear-gradient(180deg, rgba(21,18,27,0.55) 0%, rgba(21,18,27,0.35) 40%, rgba(21,18,27,0.95) 100%),
   radial-gradient(ellipse 780px 460px at 50% -8%, rgba(184,149,94,0.30), transparent 62%),
@@ -185,19 +194,22 @@ header nav a:hover{color:var(--gold-light)}
 
 /* ===== Lifestyle strip ===== */
 /* Decorative — conveys "shared housing life" for Istanbul students/tenants
-   generally, not any specific listing or real tenant. All three photos are
-   Pexels, free license: 4781426 (roommates in a kitchen, cottonbro studio),
-   7327261 (roommates on a sofa with a laptop), 4907214 (hostel/dorm common
-   room). */
+   generally, not any specific listing or real tenant. Each of the 3 slots
+   crossfades between 2 Pexels (free license) photos: slot 1 — 4781426 /
+   4778632 (roommates in a kitchen), slot 2 — 7327261 / 4004113 (roommates
+   on a sofa / living room), slot 3 — 4907214 / 5158946 (hostel/dorm
+   common room). */
 .lifestyle{max-width:1180px;margin:0 auto;padding:8px 5% 0}
 .lifestyle-head{text-align:center;max-width:560px;margin:0 auto 26px}
 .lifestyle-head h2{font-size:1.4rem;color:var(--text);margin-bottom:8px}
 .lifestyle-head p{color:var(--text-muted);font-size:0.9rem;line-height:1.6}
 .lifestyle-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;grid-template-rows:260px;gap:16px}
 .lifestyle-grid .photo{position:relative;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border)}
-.lifestyle-grid .photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease}
-.lifestyle-grid .photo:hover img{transform:scale(1.05)}
-.lifestyle-grid .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(to top, rgba(21,18,27,0.45) 0%, transparent 42%);pointer-events:none}
+.lifestyle-grid .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity 1.2s ease,transform 0.5s ease}
+.lifestyle-grid .photo img.active{opacity:1;z-index:1}
+.lifestyle-grid .photo:hover img.active{transform:scale(1.05)}
+.lifestyle-grid .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(to top, rgba(21,18,27,0.45) 0%, transparent 42%);pointer-events:none;z-index:2}
+@media(prefers-reduced-motion:reduce){.lifestyle-grid .photo img{transition:none}}
 @media(max-width:760px){
   .lifestyle-grid{grid-template-columns:1fr;grid-template-rows:none}
   .lifestyle-grid .photo{height:220px}
@@ -231,6 +243,8 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 </header>
 
 <section class="hero" id="hero">
+  <div class="hero-bg active" style="background-image:url('https://images.unsplash.com/photo-1710162518260-1d200de27e1f?w=1600&q=70')"></div>
+  <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1726808260756-ec1d4eceaf71?w=1600&q=70')"></div>
   <span class="eyebrow" data-i18n="eyebrow">Boutique Stays in Istanbul</span>
   <h1 data-i18n="hero_title">Rooms & Apartments in Istanbul</h1>
   <p data-i18n="hero_sub">Browse available rooms, shared accommodation and apartments — organized by district. Contact us directly on WhatsApp.</p>
@@ -270,9 +284,18 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
     <p data-i18n="lifestyle_sub">Clean, friendly rooms where students and young professionals share a home — not just a roof.</p>
   </div>
   <div class="lifestyle-grid reveal">
-    <div class="photo"><img src="https://images.pexels.com/photos/4781426/pexels-photo-4781426.jpeg?auto=compress&cs=tinysrgb&w=900" loading="lazy" alt="Roommates cooking together in a shared kitchen"></div>
-    <div class="photo"><img src="https://images.pexels.com/photos/7327261/pexels-photo-7327261.jpeg?auto=compress&cs=tinysrgb&w=700" loading="lazy" alt="Roommates relaxing together on a sofa"></div>
-    <div class="photo"><img src="https://images.pexels.com/photos/4907214/pexels-photo-4907214.jpeg?auto=compress&cs=tinysrgb&w=700" loading="lazy" alt="Friends chatting in a shared common room"></div>
+    <div class="photo">
+      <img class="active" src="https://images.pexels.com/photos/4781426/pexels-photo-4781426.jpeg?auto=compress&cs=tinysrgb&w=900" loading="lazy" alt="Roommates cooking together in a shared kitchen">
+      <img src="https://images.pexels.com/photos/4778632/pexels-photo-4778632.jpeg?auto=compress&cs=tinysrgb&w=900" loading="lazy" alt="Roommates laughing together at home">
+    </div>
+    <div class="photo">
+      <img class="active" src="https://images.pexels.com/photos/7327261/pexels-photo-7327261.jpeg?auto=compress&cs=tinysrgb&w=700" loading="lazy" alt="Roommates relaxing together on a sofa">
+      <img src="https://images.pexels.com/photos/4004113/pexels-photo-4004113.jpeg?auto=compress&cs=tinysrgb&w=700" loading="lazy" alt="Friends chatting in a shared apartment living room">
+    </div>
+    <div class="photo">
+      <img class="active" src="https://images.pexels.com/photos/4907214/pexels-photo-4907214.jpeg?auto=compress&cs=tinysrgb&w=700" loading="lazy" alt="Friends chatting in a shared common room">
+      <img src="https://images.pexels.com/photos/5158946/pexels-photo-5158946.jpeg?auto=compress&cs=tinysrgb&w=700" loading="lazy" alt="Friends gathered in a shared dorm room">
+    </div>
   </div>
 </div>
 
@@ -374,6 +397,37 @@ function prefersReducedMotion(){ return window.matchMedia && window.matchMedia('
 
 const CARD_CAROUSEL_MAX_PHOTOS = 6;
 const CARD_CAROUSEL_INTERVAL_MS = 4000;
+
+// Hero backdrop crossfade between the .hero-bg slides declared in the
+// markup. Static (first slide only) under prefers-reduced-motion.
+function startHeroCarousel(){
+  const slides = document.querySelectorAll('.hero-bg');
+  if(prefersReducedMotion() || slides.length <= 1) return;
+  let current = 0;
+  setInterval(()=>{
+    slides[current].classList.remove('active');
+    current = (current + 1) % slides.length;
+    slides[current].classList.add('active');
+  }, 6000);
+}
+
+// Lifestyle photo strip: each .photo slot crossfades between its own
+// <img> slides, staggered per slot so they don't all flip at once.
+function startLifestyleCarousel(){
+  if(prefersReducedMotion()) return;
+  document.querySelectorAll('.lifestyle-grid .photo').forEach((photo, idx)=>{
+    const imgs = photo.querySelectorAll('img');
+    if(imgs.length <= 1) return;
+    let current = 0;
+    setTimeout(()=>{
+      setInterval(()=>{
+        imgs[current].classList.remove('active');
+        current = (current + 1) % imgs.length;
+        imgs[current].classList.add('active');
+      }, 5000);
+    }, idx * 1200);
+  });
+}
 
 // Subtle scroll-in reveal for cards. CSS already forces opacity:1 under
 // prefers-reduced-motion regardless, but skipping the observer too avoids
@@ -480,6 +534,8 @@ function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&'
 const savedLang = localStorage.getItem('acc_lang') || 'en';
 setLang(savedLang);
 loadListings();
+startHeroCarousel();
+startLifestyleCarousel();
 </script>
 </body>
 </html>
