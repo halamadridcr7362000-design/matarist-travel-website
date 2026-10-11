@@ -142,7 +142,7 @@ a.back{color:var(--gold);text-decoration:none;font-size:0.85rem;font-weight:600}
 h1{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 6px;line-height:1.2}
 .meta{color:var(--text-muted);margin-bottom:22px;font-size:0.92rem}
 .meta .dot{margin:0 8px;opacity:0.5}
-.gallery{display:grid;grid-template-columns:1.5fr 1fr;gap:8px;margin-bottom:28px;border-radius:16px;overflow:hidden;height:380px}
+.gallery{display:grid;grid-template-columns:1.5fr 1fr;grid-template-rows:380px;gap:8px;margin-bottom:28px;border-radius:16px;overflow:hidden;height:380px}
 .gallery.single{grid-template-columns:1fr}
 .gallery-main{height:100%}
 .gallery-main img{width:100%;height:100%;object-fit:cover;display:block;cursor:pointer}
