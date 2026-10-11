@@ -38,17 +38,24 @@ function page410(lang) {
   </body></html>`;
 }
 
-function renderListing(listing, lang, isPreview) {
+function renderListing(listing, lang, previewToken) {
+  const isPreview = !!previewToken;
   const t = LABELS[lang] || LABELS.en;
   const pub = toPublicListing(listing);
   const title = `${escapeHtml(pub.title)} — ${escapeHtml(pub.district)} | MATARIST Accommodation`;
   const descSource = pub.description || `${ROOM_TYPE_LABEL[pub.roomType] || pub.roomType} in ${pub.district}, Istanbul.`;
   const description = escapeHtml(String(descSource).slice(0, 160));
   const canonical = `${SITE}/accommodation/${pub.slug}`;
-  const firstPhoto = pub.photos && pub.photos[0] ? `${SITE}/.netlify/functions/accommodation-listings?photo=${encodeURIComponent(pub.photos[0])}` : "";
+  // In preview mode (a draft/unpublished listing), the photo-serving
+  // endpoint requires either a session or this same scoped preview token —
+  // a plain <img> can't carry an Authorization header, so the token has to
+  // ride along on the image URL itself instead.
+  const previewQS = isPreview ? `&preview=${encodeURIComponent(previewToken)}` : "";
+  const photoUrl = (k) => `/.netlify/functions/accommodation-listings?photo=${encodeURIComponent(k)}${previewQS}`;
+  const firstPhoto = pub.photos && pub.photos[0] ? `${SITE}${photoUrl(pub.photos[0])}` : "";
   const rentedBadge = pub.status === "rented" ? `<div style="background:#da3633;color:#fff;padding:8px 16px;border-radius:6px;display:inline-block;margin-bottom:16px;font-weight:700">${t.rented}</div>` : "";
   const photosHtml = (pub.photos || [])
-    .map((k) => `<img src="/.netlify/functions/accommodation-listings?photo=${encodeURIComponent(k)}" loading="lazy" style="width:100%;border-radius:8px;margin-bottom:10px" alt="${escapeHtml(pub.title)}">`)
+    .map((k) => `<img src="${photoUrl(k)}" loading="lazy" style="width:100%;border-radius:8px;margin-bottom:10px" alt="${escapeHtml(pub.title)}">`)
     .join("");
   const mapHtml = typeof pub.lat === "number" && typeof pub.lng === "number"
     ? `<div id="map" style="height:280px;border-radius:8px;margin:16px 0"></div>
@@ -159,7 +166,7 @@ exports.handler = async function (event) {
     return {
       statusCode: 200,
       headers: { "Content-Type": "text/html; charset=utf-8", ...NO_STORE },
-      body: renderListing(listing, lang, true),
+      body: renderListing(listing, lang, qs.preview),
     };
   }
 

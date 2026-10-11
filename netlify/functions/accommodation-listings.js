@@ -4,7 +4,7 @@
 // Every write requires a valid signed session token (server-side check),
 // never a client-side password check.
 const crypto = require("crypto");
-const { requireSession, sign } = require("./_lib/accommodation-security");
+const { requireSession, sign, verifyToken } = require("./_lib/accommodation-security");
 const {
   getAllListings,
   saveAllListings,
@@ -115,7 +115,17 @@ async function servePhoto(event, key) {
   const owner = listings.find((l) => (l.photos || []).includes(key));
   const session = requireSession(event);
 
-  if (!owner || (!isPubliclyVisible(owner) && !session)) {
+  // A plain <img> tag can't carry an Authorization header, so the admin's
+  // draft preview page (listing-page.js, isPreview mode) passes the same
+  // scoped preview token it was opened with on each photo's own URL too.
+  // Verified the same way as the page-level preview: signed, short-lived,
+  // and scoped to this specific listing's id — not a general bypass.
+  const qs = event.queryStringParameters || {};
+  const secret = process.env.ACCOMMODATION_SESSION_SECRET;
+  const previewPayload = owner && secret ? verifyToken(qs.preview, secret) : null;
+  const validPreview = previewPayload && previewPayload.listingId === (owner && owner.id);
+
+  if (!owner || (!isPubliclyVisible(owner) && !session && !validPreview)) {
     return { statusCode: 404, headers, body: "Not found" };
   }
 
