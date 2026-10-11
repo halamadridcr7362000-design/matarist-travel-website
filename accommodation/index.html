@@ -46,8 +46,11 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 /* Page background, back to front:
-   1) soft gold + violet + teal ambient glows (nebula-like haze)
-   2) two star fields at different tile sizes (near/far) for depth
+   1) soft gold + violet + teal ambient glows, a diagonal "milky way"
+      haze band, and two small glowing "planet" accents — for a real
+      galaxy/solar-system feel, not just flat color
+   2) three star fields at different tile sizes (near/mid/far) for depth,
+      noticeably denser than a first pass that read as too sparse
    3) the MATARIST icon mark — the plane/swoosh path PLUS the two separate
       paths that form the M's legs (all three together = the full mark;
       easy to miss since the M legs are their own <path> elements, not
@@ -66,20 +69,29 @@ body{
     radial-gradient(ellipse 860px 640px at 4% 85%, rgba(184,149,94,0.11), transparent 60%),
     radial-gradient(ellipse 820px 600px at 78% 55%, rgba(120,90,170,0.09), transparent 62%),
     radial-gradient(ellipse 700px 500px at 30% 70%, rgba(70,110,150,0.07), transparent 60%),
-    radial-gradient(1.6px 1.6px at 20px 30px, rgba(243,237,228,0.8), transparent),
+    linear-gradient(115deg, transparent 32%, rgba(200,190,255,0.05) 45%, rgba(230,210,255,0.08) 50%, rgba(200,190,255,0.05) 55%, transparent 68%),
+    radial-gradient(circle 70px at 13% 16%, rgba(212,180,128,0.4), rgba(212,180,128,0.1) 60%, transparent 78%),
+    radial-gradient(circle 50px at 90% 72%, rgba(120,150,200,0.4), rgba(120,150,200,0.1) 60%, transparent 78%),
+    radial-gradient(1.4px 1.4px at 15px 25px, rgba(243,237,228,0.8), transparent),
+    radial-gradient(1px 1px at 55px 85px, rgba(243,237,228,0.55), transparent),
+    radial-gradient(1.6px 1.6px at 95px 40px, rgba(212,180,128,0.7), transparent),
+    radial-gradient(1px 1px at 120px 110px, rgba(243,237,228,0.5), transparent),
+    radial-gradient(1.3px 1.3px at 35px 140px, rgba(212,180,128,0.6), transparent),
+    radial-gradient(1.8px 1.8px at 20px 30px, rgba(243,237,228,0.8), transparent),
     radial-gradient(1.2px 1.2px at 90px 110px, rgba(243,237,228,0.6), transparent),
-    radial-gradient(1.8px 1.8px at 150px 60px, rgba(212,180,128,0.7), transparent),
+    radial-gradient(2px 2px at 150px 60px, rgba(212,180,128,0.7), transparent),
     radial-gradient(1.2px 1.2px at 180px 150px, rgba(243,237,228,0.55), transparent),
     radial-gradient(1.5px 1.5px at 50px 170px, rgba(212,180,128,0.6), transparent),
     radial-gradient(1px 1px at 120px 20px, rgba(243,237,228,0.5), transparent),
-    radial-gradient(2.2px 2.2px at 60px 90px, rgba(243,237,228,0.75), transparent),
-    radial-gradient(1px 1px at 200px 210px, rgba(212,180,128,0.55), transparent),
-    radial-gradient(1.4px 1.4px at 260px 40px, rgba(243,237,228,0.5), transparent),
-    radial-gradient(1px 1px at 320px 260px, rgba(243,237,228,0.45), transparent),
+    radial-gradient(2.4px 2.4px at 60px 90px, rgba(243,237,228,0.75), transparent),
+    radial-gradient(1.2px 1.2px at 200px 210px, rgba(212,180,128,0.55), transparent),
+    radial-gradient(1.6px 1.6px at 260px 40px, rgba(243,237,228,0.5), transparent),
+    radial-gradient(1.2px 1.2px at 320px 260px, rgba(243,237,228,0.45), transparent),
+    radial-gradient(2px 2px at 380px 120px, rgba(212,180,128,0.5), transparent),
     url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjM1NCAzMjAgMzM0IDI0MSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC4wMDAwMDAsMTAyNC4wMDAwMDApIHNjYWxlKDAuMTAwMDAwLC0wLjEwMDAwMCkiIGZpbGw9InJnYmEoMTg0LDE0OSw5NCwwLjEyKSIgc3Ryb2tlPSJub25lIj48cGF0aCBkPSJNNjYxOSA2OTIxIGMtODYgLTI3IC0zMDMgLTE4NSAtNDE0IC0zMDAgLTI5IC0zMSAtNDcgLTQxIC03MCAtNDEgLTE2IDEgLTE4NyAyMCAtMzgwIDQ0IGwtMzUwIDQ0IC01MyAtNDUgYy0yOSAtMjUgLTUwIC00OSAtNDUgLTU0IDUgLTUgMTM3IC01OSAyOTQgLTEyMSAxNTcgLTYyIDI4NyAtMTE3IDI4OSAtMTIyIDMgLTEyIC02MzYgLTYwNCAtODIwIC03NTggLTMwMSAtMjUzIC02MTggLTQ1MyAtODI3IC01MjQgLTYxIC0yMSAtOTkgLTI3IC0xNzMgLTI4IC0xMjEgLTEgLTE1OSAxOCAtMTk5IDEwMyAtMjMgNTAgLTI2IDY4IC0yNSAxNjEgMCA4NyA1IDExOCAyNyAxNzkgbDI2IDczIC0yNiAtMjMgYy0xMzkgLTEzMCAtMjI2IC0zMzMgLTIwMyAtNDczIDM0IC0yMTEgMjI5IC0zMDEgNTQwIC0yNTEgNDAwIDY1IDc4NCAzMjUgMTY3OSAxMTM5IDExMyAxMDIgMjA4IDE4NiAyMTIgMTg2IDQgMCA1NSAtMTA5IDExNCAtMjQyIDU5IC0xMzQgMTE5IC0yNzAgMTM0IC0zMDIgbDI3IC02MCA1NiA1MCBjMzEgMjcgNTggNTQgNjAgNTkgMyA2IC0xMiAxMzQgLTMzIDI4NSAtMjEgMTUxIC00MyAzMjMgLTUwIDM4MiBsLTEyIDEwOCA5MCA5NCBjMTk4IDIwNiAyODQgMzU3IDIzNiA0MTQgLTIxIDI1IC02NiAzNSAtMTA0IDIzeiIvPjxwYXRoIGQ9Ik00MDMwIDU3OTEgYzAgLTU4OSAyIC02ODAgMTUgLTY5MSAyMCAtMTcgNjkgLTcgMTg4IDM3IGw5NyAzNiAwIDM4NiAwIDM4NiAxNzkgLTI2OSBjOTkgLTE0NyAxODIgLTI3MCAxODUgLTI3MyA0IC00IDE1MiA4NSAyNDkgMTQ4IDggNiAtMTkzIDMxMSAtNTI3IDgwMiBsLTgwIDExNyAtMTUzIDAgLTE1MyAwIDAgLTY3OXoiLz48cGF0aCBkPSJNNTg2MyA1Nzg3IGwtMTQzIC0xMjIgMyAtNDMwIDIgLTQzMCAxNDUgMCAxNDUgMCAzIDU1MyBjMSAzMDMgLTEgNTUyIC01IDU1MSAtNSAwIC03MiAtNTUgLTE1MCAtMTIyeiIvPjwvZz48L3N2Zz4=");
-  background-position:0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 70% 42%;
-  background-size:auto, auto, auto, auto, auto, 220px 220px, 220px 220px, 220px 220px, 220px 220px, 220px 220px, 220px 220px, 380px 380px, 380px 380px, 380px 380px, 380px 380px, 820px auto;
-  background-repeat:no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, no-repeat;
+  background-position:0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 70% 42%;
+  background-size:auto, auto, auto, auto, auto, auto, auto, auto, 150px 150px, 150px 150px, 150px 150px, 150px 150px, 150px 150px, 260px 260px, 260px 260px, 260px 260px, 260px 260px, 260px 260px, 260px 260px, 420px 420px, 420px 420px, 420px 420px, 420px 420px, 420px 420px, 820px auto;
+  background-repeat:no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, no-repeat;
   background-attachment:fixed;
 }
 [dir="rtl"] body{font-family:'Cairo','DM Sans',sans-serif}
@@ -100,13 +112,14 @@ header nav a:hover{color:var(--gold-light)}
 .lang-row button.active{background:var(--gold);color:#1a1420}
 
 /* ===== Hero ===== */
-/* Decorative/branded backdrop — rotates between two Istanbul shots
-   (Unsplash, free license): Süleymaniye Mosque & Galata Bridge by Scorn
-   Pion, and a Galata Tower sunset silhouette by Kevin Charit. Neither is
-   a photo of any specific listing. Desaturated + warmed via filter so it
-   reads as a designed backdrop, with a crossfade between slides (same
-   pattern as the listing-card photo carousel) and a gold glow/vignette
-   layer on top of both. */
+/* Decorative/branded backdrop — rotates between four Istanbul shots, all
+   Unsplash free license: Süleymaniye Mosque & Galata Bridge (Scorn
+   Pion), a Galata Tower sunset silhouette (Kevin Charit), a Çamlıca Peak
+   daytime aerial (Mehmet Bozgedik), and Şehzade Mosque lit up at night
+   (Malek Bensetti). None is a photo of any specific listing. Desaturated
+   + warmed via filter so it reads as a designed backdrop, with a
+   crossfade between slides (same pattern as the listing-card photo
+   carousel) and a gold glow/vignette layer on top of all of them. */
 .hero{position:relative;padding:90px 5% 130px;text-align:center;overflow:hidden;background-color:var(--bg)}
 .hero-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center 40%;
   filter:saturate(0.55) brightness(0.5) sepia(0.25);transform:scale(1.03);
@@ -245,6 +258,8 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 <section class="hero" id="hero">
   <div class="hero-bg active" style="background-image:url('https://images.unsplash.com/photo-1710162518260-1d200de27e1f?w=1600&q=70')"></div>
   <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1726808260756-ec1d4eceaf71?w=1600&q=70')"></div>
+  <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1621873129944-8d88a5328a0c?w=1600&q=70')"></div>
+  <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1546369527-f5279d232524?w=1600&q=70')"></div>
   <span class="eyebrow" data-i18n="eyebrow">Boutique Stays in Istanbul</span>
   <h1 data-i18n="hero_title">Rooms & Apartments in Istanbul</h1>
   <p data-i18n="hero_sub">Browse available rooms, shared accommodation and apartments — organized by district. Contact us directly on WhatsApp.</p>
