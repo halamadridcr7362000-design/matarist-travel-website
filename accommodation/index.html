@@ -45,7 +45,23 @@
 
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+/* Page background: soft gold ambient glows + a faint diagonal hairline
+   lattice over the base dark color, so the whole page (not just the hero)
+   reads as a designed surface instead of a flat fill. Opacity kept low so
+   it never competes with cards/content sitting on top of it. */
+body{
+  font-family:'DM Sans',sans-serif;
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(ellipse 900px 520px at 12% 0%, rgba(184,149,94,0.09), transparent 60%),
+    radial-gradient(ellipse 720px 520px at 100% 28%, rgba(184,149,94,0.06), transparent 55%),
+    radial-gradient(ellipse 820px 600px at 6% 82%, rgba(184,149,94,0.06), transparent 60%),
+    repeating-linear-gradient(135deg, rgba(243,237,228,0.025) 0px, rgba(243,237,228,0.025) 1px, transparent 1px, transparent 64px),
+    repeating-linear-gradient(45deg, rgba(243,237,228,0.025) 0px, rgba(243,237,228,0.025) 1px, transparent 1px, transparent 64px);
+  background-attachment:fixed;
+}
 [dir="rtl"] body{font-family:'Cairo','DM Sans',sans-serif}
 h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;letter-spacing:0.01em}
 [dir="rtl"] h1,[dir="rtl"] h2,[dir="rtl"] h3{font-family:'Cairo',sans-serif;font-weight:700}
