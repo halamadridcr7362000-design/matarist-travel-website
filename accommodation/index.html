@@ -83,11 +83,19 @@ header nav a:hover{color:var(--gold-light)}
 .card:hover{transform:translateY(-6px);box-shadow:var(--shadow-card);border-color:var(--border)}
 .card .accent-bar{height:3px;background:var(--accent);width:100%}
 .card .img-wrap{position:relative;aspect-ratio:4/3;background:var(--surface-2);overflow:hidden}
-.card .img-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease}
-.card:hover .img-wrap img{transform:scale(1.06)}
-.card .img-wrap::after{content:"";position:absolute;inset:0;background:linear-gradient(to top, rgba(21,18,27,0.65) 0%, transparent 45%)}
-.card .gender-badge{position:absolute;top:12px;inset-inline-start:12px;background:var(--accent-soft);border:1px solid var(--accent);color:var(--text);backdrop-filter:blur(6px);font-size:0.66rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;padding:4px 10px;border-radius:20px;z-index:2}
-.card .type-badge{position:absolute;bottom:10px;inset-inline-start:12px;background:rgba(21,18,27,0.72);color:var(--text-muted);font-size:0.68rem;font-weight:600;padding:3px 10px;border-radius:20px;z-index:2;text-transform:capitalize}
+.card .img-wrap::after{content:"";position:absolute;inset:0;background:linear-gradient(to top, rgba(21,18,27,0.65) 0%, transparent 45%);z-index:1;pointer-events:none}
+.card .gender-badge{position:absolute;top:12px;inset-inline-start:12px;background:var(--accent-soft);border:1px solid var(--accent);color:var(--text);backdrop-filter:blur(6px);font-size:0.66rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;padding:4px 10px;border-radius:20px;z-index:3}
+.card .type-badge{position:absolute;bottom:10px;inset-inline-start:12px;background:rgba(21,18,27,0.72);color:var(--text-muted);font-size:0.68rem;font-weight:600;padding:3px 10px;border-radius:20px;z-index:3;text-transform:capitalize}
+
+/* ===== Card photo carousel ===== */
+.card-carousel{position:absolute;inset:0}
+.card-carousel .slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity 1s ease,transform 0.5s ease}
+.card-carousel .slide.active{opacity:1;z-index:1}
+.card:hover .card-carousel .slide.active{transform:scale(1.06)}
+.card .dots{position:absolute;bottom:10px;inset-inline-end:12px;display:flex;gap:4px;z-index:3}
+.card .dots .dot{width:5px;height:5px;border-radius:50%;background:rgba(243,237,228,0.4);transition:background 0.3s,transform 0.3s}
+.card .dots .dot.active{background:var(--gold-light);transform:scale(1.3)}
+@media(prefers-reduced-motion:reduce){.card-carousel .slide{transition:none}.card:hover .card-carousel .slide.active{transform:none}}
 .card-body{padding:16px 18px 18px}
 .card .district{color:var(--text-faint);font-size:0.76rem;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:4px}
 .card h3{font-family:'DM Sans',sans-serif;font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:10px;line-height:1.35}
@@ -233,7 +241,41 @@ function filteredListings(){
 
 function applyFilters(){ renderGrid(); }
 
+// Per-card auto-rotating photo carousel. Tracked separately from render so
+// that re-rendering the grid (filters, language change) always clears any
+// previous timers before starting fresh ones — otherwise stale intervals
+// would keep firing against detached DOM nodes.
+let cardCarouselTimers = [];
+function clearCardCarousels(){ cardCarouselTimers.forEach(id => clearInterval(id)); cardCarouselTimers = []; }
+function prefersReducedMotion(){ return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
+
+const CARD_CAROUSEL_MAX_PHOTOS = 6;
+const CARD_CAROUSEL_INTERVAL_MS = 4000;
+
+function startCardCarousels(){
+  if(prefersReducedMotion()) return;
+  document.querySelectorAll('.img-wrap[data-carousel]').forEach(wrap=>{
+    const slides = wrap.querySelectorAll('.slide');
+    const dots = wrap.querySelectorAll('.dot');
+    if(slides.length <= 1) return; // single photo: shown normally, no animation
+    let current = 0;
+    let paused = false;
+    wrap.addEventListener('mouseenter', ()=>{ paused = true; });
+    wrap.addEventListener('mouseleave', ()=>{ paused = false; });
+    const id = setInterval(()=>{
+      if(paused) return;
+      slides[current].classList.remove('active');
+      dots[current] && dots[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+      dots[current] && dots[current].classList.add('active');
+    }, CARD_CAROUSEL_INTERVAL_MS);
+    cardCarouselTimers.push(id);
+  });
+}
+
 function renderGrid(){
+  clearCardCarousels();
   const lang = window.currentLang || 'en';
   const t = translations[lang];
   const grid = document.getElementById('grid');
@@ -245,15 +287,23 @@ function renderGrid(){
     return;
   }
   grid.innerHTML = items.map(l=>{
-    const photo = l.photos && l.photos[0] ? `/.netlify/functions/accommodation-listings?photo=${encodeURIComponent(l.photos[0])}` : '';
+    const photoKeys = (l.photos || []).slice(0, CARD_CAROUSEL_MAX_PHOTOS);
+    const photoUrls = photoKeys.map(k => `/.netlify/functions/accommodation-listings?photo=${encodeURIComponent(k)}`);
     const theme = genderTheme(l.genderPolicy);
     const genderBadge = theme === 'girls' ? `<span class="gender-badge">${t.girls_badge}</span>` : theme === 'boys' ? `<span class="gender-badge">${t.boys_badge}</span>` : '';
     const typeLabel = t['type_'+l.roomType] || l.roomType || '';
+    const slidesHtml = photoUrls.length
+      ? photoUrls.map((src,i)=>`<img class="slide${i===0?' active':''}" src="${src}" loading="lazy" alt="${escapeHtml(l.title)}" onerror="this.style.display='none'">`).join('')
+      : `<img class="slide active" src="" alt="${escapeHtml(l.title)}" onerror="this.style.display='none'">`;
+    const dotsHtml = photoUrls.length > 1
+      ? `<div class="dots">${photoUrls.map((_,i)=>`<span class="dot${i===0?' active':''}"></span>`).join('')}</div>`
+      : '';
     return `<a class="card" data-gender="${theme}" href="/accommodation/${l.slug}">
       <div class="accent-bar"></div>
-      <div class="img-wrap">
+      <div class="img-wrap"${photoUrls.length > 1 ? ' data-carousel' : ''}>
         ${genderBadge}
-        <img src="${photo}" loading="lazy" alt="${escapeHtml(l.title)}" onerror="this.style.display='none'">
+        <div class="card-carousel">${slidesHtml}</div>
+        ${dotsHtml}
         <span class="type-badge">${escapeHtml(typeLabel)}</span>
       </div>
       <div class="card-body">
@@ -266,6 +316,7 @@ function renderGrid(){
       </div>
     </a>`;
   }).join('');
+  startCardCarousels();
 }
 
 function renderMap(){
