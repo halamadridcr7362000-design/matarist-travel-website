@@ -30,15 +30,17 @@
   --accent:#e879ad; --accent-2:#b83275; --accent-blush:#f8dce8;
   --accent-soft:rgba(232,121,173,0.22); --accent-badge:rgba(184,52,117,0.65);
   --accent-glow:rgba(232,121,173,0.32); --accent-wash:rgba(232,121,173,0.30);
+  /* The card's actual background color, not an overlay tint — this is
+     what .card and .card-body paint with directly, so the whole card
+     reads as a different color at a glance, not a dark card with a
+     colored wash on top of it. */
+  --surface:#3a1a30; --surface-2:#49213c;
 }
 [data-gender="boys"]{
   --accent:#6b8fb8; --accent-2:#17243a; --accent-blush:#34465e;
   --accent-soft:rgba(107,143,184,0.22); --accent-badge:rgba(23,36,58,0.80);
-  /* Blending a near-black navy into the already-near-black card surface
-     barely shifted anything (confirmed live: the blue card's body looked
-     unchanged next to the pink cards' visible tint). Using the bright
-     accent itself, same as girls, fixes that. */
   --accent-glow:rgba(107,143,184,0.26); --accent-wash:rgba(107,143,184,0.30);
+  --surface:#142338; --surface-2:#1a2d47;
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -116,7 +118,6 @@ header nav a:hover{color:var(--gold-light)}
 .card .dots .dot.active{background:var(--accent);transform:scale(1.3)}
 @media(prefers-reduced-motion:reduce){.card-carousel .slide{transition:none}.card:hover .card-carousel .slide.active{transform:none}}
 .card-body{padding:16px 18px 18px;background:var(--surface)}
-.card[data-gender="girls"] .card-body,.card[data-gender="boys"] .card-body{background:linear-gradient(170deg, var(--accent-wash) 0%, var(--surface) 65%)}
 .card .district{color:var(--text-faint);font-size:0.76rem;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:4px}
 .card h3{font-family:'DM Sans',sans-serif;font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:10px;line-height:1.35}
 .card .price-row{display:flex;align-items:baseline;justify-content:space-between;border-top:1px solid var(--border-soft);padding-top:12px}
