@@ -28,13 +28,13 @@
    other) falls through to the root gold/neutral values above, unchanged. */
 [data-gender="girls"]{
   --accent:#e879ad; --accent-2:#b83275; --accent-blush:#f8dce8;
-  --accent-soft:rgba(232,121,173,0.22); --accent-badge:rgba(232,121,173,0.34);
-  --accent-glow:rgba(232,121,173,0.28);
+  --accent-soft:rgba(232,121,173,0.22); --accent-badge:rgba(184,52,117,0.65);
+  --accent-glow:rgba(232,121,173,0.32); --accent-wash:rgba(184,52,117,0.16);
 }
 [data-gender="boys"]{
   --accent:#6b8fb8; --accent-2:#17243a; --accent-blush:#34465e;
-  --accent-soft:rgba(107,143,184,0.22); --accent-badge:rgba(107,143,184,0.34);
-  --accent-glow:rgba(107,143,184,0.22);
+  --accent-soft:rgba(107,143,184,0.22); --accent-badge:rgba(23,36,58,0.80);
+  --accent-glow:rgba(107,143,184,0.26); --accent-wash:rgba(23,36,58,0.42);
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -91,11 +91,11 @@ header nav a:hover{color:var(--gold-light)}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
 .card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;text-decoration:none;color:inherit;display:block;transition:transform 0.3s ease,box-shadow 0.3s ease,border-color 0.3s ease;position:relative}
-.card[data-gender="girls"],.card[data-gender="boys"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent-soft)}
+.card[data-gender="girls"],.card[data-gender="boys"]{border:2px solid var(--accent);box-shadow:0 0 0 1px var(--accent-soft)}
 .card:hover{transform:translateY(-6px);box-shadow:var(--shadow-card)}
-.card[data-gender="girls"]:hover{box-shadow:var(--shadow-card),0 0 30px var(--accent-glow)}
-.card[data-gender="boys"]:hover{box-shadow:var(--shadow-card),0 0 26px var(--accent-glow)}
-.card .accent-bar{height:4px;background:var(--accent);width:100%}
+.card[data-gender="girls"]:hover{box-shadow:var(--shadow-card),0 0 34px var(--accent-glow)}
+.card[data-gender="boys"]:hover{box-shadow:var(--shadow-card),0 0 30px var(--accent-glow)}
+.card .accent-bar{height:6px;background:var(--accent);width:100%}
 .card .img-wrap{position:relative;aspect-ratio:4/3;background:var(--surface-2);overflow:hidden}
 .card .img-wrap::after{content:"";position:absolute;inset:0;background:linear-gradient(to top, rgba(21,18,27,0.68) 0%, transparent 45%),linear-gradient(135deg, var(--accent-soft) 0%, transparent 55%);z-index:1;pointer-events:none}
 .card .gender-badge{position:absolute;top:12px;inset-inline-start:12px;background:var(--accent-badge);border:1px solid var(--accent);color:var(--text);backdrop-filter:blur(6px);font-size:0.66rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;padding:4px 10px;border-radius:20px;z-index:3}
@@ -111,10 +111,13 @@ header nav a:hover{color:var(--gold-light)}
 .card .dots .dot{width:5px;height:5px;border-radius:50%;background:rgba(243,237,228,0.4);transition:background 0.3s,transform 0.3s}
 .card .dots .dot.active{background:var(--accent);transform:scale(1.3)}
 @media(prefers-reduced-motion:reduce){.card-carousel .slide{transition:none}.card:hover .card-carousel .slide.active{transform:none}}
-.card-body{padding:16px 18px 18px}
+.card-body{padding:16px 18px 18px;background:var(--surface)}
+.card[data-gender="girls"] .card-body,.card[data-gender="boys"] .card-body{background:linear-gradient(170deg, var(--accent-wash) 0%, var(--surface) 65%)}
 .card .district{color:var(--text-faint);font-size:0.76rem;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:4px}
 .card h3{font-family:'DM Sans',sans-serif;font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:10px;line-height:1.35}
 .card .price-row{display:flex;align-items:baseline;justify-content:space-between;border-top:1px solid var(--border-soft);padding-top:12px}
+.card[data-gender="girls"] .price-row,.card[data-gender="boys"] .price-row{border-top:1px solid var(--accent-soft)}
+.card[data-gender="girls"] .price,.card[data-gender="boys"] .price{color:var(--accent)}
 .card .price{color:var(--gold-light);font-weight:700;font-size:1.15rem}
 .card .price small{color:var(--text-faint);font-weight:400;font-size:0.72rem;margin-inline-start:4px}
 .card .arrow{color:var(--text-faint);transition:transform 0.25s,color 0.25s}
