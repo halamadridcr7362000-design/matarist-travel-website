@@ -64,14 +64,19 @@ header nav a:hover{color:var(--gold-light)}
 .lang-row button.active{background:var(--gold);color:#1a1420}
 
 /* ===== Hero ===== */
-.hero{position:relative;padding:72px 5% 110px;text-align:center;overflow:hidden;background:
-  radial-gradient(ellipse 700px 420px at 50% -10%, rgba(184,149,94,0.16), transparent 60%),
-  linear-gradient(180deg, var(--bg) 0%, #1b1724 100%);}
-.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 20% 30%, rgba(184,149,94,0.05) 0, transparent 40%);pointer-events:none}
+.hero{position:relative;padding:90px 5% 130px;text-align:center;overflow:hidden;background-color:var(--bg);background-size:cover;background-position:center;transition:background-image 0.8s ease}
+.hero::before{content:"";position:absolute;inset:0;background:
+  linear-gradient(180deg, rgba(21,18,27,0.80) 0%, rgba(21,18,27,0.55) 45%, rgba(21,18,27,0.94) 100%),
+  radial-gradient(ellipse 700px 420px at 50% -10%, rgba(184,149,94,0.18), transparent 60%);pointer-events:none}
+.hero > *{position:relative;z-index:1}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--gold);font-size:0.72rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;margin-bottom:18px}
 .eyebrow::before,.eyebrow::after{content:"";width:22px;height:1px;background:var(--gold);opacity:0.6}
 .hero h1{font-size:clamp(2.1rem,4.4vw,3.2rem);line-height:1.15;margin-bottom:14px;color:var(--text)}
 .hero p{color:var(--text-muted);max-width:580px;margin:0 auto;font-size:1rem;line-height:1.7;font-weight:400}
+.hero-stats{display:flex;gap:48px;justify-content:center;margin-top:38px;flex-wrap:wrap}
+.hero-stats .stat{text-align:center;min-width:80px}
+.hero-stats .num{font-family:'Cormorant Garamond',serif;font-size:2.3rem;font-weight:700;color:var(--gold-light);line-height:1}
+.hero-stats .label{font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:5px}
 
 /* ===== Filters ===== */
 .filters{max-width:1040px;margin:-56px auto 0;position:relative;z-index:10;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lift);padding:22px;display:flex;gap:12px;flex-wrap:wrap}
@@ -118,15 +123,23 @@ header nav a:hover{color:var(--gold-light)}
 .card .dots .dot.active{background:var(--accent);transform:scale(1.3)}
 @media(prefers-reduced-motion:reduce){.card-carousel .slide{transition:none}.card:hover .card-carousel .slide.active{transform:none}}
 .card-body{padding:16px 18px 18px;background:var(--surface)}
-.card .district{color:var(--text-faint);font-size:0.76rem;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:4px}
+.card .specs-row{display:flex;gap:14px;flex-wrap:wrap;color:var(--text-faint);font-size:0.74rem;margin-bottom:8px}
+.card .specs-row span{display:inline-flex;align-items:center;gap:5px}
+.card .specs-row i{color:var(--accent);font-size:0.72rem}
 .card h3{font-family:'DM Sans',sans-serif;font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:10px;line-height:1.35}
 .card .price-row{display:flex;align-items:baseline;justify-content:space-between;border-top:1px solid var(--border-soft);padding-top:12px}
 .card[data-gender="girls"] .price-row,.card[data-gender="boys"] .price-row{border-top:1px solid var(--accent-soft)}
 .card[data-gender="girls"] .price,.card[data-gender="boys"] .price{color:var(--accent)}
-.card .price{color:var(--gold-light);font-weight:700;font-size:1.15rem}
+.card .price{color:var(--gold-light);font-weight:700;font-size:1.15rem;display:inline-flex;align-items:center;gap:7px}
+.card .price i{font-size:0.82rem;opacity:0.85}
 .card .price small{color:var(--text-faint);font-weight:400;font-size:0.72rem;margin-inline-start:4px}
 .card .arrow{color:var(--text-faint);transition:transform 0.25s,color 0.25s}
 .card:hover .arrow{color:var(--gold);transform:translateX(3px)}
+
+/* ===== Scroll-in reveal ===== */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal.in-view{opacity:1;transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
 [dir="rtl"] .card:hover .arrow{transform:translateX(-3px)}
 
 .empty{text-align:center;color:var(--text-faint);padding:70px 20px;font-size:0.95rem}
@@ -156,10 +169,14 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
   </div>
 </header>
 
-<section class="hero">
+<section class="hero" id="hero">
   <span class="eyebrow" data-i18n="eyebrow">Boutique Stays in Istanbul</span>
   <h1 data-i18n="hero_title">Rooms & Apartments in Istanbul</h1>
   <p data-i18n="hero_sub">Browse available rooms, shared accommodation and apartments — organized by district. Contact us directly on WhatsApp.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="num" id="stat-listings">—</div><div class="label" data-i18n="stat_listings">Listings Available</div></div>
+    <div class="stat"><div class="num" id="stat-districts">—</div><div class="label" data-i18n="stat_districts">Districts</div></div>
+  </div>
 </section>
 
 <div class="filters">
@@ -200,9 +217,9 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const translations = {
-  en:{brand:"Accommodation",back_home:"← Back to MATARIST",eyebrow:"Boutique Stays in Istanbul",hero_title:"Rooms & Apartments in Istanbul",hero_sub:"Browse available rooms, shared accommodation and apartments — organized by district. Contact us directly on WhatsApp.",f_district_label:"District",f_type_label:"Room type",f_price_label:"Max price",f_all_districts:"All districts",f_all_types:"All room types",type_single:"Single room",type_double:"Double room",type_shared:"Shared room",type_apartment:"Entire apartment",f_max_price:"Max price (TRY)",f_search:"Search",listings_heading:"Available Listings",loading:"Loading listings…",no_results:"No listings match your search.",rented:"Rented",per_month:"/month",girls_badge:"Women Only",boys_badge:"Men Only",result_count:"{n} listings"},
-  ar:{brand:"سكن",back_home:"← رجوع إلى ماتاريست",eyebrow:"إقامة راقية في إسطنبول",hero_title:"غرف وشقق للإيجار في إسطنبول",hero_sub:"تصفح الغرف والشقق المتاحة — مصنفة حسب المنطقة. تواصل معنا مباشرة عبر واتساب.",f_district_label:"المنطقة",f_type_label:"نوع الغرفة",f_price_label:"أقصى سعر",f_all_districts:"كل المناطق",f_all_types:"كل أنواع الغرف",type_single:"غرفة مفردة",type_double:"غرفة مزدوجة",type_shared:"غرفة مشتركة",type_apartment:"شقة كاملة",f_max_price:"أقصى سعر (ليرة)",f_search:"بحث",listings_heading:"السكنات المتاحة",loading:"جاري تحميل السكنات…",no_results:"لا توجد سكنات مطابقة.",rented:"مؤجرة",per_month:"/شهرياً",girls_badge:"للسيدات فقط",boys_badge:"للرجال فقط",result_count:"{n} سكن متاح"},
-  tr:{brand:"Konaklama",back_home:"← MATARIST'e dön",eyebrow:"İstanbul'da Butik Konaklama",hero_title:"İstanbul'da Oda ve Daireler",hero_sub:"Mevcut odaları ve daireleri semte göre inceleyin. Bizimle doğrudan WhatsApp'tan iletişime geçin.",f_district_label:"Semt",f_type_label:"Oda tipi",f_price_label:"Maks. fiyat",f_all_districts:"Tüm semtler",f_all_types:"Tüm oda tipleri",type_single:"Tek kişilik oda",type_double:"Çift kişilik oda",type_shared:"Paylaşımlı oda",type_apartment:"Müstakil daire",f_max_price:"Maks. fiyat (TRY)",f_search:"Ara",listings_heading:"Mevcut İlanlar",loading:"İlanlar yükleniyor…",no_results:"Aramanızla eşleşen ilan yok.",rented:"Kiralandı",per_month:"/ay",girls_badge:"Sadece Kadın",boys_badge:"Sadece Erkek",result_count:"{n} ilan"}
+  en:{brand:"Accommodation",back_home:"← Back to MATARIST",eyebrow:"Boutique Stays in Istanbul",hero_title:"Rooms & Apartments in Istanbul",hero_sub:"Browse available rooms, shared accommodation and apartments — organized by district. Contact us directly on WhatsApp.",stat_listings:"Listings Available",stat_districts:"Districts",f_district_label:"District",f_type_label:"Room type",f_price_label:"Max price",f_all_districts:"All districts",f_all_types:"All room types",type_single:"Single room",type_double:"Double room",type_shared:"Shared room",type_apartment:"Entire apartment",f_max_price:"Max price (TRY)",f_search:"Search",listings_heading:"Available Listings",loading:"Loading listings…",no_results:"No listings match your search.",rented:"Rented",per_month:"/month",girls_badge:"Women Only",boys_badge:"Men Only",result_count:"{n} listings"},
+  ar:{brand:"سكن",back_home:"← رجوع إلى ماتاريست",eyebrow:"إقامة راقية في إسطنبول",hero_title:"غرف وشقق للإيجار في إسطنبول",hero_sub:"تصفح الغرف والشقق المتاحة — مصنفة حسب المنطقة. تواصل معنا مباشرة عبر واتساب.",stat_listings:"سكن متاح",stat_districts:"منطقة",f_district_label:"المنطقة",f_type_label:"نوع الغرفة",f_price_label:"أقصى سعر",f_all_districts:"كل المناطق",f_all_types:"كل أنواع الغرف",type_single:"غرفة مفردة",type_double:"غرفة مزدوجة",type_shared:"غرفة مشتركة",type_apartment:"شقة كاملة",f_max_price:"أقصى سعر (ليرة)",f_search:"بحث",listings_heading:"السكنات المتاحة",loading:"جاري تحميل السكنات…",no_results:"لا توجد سكنات مطابقة.",rented:"مؤجرة",per_month:"/شهرياً",girls_badge:"للسيدات فقط",boys_badge:"للرجال فقط",result_count:"{n} سكن متاح"},
+  tr:{brand:"Konaklama",back_home:"← MATARIST'e dön",eyebrow:"İstanbul'da Butik Konaklama",hero_title:"İstanbul'da Oda ve Daireler",hero_sub:"Mevcut odaları ve daireleri semte göre inceleyin. Bizimle doğrudan WhatsApp'tan iletişime geçin.",stat_listings:"Mevcut İlan",stat_districts:"Semt",f_district_label:"Semt",f_type_label:"Oda tipi",f_price_label:"Maks. fiyat",f_all_districts:"Tüm semtler",f_all_types:"Tüm oda tipleri",type_single:"Tek kişilik oda",type_double:"Çift kişilik oda",type_shared:"Paylaşımlı oda",type_apartment:"Müstakil daire",f_max_price:"Maks. fiyat (TRY)",f_search:"Ara",listings_heading:"Mevcut İlanlar",loading:"İlanlar yükleniyor…",no_results:"Aramanızla eşleşen ilan yok.",rented:"Kiralandı",per_month:"/ay",girls_badge:"Sadece Kadın",boys_badge:"Sadece Erkek",result_count:"{n} ilan"}
 };
 function setLang(lang){
   localStorage.setItem('acc_lang', lang);
@@ -237,6 +254,24 @@ async function loadListings(){
   populateDistricts();
   renderGrid();
   renderMap();
+  updateHeroStats();
+}
+
+function updateHeroStats(){
+  const statListings = document.getElementById('stat-listings');
+  const statDistricts = document.getElementById('stat-districts');
+  if(statListings) statListings.textContent = allListings.length;
+  if(statDistricts) statDistricts.textContent = new Set(allListings.map(l=>l.district).filter(Boolean)).size;
+  // Cinematic hero background: the first available listing's first photo,
+  // with a dark gradient (::before, already in the CSS) layered on top so
+  // the headline stays readable. Falls back to the existing gradient-only
+  // background (no inline backgroundImage set) if nothing has a photo yet.
+  const withPhoto = allListings.find(l => l.photos && l.photos.length);
+  if(withPhoto){
+    const url = `/.netlify/functions/accommodation-listings?photo=${encodeURIComponent(withPhoto.photos[0])}`;
+    const hero = document.getElementById('hero');
+    if(hero) hero.style.backgroundImage = `url('${url}')`;
+  }
 }
 
 function populateDistricts(){
@@ -274,6 +309,22 @@ function prefersReducedMotion(){ return window.matchMedia && window.matchMedia('
 
 const CARD_CAROUSEL_MAX_PHOTOS = 6;
 const CARD_CAROUSEL_INTERVAL_MS = 4000;
+
+// Subtle scroll-in reveal for cards. CSS already forces opacity:1 under
+// prefers-reduced-motion regardless, but skipping the observer too avoids
+// doing pointless work for users who've asked for reduced motion.
+function observeReveal(){
+  if(prefersReducedMotion() || !('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.12});
+  document.querySelectorAll('.reveal:not(.in-view)').forEach(el=>io.observe(el));
+}
 
 function startCardCarousels(){
   if(prefersReducedMotion()) return;
@@ -321,7 +372,7 @@ function renderGrid(){
     const dotsHtml = photoUrls.length > 1
       ? `<div class="dots">${photoUrls.map((_,i)=>`<span class="dot${i===0?' active':''}"></span>`).join('')}</div>`
       : '';
-    return `<a class="card" data-gender="${theme}" href="/accommodation/${l.slug}">
+    return `<a class="card reveal" data-gender="${theme}" href="/accommodation/${l.slug}">
       <div class="accent-bar"></div>
       <div class="img-wrap"${photoUrls.length > 1 ? ' data-carousel' : ''}>
         ${genderBadge}
@@ -330,16 +381,20 @@ function renderGrid(){
         <span class="type-badge">${escapeHtml(typeLabel)}</span>
       </div>
       <div class="card-body">
-        <div class="district">${escapeHtml(l.district||'')}</div>
+        <div class="specs-row">
+          <span><i class="fa-solid fa-location-dot"></i>${escapeHtml(l.district||'')}</span>
+          <span><i class="fa-solid fa-door-open"></i>${escapeHtml(typeLabel)}</span>
+        </div>
         <h3>${escapeHtml(l.title||'')}</h3>
         <div class="price-row">
-          <span class="price">${l.monthlyRent||''} ${escapeHtml(l.currency||'TRY')}<small>${t.per_month}</small></span>
+          <span class="price"><i class="fa-solid fa-sack-dollar"></i>${l.monthlyRent||''} ${escapeHtml(l.currency||'TRY')}<small>${t.per_month}</small></span>
           <i class="fa-solid fa-arrow-right arrow"></i>
         </div>
       </div>
     </a>`;
   }).join('');
   startCardCarousels();
+  observeReveal();
 }
 
 function renderMap(){
