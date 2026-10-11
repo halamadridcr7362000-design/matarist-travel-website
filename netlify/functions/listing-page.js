@@ -80,10 +80,11 @@ function renderListing(listing, lang, previewToken) {
   const genderBadge = theme === "girls" ? `<div class="status-badge status-gender">${genderLabels.girls}</div>` : theme === "boys" ? `<div class="status-badge status-gender">${genderLabels.boys}</div>` : "";
 
   const photos = pub.photos || [];
+  const allPhotoUrls = photos.map(photoUrl);
   const galleryHtml = photos.length
     ? `<div class="gallery ${photos.length === 1 ? "single" : ""}">
-        <div class="gallery-main"><img src="${photoUrl(photos[0])}" loading="lazy" alt="${escapeHtml(pub.title)}"></div>
-        ${photos.length > 1 ? `<div class="gallery-side">${photos.slice(1, 5).map((k) => `<img src="${photoUrl(k)}" loading="lazy" alt="${escapeHtml(pub.title)}">`).join("")}</div>` : ""}
+        <div class="gallery-main"><img src="${photoUrl(photos[0])}" loading="lazy" alt="${escapeHtml(pub.title)}" onclick="openLightbox(0)"></div>
+        ${photos.length > 1 ? `<div class="gallery-side">${photos.slice(1, 5).map((k, i) => `<img src="${photoUrl(k)}" loading="lazy" alt="${escapeHtml(pub.title)}" onclick="openLightbox(${i + 1})">`).join("")}</div>` : ""}
       </div>`
     : `<div class="gallery-empty"><i class="fa-solid fa-image"></i></div>`;
 
@@ -144,11 +145,19 @@ h1{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 6px;line-height:1.2}
 .gallery{display:grid;grid-template-columns:1.5fr 1fr;gap:8px;margin-bottom:28px;border-radius:16px;overflow:hidden;height:380px}
 .gallery.single{grid-template-columns:1fr}
 .gallery-main{height:100%}
-.gallery-main img{width:100%;height:100%;object-fit:cover;display:block}
-.gallery-side{display:grid;grid-template-rows:repeat(2,1fr);gap:8px;height:100%}
-.gallery-side img{width:100%;height:100%;object-fit:cover;display:block}
+.gallery-main img{width:100%;height:100%;object-fit:cover;display:block;cursor:pointer}
+.gallery-side{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(2,1fr);gap:8px;height:100%}
+.gallery-side img{width:100%;height:100%;object-fit:cover;display:block;cursor:pointer}
 .gallery-empty{height:260px;border-radius:16px;background:var(--surface);display:flex;align-items:center;justify-content:center;color:var(--text-faint);font-size:2rem;margin-bottom:28px}
 @media(max-width:640px){.gallery{grid-template-columns:1fr;height:auto}.gallery-side{grid-template-columns:1fr 1fr;grid-template-rows:1fr;height:120px}.gallery-main img{height:220px}}
+.lightbox{position:fixed;inset:0;background:rgba(10,8,14,0.94);display:none;align-items:center;justify-content:center;z-index:1000;padding:24px}
+.lightbox.open{display:flex}
+.lightbox img{max-width:min(92vw,1100px);max-height:86vh;object-fit:contain;border-radius:10px}
+.lightbox-close{position:absolute;top:18px;inset-inline-end:24px;background:rgba(255,255,255,0.08);border:1px solid var(--border);color:var(--text);width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center}
+.lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.08);border:1px solid var(--border);color:var(--text);width:46px;height:46px;border-radius:50%;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center}
+.lightbox-prev{inset-inline-start:16px}
+.lightbox-next{inset-inline-end:16px}
+.lightbox-count{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);color:var(--text-muted);font-size:0.82rem}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border-soft);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:28px}
 .stat{background:var(--surface);padding:16px 18px}
 .stat label{display:block;font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-faint);margin-bottom:4px}
@@ -189,6 +198,41 @@ ${mapHtml}
 <i class="fa-brands fa-whatsapp"></i> ${t.contact}
 </a>
 </div>
+
+<div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()"><i class="fa-solid fa-xmark"></i></button>
+  <button class="lightbox-nav lightbox-prev" onclick="lightboxStep(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+  <img id="lightbox-img" src="" alt="${escapeHtml(pub.title)}">
+  <button class="lightbox-nav lightbox-next" onclick="lightboxStep(1)"><i class="fa-solid fa-chevron-right"></i></button>
+  <div class="lightbox-count" id="lightbox-count"></div>
+</div>
+<script>
+// Photos clicked in the gallery open here. Uses the full photo list (not
+// just the few shown in the grid) so visitors can browse every photo even
+// if a listing has more than fit on screen.
+const LIGHTBOX_PHOTOS = ${JSON.stringify(allPhotoUrls)};
+let lightboxIndex = 0;
+function openLightbox(i){
+  lightboxIndex = i;
+  updateLightbox();
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox(){ document.getElementById('lightbox').classList.remove('open'); }
+function lightboxStep(d){
+  lightboxIndex = (lightboxIndex + d + LIGHTBOX_PHOTOS.length) % LIGHTBOX_PHOTOS.length;
+  updateLightbox();
+}
+function updateLightbox(){
+  document.getElementById('lightbox-img').src = LIGHTBOX_PHOTOS[lightboxIndex];
+  document.getElementById('lightbox-count').textContent = (lightboxIndex+1) + ' / ' + LIGHTBOX_PHOTOS.length;
+}
+document.addEventListener('keydown', e=>{
+  if(!document.getElementById('lightbox').classList.contains('open')) return;
+  if(e.key==='Escape') closeLightbox();
+  if(e.key==='ArrowRight') lightboxStep(1);
+  if(e.key==='ArrowLeft') lightboxStep(-1);
+});
+</script>
 </body>
 </html>`;
 }
