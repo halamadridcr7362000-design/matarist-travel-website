@@ -54,6 +54,57 @@ function uniqueSlug(base, existingSlugs) {
 exports.slugify = slugify;
 exports.uniqueSlug = uniqueSlug;
 
+function extractLatLng(str) {
+  let m = str.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/);
+  if (m) return { lat: parseFloat(m[1]), lng: parseFloat(m[2]) };
+  m = str.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+  if (m) return { lat: parseFloat(m[1]), lng: parseFloat(m[2]) };
+  m = str.match(/[?&]q=(-?\d+\.\d+),(-?\d+\.\d+)/);
+  if (m) return { lat: parseFloat(m[1]), lng: parseFloat(m[2]) };
+  return null;
+}
+
+const ALLOWED_MAPS_HOSTS = ["maps.app.goo.gl", "goo.gl", "maps.google.com", "www.google.com", "google.com"];
+
+// Resolves a Google Maps link to {lat, lng} by following redirects
+// server-side (never executes JS, so it only finds coordinates that ride
+// along in the URL itself — see the comment on the resolveMapLink action
+// above for what this does and doesn't cover).
+async function resolveGoogleMapsLink(inputUrl) {
+  let parsed;
+  try {
+    parsed = new URL(inputUrl);
+  } catch (e) {
+    return null;
+  }
+  if (!ALLOWED_MAPS_HOSTS.some((h) => parsed.hostname === h || parsed.hostname.endsWith("." + h))) {
+    return null;
+  }
+
+  const direct = extractLatLng(decodeURIComponent(inputUrl));
+  if (direct) return direct;
+
+  let current = inputUrl;
+  for (let hop = 0; hop < 4; hop++) {
+    let res;
+    try {
+      res = await fetch(current, { redirect: "manual", headers: { "User-Agent": "Mozilla/5.0" } });
+    } catch (e) {
+      return null;
+    }
+    if (res.status >= 300 && res.status < 400) {
+      const loc = res.headers.get("location");
+      if (!loc) return null;
+      const found = extractLatLng(decodeURIComponent(loc));
+      if (found) return found;
+      current = loc;
+      continue;
+    }
+    break;
+  }
+  return null;
+}
+
 exports.handler = async function (event) {
   if (event.httpMethod === "OPTIONS") {
     return { statusCode: 200, headers, body: "" };
@@ -81,6 +132,27 @@ async function handleGet(event) {
   }
 
   const session = requireSession(event);
+
+  // Lets admin-listings.html auto-fill the map pin from a pasted Google
+  // Maps link instead of clicking the map by hand. Only handles the common
+  // case where the coordinates ride along on an HTTP redirect (confirmed
+  // live: most maps.app.goo.gl links 302 straight to a URL containing
+  // !3d<lat>!4d<lng> or @<lat>,<lng>). Some short links only resolve to a
+  // place ID with no coordinates anywhere in the redirect chain — those
+  // need the Places API (a paid, separately-configured dependency) to
+  // resolve, so this intentionally reports "not resolved" for them rather
+  // than guessing; the admin still places the pin by hand in that case.
+  if (qs.action === "resolveMapLink") {
+    if (!session) {
+      return { statusCode: 401, headers: jsonHeaders(), body: JSON.stringify({ error: "Unauthorized" }) };
+    }
+    if (!qs.url) {
+      return { statusCode: 400, headers: jsonHeaders(), body: JSON.stringify({ error: "Missing url" }) };
+    }
+    const coords = await resolveGoogleMapsLink(qs.url);
+    return { statusCode: 200, headers: jsonHeaders(), body: JSON.stringify(coords ? { resolved: true, ...coords } : { resolved: false }) };
+  }
+
   const listings = await getAllListings();
 
   // Lets admin-listings.html open a "Preview" tab for a draft/unpublished

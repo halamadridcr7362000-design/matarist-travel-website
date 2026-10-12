@@ -152,6 +152,13 @@ tr.clickable:hover td{background:var(--surface2)}
       <div class="form-row"><label>Description</label><textarea id="lf-description" rows="3"></textarea></div>
       <div class="form-row"><label>Rules</label><textarea id="lf-rules" rows="2"></textarea></div>
       <div class="form-row"><label>Owner / landlord contact (private — never shown publicly)</label><input id="lf-owner"></div>
+      <div class="form-row"><label>Paste a Google Maps link to auto-locate (or just click the map below)</label>
+        <div style="display:flex;gap:8px">
+          <input id="lf-maps-link" placeholder="https://maps.app.goo.gl/..." style="flex:1">
+          <button type="button" class="btn secondary small" onclick="resolveMapsLink()">Locate</button>
+        </div>
+        <div id="lf-maps-link-status" style="font-size:0.78rem;color:var(--text-muted);margin-top:4px"></div>
+      </div>
       <div class="form-row"><label>Approximate location — click the map to set the pin</label><div id="mini-map"></div></div>
       <div class="form-row"><label>Photos</label>
         <div class="photo-row" id="lf-photos"></div>
@@ -302,6 +309,8 @@ function openListingForm(id){
   document.getElementById('lf-description').value = l ? l.description : '';
   document.getElementById('lf-rules').value = l ? l.rules : '';
   document.getElementById('lf-owner').value = l ? l.ownerContact : '';
+  document.getElementById('lf-maps-link').value = '';
+  document.getElementById('lf-maps-link-status').textContent = '';
   document.getElementById('lf-delete-btn').style.display = l ? 'inline-block' : 'none';
   pinLat = l && typeof l.lat==='number' ? l.lat : null;
   pinLng = l && typeof l.lng==='number' ? l.lng : null;
@@ -320,6 +329,28 @@ function initMiniMap(){
     if(miniMarker) miniMap.removeLayer(miniMarker);
     miniMarker = L.marker([pinLat,pinLng]).addTo(miniMap);
   });
+}
+
+async function resolveMapsLink(){
+  const link = document.getElementById('lf-maps-link').value.trim();
+  const statusEl = document.getElementById('lf-maps-link-status');
+  if(!link){ statusEl.textContent = 'Paste a Google Maps link first.'; return; }
+  statusEl.textContent = 'Locating…';
+  try{
+    const res = await fetch(LISTINGS_URL+'?action=resolveMapLink&url='+encodeURIComponent(link), {headers: authHeaders()});
+    const data = await res.json();
+    if(res.ok && data.resolved){
+      pinLat = data.lat; pinLng = data.lng;
+      if(miniMarker) miniMap.removeLayer(miniMarker);
+      miniMarker = L.marker([pinLat,pinLng]).addTo(miniMap);
+      miniMap.setView([pinLat,pinLng], 15);
+      statusEl.textContent = 'Located — pin set. Click the map to adjust it.';
+    } else {
+      statusEl.textContent = "Couldn't auto-locate this link — click the map below to set the pin by hand.";
+    }
+  }catch(e){
+    statusEl.textContent = "Couldn't auto-locate this link — click the map below to set the pin by hand.";
+  }
 }
 
 function renderPhotos(photos){
