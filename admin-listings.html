@@ -136,7 +136,10 @@ tr.clickable:hover td{background:var(--surface2)}
         <div class="form-row"><label>Room type</label>
           <select id="lf-roomtype"><option value="single">Single room</option><option value="double">Double room</option><option value="shared">Shared room</option><option value="apartment">Entire apartment</option></select>
         </div>
-        <div class="form-row"><label>Monthly rent (TRY)</label><input id="lf-rent" type="number"></div>
+        <div class="form-row"><label>Monthly rent</label><input id="lf-rent" type="number"></div>
+        <div class="form-row"><label>Currency</label>
+          <select id="lf-currency"><option value="TRY">TRY</option><option value="USD">USD</option><option value="EUR">EUR</option></select>
+        </div>
         <div class="form-row"><label>Deposit</label><input id="lf-deposit"></div>
         <div class="form-row"><label>Bills / utilities</label><input id="lf-bills"></div>
         <div class="form-row"><label>Furnishing</label><input id="lf-furnishing" placeholder="furnished / unfurnished"></div>
@@ -289,6 +292,7 @@ function openListingForm(id){
   document.getElementById('lf-district').value = l ? l.district : '';
   document.getElementById('lf-roomtype').value = l ? l.roomType : 'single';
   document.getElementById('lf-rent').value = l ? l.monthlyRent : '';
+  document.getElementById('lf-currency').value = l && l.currency ? l.currency : 'TRY';
   document.getElementById('lf-deposit').value = l ? l.deposit : '';
   document.getElementById('lf-bills').value = l ? l.bills : '';
   document.getElementById('lf-furnishing').value = l ? l.furnishing : '';
@@ -400,6 +404,7 @@ async function saveListing(){
     district: document.getElementById('lf-district').value,
     roomType: document.getElementById('lf-roomtype').value,
     monthlyRent: parseFloat(document.getElementById('lf-rent').value)||0,
+    currency: document.getElementById('lf-currency').value,
     deposit: document.getElementById('lf-deposit').value,
     bills: document.getElementById('lf-bills').value,
     furnishing: document.getElementById('lf-furnishing').value,
