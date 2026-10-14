@@ -132,7 +132,7 @@ tr.clickable:hover td{background:var(--surface2)}
     <div class="modal-body">
       <div class="form-grid">
         <div class="form-row"><label>Title</label><input id="lf-title"></div>
-        <div class="form-row"><label>District</label><input id="lf-district"></div>
+        <div class="form-row"><label>District</label><input id="lf-district" list="dl-district"></div>
         <div class="form-row"><label>Room type</label>
           <select id="lf-roomtype"><option value="single">Single room</option><option value="double">Double room</option><option value="shared">Shared room</option><option value="apartment">Entire apartment</option></select>
         </div>
@@ -140,11 +140,17 @@ tr.clickable:hover td{background:var(--surface2)}
         <div class="form-row"><label>Currency</label>
           <select id="lf-currency"><option value="TRY">TRY</option><option value="USD">USD</option><option value="EUR">EUR</option></select>
         </div>
-        <div class="form-row"><label>Deposit</label><input id="lf-deposit"></div>
-        <div class="form-row"><label>Bills / utilities</label><input id="lf-bills"></div>
-        <div class="form-row"><label>Furnishing</label><input id="lf-furnishing" placeholder="furnished / unfurnished"></div>
-        <div class="form-row"><label>Gender preference</label><input id="lf-gender" placeholder="male / female / mixed"></div>
-        <div class="form-row"><label>Nearby transport</label><input id="lf-transport"></div>
+        <div class="form-row"><label>Deposit</label><input id="lf-deposit" list="dl-deposit"></div>
+        <div class="form-row"><label>Bills / utilities</label><input id="lf-bills" list="dl-bills"></div>
+        <div class="form-row"><label>Furnishing</label><input id="lf-furnishing" list="dl-furnishing" placeholder="furnished / unfurnished"></div>
+        <div class="form-row"><label>Gender preference</label><input id="lf-gender" list="dl-gender" placeholder="male / female / mixed"></div>
+        <div class="form-row"><label>Nearby transport</label><input id="lf-transport" list="dl-transport"></div>
+        <datalist id="dl-district"></datalist>
+        <datalist id="dl-deposit"></datalist>
+        <datalist id="dl-bills"></datalist>
+        <datalist id="dl-furnishing"></datalist>
+        <datalist id="dl-gender"></datalist>
+        <datalist id="dl-transport"></datalist>
         <div class="form-row"><label>Status</label>
           <select id="lf-status"><option value="draft">Draft</option><option value="published">Published</option><option value="rented">Rented</option><option value="unpublished">Unpublished</option></select>
         </div>
@@ -276,6 +282,21 @@ async function loadListings(){
   listingsCache = data.listings || [];
   renderListingsTable();
   populateListingSelect();
+  populateFieldDatalists();
+}
+
+// Lets the admin reuse values already typed on past listings instead of
+// retyping the same district/deposit/bills/etc. wording every time —
+// a couple of keystrokes brings up what was entered before.
+function populateFieldDatalists(){
+  const fields = {
+    'dl-district': 'district', 'dl-deposit': 'deposit', 'dl-bills': 'bills',
+    'dl-furnishing': 'furnishing', 'dl-gender': 'genderPolicy', 'dl-transport': 'transport',
+  };
+  for(const [datalistId, field] of Object.entries(fields)){
+    const values = [...new Set(listingsCache.map(l=>l[field]).filter(v=>v && String(v).trim()))];
+    document.getElementById(datalistId).innerHTML = values.map(v=>`<option value="${escapeHtml(v)}">`).join('');
+  }
 }
 
 function renderListingsTable(){
