@@ -42,6 +42,12 @@
   --accent-glow:rgba(107,143,184,0.26); --accent-wash:rgba(107,143,184,0.30);
   --surface:#142338; --surface-2:#1a2d47;
 }
+[data-gender="mixed"]{
+  --accent:#b39ddb; --accent-2:#6a4c93; --accent-blush:#d9c8f0;
+  --accent-soft:rgba(179,157,219,0.22); --accent-badge:rgba(106,76,147,0.65);
+  --accent-glow:rgba(179,157,219,0.30); --accent-wash:rgba(179,157,219,0.28);
+  --surface:#241a3a; --surface-2:#2d2047;
+}
 
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -165,16 +171,16 @@ header nav a:hover{color:var(--gold-light)}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
 .card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;text-decoration:none;color:inherit;display:block;transition:transform 0.3s ease,box-shadow 0.3s ease,border-color 0.3s ease;position:relative}
-.card[data-gender="girls"],.card[data-gender="boys"]{border:2px solid var(--accent);box-shadow:0 0 0 1px var(--accent-soft)}
+.card[data-gender="girls"],.card[data-gender="boys"],.card[data-gender="mixed"]{border:2px solid var(--accent);box-shadow:0 0 0 1px var(--accent-soft)}
 .card:hover{transform:translateY(-6px);box-shadow:var(--shadow-card)}
-.card[data-gender="girls"]:hover{box-shadow:var(--shadow-card),0 0 34px var(--accent-glow)}
+.card[data-gender="girls"]:hover,.card[data-gender="mixed"]:hover{box-shadow:var(--shadow-card),0 0 34px var(--accent-glow)}
 .card[data-gender="boys"]:hover{box-shadow:var(--shadow-card),0 0 30px var(--accent-glow)}
 .card .accent-bar{height:6px;background:var(--accent);width:100%}
 .card .img-wrap{position:relative;aspect-ratio:4/3;background:var(--surface-2);overflow:hidden}
 .card .img-wrap::after{content:"";position:absolute;inset:0;background:linear-gradient(to top, rgba(21,18,27,0.68) 0%, transparent 45%),linear-gradient(135deg, var(--accent-soft) 0%, transparent 55%);z-index:1;pointer-events:none}
 .card .gender-badge{position:absolute;top:12px;inset-inline-start:12px;background:var(--accent-badge);border:1px solid var(--accent);color:var(--text);backdrop-filter:blur(6px);font-size:0.66rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;padding:4px 10px;border-radius:20px;z-index:3}
 .card .type-badge{position:absolute;bottom:10px;inset-inline-start:12px;background:rgba(21,18,27,0.72);color:var(--text-muted);font-size:0.68rem;font-weight:600;padding:3px 10px;border-radius:20px;z-index:3;text-transform:capitalize}
-.card[data-gender="girls"] .type-badge,.card[data-gender="boys"] .type-badge{background:var(--accent-badge);border:1px solid var(--accent-soft);color:var(--text)}
+.card[data-gender="girls"] .type-badge,.card[data-gender="boys"] .type-badge,.card[data-gender="mixed"] .type-badge{background:var(--accent-badge);border:1px solid var(--accent-soft);color:var(--text)}
 
 /* ===== Card photo carousel ===== */
 .card-carousel{position:absolute;inset:0}
@@ -191,8 +197,8 @@ header nav a:hover{color:var(--gold-light)}
 .card .specs-row i{color:var(--accent);font-size:0.72rem}
 .card h3{font-family:'DM Sans',sans-serif;font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:10px;line-height:1.35}
 .card .price-row{display:flex;align-items:baseline;justify-content:space-between;border-top:1px solid var(--border-soft);padding-top:12px}
-.card[data-gender="girls"] .price-row,.card[data-gender="boys"] .price-row{border-top:1px solid var(--accent-soft)}
-.card[data-gender="girls"] .price,.card[data-gender="boys"] .price{color:var(--accent)}
+.card[data-gender="girls"] .price-row,.card[data-gender="boys"] .price-row,.card[data-gender="mixed"] .price-row{border-top:1px solid var(--accent-soft)}
+.card[data-gender="girls"] .price,.card[data-gender="boys"] .price,.card[data-gender="mixed"] .price{color:var(--accent)}
 .card .price{color:var(--gold-light);font-weight:700;font-size:1.15rem;display:inline-flex;align-items:center;gap:7px}
 .card .price i{font-size:0.82rem;opacity:0.85}
 .card .price small{color:var(--text-faint);font-weight:400;font-size:0.72rem;margin-inline-start:4px}
@@ -328,9 +334,9 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const translations = {
-  en:{brand:"Accommodation",back_home:"← Back to MATARIST",eyebrow:"Boutique Stays in Istanbul",hero_title:"Rooms & Apartments in Istanbul",hero_sub:"Browse available rooms, shared accommodation and apartments — organized by district. Contact us directly on WhatsApp.",stat_listings:"Listings Available",stat_districts:"Districts",lifestyle_heading:"Shared Living, Done Right",lifestyle_sub:"Clean, friendly rooms where students and young professionals share a home — not just a roof.",f_district_label:"District",f_type_label:"Room type",f_price_label:"Max price",f_all_districts:"All districts",f_all_types:"All room types",type_single:"Single room",type_double:"Double room",type_shared:"Shared room",type_apartment:"Entire apartment",f_max_price:"Max price (TRY)",f_search:"Search",listings_heading:"Available Listings",loading:"Loading listings…",no_results:"No listings match your search.",rented:"Rented",per_month:"/month",girls_badge:"Women Only",boys_badge:"Men Only",result_count:"{n} listings"},
-  ar:{brand:"سكن",back_home:"← رجوع إلى ماتاريست",eyebrow:"إقامة راقية في إسطنبول",hero_title:"غرف وشقق للإيجار في إسطنبول",hero_sub:"تصفح الغرف والشقق المتاحة — مصنفة حسب المنطقة. تواصل معنا مباشرة عبر واتساب.",stat_listings:"سكن متاح",stat_districts:"منطقة",lifestyle_heading:"سكن مشترك بطريقة صحيحة",lifestyle_sub:"غرف نظيفة وودية يشارك فيها الطلاب والمهنيون الشباب بيتاً حقيقياً، مش مجرد سقف.",f_district_label:"المنطقة",f_type_label:"نوع الغرفة",f_price_label:"أقصى سعر",f_all_districts:"كل المناطق",f_all_types:"كل أنواع الغرف",type_single:"غرفة مفردة",type_double:"غرفة مزدوجة",type_shared:"غرفة مشتركة",type_apartment:"شقة كاملة",f_max_price:"أقصى سعر (ليرة)",f_search:"بحث",listings_heading:"السكنات المتاحة",loading:"جاري تحميل السكنات…",no_results:"لا توجد سكنات مطابقة.",rented:"مؤجرة",per_month:"/شهرياً",girls_badge:"للسيدات فقط",boys_badge:"للرجال فقط",result_count:"{n} سكن متاح"},
-  tr:{brand:"Konaklama",back_home:"← MATARIST'e dön",eyebrow:"İstanbul'da Butik Konaklama",hero_title:"İstanbul'da Oda ve Daireler",hero_sub:"Mevcut odaları ve daireleri semte göre inceleyin. Bizimle doğrudan WhatsApp'tan iletişime geçin.",stat_listings:"Mevcut İlan",stat_districts:"Semt",lifestyle_heading:"Paylaşılan Yaşam, Doğru Şekilde",lifestyle_sub:"Öğrencilerin ve genç profesyonellerin sadece bir çatıyı değil, gerçek bir evi paylaştığı temiz, samimi odalar.",f_district_label:"Semt",f_type_label:"Oda tipi",f_price_label:"Maks. fiyat",f_all_districts:"Tüm semtler",f_all_types:"Tüm oda tipleri",type_single:"Tek kişilik oda",type_double:"Çift kişilik oda",type_shared:"Paylaşımlı oda",type_apartment:"Müstakil daire",f_max_price:"Maks. fiyat (TRY)",f_search:"Ara",listings_heading:"Mevcut İlanlar",loading:"İlanlar yükleniyor…",no_results:"Aramanızla eşleşen ilan yok.",rented:"Kiralandı",per_month:"/ay",girls_badge:"Sadece Kadın",boys_badge:"Sadece Erkek",result_count:"{n} ilan"}
+  en:{brand:"Accommodation",back_home:"← Back to MATARIST",eyebrow:"Boutique Stays in Istanbul",hero_title:"Rooms & Apartments in Istanbul",hero_sub:"Browse available rooms, shared accommodation and apartments — organized by district. Contact us directly on WhatsApp.",stat_listings:"Listings Available",stat_districts:"Districts",lifestyle_heading:"Shared Living, Done Right",lifestyle_sub:"Clean, friendly rooms where students and young professionals share a home — not just a roof.",f_district_label:"District",f_type_label:"Room type",f_price_label:"Max price",f_all_districts:"All districts",f_all_types:"All room types",type_single:"Single room",type_double:"Double room",type_shared:"Shared room",type_apartment:"Entire apartment",f_max_price:"Max price (TRY)",f_search:"Search",listings_heading:"Available Listings",loading:"Loading listings…",no_results:"No listings match your search.",rented:"Rented",per_month:"/month",girls_badge:"Women Only",boys_badge:"Men Only",mixed_badge:"Mixed",result_count:"{n} listings"},
+  ar:{brand:"سكن",back_home:"← رجوع إلى ماتاريست",eyebrow:"إقامة راقية في إسطنبول",hero_title:"غرف وشقق للإيجار في إسطنبول",hero_sub:"تصفح الغرف والشقق المتاحة — مصنفة حسب المنطقة. تواصل معنا مباشرة عبر واتساب.",stat_listings:"سكن متاح",stat_districts:"منطقة",lifestyle_heading:"سكن مشترك بطريقة صحيحة",lifestyle_sub:"غرف نظيفة وودية يشارك فيها الطلاب والمهنيون الشباب بيتاً حقيقياً، مش مجرد سقف.",f_district_label:"المنطقة",f_type_label:"نوع الغرفة",f_price_label:"أقصى سعر",f_all_districts:"كل المناطق",f_all_types:"كل أنواع الغرف",type_single:"غرفة مفردة",type_double:"غرفة مزدوجة",type_shared:"غرفة مشتركة",type_apartment:"شقة كاملة",f_max_price:"أقصى سعر (ليرة)",f_search:"بحث",listings_heading:"السكنات المتاحة",loading:"جاري تحميل السكنات…",no_results:"لا توجد سكنات مطابقة.",rented:"مؤجرة",per_month:"/شهرياً",girls_badge:"للسيدات فقط",boys_badge:"للرجال فقط",mixed_badge:"مختلط",result_count:"{n} سكن متاح"},
+  tr:{brand:"Konaklama",back_home:"← MATARIST'e dön",eyebrow:"İstanbul'da Butik Konaklama",hero_title:"İstanbul'da Oda ve Daireler",hero_sub:"Mevcut odaları ve daireleri semte göre inceleyin. Bizimle doğrudan WhatsApp'tan iletişime geçin.",stat_listings:"Mevcut İlan",stat_districts:"Semt",lifestyle_heading:"Paylaşılan Yaşam, Doğru Şekilde",lifestyle_sub:"Öğrencilerin ve genç profesyonellerin sadece bir çatıyı değil, gerçek bir evi paylaştığı temiz, samimi odalar.",f_district_label:"Semt",f_type_label:"Oda tipi",f_price_label:"Maks. fiyat",f_all_districts:"Tüm semtler",f_all_types:"Tüm oda tipleri",type_single:"Tek kişilik oda",type_double:"Çift kişilik oda",type_shared:"Paylaşımlı oda",type_apartment:"Müstakil daire",f_max_price:"Maks. fiyat (TRY)",f_search:"Ara",listings_heading:"Mevcut İlanlar",loading:"İlanlar yükleniyor…",no_results:"Aramanızla eşleşen ilan yok.",rented:"Kiralandı",per_month:"/ay",girls_badge:"Sadece Kadın",boys_badge:"Sadece Erkek",mixed_badge:"Karma",result_count:"{n} ilan"}
 };
 function setLang(lang){
   localStorage.setItem('acc_lang', lang);
@@ -351,6 +357,7 @@ let map, markersLayer;
 // listing is changed; this only decides which CSS accent variables apply.
 function genderTheme(genderPolicy){
   const g = String(genderPolicy || '').toLowerCase();
+  if(/mixed|both genders|male\s*(&|and)\s*female/.test(g)) return 'mixed';
   if(/female|girl|women|woman/.test(g)) return 'girls';
   if(/\bmale\b|\bboys?\b|\bmen\b/.test(g)) return 'boys';
   return 'neutral';
@@ -498,7 +505,7 @@ function renderGrid(){
     const photoKeys = (l.photos || []).slice(0, CARD_CAROUSEL_MAX_PHOTOS);
     const photoUrls = photoKeys.map(k => `/.netlify/functions/accommodation-listings?photo=${encodeURIComponent(k)}`);
     const theme = genderTheme(l.genderPolicy);
-    const genderBadge = theme === 'girls' ? `<span class="gender-badge">${t.girls_badge}</span>` : theme === 'boys' ? `<span class="gender-badge">${t.boys_badge}</span>` : '';
+    const genderBadge = theme === 'girls' ? `<span class="gender-badge">${t.girls_badge}</span>` : theme === 'boys' ? `<span class="gender-badge">${t.boys_badge}</span>` : theme === 'mixed' ? `<span class="gender-badge">${t.mixed_badge}</span>` : '';
     const typeLabel = t['type_'+l.roomType] || l.roomType || '';
     const slidesHtml = photoUrls.length
       ? photoUrls.map((src,i)=>`<img class="slide${i===0?' active':''}" src="${src}" loading="lazy" alt="${escapeHtml(l.title)}" onerror="this.style.display='none'">`).join('')

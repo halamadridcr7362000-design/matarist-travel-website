@@ -19,16 +19,20 @@ const LABELS = {
 const ROOM_TYPE_LABEL = { single: "Single room", double: "Double room", shared: "Shared room", apartment: "Entire apartment" };
 
 const GENDER_BADGE = {
-  en: { girls: "Women Only", boys: "Men Only" },
-  ar: { girls: "للسيدات فقط", boys: "للرجال فقط" },
-  tr: { girls: "Sadece Kadın", boys: "Sadece Erkek" },
+  en: { girls: "Women Only", boys: "Men Only", mixed: "Mixed" },
+  ar: { girls: "للسيدات فقط", boys: "للرجال فقط", mixed: "مختلط" },
+  tr: { girls: "Sadece Kadın", boys: "Sadece Erkek", mixed: "Karma" },
 };
 
 // Pure presentation logic — derives a visual theme from the listing's
 // existing genderPolicy free-text field. No new data field, no stored
 // listing is changed; this only decides which CSS accent variables apply.
+// "mixed" must be checked before the female/male patterns: a policy like
+// "Mixed (Male & Female)" contains the substring "female", which would
+// otherwise misclassify a mixed listing as women-only.
 function genderTheme(genderPolicy) {
   const g = String(genderPolicy || "").toLowerCase();
+  if (/mixed|both genders|male\s*(&|and)\s*female/.test(g)) return "mixed";
   if (/female|girl|women|woman/.test(g)) return "girls";
   if (/\bmale\b|\bboys?\b|\bmen\b/.test(g)) return "boys";
   return "neutral";
@@ -97,7 +101,7 @@ function renderListing(listing, lang, previewToken) {
   const rentedBadge = pub.status === "rented" ? `<div class="status-badge status-rented">${t.rented}</div>` : "";
   const theme = genderTheme(pub.genderPolicy);
   const genderLabels = GENDER_BADGE[lang] || GENDER_BADGE.en;
-  const genderBadge = theme === "girls" ? `<div class="status-badge status-gender">${genderLabels.girls}</div>` : theme === "boys" ? `<div class="status-badge status-gender">${genderLabels.boys}</div>` : "";
+  const genderBadge = theme === "girls" ? `<div class="status-badge status-gender">${genderLabels.girls}</div>` : theme === "boys" ? `<div class="status-badge status-gender">${genderLabels.boys}</div>` : theme === "mixed" ? `<div class="status-badge status-gender">${genderLabels.mixed}</div>` : "";
 
   const photos = pub.photos || [];
   const allPhotoUrls = photos.map(photoUrl);
@@ -156,6 +160,10 @@ ${isPreview ? `<meta name="robots" content="noindex, nofollow">` : ""}
 [data-gender="boys"]{
   --accent:#6b8fb8; --accent-soft:rgba(107,143,184,0.22); --accent-badge:rgba(23,36,58,0.80); --accent-glow:rgba(107,143,184,0.26);
   --surface:#142338; --surface-2:#1a2d47;
+}
+[data-gender="mixed"]{
+  --accent:#b39ddb; --accent-soft:rgba(179,157,219,0.22); --accent-badge:rgba(106,76,147,0.65); --accent-glow:rgba(179,157,219,0.30);
+  --surface:#241a3a; --surface-2:#2d2047;
 }
 *{box-sizing:border-box}
 /* Page background: same soft gold/violet/teal ambient glows, dense star
