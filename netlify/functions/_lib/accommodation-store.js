@@ -38,7 +38,7 @@ async function saveAllListings(listings) {
 const PUBLIC_LISTING_FIELDS = [
   "id", "slug", "status", "title", "district", "roomType", "monthlyRent",
   "currency", "deposit", "bills", "furnishing", "genderPolicy", "transport",
-  "rules", "description", "photos", "lat", "lng", "updatedAt",
+  "rules", "description", "photos", "videoUrl", "lat", "lng", "updatedAt",
 ];
 
 function toPublicListing(listing) {

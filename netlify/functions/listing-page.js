@@ -11,9 +11,9 @@ const SITE = "https://mataristtravel.com";
 const WHATSAPP = "905451218167";
 
 const LABELS = {
-  en: { back: "All accommodation listings", rented: "Rented — currently unavailable", contact: "Ask about this room on WhatsApp", district: "District", type: "Room type", rent: "Monthly rent", deposit: "Deposit", bills: "Bills", furnishing: "Furnishing", gender: "Preference", transport: "Nearby transport", rules: "Rules", notFound: "This listing is no longer available.", gone: "This listing has been removed." },
-  ar: { back: "كل السكنات المتاحة", rented: "مؤجرة حالياً — غير متاحة", contact: "اسأل عن هذه الغرفة عبر واتساب", district: "المنطقة", type: "نوع الغرفة", rent: "الإيجار الشهري", deposit: "التأمين", bills: "الفواتير", furnishing: "التأثيث", gender: "التفضيل", transport: "وسائل النقل القريبة", rules: "الشروط", notFound: "هذا السكن غير متاح حالياً.", gone: "تم حذف هذا السكن." },
-  tr: { back: "Tüm konaklama ilanları", rented: "Kiralandı — şu anda uygun değil", contact: "Bu oda hakkında WhatsApp'tan sorun", district: "Semt", type: "Oda tipi", rent: "Aylık kira", deposit: "Depozito", bills: "Faturalar", furnishing: "Eşya durumu", gender: "Tercih", transport: "Yakın ulaşım", rules: "Kurallar", notFound: "Bu ilan artık mevcut değil.", gone: "Bu ilan kaldırıldı." },
+  en: { back: "All accommodation listings", rented: "Rented — currently unavailable", contact: "Ask about this room on WhatsApp", district: "District", type: "Room type", rent: "Monthly rent", deposit: "Deposit", bills: "Bills", furnishing: "Furnishing", gender: "Preference", transport: "Nearby transport", rules: "Rules", video: "Video", watchVideo: "Watch video", notFound: "This listing is no longer available.", gone: "This listing has been removed." },
+  ar: { back: "كل السكنات المتاحة", rented: "مؤجرة حالياً — غير متاحة", contact: "اسأل عن هذه الغرفة عبر واتساب", district: "المنطقة", type: "نوع الغرفة", rent: "الإيجار الشهري", deposit: "التأمين", bills: "الفواتير", furnishing: "التأثيث", gender: "التفضيل", transport: "وسائل النقل القريبة", rules: "الشروط", video: "فيديو", watchVideo: "شاهد الفيديو", notFound: "هذا السكن غير متاح حالياً.", gone: "تم حذف هذا السكن." },
+  tr: { back: "Tüm konaklama ilanları", rented: "Kiralandı — şu anda uygun değil", contact: "Bu oda hakkında WhatsApp'tan sorun", district: "Semt", type: "Oda tipi", rent: "Aylık kira", deposit: "Depozito", bills: "Faturalar", furnishing: "Eşya durumu", gender: "Tercih", transport: "Yakın ulaşım", rules: "Kurallar", video: "Video", watchVideo: "Videoyu izle", notFound: "Bu ilan artık mevcut değil.", gone: "Bu ilan kaldırıldı." },
 };
 
 const ROOM_TYPE_LABEL = { single: "Single room", double: "Double room", shared: "Shared room", apartment: "Entire apartment" };
@@ -32,6 +32,26 @@ function genderTheme(genderPolicy) {
   if (/female|girl|women|woman/.test(g)) return "girls";
   if (/\bmale\b|\bboys?\b|\bmen\b/.test(g)) return "boys";
   return "neutral";
+}
+
+// Converts a landlord-supplied link into a safe embed. Only recognized
+// YouTube/Vimeo/Google Drive patterns get an <iframe>; anything else (or a
+// non-http(s) scheme, e.g. "javascript:") falls back to a plain outbound
+// link so an admin-entered URL can never inject an arbitrary embedded origin.
+function videoEmbedHtml(url, watchLabel) {
+  const raw = String(url || "").trim();
+  if (!/^https?:\/\//i.test(raw)) return "";
+  let embedSrc = "";
+  const yt = raw.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{6,})/);
+  const vimeo = !yt && raw.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  const drive = !yt && !vimeo && raw.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (yt) embedSrc = `https://www.youtube.com/embed/${yt[1]}`;
+  else if (vimeo) embedSrc = `https://player.vimeo.com/video/${vimeo[1]}`;
+  else if (drive) embedSrc = `https://drive.google.com/file/d/${drive[1]}/preview`;
+  if (embedSrc) {
+    return `<div class="video-wrap"><iframe src="${embedSrc}" title="Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>`;
+  }
+  return `<p><a href="${escapeHtml(raw)}" target="_blank" rel="noopener noreferrer">${watchLabel} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.75em"></i></a></p>`;
 }
 
 function escapeHtml(s) {
@@ -95,6 +115,8 @@ function renderListing(listing, lang, previewToken) {
        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
        <script>var m=L.map('map').setView([${pub.lat},${pub.lng}],14);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap contributors'}).addTo(m);L.marker([${pub.lat},${pub.lng}]).addTo(m);</script>`
     : "";
+  const videoEmbed = videoEmbedHtml(pub.videoUrl, t.watchVideo);
+  const videoHtml = videoEmbed ? `<div class="section"><h3>${t.video}</h3>${videoEmbed}</div>` : "";
   const waText = encodeURIComponent(`Hi, I'm interested in: ${pub.title} (${pub.district}) — ${canonical}`);
 
   const stat = (label, value, emphasize) => `<div class="stat${emphasize ? " price" : ""}"><label>${label}</label><span>${value || "—"}</span></div>`;
@@ -214,6 +236,8 @@ h1{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 6px;line-height:1.2}
 .section{margin:28px 0}
 .section h3{font-size:1.05rem;color:var(--gold);margin-bottom:10px;letter-spacing:0.01em}
 .section p{color:var(--text-muted);line-height:1.75;font-size:0.94rem}
+.video-wrap{position:relative;padding-top:56.25%;border-radius:14px;overflow:hidden;border:1px solid var(--border);background:var(--surface)}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 #map{height:260px;border-radius:14px;border:1px solid var(--border);overflow:hidden;filter:saturate(0.85) brightness(0.92)}
 .leaflet-popup-content-wrapper{background:var(--surface);color:var(--text);border-radius:8px}
 .wa-btn{display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;padding:15px 30px;border-radius:10px;text-decoration:none;font-weight:700;margin-top:8px;font-size:0.95rem;box-shadow:0 10px 26px rgba(37,211,102,0.25);transition:transform 0.2s}
@@ -240,6 +264,7 @@ ${stat(t.gender, escapeHtml(pub.genderPolicy))}
 ${stat(t.transport, escapeHtml(pub.transport))}
 </div>
 ${pub.description ? `<div class="section"><h3>${lang === "ar" ? "الوصف" : lang === "tr" ? "Açıklama" : "About this place"}</h3><p>${escapeHtml(pub.description)}</p></div>` : ""}
+${videoHtml}
 ${pub.rules ? `<div class="section"><h3>${t.rules}</h3><p>${escapeHtml(pub.rules)}</p></div>` : ""}
 ${mapHtml}
 <a class="wa-btn" href="https://wa.me/${WHATSAPP}?text=${waText}" target="_blank" rel="noopener">
