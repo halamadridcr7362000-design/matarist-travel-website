@@ -250,7 +250,7 @@ async function handlePost(event) {
       rules: body.rules || "",
       description: body.description || "",
       photos: [],
-      videoUrl: body.videoUrl || "",
+      videoUrls: Array.isArray(body.videoUrls) ? body.videoUrls.filter((u) => typeof u === "string" && u.trim()) : [],
       lat: typeof body.lat === "number" ? body.lat : null,
       lng: typeof body.lng === "number" ? body.lng : null,
       ownerContact: body.ownerContact || "",
@@ -272,10 +272,13 @@ async function handlePost(event) {
     const editable = [
       "title", "district", "roomType", "monthlyRent", "currency", "deposit",
       "bills", "furnishing", "genderPolicy", "transport", "rules",
-      "description", "videoUrl", "lat", "lng", "ownerContact",
+      "description", "videoUrls", "lat", "lng", "ownerContact",
     ];
     for (const f of editable) {
-      if (body[f] !== undefined) listings[idx][f] = body[f];
+      if (body[f] === undefined) continue;
+      listings[idx][f] = f === "videoUrls" && Array.isArray(body[f])
+        ? body[f].filter((u) => typeof u === "string" && u.trim())
+        : body[f];
     }
     listings[idx].updatedAt = Date.now();
     await saveAllListings(listings);

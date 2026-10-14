@@ -164,7 +164,7 @@ tr.clickable:hover td{background:var(--surface2)}
         <div class="photo-row" id="lf-photos"></div>
         <input type="file" id="lf-photo-input" accept="image/*" multiple onchange="handlePhotoUpload(event)">
       </div>
-      <div class="form-row"><label>Video link (YouTube, Vimeo or Google Drive — optional)</label><input id="lf-video" placeholder="https://..."></div>
+      <div class="form-row"><label>Video links (YouTube, Vimeo or Google Drive — one per line, optional)</label><textarea id="lf-video" rows="3" placeholder="https://...&#10;https://..."></textarea></div>
       <div style="display:flex;gap:10px;margin-top:16px">
         <button class="btn" onclick="saveListing()">Save</button>
         <button class="btn secondary" onclick="previewListing()">Preview</button>
@@ -310,7 +310,7 @@ function openListingForm(id){
   document.getElementById('lf-description').value = l ? l.description : '';
   document.getElementById('lf-rules').value = l ? l.rules : '';
   document.getElementById('lf-owner').value = l ? l.ownerContact : '';
-  document.getElementById('lf-video').value = l && l.videoUrl ? l.videoUrl : '';
+  document.getElementById('lf-video').value = l && Array.isArray(l.videoUrls) ? l.videoUrls.join('\n') : '';
   document.getElementById('lf-maps-link').value = '';
   document.getElementById('lf-maps-link-status').textContent = '';
   document.getElementById('lf-delete-btn').style.display = l ? 'inline-block' : 'none';
@@ -446,7 +446,7 @@ async function saveListing(){
     description: document.getElementById('lf-description').value,
     rules: document.getElementById('lf-rules').value,
     ownerContact: document.getElementById('lf-owner').value,
-    videoUrl: document.getElementById('lf-video').value.trim(),
+    videoUrls: document.getElementById('lf-video').value.split('\n').map(s=>s.trim()).filter(Boolean),
     lat: pinLat, lng: pinLng,
   };
   try{

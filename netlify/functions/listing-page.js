@@ -115,8 +115,9 @@ function renderListing(listing, lang, previewToken) {
        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
        <script>var m=L.map('map').setView([${pub.lat},${pub.lng}],14);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap contributors'}).addTo(m);L.marker([${pub.lat},${pub.lng}]).addTo(m);</script>`
     : "";
-  const videoEmbed = videoEmbedHtml(pub.videoUrl, t.watchVideo);
-  const videoHtml = videoEmbed ? `<div class="section"><h3>${t.video}</h3>${videoEmbed}</div>` : "";
+  const videoUrls = Array.isArray(pub.videoUrls) ? pub.videoUrls.filter(Boolean) : [];
+  const videoEmbeds = videoUrls.map((u) => videoEmbedHtml(u, t.watchVideo)).filter(Boolean).join("");
+  const videoHtml = videoEmbeds ? `<div class="section"><h3>${t.video}</h3>${videoEmbeds}</div>` : "";
   const waText = encodeURIComponent(`Hi, I'm interested in: ${pub.title} (${pub.district}) — ${canonical}`);
 
   const stat = (label, value, emphasize) => `<div class="stat${emphasize ? " price" : ""}"><label>${label}</label><span>${value || "—"}</span></div>`;
@@ -236,7 +237,7 @@ h1{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 6px;line-height:1.2}
 .section{margin:28px 0}
 .section h3{font-size:1.05rem;color:var(--gold);margin-bottom:10px;letter-spacing:0.01em}
 .section p{color:var(--text-muted);line-height:1.75;font-size:0.94rem}
-.video-wrap{position:relative;padding-top:56.25%;border-radius:14px;overflow:hidden;border:1px solid var(--border);background:var(--surface)}
+.video-wrap{position:relative;padding-top:56.25%;border-radius:14px;overflow:hidden;border:1px solid var(--border);background:var(--surface);margin-bottom:12px}
 .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 #map{height:260px;border-radius:14px;border:1px solid var(--border);overflow:hidden;filter:saturate(0.85) brightness(0.92)}
 .leaflet-popup-content-wrapper{background:var(--surface);color:var(--text);border-radius:8px}
