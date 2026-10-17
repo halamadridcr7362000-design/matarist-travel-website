@@ -62,9 +62,12 @@ function escapeHtml(s) {
   return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
+const GA_SNIPPET = `<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJ10YL2GD4"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RJ10YL2GD4');</script>`;
+
 function errorPage(lang, code, message) {
   const t = LABELS[lang] || LABELS.en;
-  return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${code} — MATARIST Accommodation</title><meta name="robots" content="noindex">
+  return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">${GA_SNIPPET}<title>${code} — MATARIST Accommodation</title><meta name="robots" content="noindex">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet"></head>
   <body style="font-family:'DM Sans',sans-serif;text-align:center;padding:120px 20px;background:#15121b;color:#f3ede4;margin:0">
   <h1 style="font-family:'Cormorant Garamond',serif;font-size:3rem;color:#b8955e;margin-bottom:12px">${code}</h1>
@@ -131,6 +134,7 @@ function renderListing(listing, lang, previewToken) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+${GA_SNIPPET}
 <title>${title}</title>
 <meta name="description" content="${description}">
 <link rel="canonical" href="${canonical}">
