@@ -45,10 +45,12 @@ async function handleGet(event) {
   const qs = event.queryStringParameters || {};
 
   // Used only by accounts.html to fold accommodation into the shared
-  // company totals. Deliberately returns the SAME trust tier as the
-  // existing orders.js (no server-side auth on reads today) but a much
-  // narrower allow-list: no client identity, no landlord identity, no
-  // payment line items — only the figures accounts.html's reporting needs.
+  // company totals. Same trust tier as the existing orders.js (no
+  // server-side auth on reads today, site-wide) — orders.js already
+  // exposes client name/phone at this same tier, so name/phone here isn't
+  // a new exposure. Still narrower than the full record: no landlord
+  // identity, no payment line items — only what accounts.html's reporting
+  // and client-facing columns need.
   if (qs.action === "accounting-summary") {
     const { data } = await getTransactionsWithEtag();
     const summary = data
@@ -60,6 +62,8 @@ async function handleGet(event) {
         date: t.createdAt,
         confirmed_at: t.createdAt,
         status: "تم التأكيد", // matches the Arabic "confirmed" string accounts.html already filters on
+        name: t.clientName || "",
+        phone: t.clientPhone || "",
         base_price: 0,
         final_price: t.commissionCollected,
         profit_amount: t.realizedProfit,
