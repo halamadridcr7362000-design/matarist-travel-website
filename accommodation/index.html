@@ -177,6 +177,14 @@ header nav a:hover{color:var(--gold-light)}
 .card:hover{transform:translateY(-6px);box-shadow:var(--shadow-card)}
 .card[data-gender="girls"]:hover,.card[data-gender="mixed"]:hover{box-shadow:var(--shadow-card),0 0 34px var(--accent-glow)}
 .card[data-gender="boys"]:hover{box-shadow:var(--shadow-card),0 0 30px var(--accent-glow)}
+/* Rented listings stay in the grid (so the link/SEO value isn't lost and
+   the admin doesn't have to recreate them later) but read as unavailable
+   at a glance: desaturated photo, dimmed body, a center banner. */
+.card.is-rented{filter:grayscale(0.5)}
+.card.is-rented:hover{transform:none}
+.card.is-rented .card-body{opacity:0.6}
+.card.is-rented .img-wrap::before{content:"";position:absolute;inset:0;background:rgba(21,18,27,0.55);z-index:2}
+.rented-overlay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;background:rgba(21,18,27,0.85);border:1px solid var(--border);color:var(--text);font-size:0.78rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;padding:8px 18px;border-radius:20px;white-space:nowrap}
 .card .accent-bar{height:6px;background:var(--accent);width:100%}
 .card .img-wrap{position:relative;aspect-ratio:4/3;background:var(--surface-2);overflow:hidden}
 .card .img-wrap::after{content:"";position:absolute;inset:0;background:linear-gradient(to top, rgba(21,18,27,0.68) 0%, transparent 45%),linear-gradient(135deg, var(--accent-soft) 0%, transparent 55%);z-index:1;pointer-events:none}
@@ -336,9 +344,9 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const translations = {
-  en:{brand:"Accommodation",back_home:"← Back to MATARIST",eyebrow:"Boutique Stays in Istanbul",hero_title:"Rooms & Apartments in Istanbul",hero_sub:"Browse available rooms, shared accommodation and apartments — organized by district. Contact us directly on WhatsApp.",stat_listings:"Listings Available",stat_districts:"Districts",lifestyle_heading:"Shared Living, Done Right",lifestyle_sub:"Clean, friendly rooms where students and young professionals share a home — not just a roof.",f_district_label:"District",f_type_label:"Room type",f_price_label:"Max price",f_all_districts:"All districts",f_all_types:"All room types",type_single:"Single room",type_double:"Double room",type_shared:"Shared room",type_apartment:"Entire apartment",f_max_price:"Max price (TRY)",f_search:"Search",listings_heading:"Available Listings",loading:"Loading listings…",no_results:"No listings match your search.",rented:"Rented",per_month:"/month",girls_badge:"Women Only",boys_badge:"Men Only",mixed_badge:"Mixed",result_count:"{n} listings"},
-  ar:{brand:"سكن",back_home:"← رجوع إلى ماتاريست",eyebrow:"إقامة راقية في إسطنبول",hero_title:"غرف وشقق للإيجار في إسطنبول",hero_sub:"تصفح الغرف والشقق المتاحة — مصنفة حسب المنطقة. تواصل معنا مباشرة عبر واتساب.",stat_listings:"سكن متاح",stat_districts:"منطقة",lifestyle_heading:"سكن مشترك بطريقة صحيحة",lifestyle_sub:"غرف نظيفة وودية يشارك فيها الطلاب والمهنيون الشباب بيتاً حقيقياً، مش مجرد سقف.",f_district_label:"المنطقة",f_type_label:"نوع الغرفة",f_price_label:"أقصى سعر",f_all_districts:"كل المناطق",f_all_types:"كل أنواع الغرف",type_single:"غرفة مفردة",type_double:"غرفة مزدوجة",type_shared:"غرفة مشتركة",type_apartment:"شقة كاملة",f_max_price:"أقصى سعر (ليرة)",f_search:"بحث",listings_heading:"السكنات المتاحة",loading:"جاري تحميل السكنات…",no_results:"لا توجد سكنات مطابقة.",rented:"مؤجرة",per_month:"/شهرياً",girls_badge:"للسيدات فقط",boys_badge:"للرجال فقط",mixed_badge:"مختلط",result_count:"{n} سكن متاح"},
-  tr:{brand:"Konaklama",back_home:"← MATARIST'e dön",eyebrow:"İstanbul'da Butik Konaklama",hero_title:"İstanbul'da Oda ve Daireler",hero_sub:"Mevcut odaları ve daireleri semte göre inceleyin. Bizimle doğrudan WhatsApp'tan iletişime geçin.",stat_listings:"Mevcut İlan",stat_districts:"Semt",lifestyle_heading:"Paylaşılan Yaşam, Doğru Şekilde",lifestyle_sub:"Öğrencilerin ve genç profesyonellerin sadece bir çatıyı değil, gerçek bir evi paylaştığı temiz, samimi odalar.",f_district_label:"Semt",f_type_label:"Oda tipi",f_price_label:"Maks. fiyat",f_all_districts:"Tüm semtler",f_all_types:"Tüm oda tipleri",type_single:"Tek kişilik oda",type_double:"Çift kişilik oda",type_shared:"Paylaşımlı oda",type_apartment:"Müstakil daire",f_max_price:"Maks. fiyat (TRY)",f_search:"Ara",listings_heading:"Mevcut İlanlar",loading:"İlanlar yükleniyor…",no_results:"Aramanızla eşleşen ilan yok.",rented:"Kiralandı",per_month:"/ay",girls_badge:"Sadece Kadın",boys_badge:"Sadece Erkek",mixed_badge:"Karma",result_count:"{n} ilan"}
+  en:{brand:"Accommodation",back_home:"← Back to MATARIST",eyebrow:"Boutique Stays in Istanbul",hero_title:"Rooms & Apartments in Istanbul",hero_sub:"Browse available rooms, shared accommodation and apartments — organized by district. Contact us directly on WhatsApp.",stat_listings:"Listings Available",stat_districts:"Districts",lifestyle_heading:"Shared Living, Done Right",lifestyle_sub:"Clean, friendly rooms where students and young professionals share a home — not just a roof.",f_district_label:"District",f_type_label:"Room type",f_price_label:"Max price",f_all_districts:"All districts",f_all_types:"All room types",type_single:"Single room",type_double:"Double room",type_shared:"Shared room",type_apartment:"Entire apartment",f_max_price:"Max price (TRY)",f_search:"Search",listings_heading:"Available Listings",loading:"Loading listings…",no_results:"No listings match your search.",rented:"Rented",per_month:"/month",girls_badge:"Women Only",boys_badge:"Men Only",mixed_badge:"Mixed",currently_rented:"Currently Rented",result_count:"{n} listings"},
+  ar:{brand:"سكن",back_home:"← رجوع إلى ماتاريست",eyebrow:"إقامة راقية في إسطنبول",hero_title:"غرف وشقق للإيجار في إسطنبول",hero_sub:"تصفح الغرف والشقق المتاحة — مصنفة حسب المنطقة. تواصل معنا مباشرة عبر واتساب.",stat_listings:"سكن متاح",stat_districts:"منطقة",lifestyle_heading:"سكن مشترك بطريقة صحيحة",lifestyle_sub:"غرف نظيفة وودية يشارك فيها الطلاب والمهنيون الشباب بيتاً حقيقياً، مش مجرد سقف.",f_district_label:"المنطقة",f_type_label:"نوع الغرفة",f_price_label:"أقصى سعر",f_all_districts:"كل المناطق",f_all_types:"كل أنواع الغرف",type_single:"غرفة مفردة",type_double:"غرفة مزدوجة",type_shared:"غرفة مشتركة",type_apartment:"شقة كاملة",f_max_price:"أقصى سعر (ليرة)",f_search:"بحث",listings_heading:"السكنات المتاحة",loading:"جاري تحميل السكنات…",no_results:"لا توجد سكنات مطابقة.",rented:"مؤجرة",per_month:"/شهرياً",girls_badge:"للسيدات فقط",boys_badge:"للرجال فقط",mixed_badge:"مختلط",currently_rented:"مؤجرة حالياً",result_count:"{n} سكن متاح"},
+  tr:{brand:"Konaklama",back_home:"← MATARIST'e dön",eyebrow:"İstanbul'da Butik Konaklama",hero_title:"İstanbul'da Oda ve Daireler",hero_sub:"Mevcut odaları ve daireleri semte göre inceleyin. Bizimle doğrudan WhatsApp'tan iletişime geçin.",stat_listings:"Mevcut İlan",stat_districts:"Semt",lifestyle_heading:"Paylaşılan Yaşam, Doğru Şekilde",lifestyle_sub:"Öğrencilerin ve genç profesyonellerin sadece bir çatıyı değil, gerçek bir evi paylaştığı temiz, samimi odalar.",f_district_label:"Semt",f_type_label:"Oda tipi",f_price_label:"Maks. fiyat",f_all_districts:"Tüm semtler",f_all_types:"Tüm oda tipleri",type_single:"Tek kişilik oda",type_double:"Çift kişilik oda",type_shared:"Paylaşımlı oda",type_apartment:"Müstakil daire",f_max_price:"Maks. fiyat (TRY)",f_search:"Ara",listings_heading:"Mevcut İlanlar",loading:"İlanlar yükleniyor…",no_results:"Aramanızla eşleşen ilan yok.",rented:"Kiralandı",per_month:"/ay",girls_badge:"Sadece Kadın",boys_badge:"Sadece Erkek",mixed_badge:"Karma",currently_rented:"Şu anda kiralandı",result_count:"{n} ilan"}
 };
 function setLang(lang){
   localStorage.setItem('acc_lang', lang);
@@ -401,12 +409,11 @@ function filteredListings(){
   const type = document.getElementById('f-type').value;
   const maxPrice = parseFloat(document.getElementById('f-max-price').value) || Infinity;
   return allListings.filter(l=>{
-    if(l.status === 'rented') return false; // rented listings don't show in default results
     if(district && l.district !== district) return false;
     if(type && l.roomType !== type) return false;
     if(l.monthlyRent > maxPrice) return false;
     return true;
-  });
+  }).sort((a,b)=>(a.status==='rented')-(b.status==='rented')); // available rooms first, rented ones sink to the end
 }
 
 function applyFilters(){ renderGrid(); }
@@ -515,13 +522,15 @@ function renderGrid(){
     const dotsHtml = photoUrls.length > 1
       ? `<div class="dots">${photoUrls.map((_,i)=>`<span class="dot${i===0?' active':''}"></span>`).join('')}</div>`
       : '';
-    return `<a class="card reveal" data-gender="${theme}" href="/accommodation/${l.slug}">
+    const isRented = l.status === 'rented';
+    return `<a class="card reveal${isRented ? ' is-rented' : ''}" data-gender="${theme}" href="/accommodation/${l.slug}">
       <div class="accent-bar"></div>
       <div class="img-wrap"${photoUrls.length > 1 ? ' data-carousel' : ''}>
         ${genderBadge}
         <div class="card-carousel">${slidesHtml}</div>
         ${dotsHtml}
         <span class="type-badge">${escapeHtml(typeLabel)}</span>
+        ${isRented ? `<div class="rented-overlay">${t.currently_rented}</div>` : ''}
       </div>
       <div class="card-body">
         <div class="specs-row">
