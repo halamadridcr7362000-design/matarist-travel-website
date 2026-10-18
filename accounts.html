@@ -579,7 +579,7 @@ async function sendToSheet(order){
 }
 
 async function exportCSV(){
-  const allOrders=getOrders();
+  const allOrders=getCombinedOrders();
   let confirmed=allOrders.filter(o=>o.status==='تم التأكيد');
   if(tSvc!=='all') confirmed=confirmed.filter(o=>o.type===tSvc);
   if(confirmed.length===0){showToast('⚠️ لا توجد طلبات مؤكدة!','error');return;}
@@ -596,7 +596,7 @@ async function exportCSV(){
 }
 
 async function exportAllConfirmed(){
-  const allOrders=getOrders();
+  const allOrders=getCombinedOrders();
   let confirmed=allOrders.filter(o=>o.status==='تم التأكيد');
   if(tSvc!=='all') confirmed=confirmed.filter(o=>o.type===tSvc);
   if(confirmed.length===0){showToast('⚠️ لا توجد طلبات مؤكدة!','error');return;}
