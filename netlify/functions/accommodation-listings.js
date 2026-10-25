@@ -228,6 +228,8 @@ const OWNER_SUBMIT_MAX_LEN = { title: 120, district: 80, description: 2000, rule
 const ALLOWED_ROOM_TYPES = ["single", "double", "shared", "apartment"];
 const ALLOWED_CURRENCIES = ["TRY", "USD", "EUR"];
 const OWNER_SUBMIT_MAX_PHOTOS = 8;
+const OWNER_SUBMIT_MAX_VIDEOS = 5;
+const OWNER_SUBMIT_MAX_VIDEO_URL_LEN = 300;
 const OWNER_SUBMIT_MAX_PHOTO_BYTES = 2 * 1024 * 1024; // base64-decoded size
 
 async function handlePost(event) {
@@ -387,6 +389,12 @@ async function handleOwnerSubmit(body) {
   const monthlyRent = Math.max(0, Math.min(1000000, parseFloat(body.monthlyRent) || 0));
   const lat = typeof body.lat === "number" && body.lat >= -90 && body.lat <= 90 ? body.lat : null;
   const lng = typeof body.lng === "number" && body.lng >= -180 && body.lng <= 180 ? body.lng : null;
+  const videoUrls = Array.isArray(body.videoUrls)
+    ? body.videoUrls
+        .filter((u) => typeof u === "string" && u.trim() && u.trim().length <= OWNER_SUBMIT_MAX_VIDEO_URL_LEN)
+        .map((u) => u.trim())
+        .slice(0, OWNER_SUBMIT_MAX_VIDEOS)
+    : [];
 
   const listings = await getAllListings();
   const base = slugify(`${title}-${district}`);
@@ -409,7 +417,7 @@ async function handleOwnerSubmit(body) {
     rules: String(body.rules || "").trim(),
     description: String(body.description || "").trim(),
     photos: [],
-    videoUrls: [],
+    videoUrls,
     lat,
     lng,
     ownerContact,

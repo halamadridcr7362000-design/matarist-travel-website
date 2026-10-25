@@ -111,7 +111,6 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 
 <div class="wrap">
   <div class="panel" id="panel-form">
-    <div class="step-dots"><span class="active"></span><span></span></div>
     <h2 data-i18n="form_heading">Property Details</h2>
     <form id="submit-form" onsubmit="return submitListing(event)">
       <div class="honeypot"><label>Website<input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off"></label></div>
@@ -143,6 +142,14 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
       <div class="form-row"><label data-i18n="l-rules">House rules</label><textarea id="f-rules" rows="2" maxlength="1000" data-i18n-ph="ph-rules" placeholder="e.g. no smoking, no pets"></textarea></div>
       <div class="form-row"><label data-i18n="l-map">Location — click the map to drop a pin (optional)</label><div id="map-pick"></div></div>
       <div class="form-row">
+        <label data-i18n="l-photos">Photos (optional, up to 8)</label>
+        <p class="form-hint" data-i18n="photos_hint" style="margin-bottom:10px">Clear, well-lit photos get far more interest.</p>
+        <div class="photo-row" id="photo-row">
+          <label class="photo-add"><i class="fa-solid fa-plus"></i><input type="file" accept="image/*" multiple style="display:none" onchange="handlePhotoPick(event)"></label>
+        </div>
+      </div>
+      <div class="form-row"><label data-i18n="l-video">Video links (YouTube, Vimeo, Google Drive — one per line, optional)</label><textarea id="f-video" rows="2" data-i18n-ph="ph-video" placeholder="https://..."></textarea></div>
+      <div class="form-row">
         <label data-i18n="l-consent-label" style="display:flex;align-items:flex-start;gap:8px;font-weight:400">
           <input type="checkbox" id="f-consent" required style="width:auto;margin-top:3px">
           <span data-i18n="consent_text">I confirm I'm authorized to list this property and I understand MATARIST will review it before it's published.</span>
@@ -151,16 +158,6 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
       <button class="btn" type="submit" id="submit-btn" data-i18n="btn_submit">Submit for review</button>
       <div class="error-msg" id="form-error"></div>
     </form>
-  </div>
-
-  <div class="panel" id="panel-photos" style="display:none">
-    <div class="step-dots"><span></span><span class="active"></span></div>
-    <h2 data-i18n="photos_heading">Add Photos (optional, up to 8)</h2>
-    <p class="form-hint" data-i18n="photos_hint" style="margin-bottom:10px">Clear, well-lit photos get far more interest. You can also finish without photos.</p>
-    <div class="photo-row" id="photo-row">
-      <label class="photo-add"><i class="fa-solid fa-plus"></i><input type="file" accept="image/*" multiple style="display:none" onchange="handlePhotoUpload(event)"></label>
-    </div>
-    <button class="btn" onclick="finishSubmission()" data-i18n="btn_finish">Finish</button>
   </div>
 
   <div class="panel" id="panel-success" style="display:none">
@@ -181,8 +178,8 @@ const LISTINGS_URL='/.netlify/functions/accommodation-listings';
 const MAX_PHOTOS = 8;
 
 const translations = {
-  en:{brand:"List Your Place",back_listings:"← Browse listings",eyebrow:"For Property Owners",hero_title:"List Your Room or Apartment",hero_sub:"Tell us about your place and we'll handle finding the right tenant — students and young professionals browse MATARIST every day. Every submission is reviewed by our team before it ever goes public.",step1:"Fill in the details",step2:"We review it",step3:"It goes live",form_heading:"Property Details","l-title":"Title","l-district":"District","l-roomtype":"Room type","l-rent":"Monthly rent","l-deposit":"Deposit","l-bills":"Bills / utilities","l-furnishing":"Furnishing","l-gender":"Gender preference","l-transport":"Nearby transport","l-contact":"Your phone / WhatsApp","l-description":"Description","l-rules":"House rules","l-map":"Location — click the map to drop a pin (optional)","ph-title":"e.g. Shared double room near Taksim","ph-district":"e.g. Şişli","ph-deposit":"e.g. 1 month","ph-bills":"e.g. included / extra ~500 TRY","ph-furnishing":"furnished / unfurnished","ph-gender":"male / female / mixed","ph-transport":"e.g. 5 min to metro","ph-contact":"+90 5xx xxx xx xx","ph-description":"Describe the room, the building, the neighborhood…","ph-rules":"e.g. no smoking, no pets",type_single:"Single room",type_double:"Double room",type_shared:"Shared room",type_apartment:"Entire apartment",consent_text:"I confirm I'm authorized to list this property and I understand MATARIST will review it before it's published.",btn_submit:"Submit for review",photos_heading:"Add Photos (optional, up to 8)",photos_hint:"Clear, well-lit photos get far more interest. You can also finish without photos.",btn_finish:"Finish",success_title:"Thanks — we've got it!",success_body:"Your submission is now with our team for review. We'll check the details and publish it (or reach out if we need anything else). This usually takes less than 48 hours.",btn_browse:"Browse current listings",err_required:"Please fill in the title, district, and your contact number.",err_generic:"Something went wrong — please try again."},
-  ar:{brand:"أضف عقارك",back_listings:"← تصفح السكنات",eyebrow:"لأصحاب العقارات",hero_title:"أضف غرفتك أو شقتك للإيجار",hero_sub:"احكيلنا عن سكنك وإحنا هنتولى إيجاد المستأجر المناسب — طلاب ومهنيين شباب بيتصفحوا ماتاريست يومياً. كل طلب بيتم مراجعته من فريقنا قبل النشر.",step1:"املأ التفاصيل",step2:"نراجع الطلب",step3:"يتم النشر",form_heading:"تفاصيل العقار","l-title":"العنوان","l-district":"المنطقة","l-roomtype":"نوع الغرفة","l-rent":"الإيجار الشهري","l-deposit":"التأمين","l-bills":"الفواتير","l-furnishing":"التأثيث","l-gender":"الجنس المفضل","l-transport":"المواصلات القريبة","l-contact":"رقم الهاتف / واتساب","l-description":"الوصف","l-rules":"قوانين السكن","l-map":"الموقع — اضغط على الخريطة لتحديد المكان (اختياري)","ph-title":"مثال: غرفة مزدوجة مشتركة قرب تقسيم","ph-district":"مثال: شيشلي","ph-deposit":"مثال: شهر واحد","ph-bills":"مثال: شاملة / إضافية حوالي 500 ليرة","ph-furnishing":"مفروشة / غير مفروشة","ph-gender":"ذكور / إناث / مختلط","ph-transport":"مثال: 5 دقائق من المترو","ph-contact":"+90 5xx xxx xx xx","ph-description":"اوصف الغرفة والمبنى والمنطقة المحيطة…","ph-rules":"مثال: ممنوع التدخين، ممنوع الحيوانات الأليفة",type_single:"غرفة مفردة",type_double:"غرفة مزدوجة",type_shared:"غرفة مشتركة",type_apartment:"شقة كاملة",consent_text:"أؤكد أنني مخوّل بتأجير هذا العقار، وأفهم أن ماتاريست ستراجعه قبل نشره.",btn_submit:"إرسال للمراجعة",photos_heading:"أضف صور (اختياري، حتى 8 صور)",photos_hint:"الصور الواضحة ذات الإضاءة الجيدة بتجذب اهتمام أكتر. تقدر كمان تنهي بدون صور.",btn_finish:"إنهاء",success_title:"شكراً — استلمنا طلبك!",success_body:"طلبك دلوقتي مع فريقنا للمراجعة. هنراجع التفاصيل وننشره (أو نتواصل معاك لو محتاجين أي حاجة إضافية). ده بياخد عادةً أقل من 48 ساعة.",btn_browse:"تصفح السكنات المتاحة حالياً",err_required:"من فضلك املأ العنوان والمنطقة ورقم التواصل.",err_generic:"حصل خطأ — من فضلك حاول تاني."}
+  en:{brand:"List Your Place",back_listings:"← Browse listings",eyebrow:"For Property Owners",hero_title:"List Your Room or Apartment",hero_sub:"Tell us about your place and we'll handle finding the right tenant — students and young professionals browse MATARIST every day. Every submission is reviewed by our team before it ever goes public.",step1:"Fill in the details",step2:"We review it",step3:"It goes live",form_heading:"Property Details","l-title":"Title","l-district":"District","l-roomtype":"Room type","l-rent":"Monthly rent","l-deposit":"Deposit","l-bills":"Bills / utilities","l-furnishing":"Furnishing","l-gender":"Gender preference","l-transport":"Nearby transport","l-contact":"Your phone / WhatsApp","l-description":"Description","l-rules":"House rules","l-map":"Location — click the map to drop a pin (optional)","l-photos":"Photos (optional, up to 8)","l-video":"Video links (YouTube, Vimeo, Google Drive — one per line, optional)","ph-video":"https://...","ph-title":"e.g. Shared double room near Taksim","ph-district":"e.g. Şişli","ph-deposit":"e.g. 1 month","ph-bills":"e.g. included / extra ~500 TRY","ph-furnishing":"furnished / unfurnished","ph-gender":"male / female / mixed","ph-transport":"e.g. 5 min to metro","ph-contact":"+90 5xx xxx xx xx","ph-description":"Describe the room, the building, the neighborhood…","ph-rules":"e.g. no smoking, no pets",type_single:"Single room",type_double:"Double room",type_shared:"Shared room",type_apartment:"Entire apartment",consent_text:"I confirm I'm authorized to list this property and I understand MATARIST will review it before it's published.",btn_submit:"Submit for review",photos_heading:"Add Photos (optional, up to 8)",photos_hint:"Clear, well-lit photos get far more interest. You can also finish without photos.",btn_finish:"Finish",success_title:"Thanks — we've got it!",success_body:"Your submission is now with our team for review. We'll check the details and publish it (or reach out if we need anything else). This usually takes less than 48 hours.",btn_browse:"Browse current listings",err_required:"Please fill in the title, district, and your contact number.",err_generic:"Something went wrong — please try again."},
+  ar:{brand:"أضف عقارك",back_listings:"← تصفح السكنات",eyebrow:"لأصحاب العقارات",hero_title:"أضف غرفتك أو شقتك للإيجار",hero_sub:"احكيلنا عن سكنك وإحنا هنتولى إيجاد المستأجر المناسب — طلاب ومهنيين شباب بيتصفحوا ماتاريست يومياً. كل طلب بيتم مراجعته من فريقنا قبل النشر.",step1:"املأ التفاصيل",step2:"نراجع الطلب",step3:"يتم النشر",form_heading:"تفاصيل العقار","l-title":"العنوان","l-district":"المنطقة","l-roomtype":"نوع الغرفة","l-rent":"الإيجار الشهري","l-deposit":"التأمين","l-bills":"الفواتير","l-furnishing":"التأثيث","l-gender":"الجنس المفضل","l-transport":"المواصلات القريبة","l-contact":"رقم الهاتف / واتساب","l-description":"الوصف","l-rules":"قوانين السكن","l-map":"الموقع — اضغط على الخريطة لتحديد المكان (اختياري)","l-photos":"الصور (اختياري، حتى 8 صور)","l-video":"روابط فيديو (يوتيوب، فيميو، جوجل درايف — رابط في كل سطر، اختياري)","ph-video":"https://...","ph-title":"مثال: غرفة مزدوجة مشتركة قرب تقسيم","ph-district":"مثال: شيشلي","ph-deposit":"مثال: شهر واحد","ph-bills":"مثال: شاملة / إضافية حوالي 500 ليرة","ph-furnishing":"مفروشة / غير مفروشة","ph-gender":"ذكور / إناث / مختلط","ph-transport":"مثال: 5 دقائق من المترو","ph-contact":"+90 5xx xxx xx xx","ph-description":"اوصف الغرفة والمبنى والمنطقة المحيطة…","ph-rules":"مثال: ممنوع التدخين، ممنوع الحيوانات الأليفة",type_single:"غرفة مفردة",type_double:"غرفة مزدوجة",type_shared:"غرفة مشتركة",type_apartment:"شقة كاملة",consent_text:"أؤكد أنني مخوّل بتأجير هذا العقار، وأفهم أن ماتاريست ستراجعه قبل نشره.",btn_submit:"إرسال للمراجعة",photos_heading:"أضف صور (اختياري، حتى 8 صور)",photos_hint:"الصور الواضحة ذات الإضاءة الجيدة بتجذب اهتمام أكتر. تقدر كمان تنهي بدون صور.",btn_finish:"إنهاء",success_title:"شكراً — استلمنا طلبك!",success_body:"طلبك دلوقتي مع فريقنا للمراجعة. هنراجع التفاصيل وننشره (أو نتواصل معاك لو محتاجين أي حاجة إضافية). ده بياخد عادةً أقل من 48 ساعة.",btn_browse:"تصفح السكنات المتاحة حالياً",err_required:"من فضلك املأ العنوان والمنطقة ورقم التواصل.",err_generic:"حصل خطأ — من فضلك حاول تاني."}
 };
 function setLang(lang){
   localStorage.setItem('acc_lang', lang);
@@ -205,6 +202,31 @@ function initMap(){
     if(marker) map.removeLayer(marker);
     marker = L.marker([pinLat,pinLng]).addTo(map);
   });
+}
+
+// Photos are picked here, before the listing even exists, so they're all
+// visible in one screen — pendingFiles holds the raw Files; they're only
+// compressed and uploaded (one submitPhoto call each) once submitListing
+// has created the listing and has an id + submissionToken to attach them to.
+let pendingFiles = [];
+
+function renderPhotoRow(){
+  const row = document.getElementById('photo-row');
+  row.innerHTML = pendingFiles.map((f,i)=>`<div class="photo-thumb"><img src="${f.previewUrl}"><button type="button" onclick="removePendingPhoto(${i})" style="position:absolute;top:2px;right:2px;background:rgba(0,0,0,0.7);color:#fff;border:none;border-radius:4px;width:18px;height:18px;font-size:11px;cursor:pointer">&times;</button></div>`).join('') +
+    (pendingFiles.length < MAX_PHOTOS ? `<label class="photo-add"><i class="fa-solid fa-plus"></i><input type="file" accept="image/*" multiple style="display:none" onchange="handlePhotoPick(event)"></label>` : '');
+}
+
+function handlePhotoPick(e){
+  const files = [...e.target.files].slice(0, MAX_PHOTOS - pendingFiles.length);
+  for(const file of files){
+    pendingFiles.push({ file, previewUrl: URL.createObjectURL(file) });
+  }
+  renderPhotoRow();
+}
+
+function removePendingPhoto(i){
+  pendingFiles.splice(i,1);
+  renderPhotoRow();
 }
 
 let submittedId = null, submissionToken = null;
@@ -238,6 +260,7 @@ async function submitListing(e){
     rules: document.getElementById('f-rules').value.trim(),
     ownerContact,
     lat: pinLat, lng: pinLng,
+    videoUrls: document.getElementById('f-video').value.split('\n').map(s=>s.trim()).filter(Boolean),
   };
   try{
     const res = await fetch(LISTINGS_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
@@ -245,36 +268,23 @@ async function submitListing(e){
     if(!res.ok) throw new Error(data.error || 'failed');
     submittedId = data.id;
     submissionToken = data.submissionToken;
+    for(const pf of pendingFiles){
+      try{
+        const compressed = await compressImage(pf.file);
+        await fetch(LISTINGS_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({
+          action:'submitPhoto', id: submittedId, submissionToken, imageBase64: compressed.base64, contentType: compressed.type
+        })});
+      }catch(photoErr){ /* best effort — admin can still ask for photos again if one fails */ }
+    }
     document.getElementById('panel-form').style.display='none';
-    document.getElementById('panel-photos').style.display='block';
+    document.getElementById('panel-success').style.display='block';
+    window.scrollTo({top:0, behavior:'smooth'});
   }catch(err){
     errEl.textContent = t('err_generic'); errEl.style.display='block';
   }finally{
     btn.disabled = false;
   }
   return false;
-}
-
-function renderPhotoRow(urls){
-  const row = document.getElementById('photo-row');
-  const addBtn = row.querySelector('.photo-add').parentElement ? row.querySelector('.photo-add') : null;
-  row.innerHTML = urls.map(u=>`<div class="photo-thumb"><img src="${u}"></div>`).join('') +
-    (urls.length < MAX_PHOTOS ? `<label class="photo-add"><i class="fa-solid fa-plus"></i><input type="file" accept="image/*" multiple style="display:none" onchange="handlePhotoUpload(event)"></label>` : '');
-}
-let uploadedPreviews = [];
-
-async function handlePhotoUpload(e){
-  const files = [...e.target.files].slice(0, MAX_PHOTOS - uploadedPreviews.length);
-  for(const file of files){
-    const compressed = await compressImage(file);
-    uploadedPreviews.push('data:'+compressed.type+';base64,'+compressed.base64);
-    renderPhotoRow(uploadedPreviews);
-    try{
-      await fetch(LISTINGS_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({
-        action:'submitPhoto', id: submittedId, submissionToken, imageBase64: compressed.base64, contentType: compressed.type
-      })});
-    }catch(err){ /* best effort — admin can still ask for photos again if one fails */ }
-  }
 }
 
 function compressImage(file){
@@ -295,12 +305,6 @@ function compressImage(file){
     };
     reader.readAsDataURL(file);
   });
-}
-
-function finishSubmission(){
-  document.getElementById('panel-photos').style.display='none';
-  document.getElementById('panel-success').style.display='block';
-  window.scrollTo({top:0, behavior:'smooth'});
 }
 
 setLang(localStorage.getItem('acc_lang') || 'en');
