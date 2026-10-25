@@ -219,14 +219,32 @@ async function servePhoto(event, key) {
   };
 }
 
+// Per-field length caps for an anonymous owner submission. handleOwnerSubmit
+// below builds the stored record field-by-field (its own allow-list) rather
+// than copying body keys — a public caller never gets to set status, slug,
+// id, or anything not explicitly read out there, no matter what else is in
+// the request body.
+const OWNER_SUBMIT_MAX_LEN = { title: 120, district: 80, description: 2000, rules: 1000, ownerContact: 120, deposit: 80, bills: 120, furnishing: 80, genderPolicy: 40, transport: 160 };
+const ALLOWED_ROOM_TYPES = ["single", "double", "shared", "apartment"];
+const ALLOWED_CURRENCIES = ["TRY", "USD", "EUR"];
+const OWNER_SUBMIT_MAX_PHOTOS = 8;
+const OWNER_SUBMIT_MAX_PHOTO_BYTES = 2 * 1024 * 1024; // base64-decoded size
+
 async function handlePost(event) {
+  const body = JSON.parse(event.body || "{}");
+  const action = body.action;
+
+  // These two run WITHOUT a session — they're how a property owner submits
+  // their own listing from the public site. Everything else below still
+  // requires an admin session, same as before.
+  if (action === "submit") return handleOwnerSubmit(body);
+  if (action === "submitPhoto") return handleOwnerSubmitPhoto(body);
+
   const session = requireSession(event);
   if (!session) {
     return { statusCode: 401, headers: jsonHeaders(), body: JSON.stringify({ error: "Unauthorized" }) };
   }
 
-  const body = JSON.parse(event.body || "{}");
-  const action = body.action;
   const listings = await getAllListings();
 
   if (action === "create") {
@@ -286,7 +304,7 @@ async function handlePost(event) {
   }
 
   if (action === "setStatus") {
-    const allowed = ["draft", "published", "rented", "unpublished", "deleted"];
+    const allowed = ["draft", "pending", "published", "rented", "unpublished", "rejected", "deleted"];
     if (!allowed.includes(body.status)) {
       return { statusCode: 400, headers: jsonHeaders(), body: JSON.stringify({ error: "Invalid status" }) };
     }
@@ -337,4 +355,119 @@ async function handlePost(event) {
   }
 
   return { statusCode: 400, headers: jsonHeaders(), body: JSON.stringify({ error: "Unknown action" }) };
+}
+
+// Public, unauthenticated: a property owner submitting their own place.
+// Always lands as status "pending" — never visible on the public site
+// (isPubliclyVisible only allows "published"/"rented") and never editable
+// or deletable by the submitter again, only by an admin session. This is
+// the entire trust boundary: anyone can call this, so it must be unable to
+// do anything beyond create one inert, invisible, hand-picked-fields record.
+async function handleOwnerSubmit(body) {
+  // Honeypot: a hidden field real visitors never fill in. A bot that fills
+  // every input it finds trips this, and we quietly pretend success so it
+  // doesn't learn to look for a different signal.
+  if (typeof body.website === "string" && body.website.trim() !== "") {
+    return { statusCode: 200, headers: jsonHeaders(), body: JSON.stringify({ ok: true }) };
+  }
+
+  const title = String(body.title || "").trim();
+  const district = String(body.district || "").trim();
+  const ownerContact = String(body.ownerContact || "").trim();
+  if (!title || !district || !ownerContact) {
+    return { statusCode: 400, headers: jsonHeaders(), body: JSON.stringify({ error: "Title, district and a contact number are required" }) };
+  }
+  for (const [field, max] of Object.entries(OWNER_SUBMIT_MAX_LEN)) {
+    if (typeof body[field] === "string" && body[field].length > max) {
+      return { statusCode: 400, headers: jsonHeaders(), body: JSON.stringify({ error: `${field} is too long (max ${max} characters)` }) };
+    }
+  }
+  const roomType = ALLOWED_ROOM_TYPES.includes(body.roomType) ? body.roomType : "single";
+  const currency = ALLOWED_CURRENCIES.includes(body.currency) ? body.currency : "TRY";
+  const monthlyRent = Math.max(0, Math.min(1000000, parseFloat(body.monthlyRent) || 0));
+  const lat = typeof body.lat === "number" && body.lat >= -90 && body.lat <= 90 ? body.lat : null;
+  const lng = typeof body.lng === "number" && body.lng >= -180 && body.lng <= 180 ? body.lng : null;
+
+  const listings = await getAllListings();
+  const base = slugify(`${title}-${district}`);
+  const slug = uniqueSlug(base, listings.map((l) => l.slug));
+  const now = Date.now();
+  const listing = {
+    id: crypto.randomUUID(),
+    slug,
+    status: "pending",
+    title,
+    district,
+    roomType,
+    monthlyRent,
+    currency,
+    deposit: String(body.deposit || "").trim(),
+    bills: String(body.bills || "").trim(),
+    furnishing: String(body.furnishing || "").trim(),
+    genderPolicy: String(body.genderPolicy || "").trim(),
+    transport: String(body.transport || "").trim(),
+    rules: String(body.rules || "").trim(),
+    description: String(body.description || "").trim(),
+    photos: [],
+    videoUrls: [],
+    lat,
+    lng,
+    ownerContact,
+    submittedByOwner: true,
+    createdAt: now,
+    updatedAt: now,
+  };
+  listings.push(listing);
+  await saveAllListings(listings);
+
+  // Scoped, short-lived token: lets this same submitter attach photos to
+  // THIS listing only, for the next 30 minutes, and nothing else — it
+  // can't touch any other listing or any other field.
+  const secret = process.env.ACCOMMODATION_SESSION_SECRET;
+  const submissionToken = secret
+    ? sign({ listingId: listing.id, purpose: "ownerUpload", exp: Date.now() + 30 * 60 * 1000 }, secret)
+    : null;
+
+  return {
+    statusCode: 200,
+    headers: jsonHeaders(),
+    body: JSON.stringify({ id: listing.id, submissionToken }),
+  };
+}
+
+async function handleOwnerSubmitPhoto(body) {
+  const secret = process.env.ACCOMMODATION_SESSION_SECRET;
+  const payload = secret ? verifyToken(body.submissionToken, secret) : null;
+  if (!payload || payload.purpose !== "ownerUpload" || payload.listingId !== body.id) {
+    return { statusCode: 401, headers: jsonHeaders(), body: JSON.stringify({ error: "Invalid or expired submission link" }) };
+  }
+
+  const listings = await getAllListings();
+  const idx = listings.findIndex((l) => l.id === body.id);
+  if (idx === -1 || listings[idx].status !== "pending") {
+    // Already reviewed (or gone) — the token's one-time window has closed.
+    return { statusCode: 409, headers: jsonHeaders(), body: JSON.stringify({ error: "This submission is no longer accepting photos" }) };
+  }
+  if ((listings[idx].photos || []).length >= OWNER_SUBMIT_MAX_PHOTOS) {
+    return { statusCode: 400, headers: jsonHeaders(), body: JSON.stringify({ error: `Maximum ${OWNER_SUBMIT_MAX_PHOTOS} photos` }) };
+  }
+
+  let buffer;
+  try {
+    buffer = Buffer.from(body.imageBase64 || "", "base64");
+  } catch (e) {
+    return { statusCode: 400, headers: jsonHeaders(), body: JSON.stringify({ error: "Invalid image data" }) };
+  }
+  if (!buffer.length || buffer.length > OWNER_SUBMIT_MAX_PHOTO_BYTES) {
+    return { statusCode: 400, headers: jsonHeaders(), body: JSON.stringify({ error: "Image too large" }) };
+  }
+
+  const key = `photo:${crypto.randomUUID()}`;
+  const { listingsStore } = require("./_lib/accommodation-store");
+  await listingsStore().set(key, buffer, { metadata: { contentType: /^image\/(jpeg|png|webp)$/.test(body.contentType) ? body.contentType : "image/jpeg" } });
+  listings[idx].photos = [...(listings[idx].photos || []), key];
+  listings[idx].updatedAt = Date.now();
+  await saveAllListings(listings);
+
+  return { statusCode: 200, headers: jsonHeaders(), body: JSON.stringify({ ok: true, photoCount: listings[idx].photos.length }) };
 }

@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr" id="html-root">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJ10YL2GD4"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RJ10YL2GD4');</script>
+<title>List Your Room or Apartment | MATARIST</title>
+<meta name="description" content="Own a room or apartment in Istanbul? Submit it to MATARIST and reach students and tenants looking for a place to stay.">
+<meta name="robots" content="noindex, follow">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{
+  --bg:#15121b; --surface:#241c30; --surface-2:#2b2138;
+  --gold:#b8955e; --gold-light:#d4b480;
+  --text:#f3ede4; --text-muted:#a99bb0; --text-faint:#786a85;
+  --border:#362c42; --border-soft:#2d2436;
+  --green:#3fb950; --red:#f85149;
+  --radius-lg:18px; --radius-md:12px; --radius-sm:8px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+[dir="rtl"] body{font-family:'Cairo','DM Sans',sans-serif}
+h1,h2{font-family:'Cormorant Garamond',serif;font-weight:600}
+[dir="rtl"] h1,[dir="rtl"] h2{font-family:'Cairo',sans-serif;font-weight:700}
+a{color:inherit}
+
+header{background:rgba(21,18,27,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border-soft);padding:16px 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:sticky;top:0;z-index:50}
+.logo{display:flex;align-items:baseline;gap:6px;font-weight:700;letter-spacing:0.06em;text-decoration:none;font-size:1.05rem;text-transform:uppercase}
+.logo .mark{color:var(--gold)}
+.logo .sub{color:var(--text-muted);font-weight:500;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;margin-inline-start:4px}
+.header-right{display:flex;align-items:center;gap:18px}
+header nav a{color:var(--text-muted);text-decoration:none;font-size:0.82rem}
+header nav a:hover{color:var(--gold-light)}
+.lang-row{display:flex;gap:6px;border:1px solid var(--border);border-radius:20px;padding:3px}
+.lang-row button{background:transparent;border:none;color:var(--text-muted);border-radius:16px;padding:5px 12px;font-size:0.72rem;font-weight:600;cursor:pointer;font-family:inherit}
+.lang-row button.active{background:var(--gold);color:#1a1420}
+
+.hero{padding:56px 5% 30px;text-align:center;max-width:720px;margin:0 auto}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--gold);font-size:0.72rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px}
+.hero h1{font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.2;margin-bottom:14px}
+.hero p{color:var(--text-muted);font-size:1rem;line-height:1.7}
+.steps{display:flex;justify-content:center;gap:22px;margin-top:28px;flex-wrap:wrap}
+.step{display:flex;align-items:center;gap:8px;color:var(--text-muted);font-size:0.82rem}
+.step i{color:var(--gold)}
+
+.wrap{max-width:720px;margin:0 auto;padding:10px 5% 70px}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;box-shadow:0 18px 44px rgba(0,0,0,0.3)}
+.panel h2{font-size:1.25rem;margin-bottom:18px;color:var(--gold-light)}
+.form-row{margin-bottom:16px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-row label{display:block;font-size:0.78rem;color:var(--text-muted);margin-bottom:6px;font-weight:600}
+.form-row label .req{color:var(--red)}
+.form-row input,.form-row select,.form-row textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 13px;color:var(--text);font-family:inherit;font-size:0.9rem;outline:none}
+.form-row input:focus,.form-row select:focus,.form-row textarea:focus{border-color:var(--gold)}
+.form-hint{font-size:0.72rem;color:var(--text-faint);margin-top:5px}
+#map-pick{height:200px;border-radius:var(--radius-sm);margin-top:6px;border:1px solid var(--border)}
+.honeypot{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+.btn{background:var(--gold);color:#1a1420;border:none;padding:13px 26px;border-radius:var(--radius-sm);font-weight:700;font-size:0.92rem;cursor:pointer;width:100%}
+.btn:hover{background:var(--gold-light)}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
+.btn.secondary{background:var(--surface-2);color:var(--text);border:1px solid var(--border)}
+
+.photo-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.photo-thumb{position:relative;width:92px;height:72px;border-radius:8px;overflow:hidden;background:#000}
+.photo-thumb img{width:100%;height:100%;object-fit:cover}
+.photo-add{width:92px;height:72px;border:1.5px dashed var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-faint);cursor:pointer;font-size:1.2rem}
+.photo-add:hover{border-color:var(--gold);color:var(--gold)}
+
+.success-box{text-align:center;padding:30px 10px}
+.success-box i{font-size:2.6rem;color:var(--green);margin-bottom:16px}
+.success-box h2{color:var(--text);margin-bottom:10px}
+.success-box p{color:var(--text-muted);line-height:1.7;margin-bottom:22px}
+
+.error-msg{color:var(--red);font-size:0.85rem;margin-top:10px;display:none}
+.step-dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.step-dots span{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.step-dots span.active{background:var(--gold)}
+
+footer{text-align:center;padding:30px 20px;color:var(--text-faint);font-size:0.8rem;border-top:1px solid var(--border-soft)}
+footer a{color:var(--gold);text-decoration:none;font-weight:600}
+@media(max-width:560px){.form-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/"><span class="mark">MATARIST</span><span class="sub" data-i18n="brand">List Your Place</span></a>
+  <div class="header-right">
+    <nav><a href="/accommodation/" data-i18n="back_listings">&larr; Browse listings</a></nav>
+    <div class="lang-row">
+      <button data-lang="en" onclick="setLang('en')">EN</button>
+      <button data-lang="ar" onclick="setLang('ar')">AR</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <span class="eyebrow" data-i18n="eyebrow">For Property Owners</span>
+  <h1 data-i18n="hero_title">List Your Room or Apartment</h1>
+  <p data-i18n="hero_sub">Tell us about your place and we'll handle finding the right tenant — students and young professionals browse MATARIST every day. Every submission is reviewed by our team before it ever goes public.</p>
+  <div class="steps">
+    <div class="step"><i class="fa-solid fa-pen"></i><span data-i18n="step1">Fill in the details</span></div>
+    <div class="step"><i class="fa-solid fa-magnifying-glass"></i><span data-i18n="step2">We review it</span></div>
+    <div class="step"><i class="fa-solid fa-circle-check"></i><span data-i18n="step3">It goes live</span></div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="panel" id="panel-form">
+    <div class="step-dots"><span class="active"></span><span></span></div>
+    <h2 data-i18n="form_heading">Property Details</h2>
+    <form id="submit-form" onsubmit="return submitListing(event)">
+      <div class="honeypot"><label>Website<input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off"></label></div>
+      <div class="form-grid">
+        <div class="form-row"><label data-i18n="l-title">Title<span class="req">*</span></label><input id="f-title" required maxlength="120" placeholder="e.g. Shared double room near Taksim" data-i18n-ph="ph-title"></div>
+        <div class="form-row"><label data-i18n="l-district">District<span class="req">*</span></label><input id="f-district" required maxlength="80" placeholder="e.g. Şişli" data-i18n-ph="ph-district"></div>
+        <div class="form-row"><label data-i18n="l-roomtype">Room type</label>
+          <select id="f-roomtype">
+            <option value="single" data-i18n="type_single">Single room</option>
+            <option value="double" data-i18n="type_double">Double room</option>
+            <option value="shared" data-i18n="type_shared">Shared room</option>
+            <option value="apartment" data-i18n="type_apartment">Entire apartment</option>
+          </select>
+        </div>
+        <div class="form-row"><label data-i18n="l-rent">Monthly rent</label>
+          <div style="display:flex;gap:8px">
+            <input id="f-rent" type="number" min="0" style="flex:2">
+            <select id="f-currency" style="flex:1"><option value="TRY">TRY</option><option value="USD">USD</option><option value="EUR">EUR</option></select>
+          </div>
+        </div>
+        <div class="form-row"><label data-i18n="l-deposit">Deposit</label><input id="f-deposit" maxlength="80" data-i18n-ph="ph-deposit" placeholder="e.g. 1 month"></div>
+        <div class="form-row"><label data-i18n="l-bills">Bills / utilities</label><input id="f-bills" maxlength="120" data-i18n-ph="ph-bills" placeholder="e.g. included / extra ~500 TRY"></div>
+        <div class="form-row"><label data-i18n="l-furnishing">Furnishing</label><input id="f-furnishing" maxlength="80" data-i18n-ph="ph-furnishing" placeholder="furnished / unfurnished"></div>
+        <div class="form-row"><label data-i18n="l-gender">Gender preference</label><input id="f-gender" maxlength="40" data-i18n-ph="ph-gender" placeholder="male / female / mixed"></div>
+        <div class="form-row"><label data-i18n="l-transport">Nearby transport</label><input id="f-transport" maxlength="160" data-i18n-ph="ph-transport" placeholder="e.g. 5 min to metro"></div>
+        <div class="form-row"><label data-i18n="l-contact">Your phone / WhatsApp<span class="req">*</span></label><input id="f-contact" required maxlength="120" data-i18n-ph="ph-contact" placeholder="+90 5xx xxx xx xx"></div>
+      </div>
+      <div class="form-row"><label data-i18n="l-description">Description</label><textarea id="f-description" rows="3" maxlength="2000" data-i18n-ph="ph-description" placeholder="Describe the room, the building, the neighborhood…"></textarea></div>
+      <div class="form-row"><label data-i18n="l-rules">House rules</label><textarea id="f-rules" rows="2" maxlength="1000" data-i18n-ph="ph-rules" placeholder="e.g. no smoking, no pets"></textarea></div>
+      <div class="form-row"><label data-i18n="l-map">Location — click the map to drop a pin (optional)</label><div id="map-pick"></div></div>
+      <div class="form-row">
+        <label data-i18n="l-consent-label" style="display:flex;align-items:flex-start;gap:8px;font-weight:400">
+          <input type="checkbox" id="f-consent" required style="width:auto;margin-top:3px">
+          <span data-i18n="consent_text">I confirm I'm authorized to list this property and I understand MATARIST will review it before it's published.</span>
+        </label>
+      </div>
+      <button class="btn" type="submit" id="submit-btn" data-i18n="btn_submit">Submit for review</button>
+      <div class="error-msg" id="form-error"></div>
+    </form>
+  </div>
+
+  <div class="panel" id="panel-photos" style="display:none">
+    <div class="step-dots"><span></span><span class="active"></span></div>
+    <h2 data-i18n="photos_heading">Add Photos (optional, up to 8)</h2>
+    <p class="form-hint" data-i18n="photos_hint" style="margin-bottom:10px">Clear, well-lit photos get far more interest. You can also finish without photos.</p>
+    <div class="photo-row" id="photo-row">
+      <label class="photo-add"><i class="fa-solid fa-plus"></i><input type="file" accept="image/*" multiple style="display:none" onchange="handlePhotoUpload(event)"></label>
+    </div>
+    <button class="btn" onclick="finishSubmission()" data-i18n="btn_finish">Finish</button>
+  </div>
+
+  <div class="panel" id="panel-success" style="display:none">
+    <div class="success-box">
+      <i class="fa-solid fa-circle-check"></i>
+      <h2 data-i18n="success_title">Thanks — we've got it!</h2>
+      <p data-i18n="success_body">Your submission is now with our team for review. We'll check the details and publish it (or reach out if we need anything else). This usually takes less than 48 hours.</p>
+      <a class="btn" href="/accommodation/" style="display:inline-block;width:auto;text-decoration:none" data-i18n="btn_browse">Browse current listings</a>
+    </div>
+  </div>
+</div>
+
+<footer>MATARIST Travel &middot; Istanbul &middot; <a href="https://wa.me/905451218167">WhatsApp</a></footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const LISTINGS_URL='/.netlify/functions/accommodation-listings';
+const MAX_PHOTOS = 8;
+
+const translations = {
+  en:{brand:"List Your Place",back_listings:"← Browse listings",eyebrow:"For Property Owners",hero_title:"List Your Room or Apartment",hero_sub:"Tell us about your place and we'll handle finding the right tenant — students and young professionals browse MATARIST every day. Every submission is reviewed by our team before it ever goes public.",step1:"Fill in the details",step2:"We review it",step3:"It goes live",form_heading:"Property Details","l-title":"Title","l-district":"District","l-roomtype":"Room type","l-rent":"Monthly rent","l-deposit":"Deposit","l-bills":"Bills / utilities","l-furnishing":"Furnishing","l-gender":"Gender preference","l-transport":"Nearby transport","l-contact":"Your phone / WhatsApp","l-description":"Description","l-rules":"House rules","l-map":"Location — click the map to drop a pin (optional)","ph-title":"e.g. Shared double room near Taksim","ph-district":"e.g. Şişli","ph-deposit":"e.g. 1 month","ph-bills":"e.g. included / extra ~500 TRY","ph-furnishing":"furnished / unfurnished","ph-gender":"male / female / mixed","ph-transport":"e.g. 5 min to metro","ph-contact":"+90 5xx xxx xx xx","ph-description":"Describe the room, the building, the neighborhood…","ph-rules":"e.g. no smoking, no pets",type_single:"Single room",type_double:"Double room",type_shared:"Shared room",type_apartment:"Entire apartment",consent_text:"I confirm I'm authorized to list this property and I understand MATARIST will review it before it's published.",btn_submit:"Submit for review",photos_heading:"Add Photos (optional, up to 8)",photos_hint:"Clear, well-lit photos get far more interest. You can also finish without photos.",btn_finish:"Finish",success_title:"Thanks — we've got it!",success_body:"Your submission is now with our team for review. We'll check the details and publish it (or reach out if we need anything else). This usually takes less than 48 hours.",btn_browse:"Browse current listings",err_required:"Please fill in the title, district, and your contact number.",err_generic:"Something went wrong — please try again."},
+  ar:{brand:"أضف عقارك",back_listings:"← تصفح السكنات",eyebrow:"لأصحاب العقارات",hero_title:"أضف غرفتك أو شقتك للإيجار",hero_sub:"احكيلنا عن سكنك وإحنا هنتولى إيجاد المستأجر المناسب — طلاب ومهنيين شباب بيتصفحوا ماتاريست يومياً. كل طلب بيتم مراجعته من فريقنا قبل النشر.",step1:"املأ التفاصيل",step2:"نراجع الطلب",step3:"يتم النشر",form_heading:"تفاصيل العقار","l-title":"العنوان","l-district":"المنطقة","l-roomtype":"نوع الغرفة","l-rent":"الإيجار الشهري","l-deposit":"التأمين","l-bills":"الفواتير","l-furnishing":"التأثيث","l-gender":"الجنس المفضل","l-transport":"المواصلات القريبة","l-contact":"رقم الهاتف / واتساب","l-description":"الوصف","l-rules":"قوانين السكن","l-map":"الموقع — اضغط على الخريطة لتحديد المكان (اختياري)","ph-title":"مثال: غرفة مزدوجة مشتركة قرب تقسيم","ph-district":"مثال: شيشلي","ph-deposit":"مثال: شهر واحد","ph-bills":"مثال: شاملة / إضافية حوالي 500 ليرة","ph-furnishing":"مفروشة / غير مفروشة","ph-gender":"ذكور / إناث / مختلط","ph-transport":"مثال: 5 دقائق من المترو","ph-contact":"+90 5xx xxx xx xx","ph-description":"اوصف الغرفة والمبنى والمنطقة المحيطة…","ph-rules":"مثال: ممنوع التدخين، ممنوع الحيوانات الأليفة",type_single:"غرفة مفردة",type_double:"غرفة مزدوجة",type_shared:"غرفة مشتركة",type_apartment:"شقة كاملة",consent_text:"أؤكد أنني مخوّل بتأجير هذا العقار، وأفهم أن ماتاريست ستراجعه قبل نشره.",btn_submit:"إرسال للمراجعة",photos_heading:"أضف صور (اختياري، حتى 8 صور)",photos_hint:"الصور الواضحة ذات الإضاءة الجيدة بتجذب اهتمام أكتر. تقدر كمان تنهي بدون صور.",btn_finish:"إنهاء",success_title:"شكراً — استلمنا طلبك!",success_body:"طلبك دلوقتي مع فريقنا للمراجعة. هنراجع التفاصيل وننشره (أو نتواصل معاك لو محتاجين أي حاجة إضافية). ده بياخد عادةً أقل من 48 ساعة.",btn_browse:"تصفح السكنات المتاحة حالياً",err_required:"من فضلك املأ العنوان والمنطقة ورقم التواصل.",err_generic:"حصل خطأ — من فضلك حاول تاني."}
+};
+function setLang(lang){
+  localStorage.setItem('acc_lang', lang);
+  document.getElementById('html-root').lang = lang;
+  document.getElementById('html-root').dir = lang==='ar' ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ const k=el.getAttribute('data-i18n'); if(translations[lang][k]) el.textContent = translations[lang][k]; });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ const k=el.getAttribute('data-i18n-ph'); if(translations[lang][k]) el.placeholder = translations[lang][k]; });
+  document.querySelectorAll('.lang-row button').forEach(b=>b.classList.toggle('active', b.dataset.lang===lang));
+  window.currentLang = lang;
+}
+function t(key){ return (translations[window.currentLang||'en'][key]) || key; }
+
+let pinLat=null, pinLng=null, map;
+function initMap(){
+  map = L.map('map-pick').setView([41.0082,28.9784], 10);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap'}).addTo(map);
+  let marker;
+  map.on('click', e=>{
+    pinLat = e.latlng.lat; pinLng = e.latlng.lng;
+    if(marker) map.removeLayer(marker);
+    marker = L.marker([pinLat,pinLng]).addTo(map);
+  });
+}
+
+let submittedId = null, submissionToken = null;
+
+async function submitListing(e){
+  e.preventDefault();
+  const errEl = document.getElementById('form-error');
+  errEl.style.display='none';
+  const title = document.getElementById('f-title').value.trim();
+  const district = document.getElementById('f-district').value.trim();
+  const ownerContact = document.getElementById('f-contact').value.trim();
+  if(!title || !district || !ownerContact || !document.getElementById('f-consent').checked){
+    errEl.textContent = t('err_required'); errEl.style.display='block';
+    return false;
+  }
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  const payload = {
+    action:'submit',
+    website: document.getElementById('f-website').value, // honeypot
+    title, district,
+    roomType: document.getElementById('f-roomtype').value,
+    monthlyRent: parseFloat(document.getElementById('f-rent').value)||0,
+    currency: document.getElementById('f-currency').value,
+    deposit: document.getElementById('f-deposit').value.trim(),
+    bills: document.getElementById('f-bills').value.trim(),
+    furnishing: document.getElementById('f-furnishing').value.trim(),
+    genderPolicy: document.getElementById('f-gender').value.trim(),
+    transport: document.getElementById('f-transport').value.trim(),
+    description: document.getElementById('f-description').value.trim(),
+    rules: document.getElementById('f-rules').value.trim(),
+    ownerContact,
+    lat: pinLat, lng: pinLng,
+  };
+  try{
+    const res = await fetch(LISTINGS_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error || 'failed');
+    submittedId = data.id;
+    submissionToken = data.submissionToken;
+    document.getElementById('panel-form').style.display='none';
+    document.getElementById('panel-photos').style.display='block';
+  }catch(err){
+    errEl.textContent = t('err_generic'); errEl.style.display='block';
+  }finally{
+    btn.disabled = false;
+  }
+  return false;
+}
+
+function renderPhotoRow(urls){
+  const row = document.getElementById('photo-row');
+  const addBtn = row.querySelector('.photo-add').parentElement ? row.querySelector('.photo-add') : null;
+  row.innerHTML = urls.map(u=>`<div class="photo-thumb"><img src="${u}"></div>`).join('') +
+    (urls.length < MAX_PHOTOS ? `<label class="photo-add"><i class="fa-solid fa-plus"></i><input type="file" accept="image/*" multiple style="display:none" onchange="handlePhotoUpload(event)"></label>` : '');
+}
+let uploadedPreviews = [];
+
+async function handlePhotoUpload(e){
+  const files = [...e.target.files].slice(0, MAX_PHOTOS - uploadedPreviews.length);
+  for(const file of files){
+    const compressed = await compressImage(file);
+    uploadedPreviews.push('data:'+compressed.type+';base64,'+compressed.base64);
+    renderPhotoRow(uploadedPreviews);
+    try{
+      await fetch(LISTINGS_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({
+        action:'submitPhoto', id: submittedId, submissionToken, imageBase64: compressed.base64, contentType: compressed.type
+      })});
+    }catch(err){ /* best effort — admin can still ask for photos again if one fails */ }
+  }
+}
+
+function compressImage(file){
+  return new Promise(resolve=>{
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = ev => { img.src = ev.target.result; };
+    img.onload = () => {
+      const maxDim = 1600;
+      let w=img.width, h=img.height;
+      if(w>h && w>maxDim){ h=Math.round(h*maxDim/w); w=maxDim; }
+      else if(h>maxDim){ w=Math.round(w*maxDim/h); h=maxDim; }
+      const canvas = document.createElement('canvas');
+      canvas.width=w; canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.75);
+      resolve({ base64: dataUrl.split(',')[1], type: 'image/jpeg' });
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function finishSubmission(){
+  document.getElementById('panel-photos').style.display='none';
+  document.getElementById('panel-success').style.display='block';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+setLang(localStorage.getItem('acc_lang') || 'en');
+initMap();
+</script>
+</body>
+</html>
