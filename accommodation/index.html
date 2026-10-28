@@ -263,6 +263,47 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
   .filters button{width:100%}
   .hero{padding:56px 6% 90px}
 }
+
+/* ===== Captain Stay chat assistant ===== */
+.captain-chat{position:fixed;bottom:22px;inset-inline-end:22px;z-index:200;font-family:'DM Sans',sans-serif}
+[dir="rtl"] .captain-chat{font-family:'Cairo','DM Sans',sans-serif}
+.captain-toggle{position:relative;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-light));border:none;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;font-size:1.6rem;transition:transform 0.2s}
+.captain-toggle:hover{transform:scale(1.07)}
+.captain-ping{position:absolute;top:-3px;inset-inline-end:-3px;width:14px;height:14px;background:#e8597a;border:2px solid var(--bg);border-radius:50%;animation:captain-pulse 1.8s infinite}
+@keyframes captain-pulse{0%{box-shadow:0 0 0 0 rgba(232,89,122,0.6)}70%{box-shadow:0 0 0 10px rgba(232,89,122,0)}100%{box-shadow:0 0 0 0 rgba(232,89,122,0)}}
+.captain-panel{position:absolute;bottom:74px;inset-inline-end:0;width:360px;max-width:92vw;height:520px;max-height:72vh;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lift);display:none;flex-direction:column;overflow:hidden}
+.captain-panel.open{display:flex}
+.captain-header{display:flex;align-items:center;gap:10px;padding:14px 16px;background:var(--surface-2);border-bottom:1px solid var(--border-soft)}
+.captain-avatar{width:38px;height:38px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.captain-header-text{flex:1;min-width:0}
+.captain-name{font-weight:700;font-size:0.92rem;color:var(--text)}
+.captain-status{font-size:0.7rem;color:var(--text-faint);display:flex;align-items:center;gap:5px}
+.captain-status .dot{width:6px;height:6px;border-radius:50%;background:#5ec98a;display:inline-block}
+.captain-close{background:transparent;border:none;color:var(--text-faint);font-size:1.3rem;cursor:pointer;line-height:1;padding:4px}
+.captain-close:hover{color:var(--text)}
+.captain-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.captain-msg{max-width:85%;padding:10px 13px;border-radius:14px;font-size:0.85rem;line-height:1.5}
+.captain-msg.bot{align-self:flex-start;background:var(--surface-2);color:var(--text);border:1px solid var(--border-soft)}
+.captain-msg.user{align-self:flex-end;background:var(--gold);color:#1a1420;font-weight:600}
+.captain-results{display:flex;flex-direction:column;gap:8px;max-width:95%;align-self:flex-start}
+.captain-card{display:flex;gap:10px;background:var(--surface-2);border:1px solid var(--border-soft);border-radius:12px;padding:8px;text-decoration:none;color:inherit;transition:border-color 0.2s}
+.captain-card:hover{border-color:var(--gold)}
+.captain-card img{width:58px;height:58px;border-radius:9px;object-fit:cover;flex-shrink:0;background:var(--surface-3)}
+.captain-card-body{min-width:0}
+.captain-card-title{font-size:0.8rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.captain-card-meta{font-size:0.72rem;color:var(--text-faint);margin-top:2px}
+.captain-card-price{font-size:0.78rem;font-weight:700;color:var(--gold-light);margin-top:3px}
+.captain-chips{display:flex;gap:6px;flex-wrap:wrap;padding:0 14px 10px}
+.captain-chips button{background:var(--surface-3);border:1px solid var(--border);color:var(--text-muted);font-size:0.72rem;padding:6px 11px;border-radius:20px;cursor:pointer;white-space:nowrap;font-family:inherit}
+.captain-chips button:hover{border-color:var(--gold);color:var(--text)}
+.captain-form{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border-soft)}
+.captain-form input{flex:1;background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:20px;padding:10px 15px;font-size:0.85rem;outline:none;font-family:inherit}
+.captain-form input:focus{border-color:var(--gold)}
+.captain-form button{width:38px;height:38px;border-radius:50%;background:var(--gold);border:none;color:#1a1420;cursor:pointer;flex-shrink:0}
+@media(max-width:480px){
+  .captain-panel{width:94vw;height:66vh}
+  .captain-chat{inset-inline-end:14px;bottom:14px}
+}
 </style>
 </head>
 <body>
@@ -378,6 +419,33 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 </div>
 
 <footer>MATARIST Travel &middot; Istanbul &middot; <a href="https://wa.me/905451218167">WhatsApp</a></footer>
+
+<div class="captain-chat">
+  <button id="captain-toggle" class="captain-toggle" aria-label="Chat with Captain Stay" onclick="toggleCaptainChat()">
+    <span>🕶️</span>
+    <span class="captain-ping"></span>
+  </button>
+  <div id="captain-panel" class="captain-panel">
+    <div class="captain-header">
+      <div class="captain-avatar">🕶️</div>
+      <div class="captain-header-text">
+        <div class="captain-name">Captain Stay</div>
+        <div class="captain-status"><span class="dot"></span> Online · Ask me anything</div>
+      </div>
+      <button class="captain-close" onclick="toggleCaptainChat()" aria-label="Close">&times;</button>
+    </div>
+    <div id="captain-messages" class="captain-messages"></div>
+    <div class="captain-chips">
+      <button type="button" onclick="captainQuickSend('غرف بنات فقط')">👩 بنات فقط</button>
+      <button type="button" onclick="captainQuickSend('شقة كاملة')">🏠 شقق كاملة</button>
+      <button type="button" onclick="captainQuickSend('تحت 10000 ليرة')">💸 تحت 10K</button>
+    </div>
+    <form id="captain-form" class="captain-form" onsubmit="return captainSubmit(event)">
+      <input id="captain-input" type="text" autocomplete="off" placeholder="اكتب طلبك هنا... / Type your request...">
+      <button type="submit" aria-label="Send"><i class="fa-solid fa-paper-plane"></i></button>
+    </form>
+  </div>
+</div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -603,6 +671,160 @@ function renderMap(){
 }
 
 function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+// ===== Captain Stay — rule-based chat assistant over the already-loaded
+// `allListings` data. No backend/AI call: it parses the visitor's free-text
+// message for budget, gender, room type and district, filters the live
+// listings with the same logic as the on-page filters, and replies with
+// matching cards. Keeps the page self-contained and avoids exposing any
+// extra data beyond what's already public on this page.
+function captainDetectArabic(s){ return /[؀-ۿ]/.test(s); }
+
+function captainParseBudget(msg){
+  const m = msg.match(/(\d[\d.,]*)\s*(الف|ألف|k)?/i);
+  if(!m) return null;
+  let num = parseFloat(m[1].replace(/,/g,''));
+  if(!num) return null;
+  if(m[2]) num *= 1000;
+  const isMin = /فوق|اكثر من|أكثر من|over|above|min/i.test(msg);
+  return { value:num, type:isMin ? 'min' : 'max' };
+}
+
+function captainParseGender(msg){
+  if(/بنات|بنت|حريمي|سيدات|girls?|female|women/i.test(msg)) return 'girls';
+  if(/شباب|ولاد|رجال|boys?|\bmale\b|\bmen\b/i.test(msg)) return 'boys';
+  if(/مكس|مختلط|mixed/i.test(msg)) return 'mixed';
+  return null;
+}
+
+function captainParseRoomType(msg){
+  if(/شقق?ه|apartment|flat/i.test(msg)) return 'apartment';
+  if(/دوبل|مزدوج|double/i.test(msg)) return 'double';
+  if(/مشارك|شير|shared/i.test(msg)) return 'shared';
+  if(/مفرد|single|لوحد/i.test(msg)) return 'single';
+  return null;
+}
+
+function captainParseDistrict(msg){
+  const districts = [...new Set(allListings.map(l=>l.district).filter(Boolean))];
+  const lower = msg.toLowerCase();
+  return districts.find(d => lower.includes(d.toLowerCase())) || null;
+}
+
+const CAPTAIN_RESP = {
+  ar:{
+    greet:"يا هلا! 🕶️ أنا <b>كابتن سكن</b>، دليلك لأي غرفة أو شقة في إسطنبول. قولّي عايز سكن فين، لمين (بنات/شباب/مكس)، وميزانيتك، وهجيبلك أحسن اختيارات فورًا 💪",
+    resultsIntro:n=>`لقيت لك ${n} ${n===1?'سكن يناسبك':'سكنات تناسبك'} 👇`,
+    noMatch:"معلش، مفيش عندي حاليًا سكن مطابق تمامًا للطلب ده 😅 جرب تقلل شرط (زي الميزانية أو المنطقة) وهدورلك تاني.",
+    more:"تحب تضيق الاختيار؟ قولّي المنطقة، الميزانية، أو لمين السكن (بنات/شباب/مكس) 😉",
+    rented:"مؤجرة", perMonth:"/شهريًا"
+  },
+  en:{
+    greet:"Hey there! 🕶️ I'm <b>Captain Stay</b>, your guide to any room or apartment in Istanbul. Tell me where, who it's for (girls/boys/mixed), and your budget — I'll pull the best matches right away 💪",
+    resultsIntro:n=>`Found ${n} ${n===1?'place':'places'} that could work for you 👇`,
+    noMatch:"Hmm, nothing matches that exactly right now 😅 Try loosening a filter (budget or district) and I'll search again.",
+    more:"Want to narrow it down? Tell me the district, budget, or who it's for (girls/boys/mixed) 😉",
+    rented:"rented", perMonth:"/month"
+  }
+};
+
+function captainReply(raw){
+  const lang = captainDetectArabic(raw) ? 'ar' : 'en';
+  const t = CAPTAIN_RESP[lang];
+  if(raw.trim().length < 20 && /^(hi|hello|hey|السلام|سلام|ازيك|اهلا|هاي)\b/i.test(raw.trim())){
+    return { text:t.greet, listings:[], lang };
+  }
+  const budget = captainParseBudget(raw);
+  const gender = captainParseGender(raw);
+  const roomType = captainParseRoomType(raw);
+  const district = captainParseDistrict(raw);
+
+  if(!budget && !gender && !roomType && !district){
+    return { text:t.more, listings:[], lang };
+  }
+
+  let results = allListings.filter(l=>{
+    if(district && l.district !== district) return false;
+    if(roomType && l.roomType !== roomType) return false;
+    if(gender && genderTheme(l.genderPolicy) !== gender) return false;
+    if(budget){
+      if(budget.type==='max' && l.monthlyRent > budget.value) return false;
+      if(budget.type==='min' && l.monthlyRent < budget.value) return false;
+    }
+    return true;
+  }).sort((a,b)=>(a.status==='rented')-(b.status==='rented') || a.monthlyRent-b.monthlyRent);
+
+  if(!results.length) return { text:t.noMatch, listings:[], lang };
+
+  results = results.slice(0,5);
+  return { text:t.resultsIntro(results.length), listings:results, lang };
+}
+
+let captainGreeted = false;
+function toggleCaptainChat(){
+  const panel = document.getElementById('captain-panel');
+  const opening = !panel.classList.contains('open');
+  panel.classList.toggle('open');
+  if(opening && !captainGreeted){
+    captainGreeted = true;
+    const t = CAPTAIN_RESP[window.currentLang==='ar' ? 'ar' : 'en'];
+    addCaptainMessage(t.greet, 'bot');
+  }
+  if(opening) document.getElementById('captain-input').focus();
+}
+
+function addCaptainMessage(html, role){
+  const box = document.getElementById('captain-messages');
+  const div = document.createElement('div');
+  div.className = 'captain-msg ' + role;
+  div.innerHTML = html;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+}
+
+function addCaptainResults(listings, lang){
+  const box = document.getElementById('captain-messages');
+  const t = CAPTAIN_RESP[lang];
+  const wrap = document.createElement('div');
+  wrap.className = 'captain-results';
+  wrap.innerHTML = listings.map(l=>{
+    const photoKey = (l.photos||[])[0];
+    const src = photoKey ? `/.netlify/functions/accommodation-listings?photo=${encodeURIComponent(photoKey)}` : '';
+    const theme = genderTheme(l.genderPolicy);
+    const genderLabel = theme==='girls' ? (lang==='ar'?'بنات':'Girls') : theme==='boys' ? (lang==='ar'?'شباب':'Boys') : theme==='mixed' ? (lang==='ar'?'مكس':'Mixed') : '';
+    return `<a class="captain-card" href="/accommodation/${l.slug}" target="_blank" rel="noopener">
+      <img src="${src}" onerror="this.style.visibility='hidden'" alt="">
+      <div class="captain-card-body">
+        <div class="captain-card-title">${escapeHtml(l.title||'')}</div>
+        <div class="captain-card-meta">${escapeHtml(l.district||'')}${genderLabel?' · '+genderLabel:''}${l.status==='rented'?' · '+t.rented:''}</div>
+        <div class="captain-card-price">${l.monthlyRent||''} ${escapeHtml(l.currency||'TRY')}${t.perMonth}</div>
+      </div>
+    </a>`;
+  }).join('');
+  box.appendChild(wrap);
+  box.scrollTop = box.scrollHeight;
+}
+
+function captainSubmit(e){
+  e.preventDefault();
+  const input = document.getElementById('captain-input');
+  const msg = input.value.trim();
+  if(!msg) return false;
+  input.value = '';
+  addCaptainMessage(escapeHtml(msg), 'user');
+  setTimeout(()=>{
+    const { text, listings, lang } = captainReply(msg);
+    addCaptainMessage(text, 'bot');
+    if(listings && listings.length) addCaptainResults(listings, lang);
+  }, 300);
+  return false;
+}
+
+function captainQuickSend(text){
+  if(!document.getElementById('captain-panel').classList.contains('open')) toggleCaptainChat();
+  document.getElementById('captain-input').value = text;
+  captainSubmit(new Event('submit', {cancelable:true}));
+}
 
 const savedLang = localStorage.getItem('acc_lang') || 'en';
 setLang(savedLang);
