@@ -11,9 +11,9 @@ const SITE = "https://mataristtravel.com";
 const WHATSAPP = "905451218167";
 
 const LABELS = {
-  en: { back: "All accommodation listings", rented: "Rented — currently unavailable", contact: "Ask about this room on WhatsApp", district: "District", type: "Room type", rent: "Monthly rent", deposit: "Deposit", bills: "Bills", furnishing: "Furnishing", gender: "Preference", transport: "Nearby transport", rules: "Rules", video: "Video", watchVideo: "Watch video", notFound: "This listing is no longer available.", gone: "This listing has been removed." },
-  ar: { back: "كل السكنات المتاحة", rented: "مؤجرة حالياً — غير متاحة", contact: "اسأل عن هذه الغرفة عبر واتساب", district: "المنطقة", type: "نوع الغرفة", rent: "الإيجار الشهري", deposit: "التأمين", bills: "الفواتير", furnishing: "التأثيث", gender: "التفضيل", transport: "وسائل النقل القريبة", rules: "الشروط", video: "فيديو", watchVideo: "شاهد الفيديو", notFound: "هذا السكن غير متاح حالياً.", gone: "تم حذف هذا السكن." },
-  tr: { back: "Tüm konaklama ilanları", rented: "Kiralandı — şu anda uygun değil", contact: "Bu oda hakkında WhatsApp'tan sorun", district: "Semt", type: "Oda tipi", rent: "Aylık kira", deposit: "Depozito", bills: "Faturalar", furnishing: "Eşya durumu", gender: "Tercih", transport: "Yakın ulaşım", rules: "Kurallar", video: "Video", watchVideo: "Videoyu izle", notFound: "Bu ilan artık mevcut değil.", gone: "Bu ilan kaldırıldı." },
+  en: { back: "All Roomist listings", rented: "Rented — currently unavailable", contact: "Ask about this room on WhatsApp", district: "District", type: "Room type", rent: "Monthly rent", deposit: "Deposit", bills: "Bills", furnishing: "Furnishing", gender: "Preference", transport: "Nearby transport", rules: "Rules", video: "Video", watchVideo: "Watch video", notFound: "This listing is no longer available.", gone: "This listing has been removed." },
+  ar: { back: "كل إعلانات Roomist", rented: "مؤجرة حالياً — غير متاحة", contact: "اسأل عن هذه الغرفة عبر واتساب", district: "المنطقة", type: "نوع الغرفة", rent: "الإيجار الشهري", deposit: "التأمين", bills: "الفواتير", furnishing: "التأثيث", gender: "التفضيل", transport: "وسائل النقل القريبة", rules: "الشروط", video: "فيديو", watchVideo: "شاهد الفيديو", notFound: "هذا السكن غير متاح حالياً.", gone: "تم حذف هذا السكن." },
+  tr: { back: "Tüm Roomist ilanları", rented: "Kiralandı — şu anda uygun değil", contact: "Bu oda hakkında WhatsApp'tan sorun", district: "Semt", type: "Oda tipi", rent: "Aylık kira", deposit: "Depozito", bills: "Faturalar", furnishing: "Eşya durumu", gender: "Tercih", transport: "Yakın ulaşım", rules: "Kurallar", video: "Video", watchVideo: "Videoyu izle", notFound: "Bu ilan artık mevcut değil.", gone: "Bu ilan kaldırıldı." },
 };
 
 const ROOM_TYPE_LABEL = { single: "Single room", double: "Double room", shared: "Shared room", apartment: "Entire apartment" };
@@ -67,7 +67,7 @@ const GA_SNIPPET = `<script async src="https://www.googletagmanager.com/gtag/js?
 
 function errorPage(lang, code, message) {
   const t = LABELS[lang] || LABELS.en;
-  return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">${GA_SNIPPET}<title>${code} — MATARIST Accommodation</title><meta name="robots" content="noindex">
+  return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">${GA_SNIPPET}<title>${code} — Roomist by MATARIST</title><meta name="robots" content="noindex">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet"></head>
   <body style="font-family:'DM Sans',sans-serif;text-align:center;padding:120px 20px;background:#15121b;color:#f3ede4;margin:0">
   <h1 style="font-family:'Cormorant Garamond',serif;font-size:3rem;color:#b8955e;margin-bottom:12px">${code}</h1>
@@ -90,7 +90,7 @@ function renderListing(listing, lang, previewToken) {
   const isPreview = !!previewToken;
   const t = LABELS[lang] || LABELS.en;
   const pub = toPublicListing(listing);
-  const title = `${escapeHtml(pub.title)} — ${escapeHtml(pub.district)} | MATARIST Accommodation`;
+  const title = `${escapeHtml(pub.title)} — ${escapeHtml(pub.district)} | Roomist by MATARIST`;
   const descSource = pub.description || `${ROOM_TYPE_LABEL[pub.roomType] || pub.roomType} in ${pub.district}, Istanbul.`;
   const description = escapeHtml(String(descSource).slice(0, 160));
   const canonical = `${SITE}/accommodation/${pub.slug}`;
