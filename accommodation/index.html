@@ -264,7 +264,7 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
   .hero{padding:56px 6% 90px}
 }
 
-/* ===== Captain Stay chat assistant ===== */
+/* ===== RoomGenie chat assistant ===== */
 .captain-chat{position:fixed;bottom:22px;inset-inline-end:22px;z-index:200;font-family:'DM Sans',sans-serif}
 [dir="rtl"] .captain-chat{font-family:'Cairo','DM Sans',sans-serif}
 .captain-toggle{position:relative;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-light));border:none;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;font-size:1.6rem;transition:transform 0.2s}
@@ -421,15 +421,15 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 <footer>MATARIST Travel &middot; Istanbul &middot; <a href="https://wa.me/905451218167">WhatsApp</a></footer>
 
 <div class="captain-chat">
-  <button id="captain-toggle" class="captain-toggle" aria-label="Chat with Captain Stay" onclick="toggleCaptainChat()">
-    <span>🕶️</span>
+  <button id="captain-toggle" class="captain-toggle" aria-label="Chat with RoomGenie" onclick="toggleCaptainChat()">
+    <span>🧞</span>
     <span class="captain-ping"></span>
   </button>
   <div id="captain-panel" class="captain-panel">
     <div class="captain-header">
-      <div class="captain-avatar">🕶️</div>
+      <div class="captain-avatar">🧞</div>
       <div class="captain-header-text">
-        <div class="captain-name">Captain Stay</div>
+        <div class="captain-name">RoomGenie</div>
         <div class="captain-status"><span class="dot"></span> Online · Ask me anything</div>
       </div>
       <button class="captain-close" onclick="toggleCaptainChat()" aria-label="Close">&times;</button>
@@ -672,7 +672,7 @@ function renderMap(){
 
 function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-// ===== Captain Stay — rule-based chat assistant over the already-loaded
+// ===== RoomGenie — rule-based chat assistant over the already-loaded
 // `allListings` data. No backend/AI call: it parses the visitor's free-text
 // message for budget, gender, room type and district, filters the live
 // listings with the same logic as the on-page filters, and replies with
@@ -713,14 +713,14 @@ function captainParseDistrict(msg){
 
 const CAPTAIN_RESP = {
   ar:{
-    greet:"يا هلا! 🕶️ أنا <b>كابتن سكن</b>، دليلك لأي غرفة أو شقة في إسطنبول. قولّي عايز سكن فين، لمين (بنات/شباب/مكس)، وميزانيتك، وهجيبلك أحسن اختيارات فورًا 💪",
+    greet:"يا هلا! 🧞 أنا <b>RoomGenie</b>، دليلك لأي غرفة أو شقة في إسطنبول. قولّي عايز سكن فين، لمين (بنات/شباب/مكس)، وميزانيتك، وهجيبلك أحسن اختيارات فورًا 💪",
     resultsIntro:n=>`لقيت لك ${n} ${n===1?'سكن يناسبك':'سكنات تناسبك'} 👇`,
     noMatch:"معلش، مفيش عندي حاليًا سكن مطابق تمامًا للطلب ده 😅 جرب تقلل شرط (زي الميزانية أو المنطقة) وهدورلك تاني.",
     more:"تحب تضيق الاختيار؟ قولّي المنطقة، الميزانية، أو لمين السكن (بنات/شباب/مكس) 😉",
     rented:"مؤجرة", perMonth:"/شهريًا"
   },
   en:{
-    greet:"Hey there! 🕶️ I'm <b>Captain Stay</b>, your guide to any room or apartment in Istanbul. Tell me where, who it's for (girls/boys/mixed), and your budget — I'll pull the best matches right away 💪",
+    greet:"Hey there! 🧞 I'm <b>RoomGenie</b>, your guide to any room or apartment in Istanbul. Tell me where, who it's for (girls/boys/mixed), and your budget — I'll pull the best matches right away 💪",
     resultsIntro:n=>`Found ${n} ${n===1?'place':'places'} that could work for you 👇`,
     noMatch:"Hmm, nothing matches that exactly right now 😅 Try loosening a filter (budget or district) and I'll search again.",
     more:"Want to narrow it down? Tell me the district, budget, or who it's for (girls/boys/mixed) 😉",
