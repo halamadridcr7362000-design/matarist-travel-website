@@ -271,16 +271,19 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 /* ===== RoomGenie chat assistant ===== */
 .captain-chat{position:fixed;bottom:22px;inset-inline-end:22px;z-index:200;font-family:'DM Sans',sans-serif}
 [dir="rtl"] .captain-chat{font-family:'Cairo','DM Sans',sans-serif}
-.captain-toggle{position:relative;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-light));border:none;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;font-size:1.6rem;transition:transform 0.2s}
+.captain-toggle{position:relative;width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-light));border:none;cursor:pointer;box-shadow:0 10px 34px rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;font-size:2rem;transition:transform 0.2s}
 .captain-toggle:hover{transform:scale(1.07)}
-.captain-ping{position:absolute;top:-3px;inset-inline-end:-3px;width:14px;height:14px;background:#e8597a;border:2px solid var(--bg);border-radius:50%;animation:captain-pulse 1.8s infinite}
+.captain-toggle span:first-child{display:inline-block;animation:genie-wave 2.6s ease-in-out infinite}
+@keyframes genie-wave{0%,56%,100%{transform:rotate(0deg) scale(1)}8%{transform:rotate(14deg) scale(1.08)}16%{transform:rotate(-10deg) scale(1.08)}24%{transform:rotate(10deg) scale(1.05)}32%{transform:rotate(-4deg) scale(1.02)}40%{transform:rotate(0deg) scale(1)}}
+.captain-ping{position:absolute;top:-3px;inset-inline-end:-3px;width:15px;height:15px;background:#e8597a;border:2px solid var(--bg);border-radius:50%;animation:captain-pulse 1.8s infinite}
 @keyframes captain-pulse{0%{box-shadow:0 0 0 0 rgba(232,89,122,0.6)}70%{box-shadow:0 0 0 10px rgba(232,89,122,0)}100%{box-shadow:0 0 0 0 rgba(232,89,122,0)}}
-.captain-panel{position:absolute;bottom:74px;inset-inline-end:0;width:360px;max-width:92vw;height:520px;max-height:72vh;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lift);display:none;flex-direction:column;overflow:hidden}
-.captain-panel.open{display:flex}
-.captain-header{display:flex;align-items:center;gap:10px;padding:14px 16px;background:var(--surface-2);border-bottom:1px solid var(--border-soft)}
-.captain-avatar{width:38px;height:38px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.captain-panel{position:absolute;bottom:86px;inset-inline-end:0;width:400px;max-width:94vw;height:580px;max-height:78vh;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lift);display:flex;flex-direction:column;overflow:hidden;opacity:0;transform:scale(0.92) translateY(16px);pointer-events:none;transition:opacity 0.25s ease,transform 0.25s ease}
+.captain-panel.open{opacity:1;transform:scale(1) translateY(0);pointer-events:auto}
+.captain-header{display:flex;align-items:center;gap:12px;padding:16px 18px;background:var(--surface-2);border-bottom:1px solid var(--border-soft)}
+.captain-avatar{width:48px;height:48px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+.captain-avatar span{display:inline-block;animation:genie-wave 2.6s ease-in-out infinite}
 .captain-header-text{flex:1;min-width:0}
-.captain-name{font-weight:700;font-size:0.92rem;color:var(--text)}
+.captain-name{font-weight:700;font-size:1.02rem;color:var(--text)}
 .captain-status{font-size:0.7rem;color:var(--text-faint);display:flex;align-items:center;gap:5px}
 .captain-status .dot{width:6px;height:6px;border-radius:50%;background:#5ec98a;display:inline-block}
 .captain-close{background:transparent;border:none;color:var(--text-faint);font-size:1.3rem;cursor:pointer;line-height:1;padding:4px}
@@ -289,6 +292,11 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 .captain-msg{max-width:85%;padding:10px 13px;border-radius:14px;font-size:0.85rem;line-height:1.5}
 .captain-msg.bot{align-self:flex-start;background:var(--surface-2);color:var(--text);border:1px solid var(--border-soft)}
 .captain-msg.user{align-self:flex-end;background:var(--gold);color:#1a1420;font-weight:600}
+.captain-typing{display:flex;align-items:center;gap:4px;padding:13px 16px}
+.captain-dot{width:6px;height:6px;border-radius:50%;background:var(--text-faint);animation:captain-bounce 1.2s infinite ease-in-out}
+.captain-dot:nth-child(2){animation-delay:0.15s}
+.captain-dot:nth-child(3){animation-delay:0.3s}
+@keyframes captain-bounce{0%,80%,100%{transform:translateY(0);opacity:0.5}40%{transform:translateY(-4px);opacity:1}}
 .captain-results{display:flex;flex-direction:column;gap:8px;max-width:95%;align-self:flex-start}
 .captain-card{display:flex;gap:10px;background:var(--surface-2);border:1px solid var(--border-soft);border-radius:12px;padding:8px;text-decoration:none;color:inherit;transition:border-color 0.2s}
 .captain-card:hover{border-color:var(--gold)}
@@ -305,7 +313,7 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 .captain-form input:focus{border-color:var(--gold)}
 .captain-form button{width:38px;height:38px;border-radius:50%;background:var(--gold);border:none;color:#1a1420;cursor:pointer;flex-shrink:0}
 @media(max-width:480px){
-  .captain-panel{width:94vw;height:66vh}
+  .captain-panel{width:94vw;height:70vh}
   .captain-chat{inset-inline-end:14px;bottom:14px}
 }
 </style>
@@ -432,7 +440,7 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
   </button>
   <div id="captain-panel" class="captain-panel">
     <div class="captain-header">
-      <div class="captain-avatar">🧞</div>
+      <div class="captain-avatar"><span>🧞</span></div>
       <div class="captain-header-text">
         <div class="captain-name">RoomGenie</div>
         <div class="captain-status"><span class="dot"></span> Online · Ask me anything</div>
@@ -766,16 +774,45 @@ function captainReply(raw){
 }
 
 let captainGreeted = false;
-function toggleCaptainChat(){
+function toggleCaptainChat(auto){
   const panel = document.getElementById('captain-panel');
   const opening = !panel.classList.contains('open');
   panel.classList.toggle('open');
   if(opening && !captainGreeted){
     captainGreeted = true;
     const t = CAPTAIN_RESP[window.currentLang==='ar' ? 'ar' : 'en'];
-    addCaptainMessage(t.greet, 'bot');
+    addCaptainTyping();
+    setTimeout(()=>{ removeCaptainTyping(); addCaptainMessage(t.greet, 'bot'); }, 700);
   }
-  if(opening) document.getElementById('captain-input').focus();
+  // Skip auto-focusing the input when the panel opens itself on arrival —
+  // stealing focus (and the mobile keyboard) before the visitor asked for
+  // the chat is the kind of thing that gets a tab closed immediately.
+  if(opening && !auto) document.getElementById('captain-input').focus();
+}
+
+function captainAutoOpen(){
+  try{
+    if(sessionStorage.getItem('roomgenie_autoopened')) return;
+    sessionStorage.setItem('roomgenie_autoopened', '1');
+  }catch(e){}
+  setTimeout(()=>{
+    if(!document.getElementById('captain-panel').classList.contains('open')) toggleCaptainChat(true);
+  }, 1600);
+}
+
+function addCaptainTyping(){
+  const box = document.getElementById('captain-messages');
+  const div = document.createElement('div');
+  div.className = 'captain-msg bot captain-typing';
+  div.id = 'captain-typing-indicator';
+  div.innerHTML = '<span class="captain-dot"></span><span class="captain-dot"></span><span class="captain-dot"></span>';
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+}
+
+function removeCaptainTyping(){
+  const el = document.getElementById('captain-typing-indicator');
+  if(el) el.remove();
 }
 
 function addCaptainMessage(html, role){
@@ -817,11 +854,13 @@ function captainSubmit(e){
   if(!msg) return false;
   input.value = '';
   addCaptainMessage(escapeHtml(msg), 'user');
+  addCaptainTyping();
   setTimeout(()=>{
+    removeCaptainTyping();
     const { text, listings, lang } = captainReply(msg);
     addCaptainMessage(text, 'bot');
     if(listings && listings.length) addCaptainResults(listings, lang);
-  }, 300);
+  }, 500);
   return false;
 }
 
@@ -834,6 +873,7 @@ function captainQuickSend(text){
 const savedLang = localStorage.getItem('acc_lang') || 'en';
 setLang(savedLang);
 loadListings();
+captainAutoOpen();
 startHeroCarousel();
 startLifestyleCarousel();
 </script>
