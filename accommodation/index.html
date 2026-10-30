@@ -271,17 +271,20 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 /* ===== RoomGenie chat assistant ===== */
 .captain-chat{position:fixed;bottom:22px;inset-inline-end:22px;z-index:200;font-family:'DM Sans',sans-serif}
 [dir="rtl"] .captain-chat{font-family:'Cairo','DM Sans',sans-serif}
-.captain-toggle{position:relative;width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-light));border:none;cursor:pointer;box-shadow:0 10px 34px rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;font-size:2rem;transition:transform 0.2s}
-.captain-toggle:hover{transform:scale(1.07)}
-.captain-toggle span:first-child{display:inline-block;animation:genie-wave 2.6s ease-in-out infinite}
-@keyframes genie-wave{0%,56%,100%{transform:rotate(0deg) scale(1)}8%{transform:rotate(14deg) scale(1.08)}16%{transform:rotate(-10deg) scale(1.08)}24%{transform:rotate(10deg) scale(1.05)}32%{transform:rotate(-4deg) scale(1.02)}40%{transform:rotate(0deg) scale(1)}}
-.captain-ping{position:absolute;top:-3px;inset-inline-end:-3px;width:15px;height:15px;background:#e8597a;border:2px solid var(--bg);border-radius:50%;animation:captain-pulse 1.8s infinite}
+.captain-toggle{position:relative;width:78px;height:96px;background:transparent;border:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.5));transition:transform 0.2s}
+.captain-toggle:hover{transform:scale(1.06)}
+.genie-svg{display:block}
+.genie-svg-toggle{width:78px;height:96px;animation:genie-bob 3.2s ease-in-out infinite}
+.genie-svg-avatar{width:52px;height:64px}
+.genie-arm-wave{transform-origin:80px 64px;animation:genie-wave-arm 2.6s ease-in-out infinite}
+@keyframes genie-wave-arm{0%,58%,100%{transform:rotate(0deg)}8%{transform:rotate(-20deg)}16%{transform:rotate(10deg)}24%{transform:rotate(-16deg)}32%{transform:rotate(6deg)}40%{transform:rotate(0deg)}}
+@keyframes genie-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.captain-ping{position:absolute;top:2px;inset-inline-end:2px;width:15px;height:15px;background:#e8597a;border:2px solid var(--bg);border-radius:50%;animation:captain-pulse 1.8s infinite}
 @keyframes captain-pulse{0%{box-shadow:0 0 0 0 rgba(232,89,122,0.6)}70%{box-shadow:0 0 0 10px rgba(232,89,122,0)}100%{box-shadow:0 0 0 0 rgba(232,89,122,0)}}
-.captain-panel{position:absolute;bottom:86px;inset-inline-end:0;width:400px;max-width:94vw;height:580px;max-height:78vh;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lift);display:flex;flex-direction:column;overflow:hidden;opacity:0;transform:scale(0.92) translateY(16px);pointer-events:none;transition:opacity 0.25s ease,transform 0.25s ease}
+.captain-panel{position:absolute;bottom:102px;inset-inline-end:0;width:400px;max-width:94vw;height:580px;max-height:78vh;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lift);display:flex;flex-direction:column;overflow:hidden;opacity:0;transform:scale(0.92) translateY(16px);pointer-events:none;transition:opacity 0.25s ease,transform 0.25s ease}
 .captain-panel.open{opacity:1;transform:scale(1) translateY(0);pointer-events:auto}
-.captain-header{display:flex;align-items:center;gap:12px;padding:16px 18px;background:var(--surface-2);border-bottom:1px solid var(--border-soft)}
-.captain-avatar{width:48px;height:48px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
-.captain-avatar span{display:inline-block;animation:genie-wave 2.6s ease-in-out infinite}
+.captain-header{display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--surface-2);border-bottom:1px solid var(--border-soft)}
+.captain-avatar{width:52px;height:64px;background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .captain-header-text{flex:1;min-width:0}
 .captain-name{font-weight:700;font-size:1.02rem;color:var(--text)}
 .captain-status{font-size:0.7rem;color:var(--text-faint);display:flex;align-items:center;gap:5px}
@@ -433,14 +436,52 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 
 <footer>MATARIST Travel &middot; Istanbul &middot; <a href="https://wa.me/905451218167">WhatsApp</a></footer>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="genieGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a98cf0"/>
+      <stop offset="100%" stop-color="#5a3fc0"/>
+    </linearGradient>
+  </defs>
+  <symbol id="genie-icon" viewBox="0 0 120 150">
+    <!-- smoke-wisp body tapering down, genie-from-the-lamp silhouette -->
+    <path d="M38 58 C28 72 24 98 34 118 C41 132 51 140 60 142 C69 140 79 132 86 118 C96 98 92 72 82 58 C74 66 46 66 38 58 Z" fill="url(#genieGrad)"/>
+    <!-- gold sash -->
+    <path d="M38 76 Q60 87 82 76 L82 85 Q60 96 38 85 Z" fill="var(--gold-light,#d4b480)"/>
+    <!-- left arm — resting, open palm -->
+    <g class="genie-arm-left" style="transform-origin:40px 64px">
+      <path d="M40 64 C26 68 18 82 22 96 C24 102 30 103 33 98 C30 88 34 76 44 68 Z" fill="url(#genieGrad)"/>
+      <circle cx="23" cy="97" r="8" fill="url(#genieGrad)"/>
+    </g>
+    <!-- right arm — raised, waving with an open palm -->
+    <g class="genie-arm-wave" style="transform-origin:80px 64px">
+      <path d="M80 64 C96 58 108 44 106 30 C105 23 98 21 94 26 C95 36 88 48 76 56 Z" fill="url(#genieGrad)"/>
+      <circle cx="102" cy="26" r="8" fill="url(#genieGrad)"/>
+    </g>
+    <!-- head -->
+    <circle cx="60" cy="38" r="24" fill="url(#genieGrad)"/>
+    <!-- gold turban band + gem -->
+    <path d="M38 24 Q60 8 82 24 L79 33 Q60 20 41 33 Z" fill="var(--gold,#b8955e)"/>
+    <circle cx="60" cy="16" r="4.5" fill="#f2a6c9"/>
+    <!-- face -->
+    <circle cx="50" cy="38" r="3.6" fill="#1a1420"/>
+    <circle cx="70" cy="38" r="3.6" fill="#1a1420"/>
+    <circle cx="42" cy="44" r="3.8" fill="#f2a6c9" opacity="0.55"/>
+    <circle cx="78" cy="44" r="3.8" fill="#f2a6c9" opacity="0.55"/>
+    <path d="M48 48 Q60 57 72 48" stroke="#1a1420" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- sparkle -->
+    <path d="M100 8 L102 14 108 16 102 18 100 24 98 18 92 16 98 14 Z" fill="#fff" opacity="0.85"/>
+  </symbol>
+</svg>
+
 <div class="captain-chat">
   <button id="captain-toggle" class="captain-toggle" aria-label="Chat with RoomGenie" onclick="toggleCaptainChat()">
-    <span>🧞</span>
+    <svg class="genie-svg genie-svg-toggle" viewBox="0 0 120 150"><use href="#genie-icon"></use></svg>
     <span class="captain-ping"></span>
   </button>
   <div id="captain-panel" class="captain-panel">
     <div class="captain-header">
-      <div class="captain-avatar"><span>🧞</span></div>
+      <div class="captain-avatar"><svg class="genie-svg genie-svg-avatar" viewBox="0 0 120 150"><use href="#genie-icon"></use></svg></div>
       <div class="captain-header-text">
         <div class="captain-name">RoomGenie</div>
         <div class="captain-status"><span class="dot"></span> Online · Ask me anything</div>
