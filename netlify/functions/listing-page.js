@@ -302,22 +302,14 @@ h1{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 6px;line-height:1.2}
   88%{transform:scale(2.9) translateY(0) rotate(0deg)}
   100%{transform:scale(1) translateY(0) rotate(0deg)}
 }
-.mascot-toggle.mascot-intro-zoom .mascot-arm-wave{animation:mascot-intro-wave 4s ease-in-out 1}
-.mascot-toggle.mascot-intro-zoom .mascot-arm-left{animation:none;transform:rotate(0deg)}
-@keyframes mascot-intro-wave{
-  0%,42%{transform:rotate(0deg)}
-  48%{transform:rotate(-162deg)}
-  54%{transform:rotate(-132deg)}
-  60%{transform:rotate(-166deg)}
-  66%{transform:rotate(-136deg)}
-  72%{transform:rotate(-162deg)}
-  78%{transform:rotate(-146deg)}
-  84%{transform:rotate(-154deg)}
-  90%,100%{transform:rotate(0deg)}
-}
-.mascot-intro-bubble{position:absolute;bottom:108px;inset-inline-end:-6px;max-width:220px;background:var(--surface);border:1px solid var(--gold);color:var(--text);padding:11px 16px;border-radius:16px;font-size:0.85rem;font-weight:700;box-shadow:0 18px 44px rgba(0,0,0,0.45);opacity:0;transform:translateY(10px) scale(0.9);transition:opacity 0.3s ease,transform 0.3s ease;pointer-events:none;z-index:201}
+/* The wave is driven from JS via the Web Animations API — see the inline
+   script below. A CSS descendant selector like
+   ".mascot-intro-zoom .mascot-arm-wave" does not reliably match through
+   the <use> reference into the shared <symbol> content, so an override
+   written that way silently never applies. */
+.mascot-intro-bubble{position:absolute;bottom:112px;inset-inline-end:-6px;max-width:240px;background:var(--surface);border:2px solid var(--gold);color:var(--text);padding:14px 20px;border-radius:18px;font-size:1.05rem;font-weight:800;box-shadow:0 20px 50px rgba(0,0,0,0.6);opacity:0;transform:translateY(10px) scale(0.9);transition:opacity 0.3s ease,transform 0.3s ease;pointer-events:none;z-index:201}
 .mascot-intro-bubble.show{opacity:1;transform:translateY(0) scale(1)}
-.mascot-intro-bubble::after{content:"";position:absolute;bottom:-7px;inset-inline-end:30px;width:14px;height:14px;background:var(--surface);border-inline-end:1px solid var(--gold);border-bottom:1px solid var(--gold);transform:rotate(45deg)}
+.mascot-intro-bubble::after{content:"";position:absolute;bottom:-8px;inset-inline-end:30px;width:16px;height:16px;background:var(--surface);border-inline-end:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(45deg)}
 @media(max-width:480px){.mascot-chat{inset-inline-end:14px;bottom:14px}}
 </style>
 </head>
@@ -412,6 +404,32 @@ ${mapHtml}
   if(!toggle || !bubble) return;
   setTimeout(function(){
     toggle.classList.add('mascot-intro-zoom');
+    var waveArm = document.querySelector('.mascot-arm-wave');
+    var restArm = document.querySelector('.mascot-arm-left');
+    if(waveArm && restArm && waveArm.animate){
+      restArm.style.animation = 'none';
+      restArm.style.transform = 'rotate(0deg)';
+      waveArm.style.animation = 'none';
+      var wave = waveArm.animate([
+        { transform: 'rotate(0deg)', offset: 0 },
+        { transform: 'rotate(0deg)', offset: 0.42 },
+        { transform: 'rotate(-162deg)', offset: 0.48 },
+        { transform: 'rotate(-132deg)', offset: 0.54 },
+        { transform: 'rotate(-166deg)', offset: 0.60 },
+        { transform: 'rotate(-136deg)', offset: 0.66 },
+        { transform: 'rotate(-162deg)', offset: 0.72 },
+        { transform: 'rotate(-146deg)', offset: 0.78 },
+        { transform: 'rotate(-154deg)', offset: 0.84 },
+        { transform: 'rotate(0deg)', offset: 0.90 },
+        { transform: 'rotate(0deg)', offset: 1 },
+      ], { duration: 4000, easing: 'ease-in-out' });
+      wave.onfinish = function(){
+        waveArm.style.animation = '';
+        waveArm.style.transform = '';
+        restArm.style.animation = '';
+        restArm.style.transform = '';
+      };
+    }
     setTimeout(function(){ bubble.classList.add('show'); }, 1900);
     setTimeout(function(){ bubble.classList.remove('show'); }, 7200);
     setTimeout(function(){ toggle.classList.remove('mascot-intro-zoom'); }, 4000);

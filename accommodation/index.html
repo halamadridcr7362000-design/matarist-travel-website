@@ -377,26 +377,16 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
   88%{transform:scale(2.9) translateY(0) rotate(0deg)}
   100%{transform:scale(1) translateY(0) rotate(0deg)}
 }
-/* Arm hangs straight down at rest (0deg); rotating it close to -180deg
-   swings the hand up above the shoulder/head for a real "hi/bye" wave
-   instead of just flaring out sideways. The other arm is frozen at rest
-   for these 4s so the raised arm reads clearly on its own. */
-.captain-toggle.genie-intro-zoom .genie-arm-wave{animation:genie-intro-wave 4s ease-in-out 1}
-.captain-toggle.genie-intro-zoom .genie-arm-left{animation:none;transform:rotate(0deg)}
-@keyframes genie-intro-wave{
-  0%,42%{transform:rotate(0deg)}
-  48%{transform:rotate(-162deg)}
-  54%{transform:rotate(-132deg)}
-  60%{transform:rotate(-166deg)}
-  66%{transform:rotate(-136deg)}
-  72%{transform:rotate(-162deg)}
-  78%{transform:rotate(-146deg)}
-  84%{transform:rotate(-154deg)}
-  90%,100%{transform:rotate(0deg)}
-}
-.genie-intro-bubble{position:absolute;bottom:108px;inset-inline-end:-6px;max-width:220px;background:var(--surface);border:1px solid var(--gold);color:var(--text);padding:11px 16px;border-radius:16px;font-size:0.85rem;font-weight:700;white-space:nowrap;box-shadow:var(--shadow-lift);opacity:0;transform:translateY(10px) scale(0.9);transition:opacity 0.3s ease,transform 0.3s ease;pointer-events:none;z-index:201}
+/* The wave itself is driven from JS via the Web Animations API, not a CSS
+   descendant-selector override — a selector like
+   ".genie-intro-zoom .genie-arm-wave" does NOT reliably reach through the
+   <use> reference into the shared <symbol> content across browsers, even
+   though a plain ".genie-arm-wave{...}" class rule does (confirmed: the
+   override silently never applied, so the arm kept running its normal
+   idle-loop animation instead). See captainIntro() in the script below. */
+.genie-intro-bubble{position:absolute;bottom:112px;inset-inline-end:-6px;max-width:240px;background:var(--surface);border:2px solid var(--gold);color:var(--text);padding:14px 20px;border-radius:18px;font-size:1.05rem;font-weight:800;white-space:nowrap;box-shadow:0 20px 50px rgba(0,0,0,0.6);opacity:0;transform:translateY(10px) scale(0.9);transition:opacity 0.3s ease,transform 0.3s ease;pointer-events:none;z-index:201}
 .genie-intro-bubble.show{opacity:1;transform:translateY(0) scale(1)}
-.genie-intro-bubble::after{content:"";position:absolute;bottom:-7px;inset-inline-end:30px;width:14px;height:14px;background:var(--surface);border-inline-end:1px solid var(--gold);border-bottom:1px solid var(--gold);transform:rotate(45deg)}
+.genie-intro-bubble::after{content:"";position:absolute;bottom:-8px;inset-inline-end:30px;width:16px;height:16px;background:var(--surface);border-inline-end:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(45deg)}
 </style>
 </head>
 <body>
@@ -944,6 +934,34 @@ function captainIntro(){
   if(!toggle || !bubble) return;
   bubble.textContent = GENIE_WELCOME_TEXT[window.currentLang] || GENIE_WELCOME_TEXT.en;
   toggle.classList.add('genie-intro-zoom');
+
+  // Driven via plain, directly-verified style.transform assignments on a
+  // timer, with a CSS transition for smoothness between steps — NOT a CSS
+  // class override (a selector like ".genie-intro-zoom .genie-arm-wave"
+  // doesn't reliably match through the <use> reference into the shared
+  // <symbol> content) and NOT the Web Animations API (.animate() silently
+  // had no visible effect on this SVG <g> in testing either). Direct
+  // style.transform writes are the one approach confirmed to actually move
+  // the arm — the <g> elements are real, queryable DOM nodes even though
+  // they're reused across every <use> that points at the symbol.
+  const waveArm = document.querySelector('.genie-arm-wave');
+  const restArm = document.querySelector('.genie-arm-left');
+  if(waveArm && restArm){
+    restArm.style.animation = 'none';
+    restArm.style.transform = 'rotate(0deg)';
+    waveArm.style.animation = 'none';
+    waveArm.style.transition = 'transform 0.28s ease-in-out';
+    [[1680,0],[1920,-162],[2160,-132],[2400,-166],[2640,-136],[2880,-162],[3120,-146],[3360,-154],[3650,0]]
+      .forEach(([ms, deg]) => setTimeout(()=>{ waveArm.style.transform = `rotate(${deg}deg)`; }, ms));
+    setTimeout(()=>{
+      waveArm.style.transition = '';
+      waveArm.style.animation = '';
+      waveArm.style.transform = '';
+      restArm.style.animation = '';
+      restArm.style.transform = '';
+    }, 4050);
+  }
+
   setTimeout(()=> bubble.classList.add('show'), 1900);
   setTimeout(()=> bubble.classList.remove('show'), 7200);
   setTimeout(()=> toggle.classList.remove('genie-intro-zoom'), 4000);
