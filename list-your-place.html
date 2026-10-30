@@ -194,13 +194,19 @@ function t(key){ return (translations[window.currentLang||'en'][key]) || key; }
 
 let pinLat=null, pinLng=null, map;
 function initMap(){
-  map = L.map('map-pick').setView([41.0082,28.9784], 10);
+  // Scroll/drag start disabled so scrolling past this field on mobile
+  // scrolls the page instead of dragging the map — the first tap both
+  // drops the pin and switches the map into normal, fully interactive
+  // mode, so nothing extra is asked of the visitor beyond what the label
+  // already tells them to do.
+  map = L.map('map-pick', {scrollWheelZoom:false, dragging:false, tap:false}).setView([41.0082,28.9784], 10);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap'}).addTo(map);
   let marker;
   map.on('click', e=>{
     pinLat = e.latlng.lat; pinLng = e.latlng.lng;
     if(marker) map.removeLayer(marker);
     marker = L.marker([pinLat,pinLng]).addTo(map);
+    map.scrollWheelZoom.enable(); map.dragging.enable(); map.tap && map.tap.enable();
   });
 }
 

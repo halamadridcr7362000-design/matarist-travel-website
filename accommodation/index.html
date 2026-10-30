@@ -178,6 +178,14 @@ html[lang="ar"] .other-services h3{font-family:'Cairo',sans-serif;font-weight:70
 .leaflet-popup-content-wrapper{background:var(--surface);color:var(--text);border-radius:var(--radius-sm)}
 .leaflet-popup-content a{color:var(--gold-light);text-decoration:none;font-weight:600;font-size:0.85rem}
 .leaflet-popup-tip{background:var(--surface)}
+/* Scroll/drag stay off until the visitor deliberately engages the map —
+   otherwise scrolling the page with the cursor over the map zooms it
+   instead, and on mobile a finger landing on the map drags it instead of
+   scrolling the page. This single overlay is what people were reading as
+   "the map doesn't work right." */
+.map-hint{position:absolute;inset:0;background:rgba(21,18,27,0.45);display:flex;align-items:center;justify-content:center;z-index:1000;cursor:pointer;transition:opacity 0.25s ease;opacity:1}
+.map-hint.hidden{opacity:0;pointer-events:none}
+.map-hint span{background:rgba(21,18,27,0.88);color:var(--text);border:1px solid var(--gold);padding:9px 18px;border-radius:20px;font-size:0.82rem;font-weight:600;pointer-events:none;white-space:nowrap}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
 .card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;text-decoration:none;color:inherit;display:block;transition:transform 0.3s ease,box-shadow 0.3s ease,border-color 0.3s ease;position:relative}
@@ -657,11 +665,22 @@ function renderGrid(){
   observeReveal();
 }
 
+const MAP_HINT_TEXT = { en:'Tap to interact with the map', ar:'اضغط للتفاعل مع الخريطة', tr:'Haritayla etkileşim için dokunun' };
+
 function renderMap(){
   if(!map){
-    map = L.map('map').setView([41.0082,28.9784],11);
+    map = L.map('map', {scrollWheelZoom:false, dragging:false, tap:false}).setView([41.0082,28.9784],11);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
     markersLayer = L.layerGroup().addTo(map);
+    const hint = document.createElement('div');
+    hint.className = 'map-hint';
+    hint.innerHTML = `<span>👆 ${MAP_HINT_TEXT[window.currentLang] || MAP_HINT_TEXT.en}</span>`;
+    hint.addEventListener('click', ()=>{
+      map.scrollWheelZoom.enable(); map.dragging.enable(); map.tap && map.tap.enable();
+      hint.classList.add('hidden');
+      setTimeout(()=>hint.remove(), 300);
+    });
+    map.getContainer().appendChild(hint);
   }
   markersLayer.clearLayers();
   allListings.filter(l=>typeof l.lat==='number' && typeof l.lng==='number' && l.status!=='rented').forEach(l=>{

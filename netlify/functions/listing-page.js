@@ -120,7 +120,17 @@ function renderListing(listing, lang, previewToken) {
        <div id="map"></div>
        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-       <script>var m=L.map('map').setView([${pub.lat},${pub.lng}],14);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap contributors'}).addTo(m);L.marker([${pub.lat},${pub.lng}]).addTo(m);</script>`
+       <script>
+       var m=L.map('map',{scrollWheelZoom:false,dragging:false,tap:false}).setView([${pub.lat},${pub.lng}],14);
+       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap contributors'}).addTo(m);
+       L.marker([${pub.lat},${pub.lng}]).addTo(m);
+       var mapHintText={en:'Tap to interact with the map',ar:'اضغط للتفاعل مع الخريطة',tr:'Haritayla etkileşim için dokunun'};
+       var mapHint=document.createElement('div');
+       mapHint.className='map-hint';
+       mapHint.innerHTML='<span>👆 '+(mapHintText['${lang}']||mapHintText.en)+'</span>';
+       mapHint.addEventListener('click',function(){ m.scrollWheelZoom.enable(); m.dragging.enable(); m.tap&&m.tap.enable(); mapHint.classList.add('hidden'); setTimeout(function(){mapHint.remove();},300); });
+       m.getContainer().appendChild(mapHint);
+       </script>`
     : "";
   const videoUrls = Array.isArray(pub.videoUrls) ? pub.videoUrls.filter(Boolean) : [];
   const videoEmbeds = videoUrls.map((u) => videoEmbedHtml(u, t.watchVideo)).filter(Boolean).join("");
@@ -253,6 +263,9 @@ h1{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 6px;line-height:1.2}
 .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 #map{height:260px;border-radius:14px;border:1px solid var(--border);overflow:hidden;filter:saturate(0.85) brightness(0.92)}
 .leaflet-popup-content-wrapper{background:var(--surface);color:var(--text);border-radius:8px}
+.map-hint{position:absolute;inset:0;background:rgba(21,18,27,0.45);display:flex;align-items:center;justify-content:center;z-index:1000;cursor:pointer;transition:opacity 0.25s ease;opacity:1}
+.map-hint.hidden{opacity:0;pointer-events:none}
+.map-hint span{background:rgba(21,18,27,0.88);color:var(--text);border:1px solid var(--gold);padding:9px 18px;border-radius:20px;font-size:0.82rem;font-weight:600;pointer-events:none;white-space:nowrap}
 .wa-btn{display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;padding:15px 30px;border-radius:10px;text-decoration:none;font-weight:700;margin-top:8px;font-size:0.95rem;box-shadow:0 10px 26px rgba(37,211,102,0.25);transition:transform 0.2s}
 .wa-btn:hover{transform:translateY(-2px)}
 </style>
