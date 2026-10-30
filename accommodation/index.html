@@ -269,16 +269,13 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 }
 
 /* ===== RoomGenie chat assistant ===== */
-.captain-chat{position:fixed;bottom:22px;inset-inline-end:0;z-index:200;font-family:'DM Sans',sans-serif}
+.captain-chat{position:fixed;bottom:22px;inset-inline-end:22px;z-index:200;font-family:'DM Sans',sans-serif}
 [dir="rtl"] .captain-chat{font-family:'Cairo','DM Sans',sans-serif}
-/* Flush against the viewport edge (no gap) and leaned inward, as if the
-   whole character is peeking in from outside the frame and its gripping
-   hand (drawn curled over the edge, see .genie-arm-wave below) is the
-   only thing holding it there. */
-.captain-toggle{position:relative;width:78px;height:96px;background:transparent;border:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0 10px 0 0;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.5));transition:transform 0.2s;transform-origin:bottom right;transform:translateX(14px) rotate(-7deg)}
-[dir="rtl"] .captain-toggle{transform-origin:bottom left;transform:translateX(-14px) rotate(7deg);padding:0 0 0 10px}
-.captain-toggle:hover{transform:translateX(14px) rotate(-7deg) scale(1.06)}
-[dir="rtl"] .captain-toggle:hover{transform:translateX(-14px) rotate(7deg) scale(1.06)}
+/* Stands upright and normal at rest — the lean-in/edge-cling look lives
+   only in the one-time intro animation (genie-intro-pop below), not here. */
+.captain-toggle{position:relative;width:78px;height:96px;background:transparent;border:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.5));transition:transform 0.2s;transform-origin:bottom right}
+[dir="rtl"] .captain-toggle{transform-origin:bottom left}
+.captain-toggle:hover{transform:scale(1.06)}
 .genie-svg{display:block}
 .genie-svg-toggle{width:78px;height:96px;animation:genie-bob 9s ease-in-out infinite}
 .genie-svg-avatar{width:52px;height:64px;animation:genie-bob 9s ease-in-out infinite}
@@ -363,7 +360,7 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 .captain-form button{width:38px;height:38px;border-radius:50%;background:var(--gold);border:none;color:#1a1420;cursor:pointer;flex-shrink:0}
 @media(max-width:480px){
   .captain-panel{width:94vw;height:70vh}
-  .captain-chat{inset-inline-end:0;bottom:14px}
+  .captain-chat{inset-inline-end:14px;bottom:14px}
 }
 
 /* ===== One-time intro: the toggle genie climbs in close/big, settles, then
@@ -373,17 +370,21 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
    this same 4s clock — it overrides (by selector specificity) the arm's
    own always-on idle-gesture loop only while this class is present. */
 .captain-toggle.genie-intro-zoom{animation:genie-intro-pop 4s cubic-bezier(.22,1,.36,1) 1}
+/* The lean-in/edge-cling look lives only here, in the entrance (0-32%) —
+   appearing close from the side, tilted like it's gripping the edge — then
+   straightens upright by 40%, before the wave plays, and stays upright for
+   the rest of the sequence and at rest afterward. */
 @keyframes genie-intro-pop{
-  0%{transform:scale(0.15) translateY(160px) rotate(0deg)}
-  14%{transform:scale(1.8) translateY(26px) rotate(0deg)}
-  24%{transform:scale(2.9) translateY(0) rotate(-6deg)}
-  32%{transform:scale(2.9) translateY(0) rotate(3deg)}
-  40%{transform:scale(2.9) translateY(0) rotate(0deg)}
-  88%{transform:scale(2.9) translateY(0) rotate(0deg)}
-  100%{transform:scale(1) translateY(0) rotate(0deg)}
+  0%{transform:scale(0.15) translate(34px,160px) rotate(-16deg)}
+  14%{transform:scale(1.9) translate(26px,22px) rotate(-14deg)}
+  24%{transform:scale(2.9) translate(16px,0) rotate(-10deg)}
+  32%{transform:scale(2.9) translate(6px,0) rotate(-4deg)}
+  40%{transform:scale(2.9) translate(0,0) rotate(0deg)}
+  88%{transform:scale(2.9) translate(0,0) rotate(0deg)}
+  100%{transform:scale(1) translate(0,0) rotate(0deg)}
 }
-/* The wave itself is driven from JS via the Web Animations API, not a CSS
-   descendant-selector override — a selector like
+/* The wave itself is driven from JS via plain style.transform writes, not
+   a CSS descendant-selector override — a selector like
    ".genie-intro-zoom .genie-arm-wave" does NOT reliably reach through the
    <use> reference into the shared <symbol> content across browsers, even
    though a plain ".genie-arm-wave{...}" class rule does (confirmed: the

@@ -276,11 +276,12 @@ h1{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 6px;line-height:1.2}
 
 /* ===== Roomist mascot — same astronaut as the hub page, popping in once
    to say "great choice" and point at the WhatsApp button below. */
-.mascot-chat{position:fixed;bottom:22px;inset-inline-end:0;z-index:200}
-.mascot-toggle{position:relative;width:78px;height:96px;background:transparent;border:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0 10px 0 0;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.5));transition:transform 0.2s;transform-origin:bottom right;transform:translateX(14px) rotate(-7deg)}
-[dir="rtl"] .mascot-toggle{transform-origin:bottom left;transform:translateX(-14px) rotate(7deg);padding:0 0 0 10px}
-.mascot-toggle:hover{transform:translateX(14px) rotate(-7deg) scale(1.06)}
-[dir="rtl"] .mascot-toggle:hover{transform:translateX(-14px) rotate(7deg) scale(1.06)}
+.mascot-chat{position:fixed;bottom:22px;inset-inline-end:22px;z-index:200}
+/* Stands upright and normal at rest — the lean-in/edge-cling look lives
+   only in the one-time intro animation (mascot-intro-pop below), not here. */
+.mascot-toggle{position:relative;width:78px;height:96px;background:transparent;border:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.5));transition:transform 0.2s;transform-origin:bottom right}
+[dir="rtl"] .mascot-toggle{transform-origin:bottom left}
+.mascot-toggle:hover{transform:scale(1.06)}
 .mascot-svg{display:block;width:78px;height:96px;animation:mascot-bob 3.2s ease-in-out infinite}
 .mascot-arm-wave{transform-origin:84px 84px;animation:mascot-arm-right 9s ease-in-out infinite}
 .mascot-arm-left{transform-origin:36px 84px;animation:mascot-arm-left 9s ease-in-out infinite}
@@ -294,24 +295,28 @@ h1{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 6px;line-height:1.2}
 .mascot-ping{position:absolute;top:2px;inset-inline-end:2px;width:15px;height:15px;background:#e8597a;border:2px solid var(--bg);border-radius:50%;animation:mascot-pulse 1.8s infinite}
 @keyframes mascot-pulse{0%{box-shadow:0 0 0 0 rgba(232,89,122,0.6)}70%{box-shadow:0 0 0 10px rgba(232,89,122,0)}100%{box-shadow:0 0 0 0 rgba(232,89,122,0)}}
 .mascot-toggle.mascot-intro-zoom{animation:mascot-intro-pop 4s cubic-bezier(.22,1,.36,1) 1}
+/* The lean-in/edge-cling look lives only here, in the entrance (0-32%) —
+   appearing close from the side, tilted like it's gripping the edge — then
+   straightens upright by 40%, before the wave plays, and stays upright for
+   the rest of the sequence and at rest afterward. */
 @keyframes mascot-intro-pop{
-  0%{transform:scale(0.15) translateY(160px) rotate(0deg)}
-  14%{transform:scale(1.8) translateY(26px) rotate(0deg)}
-  24%{transform:scale(2.9) translateY(0) rotate(-6deg)}
-  32%{transform:scale(2.9) translateY(0) rotate(3deg)}
-  40%{transform:scale(2.9) translateY(0) rotate(0deg)}
-  88%{transform:scale(2.9) translateY(0) rotate(0deg)}
-  100%{transform:scale(1) translateY(0) rotate(0deg)}
+  0%{transform:scale(0.15) translate(34px,160px) rotate(-16deg)}
+  14%{transform:scale(1.9) translate(26px,22px) rotate(-14deg)}
+  24%{transform:scale(2.9) translate(16px,0) rotate(-10deg)}
+  32%{transform:scale(2.9) translate(6px,0) rotate(-4deg)}
+  40%{transform:scale(2.9) translate(0,0) rotate(0deg)}
+  88%{transform:scale(2.9) translate(0,0) rotate(0deg)}
+  100%{transform:scale(1) translate(0,0) rotate(0deg)}
 }
-/* The wave is driven from JS via the Web Animations API — see the inline
-   script below. A CSS descendant selector like
+/* The wave is driven from JS via plain style.transform writes — see the
+   inline script below. A CSS descendant selector like
    ".mascot-intro-zoom .mascot-arm-wave" does not reliably match through
    the <use> reference into the shared <symbol> content, so an override
    written that way silently never applies. */
 .mascot-intro-bubble{position:absolute;bottom:112px;inset-inline-end:-6px;max-width:240px;background:var(--surface);border:2px solid var(--gold);color:var(--text);padding:14px 20px;border-radius:18px;font-size:1.05rem;font-weight:800;box-shadow:0 20px 50px rgba(0,0,0,0.6);opacity:0;transform:translateY(10px) scale(0.9);transition:opacity 0.3s ease,transform 0.3s ease;pointer-events:none;z-index:201}
 .mascot-intro-bubble.show{opacity:1;transform:translateY(0) scale(1)}
 .mascot-intro-bubble::after{content:"";position:absolute;bottom:-8px;inset-inline-end:30px;width:16px;height:16px;background:var(--surface);border-inline-end:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(45deg)}
-@media(max-width:480px){.mascot-chat{inset-inline-end:0;bottom:14px}}
+@media(max-width:480px){.mascot-chat{inset-inline-end:14px;bottom:14px}}
 </style>
 </head>
 <body>
