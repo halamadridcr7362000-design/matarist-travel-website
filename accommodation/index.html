@@ -274,11 +274,51 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 .captain-toggle{position:relative;width:78px;height:96px;background:transparent;border:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.5));transition:transform 0.2s}
 .captain-toggle:hover{transform:scale(1.06)}
 .genie-svg{display:block}
-.genie-svg-toggle{width:78px;height:96px;animation:genie-bob 3.2s ease-in-out infinite}
-.genie-svg-avatar{width:52px;height:64px}
-.genie-arm-wave{transform-origin:80px 64px;animation:genie-wave-arm 2.6s ease-in-out infinite}
-@keyframes genie-wave-arm{0%,58%,100%{transform:rotate(0deg)}8%{transform:rotate(-20deg)}16%{transform:rotate(10deg)}24%{transform:rotate(-16deg)}32%{transform:rotate(6deg)}40%{transform:rotate(0deg)}}
-@keyframes genie-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.genie-svg-toggle{width:78px;height:96px;animation:genie-bob 9s ease-in-out infinite}
+.genie-svg-avatar{width:52px;height:64px;animation:genie-bob 9s ease-in-out infinite}
+.genie-arm-wave{transform-origin:80px 64px;animation:genie-arm-right 9s ease-in-out infinite}
+.genie-arm-left{transform-origin:40px 64px;animation:genie-arm-left 9s ease-in-out infinite}
+.genie-face-default{animation:genie-face-default 9s ease-in-out infinite}
+.genie-face-laugh{animation:genie-face-laugh 9s ease-in-out infinite}
+/* One shared 9s timeline across the body, both arms and the face so the
+   wave, the two-armed cheer and the laugh-face crossfade all land on the
+   same beats instead of drifting out of sync with each other. */
+@keyframes genie-bob{
+  0%,4%{transform:translateY(0) scale(1)}
+  10%{transform:translateY(-3px) scale(1)}
+  16%,22%{transform:translateY(-2px) scale(1)}
+  28%{transform:translateY(-7px) scale(1.05)}
+  33%{transform:translateY(-7px) scale(1.05)}
+  40%{transform:translateY(0) scale(1)}
+  48%{transform:translateY(-3px) scale(1)}
+  56%{transform:translateY(0) scale(1)}
+  100%{transform:translateY(0) scale(1)}
+}
+@keyframes genie-arm-right{
+  0%,4%{transform:rotate(0deg)}
+  8%{transform:rotate(-20deg)}
+  12%{transform:rotate(8deg)}
+  16%{transform:rotate(-16deg)}
+  20%{transform:rotate(6deg)}
+  24%{transform:rotate(0deg)}
+  28%{transform:rotate(-32deg)}
+  33%{transform:rotate(-36deg)}
+  40%{transform:rotate(-10deg)}
+  44%,100%{transform:rotate(0deg)}
+}
+@keyframes genie-arm-left{
+  0%,26%{transform:rotate(0deg)}
+  28%{transform:rotate(22deg)}
+  33%{transform:rotate(26deg)}
+  40%{transform:rotate(8deg)}
+  44%{transform:rotate(0deg)}
+  48%{transform:rotate(-16deg)}
+  52%{transform:rotate(10deg)}
+  56%{transform:rotate(-6deg)}
+  60%,100%{transform:rotate(0deg)}
+}
+@keyframes genie-face-default{0%,26%{opacity:1}30%,36%{opacity:0}40%,100%{opacity:1}}
+@keyframes genie-face-laugh{0%,26%{opacity:0}30%,36%{opacity:1}40%,100%{opacity:0}}
 .captain-ping{position:absolute;top:2px;inset-inline-end:2px;width:15px;height:15px;background:#e8597a;border:2px solid var(--bg);border-radius:50%;animation:captain-pulse 1.8s infinite}
 @keyframes captain-pulse{0%{box-shadow:0 0 0 0 rgba(232,89,122,0.6)}70%{box-shadow:0 0 0 10px rgba(232,89,122,0)}100%{box-shadow:0 0 0 0 rgba(232,89,122,0)}}
 .captain-panel{position:absolute;bottom:102px;inset-inline-end:0;width:400px;max-width:94vw;height:580px;max-height:78vh;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lift);display:flex;flex-direction:column;overflow:hidden;opacity:0;transform:scale(0.92) translateY(16px);pointer-events:none;transition:opacity 0.25s ease,transform 0.25s ease}
@@ -463,12 +503,22 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
     <!-- gold turban band + gem -->
     <path d="M38 24 Q60 8 82 24 L79 33 Q60 20 41 33 Z" fill="var(--gold,#b8955e)"/>
     <circle cx="60" cy="16" r="4.5" fill="#f2a6c9"/>
-    <!-- face -->
-    <circle cx="50" cy="38" r="3.6" fill="#1a1420"/>
-    <circle cx="70" cy="38" r="3.6" fill="#1a1420"/>
+    <!-- cheeks (always visible) -->
     <circle cx="42" cy="44" r="3.8" fill="#f2a6c9" opacity="0.55"/>
     <circle cx="78" cy="44" r="3.8" fill="#f2a6c9" opacity="0.55"/>
-    <path d="M48 48 Q60 57 72 48" stroke="#1a1420" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- default face: round eyes + gentle smile -->
+    <g class="genie-face-default">
+      <circle cx="50" cy="38" r="3.6" fill="#1a1420"/>
+      <circle cx="70" cy="38" r="3.6" fill="#1a1420"/>
+      <path d="M48 48 Q60 57 72 48" stroke="#1a1420" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </g>
+    <!-- laugh face: squint eyes + open laughing mouth, crossfades in -->
+    <g class="genie-face-laugh" opacity="0">
+      <path d="M46 38 Q50 33 54 38" stroke="#1a1420" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+      <path d="M66 38 Q70 33 74 38" stroke="#1a1420" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+      <ellipse cx="60" cy="51" rx="9" ry="7.5" fill="#1a1420"/>
+      <rect x="53" y="45" width="14" height="4" rx="2" fill="#fff" opacity="0.9"/>
+    </g>
     <!-- sparkle -->
     <path d="M100 8 L102 14 108 16 102 18 100 24 98 18 92 16 98 14 Z" fill="#fff" opacity="0.85"/>
   </symbol>
