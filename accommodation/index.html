@@ -359,6 +359,19 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
   .captain-panel{width:94vw;height:70vh}
   .captain-chat{inset-inline-end:14px;bottom:14px}
 }
+
+/* ===== Genie "peek-in" — a second, occasional appearance from the opposite
+   edge of the screen (not roaming across the page), waves, then retreats. */
+.genie-peek{position:fixed;top:55%;inset-inline-start:-58px;transform:translateY(-50%);z-index:199;border:none;background:transparent;padding:0;cursor:pointer;animation:genie-peek-slide 16s ease-in-out infinite;filter:drop-shadow(4px 10px 18px rgba(0,0,0,0.5))}
+.genie-svg-peek{width:84px;height:104px;animation:genie-bob 9s ease-in-out infinite}
+@keyframes genie-peek-slide{
+  0%,68%{inset-inline-start:-58px}
+  75%,87%{inset-inline-start:-8px}
+  95%,100%{inset-inline-start:-58px}
+}
+@media(max-width:480px){
+  .genie-peek{display:none}
+}
 </style>
 </head>
 <body>
@@ -550,6 +563,13 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
     </form>
   </div>
 </div>
+
+<!-- Peeks in from the opposite edge every so often, waves, then slides back
+     out — a second, lighter touch of life beyond the chat corner, without
+     roaming across the page content itself. -->
+<button class="genie-peek" aria-label="Chat with RoomGenie" onclick="toggleCaptainChat()">
+  <svg class="genie-svg genie-svg-peek" viewBox="0 0 120 150"><use href="#genie-icon"></use></svg>
+</button>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
