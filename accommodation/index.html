@@ -377,16 +377,22 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
   88%{transform:scale(2.9) translateY(0) rotate(0deg)}
   100%{transform:scale(1) translateY(0) rotate(0deg)}
 }
+/* Arm hangs straight down at rest (0deg); rotating it close to -180deg
+   swings the hand up above the shoulder/head for a real "hi/bye" wave
+   instead of just flaring out sideways. The other arm is frozen at rest
+   for these 4s so the raised arm reads clearly on its own. */
 .captain-toggle.genie-intro-zoom .genie-arm-wave{animation:genie-intro-wave 4s ease-in-out 1}
+.captain-toggle.genie-intro-zoom .genie-arm-left{animation:none;transform:rotate(0deg)}
 @keyframes genie-intro-wave{
   0%,42%{transform:rotate(0deg)}
-  48%{transform:rotate(-26deg)}
-  54%{transform:rotate(10deg)}
-  60%{transform:rotate(-22deg)}
-  66%{transform:rotate(10deg)}
-  72%{transform:rotate(-18deg)}
-  78%{transform:rotate(6deg)}
-  86%,100%{transform:rotate(0deg)}
+  48%{transform:rotate(-162deg)}
+  54%{transform:rotate(-132deg)}
+  60%{transform:rotate(-166deg)}
+  66%{transform:rotate(-136deg)}
+  72%{transform:rotate(-162deg)}
+  78%{transform:rotate(-146deg)}
+  84%{transform:rotate(-154deg)}
+  90%,100%{transform:rotate(0deg)}
 }
 .genie-intro-bubble{position:absolute;bottom:108px;inset-inline-end:-6px;max-width:220px;background:var(--surface);border:1px solid var(--gold);color:var(--text);padding:11px 16px;border-radius:16px;font-size:0.85rem;font-weight:700;white-space:nowrap;box-shadow:var(--shadow-lift);opacity:0;transform:translateY(10px) scale(0.9);transition:opacity 0.3s ease,transform 0.3s ease;pointer-events:none;z-index:201}
 .genie-intro-bubble.show{opacity:1;transform:translateY(0) scale(1)}
@@ -521,26 +527,6 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
     <!-- gold chest control panel -->
     <circle cx="60" cy="102" r="8" fill="var(--gold,#b8955e)"/>
     <circle cx="60" cy="102" r="3.2" fill="#fff" opacity="0.65"/>
-    <!-- left glove — resting -->
-    <g class="genie-arm-left" style="transform-origin:36px 84px">
-      <ellipse cx="38" cy="80" rx="12" ry="9" fill="url(#genieGrad)"/>
-      <rect x="20" y="80" width="16" height="34" rx="8" fill="url(#genieGrad)"/>
-      <circle cx="28" cy="117" r="9" fill="url(#genieGrad)"/>
-      <!-- three spread fingers, clearly readable as a gripping hand -->
-      <rect x="17" y="104" width="7" height="18" rx="3.5" fill="url(#genieGrad)" transform="rotate(-26 20.5 113)"/>
-      <rect x="24.5" y="99" width="7" height="20" rx="3.5" fill="url(#genieGrad)"/>
-      <rect x="32" y="104" width="7" height="18" rx="3.5" fill="url(#genieGrad)" transform="rotate(26 35.5 113)"/>
-    </g>
-    <!-- right glove — raised, waving, fingers spread like it's gripping -->
-    <g class="genie-arm-wave" style="transform-origin:84px 84px">
-      <ellipse cx="82" cy="80" rx="12" ry="9" fill="url(#genieGrad)"/>
-      <rect x="84" y="80" width="16" height="34" rx="8" fill="url(#genieGrad)"/>
-      <circle cx="92" cy="117" r="9" fill="url(#genieGrad)"/>
-      <!-- three spread fingers, clearly readable as a gripping/waving hand -->
-      <rect x="81" y="104" width="7" height="18" rx="3.5" fill="url(#genieGrad)" transform="rotate(-26 84.5 113)"/>
-      <rect x="88.5" y="99" width="7" height="20" rx="3.5" fill="url(#genieGrad)"/>
-      <rect x="96" y="104" width="7" height="18" rx="3.5" fill="url(#genieGrad)" transform="rotate(26 99.5 113)"/>
-    </g>
     <!-- suit collar ring -->
     <ellipse cx="60" cy="70" rx="28" ry="8" fill="#9a93ab"/>
     <!-- helmet -->
@@ -562,6 +548,28 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
     </g>
     <!-- sparkle -->
     <path d="M96 10 L98 15 103 17 98 19 96 24 94 19 89 17 94 15 Z" fill="#fff" opacity="0.85"/>
+    <!-- arms drawn LAST (on top of the head) so a raised waving hand shows
+         in front of the helmet instead of being hidden behind it -->
+    <!-- left glove — resting -->
+    <g class="genie-arm-left" style="transform-origin:36px 84px">
+      <ellipse cx="38" cy="80" rx="12" ry="9" fill="url(#genieGrad)"/>
+      <rect x="20" y="80" width="16" height="34" rx="8" fill="url(#genieGrad)"/>
+      <circle cx="28" cy="117" r="9" fill="url(#genieGrad)"/>
+      <!-- three spread fingers, clearly readable as a gripping hand -->
+      <rect x="17" y="104" width="7" height="18" rx="3.5" fill="url(#genieGrad)" transform="rotate(-26 20.5 113)"/>
+      <rect x="24.5" y="99" width="7" height="20" rx="3.5" fill="url(#genieGrad)"/>
+      <rect x="32" y="104" width="7" height="18" rx="3.5" fill="url(#genieGrad)" transform="rotate(26 35.5 113)"/>
+    </g>
+    <!-- right glove — raised, waving, fingers spread like it's gripping -->
+    <g class="genie-arm-wave" style="transform-origin:84px 84px">
+      <ellipse cx="82" cy="80" rx="12" ry="9" fill="url(#genieGrad)"/>
+      <rect x="84" y="80" width="16" height="34" rx="8" fill="url(#genieGrad)"/>
+      <circle cx="92" cy="117" r="9" fill="url(#genieGrad)"/>
+      <!-- three spread fingers, clearly readable as a gripping/waving hand -->
+      <rect x="81" y="104" width="7" height="18" rx="3.5" fill="url(#genieGrad)" transform="rotate(-26 84.5 113)"/>
+      <rect x="88.5" y="99" width="7" height="20" rx="3.5" fill="url(#genieGrad)"/>
+      <rect x="96" y="104" width="7" height="18" rx="3.5" fill="url(#genieGrad)" transform="rotate(26 99.5 113)"/>
+    </g>
   </symbol>
 </svg>
 

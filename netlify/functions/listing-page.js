@@ -303,15 +303,17 @@ h1{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 6px;line-height:1.2}
   100%{transform:scale(1) translateY(0) rotate(0deg)}
 }
 .mascot-toggle.mascot-intro-zoom .mascot-arm-wave{animation:mascot-intro-wave 4s ease-in-out 1}
+.mascot-toggle.mascot-intro-zoom .mascot-arm-left{animation:none;transform:rotate(0deg)}
 @keyframes mascot-intro-wave{
   0%,42%{transform:rotate(0deg)}
-  48%{transform:rotate(-26deg)}
-  54%{transform:rotate(10deg)}
-  60%{transform:rotate(-22deg)}
-  66%{transform:rotate(10deg)}
-  72%{transform:rotate(-18deg)}
-  78%{transform:rotate(6deg)}
-  86%,100%{transform:rotate(0deg)}
+  48%{transform:rotate(-162deg)}
+  54%{transform:rotate(-132deg)}
+  60%{transform:rotate(-166deg)}
+  66%{transform:rotate(-136deg)}
+  72%{transform:rotate(-162deg)}
+  78%{transform:rotate(-146deg)}
+  84%{transform:rotate(-154deg)}
+  90%,100%{transform:rotate(0deg)}
 }
 .mascot-intro-bubble{position:absolute;bottom:108px;inset-inline-end:-6px;max-width:220px;background:var(--surface);border:1px solid var(--gold);color:var(--text);padding:11px 16px;border-radius:16px;font-size:0.85rem;font-weight:700;box-shadow:0 18px 44px rgba(0,0,0,0.45);opacity:0;transform:translateY(10px) scale(0.9);transition:opacity 0.3s ease,transform 0.3s ease;pointer-events:none;z-index:201}
 .mascot-intro-bubble.show{opacity:1;transform:translateY(0) scale(1)}
@@ -358,6 +360,23 @@ ${mapHtml}
     <path d="M32 94 C32 76 44 66 60 66 C76 66 88 76 88 94 L88 120 C88 134 76 142 60 142 C44 142 32 134 32 120 Z" fill="url(#mascotGrad)"/>
     <circle cx="60" cy="102" r="8" fill="var(--gold)"/>
     <circle cx="60" cy="102" r="3.2" fill="#fff" opacity="0.65"/>
+    <ellipse cx="60" cy="70" rx="28" ry="8" fill="#9a93ab"/>
+    <circle cx="60" cy="40" r="35" fill="url(#mascotGrad)"/>
+    <ellipse cx="60" cy="42" rx="26" ry="24" fill="#241c30"/>
+    <path d="M38 28 Q50 20 64 23" stroke="#fff" stroke-width="4" fill="none" opacity="0.22" stroke-linecap="round"/>
+    <g class="mascot-face-default">
+      <circle cx="50" cy="44" r="4" fill="var(--gold-light)"/>
+      <circle cx="70" cy="44" r="4" fill="var(--gold-light)"/>
+      <path d="M50 52 Q60 57 70 52" stroke="var(--gold-light)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    </g>
+    <g class="mascot-face-laugh" opacity="0">
+      <path d="M46 44 Q50 40 54 44" stroke="var(--gold-light)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <path d="M66 44 Q70 40 74 44" stroke="var(--gold-light)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <ellipse cx="60" cy="53" rx="8" ry="6" fill="var(--gold-light)"/>
+    </g>
+    <path d="M96 10 L98 15 103 17 98 19 96 24 94 19 89 17 94 15 Z" fill="#fff" opacity="0.85"/>
+    <!-- arms drawn LAST (on top of the head) so a raised waving hand shows
+         in front of the helmet instead of being hidden behind it -->
     <g class="mascot-arm-left" style="transform-origin:36px 84px">
       <ellipse cx="38" cy="80" rx="12" ry="9" fill="url(#mascotGrad)"/>
       <rect x="20" y="80" width="16" height="34" rx="8" fill="url(#mascotGrad)"/>
@@ -374,21 +393,6 @@ ${mapHtml}
       <rect x="88.5" y="99" width="7" height="20" rx="3.5" fill="url(#mascotGrad)"/>
       <rect x="96" y="104" width="7" height="18" rx="3.5" fill="url(#mascotGrad)" transform="rotate(26 99.5 113)"/>
     </g>
-    <ellipse cx="60" cy="70" rx="28" ry="8" fill="#9a93ab"/>
-    <circle cx="60" cy="40" r="35" fill="url(#mascotGrad)"/>
-    <ellipse cx="60" cy="42" rx="26" ry="24" fill="#241c30"/>
-    <path d="M38 28 Q50 20 64 23" stroke="#fff" stroke-width="4" fill="none" opacity="0.22" stroke-linecap="round"/>
-    <g class="mascot-face-default">
-      <circle cx="50" cy="44" r="4" fill="var(--gold-light)"/>
-      <circle cx="70" cy="44" r="4" fill="var(--gold-light)"/>
-      <path d="M50 52 Q60 57 70 52" stroke="var(--gold-light)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-    </g>
-    <g class="mascot-face-laugh" opacity="0">
-      <path d="M46 44 Q50 40 54 44" stroke="var(--gold-light)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-      <path d="M66 44 Q70 40 74 44" stroke="var(--gold-light)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-      <ellipse cx="60" cy="53" rx="8" ry="6" fill="var(--gold-light)"/>
-    </g>
-    <path d="M96 10 L98 15 103 17 98 19 96 24 94 19 89 17 94 15 Z" fill="#fff" opacity="0.85"/>
   </symbol>
 </svg>
 
