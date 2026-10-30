@@ -361,18 +361,32 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
   .captain-chat{inset-inline-end:14px;bottom:14px}
 }
 
-/* ===== One-time intro: the toggle genie pops in close/big, waves and
-   greets, then shrinks back down to its normal corner size. Only the one
-   genie in the corner — nothing else roams the screen. */
-.captain-toggle.genie-intro-zoom{animation:genie-intro-pop 3s cubic-bezier(.22,1,.36,1) 1}
+/* ===== One-time intro: the toggle genie climbs in close/big, settles, then
+   does a deliberate hi/bye wave before shrinking back down to its normal
+   corner size. Only the one genie in the corner — nothing else roams the
+   screen. The wave here is a dedicated animation on the arm, timed against
+   this same 4s clock — it overrides (by selector specificity) the arm's
+   own always-on idle-gesture loop only while this class is present. */
+.captain-toggle.genie-intro-zoom{animation:genie-intro-pop 4s cubic-bezier(.22,1,.36,1) 1}
 @keyframes genie-intro-pop{
   0%{transform:scale(0.15) translateY(160px) rotate(0deg)}
-  16%{transform:scale(1.8) translateY(26px) rotate(0deg)}
-  28%{transform:scale(2.9) translateY(0) rotate(-9deg)}
-  46%{transform:scale(2.9) translateY(0) rotate(6deg)}
-  64%{transform:scale(2.9) translateY(0) rotate(-4deg)}
-  85%{transform:scale(2.9) translateY(0) rotate(0deg)}
+  14%{transform:scale(1.8) translateY(26px) rotate(0deg)}
+  24%{transform:scale(2.9) translateY(0) rotate(-6deg)}
+  32%{transform:scale(2.9) translateY(0) rotate(3deg)}
+  40%{transform:scale(2.9) translateY(0) rotate(0deg)}
+  88%{transform:scale(2.9) translateY(0) rotate(0deg)}
   100%{transform:scale(1) translateY(0) rotate(0deg)}
+}
+.captain-toggle.genie-intro-zoom .genie-arm-wave{animation:genie-intro-wave 4s ease-in-out 1}
+@keyframes genie-intro-wave{
+  0%,42%{transform:rotate(0deg)}
+  48%{transform:rotate(-26deg)}
+  54%{transform:rotate(10deg)}
+  60%{transform:rotate(-22deg)}
+  66%{transform:rotate(10deg)}
+  72%{transform:rotate(-18deg)}
+  78%{transform:rotate(6deg)}
+  86%,100%{transform:rotate(0deg)}
 }
 .genie-intro-bubble{position:absolute;bottom:108px;inset-inline-end:-6px;max-width:220px;background:var(--surface);border:1px solid var(--gold);color:var(--text);padding:11px 16px;border-radius:16px;font-size:0.85rem;font-weight:700;white-space:nowrap;box-shadow:var(--shadow-lift);opacity:0;transform:translateY(10px) scale(0.9);transition:opacity 0.3s ease,transform 0.3s ease;pointer-events:none;z-index:201}
 .genie-intro-bubble.show{opacity:1;transform:translateY(0) scale(1)}
@@ -922,9 +936,9 @@ function captainIntro(){
   if(!toggle || !bubble) return;
   bubble.textContent = GENIE_WELCOME_TEXT[window.currentLang] || GENIE_WELCOME_TEXT.en;
   toggle.classList.add('genie-intro-zoom');
-  setTimeout(()=> bubble.classList.add('show'), 600);
-  setTimeout(()=> bubble.classList.remove('show'), 6200);
-  setTimeout(()=> toggle.classList.remove('genie-intro-zoom'), 3000);
+  setTimeout(()=> bubble.classList.add('show'), 1900);
+  setTimeout(()=> bubble.classList.remove('show'), 7200);
+  setTimeout(()=> toggle.classList.remove('genie-intro-zoom'), 4000);
 }
 
 function captainAutoOpen(){
@@ -935,7 +949,7 @@ function captainAutoOpen(){
   captainIntro();
   setTimeout(()=>{
     if(!document.getElementById('captain-panel').classList.contains('open')) toggleCaptainChat(true);
-  }, 6800);
+  }, 7800);
 }
 
 function addCaptainTyping(){

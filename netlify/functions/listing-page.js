@@ -292,15 +292,26 @@ h1{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 6px;line-height:1.2}
 @keyframes mascot-face-laugh{0%,26%{opacity:0}30%,36%{opacity:1}40%,100%{opacity:0}}
 .mascot-ping{position:absolute;top:2px;inset-inline-end:2px;width:15px;height:15px;background:#e8597a;border:2px solid var(--bg);border-radius:50%;animation:mascot-pulse 1.8s infinite}
 @keyframes mascot-pulse{0%{box-shadow:0 0 0 0 rgba(232,89,122,0.6)}70%{box-shadow:0 0 0 10px rgba(232,89,122,0)}100%{box-shadow:0 0 0 0 rgba(232,89,122,0)}}
-.mascot-toggle.mascot-intro-zoom{animation:mascot-intro-pop 3s cubic-bezier(.22,1,.36,1) 1}
+.mascot-toggle.mascot-intro-zoom{animation:mascot-intro-pop 4s cubic-bezier(.22,1,.36,1) 1}
 @keyframes mascot-intro-pop{
   0%{transform:scale(0.15) translateY(160px) rotate(0deg)}
-  16%{transform:scale(1.8) translateY(26px) rotate(0deg)}
-  28%{transform:scale(2.9) translateY(0) rotate(-9deg)}
-  46%{transform:scale(2.9) translateY(0) rotate(6deg)}
-  64%{transform:scale(2.9) translateY(0) rotate(-4deg)}
-  85%{transform:scale(2.9) translateY(0) rotate(0deg)}
+  14%{transform:scale(1.8) translateY(26px) rotate(0deg)}
+  24%{transform:scale(2.9) translateY(0) rotate(-6deg)}
+  32%{transform:scale(2.9) translateY(0) rotate(3deg)}
+  40%{transform:scale(2.9) translateY(0) rotate(0deg)}
+  88%{transform:scale(2.9) translateY(0) rotate(0deg)}
   100%{transform:scale(1) translateY(0) rotate(0deg)}
+}
+.mascot-toggle.mascot-intro-zoom .mascot-arm-wave{animation:mascot-intro-wave 4s ease-in-out 1}
+@keyframes mascot-intro-wave{
+  0%,42%{transform:rotate(0deg)}
+  48%{transform:rotate(-26deg)}
+  54%{transform:rotate(10deg)}
+  60%{transform:rotate(-22deg)}
+  66%{transform:rotate(10deg)}
+  72%{transform:rotate(-18deg)}
+  78%{transform:rotate(6deg)}
+  86%,100%{transform:rotate(0deg)}
 }
 .mascot-intro-bubble{position:absolute;bottom:108px;inset-inline-end:-6px;max-width:220px;background:var(--surface);border:1px solid var(--gold);color:var(--text);padding:11px 16px;border-radius:16px;font-size:0.85rem;font-weight:700;box-shadow:0 18px 44px rgba(0,0,0,0.45);opacity:0;transform:translateY(10px) scale(0.9);transition:opacity 0.3s ease,transform 0.3s ease;pointer-events:none;z-index:201}
 .mascot-intro-bubble.show{opacity:1;transform:translateY(0) scale(1)}
@@ -397,9 +408,9 @@ ${mapHtml}
   if(!toggle || !bubble) return;
   setTimeout(function(){
     toggle.classList.add('mascot-intro-zoom');
-    setTimeout(function(){ bubble.classList.add('show'); }, 600);
-    setTimeout(function(){ bubble.classList.remove('show'); }, 6200);
-    setTimeout(function(){ toggle.classList.remove('mascot-intro-zoom'); }, 3000);
+    setTimeout(function(){ bubble.classList.add('show'); }, 1900);
+    setTimeout(function(){ bubble.classList.remove('show'); }, 7200);
+    setTimeout(function(){ toggle.classList.remove('mascot-intro-zoom'); }, 4000);
   }, 900);
 })();
 </script>
