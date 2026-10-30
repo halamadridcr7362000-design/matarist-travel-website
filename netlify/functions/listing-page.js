@@ -11,9 +11,9 @@ const SITE = "https://mataristtravel.com";
 const WHATSAPP = "905451218167";
 
 const LABELS = {
-  en: { back: "All Roomist listings", rented: "Rented — currently unavailable", contact: "Ask about this room on WhatsApp", district: "District", type: "Room type", rent: "Monthly rent", deposit: "Deposit", bills: "Bills", furnishing: "Furnishing", gender: "Preference", transport: "Nearby transport", rules: "Rules", video: "Video", watchVideo: "Watch video", notFound: "This listing is no longer available.", gone: "This listing has been removed.", googleMaps: "Open in Google Maps" },
-  ar: { back: "كل إعلانات Roomist", rented: "مؤجرة حالياً — غير متاحة", contact: "اسأل عن هذه الغرفة عبر واتساب", district: "المنطقة", type: "نوع الغرفة", rent: "الإيجار الشهري", deposit: "التأمين", bills: "الفواتير", furnishing: "التأثيث", gender: "التفضيل", transport: "وسائل النقل القريبة", rules: "الشروط", video: "فيديو", watchVideo: "شاهد الفيديو", notFound: "هذا السكن غير متاح حالياً.", gone: "تم حذف هذا السكن.", googleMaps: "افتح في خرائط جوجل" },
-  tr: { back: "Tüm Roomist ilanları", rented: "Kiralandı — şu anda uygun değil", contact: "Bu oda hakkında WhatsApp'tan sorun", district: "Semt", type: "Oda tipi", rent: "Aylık kira", deposit: "Depozito", bills: "Faturalar", furnishing: "Eşya durumu", gender: "Tercih", transport: "Yakın ulaşım", rules: "Kurallar", video: "Video", watchVideo: "Videoyu izle", notFound: "Bu ilan artık mevcut değil.", gone: "Bu ilan kaldırıldı.", googleMaps: "Google Haritalar'da aç" },
+  en: { back: "All Roomist listings", rented: "Rented — currently unavailable", contact: "Ask about this room on WhatsApp", district: "District", type: "Room type", rent: "Monthly rent", deposit: "Deposit", bills: "Bills", furnishing: "Furnishing", gender: "Preference", transport: "Nearby transport", rules: "Rules", video: "Video", watchVideo: "Watch video", notFound: "This listing is no longer available.", gone: "This listing has been removed.", googleMaps: "Open in Google Maps", goodChoice: "Excellent choice! 🚀 Message us on WhatsApp to book it." },
+  ar: { back: "كل إعلانات Roomist", rented: "مؤجرة حالياً — غير متاحة", contact: "اسأل عن هذه الغرفة عبر واتساب", district: "المنطقة", type: "نوع الغرفة", rent: "الإيجار الشهري", deposit: "التأمين", bills: "الفواتير", furnishing: "التأثيث", gender: "التفضيل", transport: "وسائل النقل القريبة", rules: "الشروط", video: "فيديو", watchVideo: "شاهد الفيديو", notFound: "هذا السكن غير متاح حالياً.", gone: "تم حذف هذا السكن.", googleMaps: "افتح في خرائط جوجل", goodChoice: "اختيار ممتاز! 🚀 راسلنا على واتساب عشان تحجزها." },
+  tr: { back: "Tüm Roomist ilanları", rented: "Kiralandı — şu anda uygun değil", contact: "Bu oda hakkında WhatsApp'tan sorun", district: "Semt", type: "Oda tipi", rent: "Aylık kira", deposit: "Depozito", bills: "Faturalar", furnishing: "Eşya durumu", gender: "Tercih", transport: "Yakın ulaşım", rules: "Kurallar", video: "Video", watchVideo: "Videoyu izle", notFound: "Bu ilan artık mevcut değil.", gone: "Bu ilan kaldırıldı.", googleMaps: "Google Haritalar'da aç", goodChoice: "Mükemmel seçim! 🚀 Rezervasyon için WhatsApp'tan yazın." },
 };
 
 const ROOM_TYPE_LABEL = { single: "Single room", double: "Double room", shared: "Shared room", apartment: "Entire apartment" };
@@ -273,6 +273,38 @@ h1{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 6px;line-height:1.2}
 .map-gmaps-link i{font-size:0.7rem;margin-inline-end:4px}
 .wa-btn{display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;padding:15px 30px;border-radius:10px;text-decoration:none;font-weight:700;margin-top:8px;font-size:0.95rem;box-shadow:0 10px 26px rgba(37,211,102,0.25);transition:transform 0.2s}
 .wa-btn:hover{transform:translateY(-2px)}
+
+/* ===== Roomist mascot — same astronaut as the hub page, popping in once
+   to say "great choice" and point at the WhatsApp button below. */
+.mascot-chat{position:fixed;bottom:22px;inset-inline-end:22px;z-index:200}
+.mascot-toggle{position:relative;width:78px;height:96px;background:transparent;border:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.5));transition:transform 0.2s}
+.mascot-toggle:hover{transform:scale(1.06)}
+.mascot-svg{display:block;width:78px;height:96px;animation:mascot-bob 3.2s ease-in-out infinite}
+.mascot-arm-wave{transform-origin:84px 84px;animation:mascot-arm-right 9s ease-in-out infinite}
+.mascot-arm-left{transform-origin:36px 84px;animation:mascot-arm-left 9s ease-in-out infinite}
+.mascot-face-default{animation:mascot-face-default 9s ease-in-out infinite}
+.mascot-face-laugh{animation:mascot-face-laugh 9s ease-in-out infinite}
+@keyframes mascot-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes mascot-arm-right{0%,4%{transform:rotate(0deg)}8%{transform:rotate(-20deg)}12%{transform:rotate(8deg)}16%{transform:rotate(-16deg)}20%{transform:rotate(6deg)}24%{transform:rotate(0deg)}28%{transform:rotate(-32deg)}33%{transform:rotate(-36deg)}40%{transform:rotate(-10deg)}44%,100%{transform:rotate(0deg)}}
+@keyframes mascot-arm-left{0%,26%{transform:rotate(0deg)}28%{transform:rotate(22deg)}33%{transform:rotate(26deg)}40%{transform:rotate(8deg)}44%{transform:rotate(0deg)}48%{transform:rotate(-16deg)}52%{transform:rotate(10deg)}56%{transform:rotate(-6deg)}60%,100%{transform:rotate(0deg)}}
+@keyframes mascot-face-default{0%,26%{opacity:1}30%,36%{opacity:0}40%,100%{opacity:1}}
+@keyframes mascot-face-laugh{0%,26%{opacity:0}30%,36%{opacity:1}40%,100%{opacity:0}}
+.mascot-ping{position:absolute;top:2px;inset-inline-end:2px;width:15px;height:15px;background:#e8597a;border:2px solid var(--bg);border-radius:50%;animation:mascot-pulse 1.8s infinite}
+@keyframes mascot-pulse{0%{box-shadow:0 0 0 0 rgba(232,89,122,0.6)}70%{box-shadow:0 0 0 10px rgba(232,89,122,0)}100%{box-shadow:0 0 0 0 rgba(232,89,122,0)}}
+.mascot-toggle.mascot-intro-zoom{animation:mascot-intro-pop 2.6s cubic-bezier(.22,1,.36,1) 1}
+@keyframes mascot-intro-pop{
+  0%{transform:scale(1) translateY(0) rotate(0deg)}
+  10%{transform:scale(1.6) translateY(14px) rotate(0deg)}
+  22%{transform:scale(2.3) translateY(0) rotate(-7deg)}
+  40%{transform:scale(2.3) translateY(0) rotate(5deg)}
+  60%{transform:scale(2.3) translateY(0) rotate(-3deg)}
+  85%{transform:scale(2.3) translateY(0) rotate(0deg)}
+  100%{transform:scale(1) translateY(0) rotate(0deg)}
+}
+.mascot-intro-bubble{position:absolute;bottom:108px;inset-inline-end:-6px;max-width:220px;background:var(--surface);border:1px solid var(--gold);color:var(--text);padding:11px 16px;border-radius:16px;font-size:0.85rem;font-weight:700;box-shadow:0 18px 44px rgba(0,0,0,0.45);opacity:0;transform:translateY(10px) scale(0.9);transition:opacity 0.3s ease,transform 0.3s ease;pointer-events:none;z-index:201}
+.mascot-intro-bubble.show{opacity:1;transform:translateY(0) scale(1)}
+.mascot-intro-bubble::after{content:"";position:absolute;bottom:-7px;inset-inline-end:30px;width:14px;height:14px;background:var(--surface);border-inline-end:1px solid var(--gold);border-bottom:1px solid var(--gold);transform:rotate(45deg)}
+@media(max-width:480px){.mascot-chat{inset-inline-end:14px;bottom:14px}}
 </style>
 </head>
 <body>
@@ -302,6 +334,74 @@ ${mapHtml}
 <i class="fa-brands fa-whatsapp"></i> ${t.contact}
 </a>
 </div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="mascotGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f3ede4"/>
+      <stop offset="100%" stop-color="#c3bcd4"/>
+    </linearGradient>
+  </defs>
+  <symbol id="mascot-icon" viewBox="0 0 120 150">
+    <path d="M32 94 C32 76 44 66 60 66 C76 66 88 76 88 94 L88 120 C88 134 76 142 60 142 C44 142 32 134 32 120 Z" fill="url(#mascotGrad)"/>
+    <circle cx="60" cy="102" r="8" fill="var(--gold)"/>
+    <circle cx="60" cy="102" r="3.2" fill="#fff" opacity="0.65"/>
+    <g class="mascot-arm-left" style="transform-origin:36px 84px">
+      <ellipse cx="38" cy="80" rx="12" ry="9" fill="url(#mascotGrad)"/>
+      <rect x="20" y="80" width="16" height="34" rx="8" fill="url(#mascotGrad)"/>
+      <circle cx="28" cy="116" r="8" fill="url(#mascotGrad)"/>
+      <circle cx="22" cy="110" r="3" fill="url(#mascotGrad)"/>
+      <circle cx="28" cy="107" r="3" fill="url(#mascotGrad)"/>
+      <circle cx="34" cy="110" r="3" fill="url(#mascotGrad)"/>
+    </g>
+    <g class="mascot-arm-wave" style="transform-origin:84px 84px">
+      <ellipse cx="82" cy="80" rx="12" ry="9" fill="url(#mascotGrad)"/>
+      <rect x="84" y="80" width="16" height="34" rx="8" fill="url(#mascotGrad)"/>
+      <circle cx="92" cy="116" r="8" fill="url(#mascotGrad)"/>
+      <circle cx="86" cy="110" r="3" fill="url(#mascotGrad)"/>
+      <circle cx="92" cy="107" r="3" fill="url(#mascotGrad)"/>
+      <circle cx="98" cy="110" r="3" fill="url(#mascotGrad)"/>
+    </g>
+    <ellipse cx="60" cy="70" rx="28" ry="8" fill="#9a93ab"/>
+    <circle cx="60" cy="40" r="35" fill="url(#mascotGrad)"/>
+    <ellipse cx="60" cy="42" rx="26" ry="24" fill="#241c30"/>
+    <path d="M38 28 Q50 20 64 23" stroke="#fff" stroke-width="4" fill="none" opacity="0.22" stroke-linecap="round"/>
+    <g class="mascot-face-default">
+      <circle cx="50" cy="44" r="4" fill="var(--gold-light)"/>
+      <circle cx="70" cy="44" r="4" fill="var(--gold-light)"/>
+      <path d="M50 52 Q60 57 70 52" stroke="var(--gold-light)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    </g>
+    <g class="mascot-face-laugh" opacity="0">
+      <path d="M46 44 Q50 40 54 44" stroke="var(--gold-light)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <path d="M66 44 Q70 40 74 44" stroke="var(--gold-light)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <ellipse cx="60" cy="53" rx="8" ry="6" fill="var(--gold-light)"/>
+    </g>
+    <path d="M96 10 L98 15 103 17 98 19 96 24 94 19 89 17 94 15 Z" fill="#fff" opacity="0.85"/>
+  </symbol>
+</svg>
+
+<div class="mascot-chat">
+  <div id="mascot-intro-bubble" class="mascot-intro-bubble">${t.goodChoice}</div>
+  <a id="mascot-toggle" class="mascot-toggle" aria-label="${t.contact}" href="https://wa.me/${WHATSAPP}?text=${waText}" target="_blank" rel="noopener">
+    <svg class="mascot-svg" viewBox="0 0 120 150"><use href="#mascot-icon"></use></svg>
+    <span class="mascot-ping"></span>
+  </a>
+</div>
+<script>
+(function(){
+  var key = 'roomist_mascot_' + ${JSON.stringify(pub.slug)};
+  try{ if(sessionStorage.getItem(key)) return; sessionStorage.setItem(key,'1'); }catch(e){}
+  var toggle = document.getElementById('mascot-toggle');
+  var bubble = document.getElementById('mascot-intro-bubble');
+  if(!toggle || !bubble) return;
+  setTimeout(function(){
+    toggle.classList.add('mascot-intro-zoom');
+    setTimeout(function(){ bubble.classList.add('show'); }, 250);
+    setTimeout(function(){ bubble.classList.remove('show'); }, 5800);
+    setTimeout(function(){ toggle.classList.remove('mascot-intro-zoom'); }, 2600);
+  }, 900);
+})();
+</script>
 
 <div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()"><i class="fa-solid fa-xmark"></i></button>

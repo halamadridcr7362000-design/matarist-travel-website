@@ -276,8 +276,8 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 .genie-svg{display:block}
 .genie-svg-toggle{width:78px;height:96px;animation:genie-bob 9s ease-in-out infinite}
 .genie-svg-avatar{width:52px;height:64px;animation:genie-bob 9s ease-in-out infinite}
-.genie-arm-wave{transform-origin:82px 82px;animation:genie-arm-right 9s ease-in-out infinite}
-.genie-arm-left{transform-origin:38px 82px;animation:genie-arm-left 9s ease-in-out infinite}
+.genie-arm-wave{transform-origin:84px 84px;animation:genie-arm-right 9s ease-in-out infinite}
+.genie-arm-left{transform-origin:36px 84px;animation:genie-arm-left 9s ease-in-out infinite}
 .genie-face-default{animation:genie-face-default 9s ease-in-out infinite}
 .genie-face-laugh{animation:genie-face-laugh 9s ease-in-out infinite}
 /* One shared 9s timeline across the body, both arms and the face so the
@@ -365,12 +365,13 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
    genie in the corner — nothing else roams the screen. */
 .captain-toggle.genie-intro-zoom{animation:genie-intro-pop 2.6s cubic-bezier(.22,1,.36,1) 1}
 @keyframes genie-intro-pop{
-  0%{transform:scale(1) rotate(0deg)}
-  22%{transform:scale(2.3) rotate(-7deg)}
-  40%{transform:scale(2.3) rotate(5deg)}
-  60%{transform:scale(2.3) rotate(-3deg)}
-  85%{transform:scale(2.3) rotate(0deg)}
-  100%{transform:scale(1) rotate(0deg)}
+  0%{transform:scale(1) translateY(0) rotate(0deg)}
+  10%{transform:scale(1.6) translateY(14px) rotate(0deg)}
+  22%{transform:scale(2.3) translateY(0) rotate(-7deg)}
+  40%{transform:scale(2.3) translateY(0) rotate(5deg)}
+  60%{transform:scale(2.3) translateY(0) rotate(-3deg)}
+  85%{transform:scale(2.3) translateY(0) rotate(0deg)}
+  100%{transform:scale(1) translateY(0) rotate(0deg)}
 }
 .genie-intro-bubble{position:absolute;bottom:108px;inset-inline-end:-6px;max-width:220px;background:var(--surface);border:1px solid var(--gold);color:var(--text);padding:11px 16px;border-radius:16px;font-size:0.85rem;font-weight:700;white-space:nowrap;box-shadow:var(--shadow-lift);opacity:0;transform:translateY(10px) scale(0.9);transition:opacity 0.3s ease,transform 0.3s ease;pointer-events:none;z-index:201}
 .genie-intro-bubble.show{opacity:1;transform:translateY(0) scale(1)}
@@ -500,46 +501,50 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
     </linearGradient>
   </defs>
   <symbol id="genie-icon" viewBox="0 0 120 150">
-    <!-- rounded robot body -->
-    <path d="M34 92 C34 74 45 64 60 64 C75 64 86 74 86 92 L86 120 C86 134 75 142 60 142 C45 142 34 134 34 120 Z" fill="url(#genieGrad)"/>
-    <!-- gold chest badge -->
-    <circle cx="60" cy="100" r="7.5" fill="var(--gold,#b8955e)"/>
-    <circle cx="60" cy="100" r="3" fill="#fff" opacity="0.65"/>
-    <!-- left arm — resting -->
-    <g class="genie-arm-left" style="transform-origin:38px 82px">
-      <rect x="22" y="78" width="16" height="36" rx="8" fill="url(#genieGrad)"/>
-      <circle cx="30" cy="116" r="8" fill="url(#genieGrad)"/>
+    <!-- rounded spacesuit body -->
+    <path d="M32 94 C32 76 44 66 60 66 C76 66 88 76 88 94 L88 120 C88 134 76 142 60 142 C44 142 32 134 32 120 Z" fill="url(#genieGrad)"/>
+    <!-- gold chest control panel -->
+    <circle cx="60" cy="102" r="8" fill="var(--gold,#b8955e)"/>
+    <circle cx="60" cy="102" r="3.2" fill="#fff" opacity="0.65"/>
+    <!-- left glove — resting -->
+    <g class="genie-arm-left" style="transform-origin:36px 84px">
+      <ellipse cx="38" cy="80" rx="12" ry="9" fill="url(#genieGrad)"/>
+      <rect x="20" y="80" width="16" height="34" rx="8" fill="url(#genieGrad)"/>
+      <circle cx="28" cy="116" r="8" fill="url(#genieGrad)"/>
+      <circle cx="22" cy="110" r="3" fill="url(#genieGrad)"/>
+      <circle cx="28" cy="107" r="3" fill="url(#genieGrad)"/>
+      <circle cx="34" cy="110" r="3" fill="url(#genieGrad)"/>
     </g>
-    <!-- right arm — raised, waving -->
-    <g class="genie-arm-wave" style="transform-origin:82px 82px">
-      <rect x="82" y="78" width="16" height="36" rx="8" fill="url(#genieGrad)"/>
-      <circle cx="90" cy="116" r="8" fill="url(#genieGrad)"/>
+    <!-- right glove — raised, waving, fingers spread like it's gripping -->
+    <g class="genie-arm-wave" style="transform-origin:84px 84px">
+      <ellipse cx="82" cy="80" rx="12" ry="9" fill="url(#genieGrad)"/>
+      <rect x="84" y="80" width="16" height="34" rx="8" fill="url(#genieGrad)"/>
+      <circle cx="92" cy="116" r="8" fill="url(#genieGrad)"/>
+      <circle cx="86" cy="110" r="3" fill="url(#genieGrad)"/>
+      <circle cx="92" cy="107" r="3" fill="url(#genieGrad)"/>
+      <circle cx="98" cy="110" r="3" fill="url(#genieGrad)"/>
     </g>
-    <!-- antenna -->
-    <line x1="60" y1="10" x2="60" y2="21" stroke="var(--gold,#b8955e)" stroke-width="3" stroke-linecap="round"/>
-    <circle cx="60" cy="8" r="5" fill="var(--gold,#b8955e)"/>
-    <circle cx="60" cy="8" r="2" fill="#fff" opacity="0.8"/>
-    <!-- head -->
-    <rect x="26" y="20" width="68" height="52" rx="26" fill="url(#genieGrad)"/>
-    <!-- visor screen -->
-    <rect x="36" y="32" width="48" height="30" rx="15" fill="#241c30"/>
+    <!-- suit collar ring -->
+    <ellipse cx="60" cy="70" rx="28" ry="8" fill="#9a93ab"/>
+    <!-- helmet -->
+    <circle cx="60" cy="40" r="35" fill="url(#genieGrad)"/>
+    <!-- visor glass -->
+    <ellipse cx="60" cy="42" rx="26" ry="24" fill="#241c30"/>
+    <path d="M38 28 Q50 20 64 23" stroke="#fff" stroke-width="4" fill="none" opacity="0.22" stroke-linecap="round"/>
     <!-- default face: glowing eyes + gentle smile -->
     <g class="genie-face-default">
-      <circle cx="50" cy="47" r="4" fill="var(--gold-light,#d4b480)"/>
-      <circle cx="70" cy="47" r="4" fill="var(--gold-light,#d4b480)"/>
-      <path d="M50 55 Q60 60 70 55" stroke="var(--gold-light,#d4b480)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <circle cx="50" cy="44" r="4" fill="var(--gold-light,#d4b480)"/>
+      <circle cx="70" cy="44" r="4" fill="var(--gold-light,#d4b480)"/>
+      <path d="M50 52 Q60 57 70 52" stroke="var(--gold-light,#d4b480)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
     </g>
     <!-- laugh face: squint eyes + open laughing mouth, crossfades in -->
     <g class="genie-face-laugh" opacity="0">
-      <path d="M46 47 Q50 43 54 47" stroke="var(--gold-light,#d4b480)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-      <path d="M66 47 Q70 43 74 47" stroke="var(--gold-light,#d4b480)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-      <ellipse cx="60" cy="56" rx="8" ry="6" fill="var(--gold-light,#d4b480)"/>
+      <path d="M46 44 Q50 40 54 44" stroke="var(--gold-light,#d4b480)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <path d="M66 44 Q70 40 74 44" stroke="var(--gold-light,#d4b480)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <ellipse cx="60" cy="53" rx="8" ry="6" fill="var(--gold-light,#d4b480)"/>
     </g>
-    <!-- cheeks (always visible, subtle) -->
-    <circle cx="38" cy="54" r="3.4" fill="#f2a6c9" opacity="0.4"/>
-    <circle cx="82" cy="54" r="3.4" fill="#f2a6c9" opacity="0.4"/>
     <!-- sparkle -->
-    <path d="M96 14 L98 19 103 21 98 23 96 28 94 23 89 21 94 19 Z" fill="#fff" opacity="0.85"/>
+    <path d="M96 10 L98 15 103 17 98 19 96 24 94 19 89 17 94 15 Z" fill="#fff" opacity="0.85"/>
   </symbol>
 </svg>
 
