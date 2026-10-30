@@ -108,7 +108,10 @@ tr.clickable:hover td{background:var(--surface2)}
     <div class="page active" id="page-listings">
       <div class="page-head">
         <h2>Listings</h2>
-        <button class="btn" onclick="openListingForm()">+ New listing</button>
+        <div style="display:flex;gap:8px">
+          <button class="btn secondary" onclick="normalizeDistricts()">🧹 Normalize districts</button>
+          <button class="btn" onclick="openListingForm()">+ New listing</button>
+        </div>
       </div>
       <table>
         <thead><tr><th>Title</th><th>District</th><th>Type</th><th>Rent</th><th>Status</th><th></th><th></th></tr></thead>
@@ -300,6 +303,77 @@ async function loadListings(){
   const badge = document.getElementById('pending-count');
   badge.style.display = pendingCount ? 'inline-block' : 'none';
   badge.textContent = pendingCount;
+}
+
+// Collapses every variant spelling of a district into the one real Istanbul
+// ilçe it belongs to (stripped of ", Istanbul" suffixes, trailing spaces,
+// and sub-neighborhood tags) so the district filter on the public site
+// shows one clean entry per real district instead of 3-4 near-duplicates
+// for the same place. Verified against each listing's title + pinned
+// lat/lng before mapping, not just string-matched. Keys are matched after
+// trimming the raw district string.
+const DISTRICT_CANONICAL_MAP = {
+  "Alibeyköy, Eyüpsultan": "Eyüpsultan",
+  "Altınşehir, Istanbul": "Ümraniye", // mislabeled — title/pin are both Ümraniye, not Esenyurt/Altınşehir
+  "Ambarlı, Avcılar, Istanbul": "Avcılar",
+  "Ataşehir, Istanbul": "Ataşehir",
+  "Avcılar": "Avcılar",
+  "Avcılar, Istanbul": "Avcılar",
+  "Başakşehir": "Başakşehir",
+  "Bayrampaşa": "Bayrampaşa",
+  "Beşiktaş": "Beşiktaş",
+  "Beykoz": "Beykoz",
+  "Beyoğlu, Taksim, Istanbul": "Beyoğlu",
+  "Çağlayan, Istanbul": "Kağıthane",
+  "Çekmeköy": "Çekmeköy",
+  "Cumhuriyet Mahallesi, Beylikdüzü": "Beylikdüzü",
+  "Esenyurt": "Esenyurt",
+  "Esenyurt, Istanbul": "Esenyurt",
+  "Esenyurt, Meydan, Istanbul": "Esenyurt",
+  "Eyüpsultan, Istanbul": "Eyüpsultan",
+  "Fatih": "Fatih",
+  "Fatih – Molla Gürani Mahallesi": "Fatih",
+  "Gaziosmanpaşa": "Gaziosmanpaşa",
+  "Güngören": "Güngören",
+  "Haramidere": "Esenyurt",
+  "Haramidere, Esenyurt": "Esenyurt",
+  "Kağıthane": "Kağıthane",
+  "Levent": "Beşiktaş",
+  "Osmanbey, Şişli": "Şişli",
+  "Sakarya Mahallesi, Eyüpsultan": "Eyüpsultan",
+  "Sancaktepe": "Sancaktepe",
+  "Şirinevler": "Bahçelievler",
+  "Şirinevler, Istanbul": "Bahçelievler",
+  "Şişli, Istanbul": "Şişli",
+  "Şükrü Bey, Avcılar": "Avcılar",
+  "Şükrü Bey, Avcılar, Istanbul": "Avcılar",
+  "Üsküdar": "Üsküdar",
+  "Üsküdar, Istanbul": "Üsküdar",
+  "Zeytinburnu": "Zeytinburnu",
+};
+
+function canonicalDistrict(raw){
+  const trimmed = String(raw || '').trim();
+  return DISTRICT_CANONICAL_MAP[trimmed] || trimmed;
+}
+
+async function normalizeDistricts(){
+  const changes = listingsCache
+    .map(l => ({ l, next: canonicalDistrict(l.district) }))
+    .filter(x => x.next !== (x.l.district || ''));
+  if(!changes.length){ showToast('Districts are already clean — nothing to do', 'success'); return; }
+  const preview = changes.slice(0, 12).map(x => `"${x.l.district}" → "${x.next}"`).join('\n')
+    + (changes.length > 12 ? `\n…and ${changes.length - 12} more` : '');
+  if(!confirm(`This will update the district on ${changes.length} listing(s):\n\n${preview}\n\nProceed?`)) return;
+  let ok = 0, fail = 0;
+  for(const { l, next } of changes){
+    try{
+      const res = await fetch(LISTINGS_URL,{method:'POST',headers:authHeaders(),body:JSON.stringify({action:'update', id:l.id, district: next})});
+      if(res.ok) ok++; else fail++;
+    }catch(e){ fail++; }
+  }
+  showToast(`Districts normalized: ${ok} updated${fail?`, ${fail} failed`:''}`, fail ? 'error' : 'success');
+  await loadListings();
 }
 
 // Lets the admin reuse values already typed on past listings instead of
