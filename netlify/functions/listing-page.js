@@ -373,17 +373,17 @@ ${mapHtml}
       <ellipse cx="38" cy="80" rx="12" ry="9" fill="url(#mascotGrad)"/>
       <rect x="20" y="80" width="16" height="34" rx="8" fill="url(#mascotGrad)"/>
       <circle cx="28" cy="117" r="9" fill="url(#mascotGrad)"/>
-      <rect x="17" y="104" width="7" height="18" rx="3.5" fill="url(#mascotGrad)" transform="rotate(-26 20.5 113)"/>
-      <rect x="24.5" y="99" width="7" height="20" rx="3.5" fill="url(#mascotGrad)"/>
-      <rect x="32" y="104" width="7" height="18" rx="3.5" fill="url(#mascotGrad)" transform="rotate(26 35.5 113)"/>
+      <rect x="17" y="113" width="7" height="18" rx="3.5" fill="url(#mascotGrad)" transform="rotate(-26 20.5 122)"/>
+      <rect x="24.5" y="115" width="7" height="20" rx="3.5" fill="url(#mascotGrad)"/>
+      <rect x="32" y="113" width="7" height="18" rx="3.5" fill="url(#mascotGrad)" transform="rotate(26 35.5 122)"/>
     </g>
     <g class="mascot-arm-wave" style="transform-origin:84px 84px">
       <ellipse cx="82" cy="80" rx="12" ry="9" fill="url(#mascotGrad)"/>
       <rect x="84" y="80" width="16" height="34" rx="8" fill="url(#mascotGrad)"/>
       <circle cx="92" cy="117" r="9" fill="url(#mascotGrad)"/>
-      <rect x="81" y="104" width="7" height="18" rx="3.5" fill="url(#mascotGrad)" transform="rotate(-26 84.5 113)"/>
-      <rect x="88.5" y="99" width="7" height="20" rx="3.5" fill="url(#mascotGrad)"/>
-      <rect x="96" y="104" width="7" height="18" rx="3.5" fill="url(#mascotGrad)" transform="rotate(26 99.5 113)"/>
+      <rect x="81" y="113" width="7" height="18" rx="3.5" fill="url(#mascotGrad)" transform="rotate(-26 84.5 122)"/>
+      <rect x="88.5" y="115" width="7" height="20" rx="3.5" fill="url(#mascotGrad)"/>
+      <rect x="96" y="113" width="7" height="18" rx="3.5" fill="url(#mascotGrad)" transform="rotate(26 99.5 122)"/>
     </g>
   </symbol>
 </svg>
