@@ -276,10 +276,11 @@ h1{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 6px;line-height:1.2}
 
 /* ===== Roomist mascot — same astronaut as the hub page, popping in once
    to say "great choice" and point at the WhatsApp button below. */
-.mascot-chat{position:fixed;bottom:22px;inset-inline-end:22px;z-index:200}
-.mascot-toggle{position:relative;width:78px;height:96px;background:transparent;border:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.5));transition:transform 0.2s;transform-origin:bottom right}
-[dir="rtl"] .mascot-toggle{transform-origin:bottom left}
-.mascot-toggle:hover{transform:scale(1.06)}
+.mascot-chat{position:fixed;bottom:22px;inset-inline-end:0;z-index:200}
+.mascot-toggle{position:relative;width:78px;height:96px;background:transparent;border:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0 10px 0 0;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.5));transition:transform 0.2s;transform-origin:bottom right;transform:translateX(14px) rotate(-7deg)}
+[dir="rtl"] .mascot-toggle{transform-origin:bottom left;transform:translateX(-14px) rotate(7deg);padding:0 0 0 10px}
+.mascot-toggle:hover{transform:translateX(14px) rotate(-7deg) scale(1.06)}
+[dir="rtl"] .mascot-toggle:hover{transform:translateX(-14px) rotate(7deg) scale(1.06)}
 .mascot-svg{display:block;width:78px;height:96px;animation:mascot-bob 3.2s ease-in-out infinite}
 .mascot-arm-wave{transform-origin:84px 84px;animation:mascot-arm-right 9s ease-in-out infinite}
 .mascot-arm-left{transform-origin:36px 84px;animation:mascot-arm-left 9s ease-in-out infinite}
@@ -310,7 +311,7 @@ h1{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 6px;line-height:1.2}
 .mascot-intro-bubble{position:absolute;bottom:112px;inset-inline-end:-6px;max-width:240px;background:var(--surface);border:2px solid var(--gold);color:var(--text);padding:14px 20px;border-radius:18px;font-size:1.05rem;font-weight:800;box-shadow:0 20px 50px rgba(0,0,0,0.6);opacity:0;transform:translateY(10px) scale(0.9);transition:opacity 0.3s ease,transform 0.3s ease;pointer-events:none;z-index:201}
 .mascot-intro-bubble.show{opacity:1;transform:translateY(0) scale(1)}
 .mascot-intro-bubble::after{content:"";position:absolute;bottom:-8px;inset-inline-end:30px;width:16px;height:16px;background:var(--surface);border-inline-end:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(45deg)}
-@media(max-width:480px){.mascot-chat{inset-inline-end:14px;bottom:14px}}
+@media(max-width:480px){.mascot-chat{inset-inline-end:0;bottom:14px}}
 </style>
 </head>
 <body>
@@ -380,10 +381,12 @@ ${mapHtml}
     <g class="mascot-arm-wave" style="transform-origin:84px 84px">
       <ellipse cx="82" cy="80" rx="12" ry="9" fill="url(#mascotGrad)"/>
       <rect x="84" y="80" width="16" height="34" rx="8" fill="url(#mascotGrad)"/>
-      <circle cx="92" cy="117" r="9" fill="url(#mascotGrad)"/>
-      <rect x="81" y="113" width="7" height="18" rx="3.5" fill="url(#mascotGrad)" transform="rotate(-26 84.5 122)"/>
-      <rect x="88.5" y="115" width="7" height="20" rx="3.5" fill="url(#mascotGrad)"/>
-      <rect x="96" y="113" width="7" height="18" rx="3.5" fill="url(#mascotGrad)" transform="rotate(26 99.5 122)"/>
+      <g transform="rotate(-18 92 112)">
+        <circle cx="92" cy="117" r="9" fill="url(#mascotGrad)"/>
+        <path d="M83 111 Q76 119 84 127" stroke="url(#mascotGrad)" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M92 109 Q93 121 92 131" stroke="url(#mascotGrad)" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M101 111 Q108 119 100 127" stroke="url(#mascotGrad)" stroke-width="7" fill="none" stroke-linecap="round"/>
+      </g>
     </g>
   </symbol>
 </svg>

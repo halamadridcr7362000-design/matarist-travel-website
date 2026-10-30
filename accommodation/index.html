@@ -269,11 +269,16 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 }
 
 /* ===== RoomGenie chat assistant ===== */
-.captain-chat{position:fixed;bottom:22px;inset-inline-end:22px;z-index:200;font-family:'DM Sans',sans-serif}
+.captain-chat{position:fixed;bottom:22px;inset-inline-end:0;z-index:200;font-family:'DM Sans',sans-serif}
 [dir="rtl"] .captain-chat{font-family:'Cairo','DM Sans',sans-serif}
-.captain-toggle{position:relative;width:78px;height:96px;background:transparent;border:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.5));transition:transform 0.2s;transform-origin:bottom right}
-[dir="rtl"] .captain-toggle{transform-origin:bottom left}
-.captain-toggle:hover{transform:scale(1.06)}
+/* Flush against the viewport edge (no gap) and leaned inward, as if the
+   whole character is peeking in from outside the frame and its gripping
+   hand (drawn curled over the edge, see .genie-arm-wave below) is the
+   only thing holding it there. */
+.captain-toggle{position:relative;width:78px;height:96px;background:transparent;border:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0 10px 0 0;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.5));transition:transform 0.2s;transform-origin:bottom right;transform:translateX(14px) rotate(-7deg)}
+[dir="rtl"] .captain-toggle{transform-origin:bottom left;transform:translateX(-14px) rotate(7deg);padding:0 0 0 10px}
+.captain-toggle:hover{transform:translateX(14px) rotate(-7deg) scale(1.06)}
+[dir="rtl"] .captain-toggle:hover{transform:translateX(-14px) rotate(7deg) scale(1.06)}
 .genie-svg{display:block}
 .genie-svg-toggle{width:78px;height:96px;animation:genie-bob 9s ease-in-out infinite}
 .genie-svg-avatar{width:52px;height:64px;animation:genie-bob 9s ease-in-out infinite}
@@ -358,7 +363,7 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 .captain-form button{width:38px;height:38px;border-radius:50%;background:var(--gold);border:none;color:#1a1420;cursor:pointer;flex-shrink:0}
 @media(max-width:480px){
   .captain-panel{width:94vw;height:70vh}
-  .captain-chat{inset-inline-end:14px;bottom:14px}
+  .captain-chat{inset-inline-end:0;bottom:14px}
 }
 
 /* ===== One-time intro: the toggle genie climbs in close/big, settles, then
@@ -552,15 +557,19 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
       <rect x="32" y="113" width="7" height="18" rx="3.5" fill="url(#genieGrad)" transform="rotate(26 35.5 122)"/>
     </g>
     <!-- right glove — raised, waving, fingers spread like it's gripping -->
+    <!-- The "gripping" arm/hand: a static wrist bend (rotate on the inner
+         group, not the whole arm, so the idle/gesture timeline is
+         untouched) plus curled hook-shaped fingers, reading as a hand
+         clinging to an edge rather than an open spread palm. -->
     <g class="genie-arm-wave" style="transform-origin:84px 84px">
       <ellipse cx="82" cy="80" rx="12" ry="9" fill="url(#genieGrad)"/>
       <rect x="84" y="80" width="16" height="34" rx="8" fill="url(#genieGrad)"/>
-      <circle cx="92" cy="117" r="9" fill="url(#genieGrad)"/>
-      <!-- three spread fingers extending OUT from the palm (away from the
-           arm), not back toward it — that was the "upside-down glove" bug -->
-      <rect x="81" y="113" width="7" height="18" rx="3.5" fill="url(#genieGrad)" transform="rotate(-26 84.5 122)"/>
-      <rect x="88.5" y="115" width="7" height="20" rx="3.5" fill="url(#genieGrad)"/>
-      <rect x="96" y="113" width="7" height="18" rx="3.5" fill="url(#genieGrad)" transform="rotate(26 99.5 122)"/>
+      <g transform="rotate(-18 92 112)">
+        <circle cx="92" cy="117" r="9" fill="url(#genieGrad)"/>
+        <path d="M83 111 Q76 119 84 127" stroke="url(#genieGrad)" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M92 109 Q93 121 92 131" stroke="url(#genieGrad)" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M101 111 Q108 119 100 127" stroke="url(#genieGrad)" stroke-width="7" fill="none" stroke-linecap="round"/>
+      </g>
     </g>
   </symbol>
 </svg>
