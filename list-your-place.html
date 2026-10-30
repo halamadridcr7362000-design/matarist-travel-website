@@ -114,6 +114,12 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
     <h2 data-i18n="form_heading">Property Details</h2>
     <form id="submit-form" onsubmit="return submitListing(event)">
       <div class="honeypot"><label>Website<input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off"></label></div>
+      <div class="form-row" style="background:var(--surface-2);border:1px solid var(--gold);border-radius:8px;padding:12px;margin-bottom:18px">
+        <label data-i18n="l-quickfill">✨ Describe your place in one go (optional)</label>
+        <textarea id="f-quickfill" rows="3" data-i18n-ph="ph-quickfill" placeholder="e.g. Single room in Şişli, 8000 TRY/month, furnished, deposit 1 month, bills included, 5 min to metro"></textarea>
+        <button type="button" class="btn secondary" style="margin-top:8px;padding:9px 18px;font-size:0.85rem" onclick="quickFillPlaceForm()" data-i18n="btn-quickfill">Fill the fields below</button>
+        <div style="font-size:0.76rem;color:var(--text-muted);margin-top:6px" data-i18n="quickfill-hint">Picks up district, price, room type, furnishing and more from your wording — check the fields after and fix anything it missed.</div>
+      </div>
       <div class="form-grid">
         <div class="form-row"><label data-i18n="l-title">Title<span class="req">*</span></label><input id="f-title" required maxlength="120" placeholder="e.g. Shared double room near Taksim" data-i18n-ph="ph-title"></div>
         <div class="form-row"><label data-i18n="l-district">District<span class="req">*</span></label><input id="f-district" required maxlength="80" placeholder="e.g. Şişli" data-i18n-ph="ph-district"></div>
@@ -178,8 +184,8 @@ const LISTINGS_URL='/.netlify/functions/accommodation-listings';
 const MAX_PHOTOS = 8;
 
 const translations = {
-  en:{brand:"Roomist",back_listings:"← Browse listings",eyebrow:"For Property Owners",hero_title:"List Your Room or Apartment",hero_sub:"Tell us about your place and we'll handle finding the right tenant — students and young professionals browse MATARIST every day. Every submission is reviewed by our team before it ever goes public.",step1:"Fill in the details",step2:"We review it",step3:"It goes live",form_heading:"Property Details","l-title":"Title","l-district":"District","l-roomtype":"Room type","l-rent":"Monthly rent","l-deposit":"Deposit","l-bills":"Bills / utilities","l-furnishing":"Furnishing","l-gender":"Gender preference","l-transport":"Nearby transport","l-contact":"Your phone / WhatsApp","l-description":"Description","l-rules":"House rules","l-map":"Location — click the map to drop a pin (optional)","l-photos":"Photos (optional, up to 8)","l-video":"Video links (YouTube, Vimeo, Google Drive — one per line, optional)","ph-video":"https://...","ph-title":"e.g. Shared double room near Taksim","ph-district":"e.g. Şişli","ph-deposit":"e.g. 1 month","ph-bills":"e.g. included / extra ~500 TRY","ph-furnishing":"furnished / unfurnished","ph-gender":"male / female / mixed","ph-transport":"e.g. 5 min to metro","ph-contact":"+90 5xx xxx xx xx","ph-description":"Describe the room, the building, the neighborhood…","ph-rules":"e.g. no smoking, no pets",type_single:"Single room",type_double:"Double room",type_shared:"Shared room",type_apartment:"Entire apartment",consent_text:"I confirm I'm authorized to list this property and I understand MATARIST will review it before it's published.",btn_submit:"Submit for review",photos_heading:"Add Photos (optional, up to 8)",photos_hint:"Clear, well-lit photos get far more interest. You can also finish without photos.",btn_finish:"Finish",success_title:"Thanks — we've got it!",success_body:"Your submission is now with our team for review. We'll check the details and publish it (or reach out if we need anything else). This usually takes less than 48 hours.",btn_browse:"Browse current listings",err_required:"Please fill in the title, district, and your contact number.",err_generic:"Something went wrong — please try again."},
-  ar:{brand:"Roomist",back_listings:"← تصفح السكنات",eyebrow:"لأصحاب العقارات",hero_title:"أضف غرفتك أو شقتك للإيجار",hero_sub:"احكيلنا عن سكنك وإحنا هنتولى إيجاد المستأجر المناسب — طلاب ومهنيين شباب بيتصفحوا ماتاريست يومياً. كل طلب بيتم مراجعته من فريقنا قبل النشر.",step1:"املأ التفاصيل",step2:"نراجع الطلب",step3:"يتم النشر",form_heading:"تفاصيل العقار","l-title":"العنوان","l-district":"المنطقة","l-roomtype":"نوع الغرفة","l-rent":"الإيجار الشهري","l-deposit":"التأمين","l-bills":"الفواتير","l-furnishing":"التأثيث","l-gender":"الجنس المفضل","l-transport":"المواصلات القريبة","l-contact":"رقم الهاتف / واتساب","l-description":"الوصف","l-rules":"قوانين السكن","l-map":"الموقع — اضغط على الخريطة لتحديد المكان (اختياري)","l-photos":"الصور (اختياري، حتى 8 صور)","l-video":"روابط فيديو (يوتيوب، فيميو، جوجل درايف — رابط في كل سطر، اختياري)","ph-video":"https://...","ph-title":"مثال: غرفة مزدوجة مشتركة قرب تقسيم","ph-district":"مثال: شيشلي","ph-deposit":"مثال: شهر واحد","ph-bills":"مثال: شاملة / إضافية حوالي 500 ليرة","ph-furnishing":"مفروشة / غير مفروشة","ph-gender":"ذكور / إناث / مختلط","ph-transport":"مثال: 5 دقائق من المترو","ph-contact":"+90 5xx xxx xx xx","ph-description":"اوصف الغرفة والمبنى والمنطقة المحيطة…","ph-rules":"مثال: ممنوع التدخين، ممنوع الحيوانات الأليفة",type_single:"غرفة مفردة",type_double:"غرفة مزدوجة",type_shared:"غرفة مشتركة",type_apartment:"شقة كاملة",consent_text:"أؤكد أنني مخوّل بتأجير هذا العقار، وأفهم أن ماتاريست ستراجعه قبل نشره.",btn_submit:"إرسال للمراجعة",photos_heading:"أضف صور (اختياري، حتى 8 صور)",photos_hint:"الصور الواضحة ذات الإضاءة الجيدة بتجذب اهتمام أكتر. تقدر كمان تنهي بدون صور.",btn_finish:"إنهاء",success_title:"شكراً — استلمنا طلبك!",success_body:"طلبك دلوقتي مع فريقنا للمراجعة. هنراجع التفاصيل وننشره (أو نتواصل معاك لو محتاجين أي حاجة إضافية). ده بياخد عادةً أقل من 48 ساعة.",btn_browse:"تصفح السكنات المتاحة حالياً",err_required:"من فضلك املأ العنوان والمنطقة ورقم التواصل.",err_generic:"حصل خطأ — من فضلك حاول تاني."}
+  en:{brand:"Roomist",back_listings:"← Browse listings",eyebrow:"For Property Owners",hero_title:"List Your Room or Apartment",hero_sub:"Tell us about your place and we'll handle finding the right tenant — students and young professionals browse MATARIST every day. Every submission is reviewed by our team before it ever goes public.",step1:"Fill in the details",step2:"We review it",step3:"It goes live",form_heading:"Property Details","l-quickfill":"✨ Describe your place in one go (optional)","ph-quickfill":"e.g. Single room in Şişli, 8000 TRY/month, furnished, deposit 1 month, bills included, 5 min to metro","btn-quickfill":"Fill the fields below","quickfill-hint":"Picks up district, price, room type, furnishing and more from your wording — check the fields after and fix anything it missed.","l-title":"Title","l-district":"District","l-roomtype":"Room type","l-rent":"Monthly rent","l-deposit":"Deposit","l-bills":"Bills / utilities","l-furnishing":"Furnishing","l-gender":"Gender preference","l-transport":"Nearby transport","l-contact":"Your phone / WhatsApp","l-description":"Description","l-rules":"House rules","l-map":"Location — click the map to drop a pin (optional)","l-photos":"Photos (optional, up to 8)","l-video":"Video links (YouTube, Vimeo, Google Drive — one per line, optional)","ph-video":"https://...","ph-title":"e.g. Shared double room near Taksim","ph-district":"e.g. Şişli","ph-deposit":"e.g. 1 month","ph-bills":"e.g. included / extra ~500 TRY","ph-furnishing":"furnished / unfurnished","ph-gender":"male / female / mixed","ph-transport":"e.g. 5 min to metro","ph-contact":"+90 5xx xxx xx xx","ph-description":"Describe the room, the building, the neighborhood…","ph-rules":"e.g. no smoking, no pets",type_single:"Single room",type_double:"Double room",type_shared:"Shared room",type_apartment:"Entire apartment",consent_text:"I confirm I'm authorized to list this property and I understand MATARIST will review it before it's published.",btn_submit:"Submit for review",photos_heading:"Add Photos (optional, up to 8)",photos_hint:"Clear, well-lit photos get far more interest. You can also finish without photos.",btn_finish:"Finish",success_title:"Thanks — we've got it!",success_body:"Your submission is now with our team for review. We'll check the details and publish it (or reach out if we need anything else). This usually takes less than 48 hours.",btn_browse:"Browse current listings",err_required:"Please fill in the title, district, and your contact number.",err_generic:"Something went wrong — please try again."},
+  ar:{brand:"Roomist",back_listings:"← تصفح السكنات",eyebrow:"لأصحاب العقارات",hero_title:"أضف غرفتك أو شقتك للإيجار",hero_sub:"احكيلنا عن سكنك وإحنا هنتولى إيجاد المستأجر المناسب — طلاب ومهنيين شباب بيتصفحوا ماتاريست يومياً. كل طلب بيتم مراجعته من فريقنا قبل النشر.",step1:"املأ التفاصيل",step2:"نراجع الطلب",step3:"يتم النشر",form_heading:"تفاصيل العقار","l-quickfill":"✨ اوصف سكنك بكلامك (اختياري)","ph-quickfill":"مثال: غرفة مفردة في شيشلي، 8000 ليرة شهرياً، مفروشة، تأمين شهر، الفواتير شاملة، 5 دقايق من المترو","btn-quickfill":"املأ الحقول تحت","quickfill-hint":"بتاخد المنطقة والسعر ونوع الغرفة والتأثيث وغيرها من كلامك — راجع الحقول بعدها وصحّح أي حاجة فاتتها.","l-title":"العنوان","l-district":"المنطقة","l-roomtype":"نوع الغرفة","l-rent":"الإيجار الشهري","l-deposit":"التأمين","l-bills":"الفواتير","l-furnishing":"التأثيث","l-gender":"الجنس المفضل","l-transport":"المواصلات القريبة","l-contact":"رقم الهاتف / واتساب","l-description":"الوصف","l-rules":"قوانين السكن","l-map":"الموقع — اضغط على الخريطة لتحديد المكان (اختياري)","l-photos":"الصور (اختياري، حتى 8 صور)","l-video":"روابط فيديو (يوتيوب، فيميو، جوجل درايف — رابط في كل سطر، اختياري)","ph-video":"https://...","ph-title":"مثال: غرفة مزدوجة مشتركة قرب تقسيم","ph-district":"مثال: شيشلي","ph-deposit":"مثال: شهر واحد","ph-bills":"مثال: شاملة / إضافية حوالي 500 ليرة","ph-furnishing":"مفروشة / غير مفروشة","ph-gender":"ذكور / إناث / مختلط","ph-transport":"مثال: 5 دقائق من المترو","ph-contact":"+90 5xx xxx xx xx","ph-description":"اوصف الغرفة والمبنى والمنطقة المحيطة…","ph-rules":"مثال: ممنوع التدخين، ممنوع الحيوانات الأليفة",type_single:"غرفة مفردة",type_double:"غرفة مزدوجة",type_shared:"غرفة مشتركة",type_apartment:"شقة كاملة",consent_text:"أؤكد أنني مخوّل بتأجير هذا العقار، وأفهم أن ماتاريست ستراجعه قبل نشره.",btn_submit:"إرسال للمراجعة",photos_heading:"أضف صور (اختياري، حتى 8 صور)",photos_hint:"الصور الواضحة ذات الإضاءة الجيدة بتجذب اهتمام أكتر. تقدر كمان تنهي بدون صور.",btn_finish:"إنهاء",success_title:"شكراً — استلمنا طلبك!",success_body:"طلبك دلوقتي مع فريقنا للمراجعة. هنراجع التفاصيل وننشره (أو نتواصل معاك لو محتاجين أي حاجة إضافية). ده بياخد عادةً أقل من 48 ساعة.",btn_browse:"تصفح السكنات المتاحة حالياً",err_required:"من فضلك املأ العنوان والمنطقة ورقم التواصل.",err_generic:"حصل خطأ — من فضلك حاول تاني."}
 };
 function setLang(lang){
   localStorage.setItem('acc_lang', lang);
@@ -191,6 +197,114 @@ function setLang(lang){
   window.currentLang = lang;
 }
 function t(key){ return (translations[window.currentLang||'en'][key]) || key; }
+
+// Rule-based extraction from a free-text description — not a real AI call
+// (no API key/cost), reusing the same keyword-matching approach RoomGenie
+// already uses on the accommodation page for district/gender/type
+// detection, extended to also pull out price, deposit, bills, furnishing
+// and transport. Lets an owner paste one description instead of retyping
+// it field by field; everything stays editable afterward.
+const QUICKFILL_DISTRICT_ALIASES = {
+  'Şişli': ['şişli','sisli','osmanbey','شيشلي','أوسمان بي'],
+  'Beyoğlu': ['beyoğlu','beyoglu','taksim','بيوغلو','تقسيم','تكسيم'],
+  'Fatih': ['fatih','فاتح'],
+  'Avcılar': ['avcılar','avcilar','şükrü bey','sukru bey','افجلار','أفجيلار','شكرو بيه'],
+  'Esenyurt': ['esenyurt','haramidere','اسنيورت','إسنيورت','هاراميدره'],
+  'Beylikdüzü': ['beylikdüzü','beylikduzu','بيليك دوزو','بيليكدوزو'],
+  'Bahçelievler': ['bahçelievler','bahcelievler','şirinevler','sirinevler','باهتشلي افلر','شيرين افلر','شيرينفلر'],
+  'Bakırköy': ['bakırköy','bakirkoy','باكركوي'],
+  'Kağıthane': ['kağıthane','kagithane','çağlayan','caglayan','كاغيتهانه','كاغيتخانه'],
+  'Eyüpsultan': ['eyüpsultan','eyupsultan','alibeyköy','alibeykoy','أيوب سلطان','ايوب سلطان','اليبيكوي'],
+  'Üsküdar': ['üsküdar','uskudar','اسكودار','أسكودار'],
+  'Ümraniye': ['ümraniye','umraniye','أمرانيه','امرانيه'],
+  'Ataşehir': ['ataşehir','atasehir','أتاشهير','اتاشهير'],
+  'Beşiktaş': ['beşiktaş','besiktas','levent','بشكتاش','ليفنت'],
+  'Beykoz': ['beykoz','بيكوز'],
+  'Çekmeköy': ['çekmeköy','cekmekoy','تشكمكوي'],
+  'Sancaktepe': ['sancaktepe','سنجاك تبه'],
+  'Zeytinburnu': ['zeytinburnu','زيتين بورنو'],
+  'Güngören': ['güngören','gungoren','جونجورين'],
+  'Bayrampaşa': ['bayrampaşa','bayrampasa','بايرام باشا'],
+  'Gaziosmanpaşa': ['gaziosmanpaşa','gaziosmanpasa','غازي عثمان باشا'],
+  'Başakşehir': ['başakşehir','basaksehir','باشاك شهير'],
+};
+
+// Grabs the matched keyword plus a few surrounding whitespace-split words,
+// instead of "everything up to the next punctuation" — Arabic sentences
+// often run on without commas, which made the old approach swallow the
+// rest of the string.
+function captureWindow(text, keywordRegex, before, after){
+  const words = text.split(/\s+/).filter(Boolean);
+  const idx = words.findIndex(w => keywordRegex.test(w));
+  if(idx === -1) return '';
+  const start = Math.max(0, idx - before);
+  const end = Math.min(words.length, idx + 1 + after);
+  return words.slice(start, end).join(' ').replace(/[،,.]+$/, '').trim();
+}
+
+function parseListingText(text){
+  const t = String(text || '');
+  const low = t.toLowerCase();
+
+  let district = '';
+  for(const [canon, aliases] of Object.entries(QUICKFILL_DISTRICT_ALIASES)){
+    if(aliases.some(a => low.includes(a))){ district = canon; break; }
+  }
+
+  let roomType = 'single';
+  if(/شقة|شقه|apartment|flat|دوبلكس/i.test(t)) roomType = 'apartment';
+  else if(/مشارك|شير|shared/i.test(t)) roomType = 'shared';
+  else if(/دوبل|مزدوج|double/i.test(t)) roomType = 'double';
+
+  let genderPolicy = '';
+  if(/بنات|بنت|حريمي|سيدات|girls?|female|women/i.test(t)) genderPolicy = 'Female only';
+  else if(/شباب|ولاد|رجال|boys?|\bmale\b|\bmen\b/i.test(t)) genderPolicy = 'Male only';
+  else if(/مختلط|مكس|mixed/i.test(t)) genderPolicy = 'Mixed';
+
+  let currency = 'TRY';
+  if(/\$|دولار|usd/i.test(t)) currency = 'USD';
+  else if(/€|يورو|eur/i.test(t)) currency = 'EUR';
+  let monthlyRent = 0;
+  const rentMatch = t.match(/(\d[\d.,]*)\s*(الف|ألف|k)?\s*(ليرة|ليره|تركي|try|tl|\$|دولار|usd|€|يورو|eur)?/i);
+  if(rentMatch){
+    let num = parseFloat(rentMatch[1].replace(/,/g,''));
+    if(rentMatch[2]) num *= 1000;
+    if(num) monthlyRent = num;
+  }
+
+  const deposit = captureWindow(t, /تأمين|تامين|deposit/i, 0, 2);
+  const transport = captureWindow(t, /مترو|metro|metrobus|باص|bus|اتوبيس/i, 0, 2);
+
+  let bills = '';
+  if(/فواتير\s*(شامل|included)|bills?\s*included/i.test(t)) bills = 'Included';
+  else if(/فواتير\s*(غير شامل|مش شامل|extra|excluded)|bills?\s*(extra|excluded)/i.test(t)) bills = 'Excluded – paid separately';
+
+  let furnishing = '';
+  if(/غير مفروش|unfurnished/i.test(t)) furnishing = 'Unfurnished';
+  else if(/مفروش|furnished/i.test(t)) furnishing = 'Furnished';
+
+  const typeLabel = {single:'Single Room',double:'Double Room',shared:'Shared Room',apartment:'Apartment'}[roomType];
+  const title = district ? `${typeLabel} in ${district}` : typeLabel;
+
+  return { title, district, roomType, monthlyRent, currency, deposit, bills, furnishing, genderPolicy, transport, description: t.trim() };
+}
+
+function quickFillPlaceForm(){
+  const text = document.getElementById('f-quickfill').value.trim();
+  if(!text) return;
+  const r = parseListingText(text);
+  if(r.title) document.getElementById('f-title').value = r.title;
+  if(r.district) document.getElementById('f-district').value = r.district;
+  document.getElementById('f-roomtype').value = r.roomType;
+  if(r.monthlyRent) document.getElementById('f-rent').value = r.monthlyRent;
+  document.getElementById('f-currency').value = r.currency;
+  if(r.deposit) document.getElementById('f-deposit').value = r.deposit;
+  if(r.bills) document.getElementById('f-bills').value = r.bills;
+  if(r.furnishing) document.getElementById('f-furnishing').value = r.furnishing;
+  if(r.genderPolicy) document.getElementById('f-gender').value = r.genderPolicy;
+  if(r.transport) document.getElementById('f-transport').value = r.transport;
+  document.getElementById('f-description').value = r.description;
+}
 
 let pinLat=null, pinLng=null, map;
 function initMap(){

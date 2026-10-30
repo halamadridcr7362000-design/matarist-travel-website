@@ -138,6 +138,12 @@ tr.clickable:hover td{background:var(--surface2)}
   <div class="modal-panel">
     <div class="modal-head"><h3 id="listing-modal-title">New listing</h3><button class="btn secondary small" onclick="closeModal('listing-modal')">Close</button></div>
     <div class="modal-body">
+      <div class="form-row" style="background:var(--surface2);border:1px solid var(--gold);border-radius:8px;padding:12px;margin-bottom:16px">
+        <label>✨ Quick-fill from a description (optional)</label>
+        <textarea id="lf-quickfill" rows="3" placeholder="e.g. Single room in Şişli, 8000 TRY/month, furnished, deposit 1 month, bills included, girls only, 5 min to metro"></textarea>
+        <button type="button" class="btn secondary small" style="margin-top:8px" onclick="quickFillListingForm()">Fill the fields below</button>
+        <div style="font-size:0.74rem;color:var(--text-muted);margin-top:6px">Keyword matching, not real AI — it catches district, price, room type, gender, furnishing, bills and transport from common phrasing. Always review before saving.</div>
+      </div>
       <div class="form-grid">
         <div class="form-row"><label>Title</label><input id="lf-title"></div>
         <div class="form-row"><label>District</label><input id="lf-district" list="dl-district"></div>
@@ -420,10 +426,120 @@ async function quickReject(id){
   else showToast('Could not reject', 'error');
 }
 
+// Rule-based extraction from a free-text description — not a real AI call
+// (no API key/cost), but reuses the same keyword-matching approach
+// RoomGenie already uses on the public site for district/gender/type
+// detection, extended to pull out price, deposit, bills, furnishing and
+// transport too. Lets the admin paste one blurb instead of retyping it
+// field by field; always leaves the fields editable afterward.
+const QUICKFILL_DISTRICT_ALIASES = {
+  'Şişli': ['şişli','sisli','osmanbey','شيشلي','أوسمان بي'],
+  'Beyoğlu': ['beyoğlu','beyoglu','taksim','بيوغلو','تقسيم','تكسيم'],
+  'Fatih': ['fatih','فاتح'],
+  'Avcılar': ['avcılar','avcilar','şükrü bey','sukru bey','افجلار','أفجيلار','شكرو بيه'],
+  'Esenyurt': ['esenyurt','haramidere','اسنيورت','إسنيورت','هاراميدره'],
+  'Beylikdüzü': ['beylikdüzü','beylikduzu','بيليك دوزو','بيليكدوزو'],
+  'Bahçelievler': ['bahçelievler','bahcelievler','şirinevler','sirinevler','باهتشلي افلر','شيرين افلر','شيرينفلر'],
+  'Bakırköy': ['bakırköy','bakirkoy','باكركوي'],
+  'Kağıthane': ['kağıthane','kagithane','çağlayan','caglayan','كاغيتهانه','كاغيتخانه'],
+  'Eyüpsultan': ['eyüpsultan','eyupsultan','alibeyköy','alibeykoy','أيوب سلطان','ايوب سلطان','اليبيكوي'],
+  'Üsküdar': ['üsküdar','uskudar','اسكودار','أسكودار'],
+  'Ümraniye': ['ümraniye','umraniye','أمرانيه','امرانيه'],
+  'Ataşehir': ['ataşehir','atasehir','أتاشهير','اتاشهير'],
+  'Beşiktaş': ['beşiktaş','besiktas','levent','بشكتاش','ليفنت'],
+  'Beykoz': ['beykoz','بيكوز'],
+  'Çekmeköy': ['çekmeköy','cekmekoy','تشكمكوي'],
+  'Sancaktepe': ['sancaktepe','سنجاك تبه'],
+  'Zeytinburnu': ['zeytinburnu','زيتين بورنو'],
+  'Güngören': ['güngören','gungoren','جونجورين'],
+  'Bayrampaşa': ['bayrampaşa','bayrampasa','بايرام باشا'],
+  'Gaziosmanpaşa': ['gaziosmanpaşa','gaziosmanpasa','غازي عثمان باشا'],
+  'Başakşehir': ['başakşehir','basaksehir','باشاك شهير'],
+};
+
+// Grabs the matched keyword plus a few surrounding whitespace-split words,
+// instead of "everything up to the next punctuation" — Arabic sentences
+// often run on without commas, which made the old approach swallow the
+// rest of the string.
+function captureWindow(text, keywordRegex, before, after){
+  const words = text.split(/\s+/).filter(Boolean);
+  const idx = words.findIndex(w => keywordRegex.test(w));
+  if(idx === -1) return '';
+  const start = Math.max(0, idx - before);
+  const end = Math.min(words.length, idx + 1 + after);
+  return words.slice(start, end).join(' ').replace(/[،,.]+$/, '').trim();
+}
+
+function parseListingText(text){
+  const t = String(text || '');
+  const low = t.toLowerCase();
+
+  let district = '';
+  for(const [canon, aliases] of Object.entries(QUICKFILL_DISTRICT_ALIASES)){
+    if(aliases.some(a => low.includes(a))){ district = canon; break; }
+  }
+
+  let roomType = 'single';
+  if(/شقة|شقه|apartment|flat|دوبلكس/i.test(t)) roomType = 'apartment';
+  else if(/مشارك|شير|shared/i.test(t)) roomType = 'shared';
+  else if(/دوبل|مزدوج|double/i.test(t)) roomType = 'double';
+
+  let genderPolicy = '';
+  if(/بنات|بنت|حريمي|سيدات|girls?|female|women/i.test(t)) genderPolicy = 'Female only';
+  else if(/شباب|ولاد|رجال|boys?|\bmale\b|\bmen\b/i.test(t)) genderPolicy = 'Male only';
+  else if(/مختلط|مكس|mixed/i.test(t)) genderPolicy = 'Mixed';
+
+  let currency = 'TRY';
+  if(/\$|دولار|usd/i.test(t)) currency = 'USD';
+  else if(/€|يورو|eur/i.test(t)) currency = 'EUR';
+  let monthlyRent = 0;
+  const rentMatch = t.match(/(\d[\d.,]*)\s*(الف|ألف|k)?\s*(ليرة|ليره|تركي|try|tl|\$|دولار|usd|€|يورو|eur)?/i);
+  if(rentMatch){
+    let num = parseFloat(rentMatch[1].replace(/,/g,''));
+    if(rentMatch[2]) num *= 1000;
+    if(num) monthlyRent = num;
+  }
+
+  const deposit = captureWindow(t, /تأمين|تامين|deposit/i, 0, 2);
+  const transport = captureWindow(t, /مترو|metro|metrobus|باص|bus|اتوبيس/i, 0, 2);
+
+  let bills = '';
+  if(/فواتير\s*(شامل|included)|bills?\s*included/i.test(t)) bills = 'Included';
+  else if(/فواتير\s*(غير شامل|مش شامل|extra|excluded)|bills?\s*(extra|excluded)/i.test(t)) bills = 'Excluded – paid separately';
+
+  let furnishing = '';
+  if(/غير مفروش|unfurnished/i.test(t)) furnishing = 'Unfurnished';
+  else if(/مفروش|furnished/i.test(t)) furnishing = 'Furnished';
+
+  const typeLabel = {single:'Single Room',double:'Double Room',shared:'Shared Room',apartment:'Apartment'}[roomType];
+  const title = district ? `${typeLabel} in ${district}` : typeLabel;
+
+  return { title, district, roomType, monthlyRent, currency, deposit, bills, furnishing, genderPolicy, transport, description: t.trim() };
+}
+
+function quickFillListingForm(){
+  const text = document.getElementById('lf-quickfill').value.trim();
+  if(!text){ showToast('Paste a description first', 'error'); return; }
+  const r = parseListingText(text);
+  if(r.title) document.getElementById('lf-title').value = r.title;
+  if(r.district) document.getElementById('lf-district').value = r.district;
+  document.getElementById('lf-roomtype').value = r.roomType;
+  if(r.monthlyRent) document.getElementById('lf-rent').value = r.monthlyRent;
+  document.getElementById('lf-currency').value = r.currency;
+  if(r.deposit) document.getElementById('lf-deposit').value = r.deposit;
+  if(r.bills) document.getElementById('lf-bills').value = r.bills;
+  if(r.furnishing) document.getElementById('lf-furnishing').value = r.furnishing;
+  if(r.genderPolicy) document.getElementById('lf-gender').value = r.genderPolicy;
+  if(r.transport) document.getElementById('lf-transport').value = r.transport;
+  document.getElementById('lf-description').value = r.description;
+  showToast('Form filled — review and adjust before saving', 'success');
+}
+
 function openListingForm(id){
   currentListingId = id || null;
   const l = id ? listingsCache.find(x=>x.id===id) : null;
   document.getElementById('listing-modal-title').textContent = l ? (l.submittedByOwner ? 'Review owner submission' : 'Edit listing') : 'New listing';
+  document.getElementById('lf-quickfill').value = '';
   document.getElementById('lf-title').value = l ? l.title : '';
   document.getElementById('lf-district').value = l ? l.district : '';
   document.getElementById('lf-roomtype').value = l ? l.roomType : 'single';
