@@ -277,7 +277,8 @@ h1{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 6px;line-height:1.2}
 /* ===== Roomist mascot — same astronaut as the hub page, popping in once
    to say "great choice" and point at the WhatsApp button below. */
 .mascot-chat{position:fixed;bottom:22px;inset-inline-end:22px;z-index:200}
-.mascot-toggle{position:relative;width:78px;height:96px;background:transparent;border:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.5));transition:transform 0.2s}
+.mascot-toggle{position:relative;width:78px;height:96px;background:transparent;border:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.5));transition:transform 0.2s;transform-origin:bottom right}
+[dir="rtl"] .mascot-toggle{transform-origin:bottom left}
 .mascot-toggle:hover{transform:scale(1.06)}
 .mascot-svg{display:block;width:78px;height:96px;animation:mascot-bob 3.2s ease-in-out infinite}
 .mascot-arm-wave{transform-origin:84px 84px;animation:mascot-arm-right 9s ease-in-out infinite}
@@ -291,14 +292,14 @@ h1{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 6px;line-height:1.2}
 @keyframes mascot-face-laugh{0%,26%{opacity:0}30%,36%{opacity:1}40%,100%{opacity:0}}
 .mascot-ping{position:absolute;top:2px;inset-inline-end:2px;width:15px;height:15px;background:#e8597a;border:2px solid var(--bg);border-radius:50%;animation:mascot-pulse 1.8s infinite}
 @keyframes mascot-pulse{0%{box-shadow:0 0 0 0 rgba(232,89,122,0.6)}70%{box-shadow:0 0 0 10px rgba(232,89,122,0)}100%{box-shadow:0 0 0 0 rgba(232,89,122,0)}}
-.mascot-toggle.mascot-intro-zoom{animation:mascot-intro-pop 2.6s cubic-bezier(.22,1,.36,1) 1}
+.mascot-toggle.mascot-intro-zoom{animation:mascot-intro-pop 3s cubic-bezier(.22,1,.36,1) 1}
 @keyframes mascot-intro-pop{
-  0%{transform:scale(1) translateY(0) rotate(0deg)}
-  10%{transform:scale(1.6) translateY(14px) rotate(0deg)}
-  22%{transform:scale(2.3) translateY(0) rotate(-7deg)}
-  40%{transform:scale(2.3) translateY(0) rotate(5deg)}
-  60%{transform:scale(2.3) translateY(0) rotate(-3deg)}
-  85%{transform:scale(2.3) translateY(0) rotate(0deg)}
+  0%{transform:scale(0.15) translateY(160px) rotate(0deg)}
+  16%{transform:scale(1.8) translateY(26px) rotate(0deg)}
+  28%{transform:scale(2.9) translateY(0) rotate(-9deg)}
+  46%{transform:scale(2.9) translateY(0) rotate(6deg)}
+  64%{transform:scale(2.9) translateY(0) rotate(-4deg)}
+  85%{transform:scale(2.9) translateY(0) rotate(0deg)}
   100%{transform:scale(1) translateY(0) rotate(0deg)}
 }
 .mascot-intro-bubble{position:absolute;bottom:108px;inset-inline-end:-6px;max-width:220px;background:var(--surface);border:1px solid var(--gold);color:var(--text);padding:11px 16px;border-radius:16px;font-size:0.85rem;font-weight:700;box-shadow:0 18px 44px rgba(0,0,0,0.45);opacity:0;transform:translateY(10px) scale(0.9);transition:opacity 0.3s ease,transform 0.3s ease;pointer-events:none;z-index:201}
@@ -349,18 +350,18 @@ ${mapHtml}
     <g class="mascot-arm-left" style="transform-origin:36px 84px">
       <ellipse cx="38" cy="80" rx="12" ry="9" fill="url(#mascotGrad)"/>
       <rect x="20" y="80" width="16" height="34" rx="8" fill="url(#mascotGrad)"/>
-      <circle cx="28" cy="116" r="8" fill="url(#mascotGrad)"/>
-      <circle cx="22" cy="110" r="3" fill="url(#mascotGrad)"/>
-      <circle cx="28" cy="107" r="3" fill="url(#mascotGrad)"/>
-      <circle cx="34" cy="110" r="3" fill="url(#mascotGrad)"/>
+      <circle cx="28" cy="117" r="9" fill="url(#mascotGrad)"/>
+      <rect x="17" y="104" width="7" height="18" rx="3.5" fill="url(#mascotGrad)" transform="rotate(-26 20.5 113)"/>
+      <rect x="24.5" y="99" width="7" height="20" rx="3.5" fill="url(#mascotGrad)"/>
+      <rect x="32" y="104" width="7" height="18" rx="3.5" fill="url(#mascotGrad)" transform="rotate(26 35.5 113)"/>
     </g>
     <g class="mascot-arm-wave" style="transform-origin:84px 84px">
       <ellipse cx="82" cy="80" rx="12" ry="9" fill="url(#mascotGrad)"/>
       <rect x="84" y="80" width="16" height="34" rx="8" fill="url(#mascotGrad)"/>
-      <circle cx="92" cy="116" r="8" fill="url(#mascotGrad)"/>
-      <circle cx="86" cy="110" r="3" fill="url(#mascotGrad)"/>
-      <circle cx="92" cy="107" r="3" fill="url(#mascotGrad)"/>
-      <circle cx="98" cy="110" r="3" fill="url(#mascotGrad)"/>
+      <circle cx="92" cy="117" r="9" fill="url(#mascotGrad)"/>
+      <rect x="81" y="104" width="7" height="18" rx="3.5" fill="url(#mascotGrad)" transform="rotate(-26 84.5 113)"/>
+      <rect x="88.5" y="99" width="7" height="20" rx="3.5" fill="url(#mascotGrad)"/>
+      <rect x="96" y="104" width="7" height="18" rx="3.5" fill="url(#mascotGrad)" transform="rotate(26 99.5 113)"/>
     </g>
     <ellipse cx="60" cy="70" rx="28" ry="8" fill="#9a93ab"/>
     <circle cx="60" cy="40" r="35" fill="url(#mascotGrad)"/>
@@ -396,9 +397,9 @@ ${mapHtml}
   if(!toggle || !bubble) return;
   setTimeout(function(){
     toggle.classList.add('mascot-intro-zoom');
-    setTimeout(function(){ bubble.classList.add('show'); }, 250);
-    setTimeout(function(){ bubble.classList.remove('show'); }, 5800);
-    setTimeout(function(){ toggle.classList.remove('mascot-intro-zoom'); }, 2600);
+    setTimeout(function(){ bubble.classList.add('show'); }, 600);
+    setTimeout(function(){ bubble.classList.remove('show'); }, 6200);
+    setTimeout(function(){ toggle.classList.remove('mascot-intro-zoom'); }, 3000);
   }, 900);
 })();
 </script>

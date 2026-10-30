@@ -271,7 +271,8 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 /* ===== RoomGenie chat assistant ===== */
 .captain-chat{position:fixed;bottom:22px;inset-inline-end:22px;z-index:200;font-family:'DM Sans',sans-serif}
 [dir="rtl"] .captain-chat{font-family:'Cairo','DM Sans',sans-serif}
-.captain-toggle{position:relative;width:78px;height:96px;background:transparent;border:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.5));transition:transform 0.2s}
+.captain-toggle{position:relative;width:78px;height:96px;background:transparent;border:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.5));transition:transform 0.2s;transform-origin:bottom right}
+[dir="rtl"] .captain-toggle{transform-origin:bottom left}
 .captain-toggle:hover{transform:scale(1.06)}
 .genie-svg{display:block}
 .genie-svg-toggle{width:78px;height:96px;animation:genie-bob 9s ease-in-out infinite}
@@ -363,14 +364,14 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 /* ===== One-time intro: the toggle genie pops in close/big, waves and
    greets, then shrinks back down to its normal corner size. Only the one
    genie in the corner — nothing else roams the screen. */
-.captain-toggle.genie-intro-zoom{animation:genie-intro-pop 2.6s cubic-bezier(.22,1,.36,1) 1}
+.captain-toggle.genie-intro-zoom{animation:genie-intro-pop 3s cubic-bezier(.22,1,.36,1) 1}
 @keyframes genie-intro-pop{
-  0%{transform:scale(1) translateY(0) rotate(0deg)}
-  10%{transform:scale(1.6) translateY(14px) rotate(0deg)}
-  22%{transform:scale(2.3) translateY(0) rotate(-7deg)}
-  40%{transform:scale(2.3) translateY(0) rotate(5deg)}
-  60%{transform:scale(2.3) translateY(0) rotate(-3deg)}
-  85%{transform:scale(2.3) translateY(0) rotate(0deg)}
+  0%{transform:scale(0.15) translateY(160px) rotate(0deg)}
+  16%{transform:scale(1.8) translateY(26px) rotate(0deg)}
+  28%{transform:scale(2.9) translateY(0) rotate(-9deg)}
+  46%{transform:scale(2.9) translateY(0) rotate(6deg)}
+  64%{transform:scale(2.9) translateY(0) rotate(-4deg)}
+  85%{transform:scale(2.9) translateY(0) rotate(0deg)}
   100%{transform:scale(1) translateY(0) rotate(0deg)}
 }
 .genie-intro-bubble{position:absolute;bottom:108px;inset-inline-end:-6px;max-width:220px;background:var(--surface);border:1px solid var(--gold);color:var(--text);padding:11px 16px;border-radius:16px;font-size:0.85rem;font-weight:700;white-space:nowrap;box-shadow:var(--shadow-lift);opacity:0;transform:translateY(10px) scale(0.9);transition:opacity 0.3s ease,transform 0.3s ease;pointer-events:none;z-index:201}
@@ -510,19 +511,21 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
     <g class="genie-arm-left" style="transform-origin:36px 84px">
       <ellipse cx="38" cy="80" rx="12" ry="9" fill="url(#genieGrad)"/>
       <rect x="20" y="80" width="16" height="34" rx="8" fill="url(#genieGrad)"/>
-      <circle cx="28" cy="116" r="8" fill="url(#genieGrad)"/>
-      <circle cx="22" cy="110" r="3" fill="url(#genieGrad)"/>
-      <circle cx="28" cy="107" r="3" fill="url(#genieGrad)"/>
-      <circle cx="34" cy="110" r="3" fill="url(#genieGrad)"/>
+      <circle cx="28" cy="117" r="9" fill="url(#genieGrad)"/>
+      <!-- three spread fingers, clearly readable as a gripping hand -->
+      <rect x="17" y="104" width="7" height="18" rx="3.5" fill="url(#genieGrad)" transform="rotate(-26 20.5 113)"/>
+      <rect x="24.5" y="99" width="7" height="20" rx="3.5" fill="url(#genieGrad)"/>
+      <rect x="32" y="104" width="7" height="18" rx="3.5" fill="url(#genieGrad)" transform="rotate(26 35.5 113)"/>
     </g>
     <!-- right glove — raised, waving, fingers spread like it's gripping -->
     <g class="genie-arm-wave" style="transform-origin:84px 84px">
       <ellipse cx="82" cy="80" rx="12" ry="9" fill="url(#genieGrad)"/>
       <rect x="84" y="80" width="16" height="34" rx="8" fill="url(#genieGrad)"/>
-      <circle cx="92" cy="116" r="8" fill="url(#genieGrad)"/>
-      <circle cx="86" cy="110" r="3" fill="url(#genieGrad)"/>
-      <circle cx="92" cy="107" r="3" fill="url(#genieGrad)"/>
-      <circle cx="98" cy="110" r="3" fill="url(#genieGrad)"/>
+      <circle cx="92" cy="117" r="9" fill="url(#genieGrad)"/>
+      <!-- three spread fingers, clearly readable as a gripping/waving hand -->
+      <rect x="81" y="104" width="7" height="18" rx="3.5" fill="url(#genieGrad)" transform="rotate(-26 84.5 113)"/>
+      <rect x="88.5" y="99" width="7" height="20" rx="3.5" fill="url(#genieGrad)"/>
+      <rect x="96" y="104" width="7" height="18" rx="3.5" fill="url(#genieGrad)" transform="rotate(26 99.5 113)"/>
     </g>
     <!-- suit collar ring -->
     <ellipse cx="60" cy="70" rx="28" ry="8" fill="#9a93ab"/>
@@ -919,9 +922,9 @@ function captainIntro(){
   if(!toggle || !bubble) return;
   bubble.textContent = GENIE_WELCOME_TEXT[window.currentLang] || GENIE_WELCOME_TEXT.en;
   toggle.classList.add('genie-intro-zoom');
-  setTimeout(()=> bubble.classList.add('show'), 250);
-  setTimeout(()=> bubble.classList.remove('show'), 5800);
-  setTimeout(()=> toggle.classList.remove('genie-intro-zoom'), 2600);
+  setTimeout(()=> bubble.classList.add('show'), 600);
+  setTimeout(()=> bubble.classList.remove('show'), 6200);
+  setTimeout(()=> toggle.classList.remove('genie-intro-zoom'), 3000);
 }
 
 function captainAutoOpen(){
@@ -932,7 +935,7 @@ function captainAutoOpen(){
   captainIntro();
   setTimeout(()=>{
     if(!document.getElementById('captain-panel').classList.contains('open')) toggleCaptainChat(true);
-  }, 6400);
+  }, 6800);
 }
 
 function addCaptainTyping(){
