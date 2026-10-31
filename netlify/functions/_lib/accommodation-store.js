@@ -39,6 +39,7 @@ const PUBLIC_LISTING_FIELDS = [
   "id", "slug", "status", "title", "district", "roomType", "monthlyRent",
   "currency", "deposit", "bills", "furnishing", "genderPolicy", "transport",
   "rules", "description", "photos", "videoUrls", "lat", "lng", "updatedAt",
+  "buildingId",
 ];
 
 function toPublicListing(listing) {

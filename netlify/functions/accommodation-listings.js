@@ -269,6 +269,7 @@ async function handlePost(event) {
       transport: body.transport || "",
       rules: body.rules || "",
       description: body.description || "",
+      buildingId: body.buildingId || "",
       photos: [],
       videoUrls: Array.isArray(body.videoUrls) ? body.videoUrls.filter((u) => typeof u === "string" && u.trim()) : [],
       lat: typeof body.lat === "number" ? body.lat : null,
@@ -292,7 +293,7 @@ async function handlePost(event) {
     const editable = [
       "title", "district", "roomType", "monthlyRent", "currency", "deposit",
       "bills", "furnishing", "genderPolicy", "transport", "rules",
-      "description", "videoUrls", "lat", "lng", "ownerContact",
+      "description", "videoUrls", "lat", "lng", "ownerContact", "buildingId",
     ];
     for (const f of editable) {
       if (body[f] === undefined) continue;

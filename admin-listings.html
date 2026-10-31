@@ -147,6 +147,9 @@ tr.clickable:hover td{background:var(--surface2)}
       <div class="form-grid">
         <div class="form-row"><label>Title</label><input id="lf-title"></div>
         <div class="form-row"><label>District</label><input id="lf-district" list="dl-district"></div>
+        <div class="form-row"><label>Building / property group (optional)</label><input id="lf-building" list="dl-building" placeholder="e.g. Şişli - Gold Apt 4">
+          <div style="font-size:0.74rem;color:var(--text-muted);margin-top:4px">Type the exact same name on every room in this same house/building — their listing pages will then show each other as "other rooms here".</div>
+        </div>
         <div class="form-row"><label>Room type</label>
           <select id="lf-roomtype"><option value="single">Single room</option><option value="double">Double room</option><option value="shared">Shared room</option><option value="apartment">Entire apartment</option></select>
         </div>
@@ -160,6 +163,7 @@ tr.clickable:hover td{background:var(--surface2)}
         <div class="form-row"><label>Gender preference</label><input id="lf-gender" list="dl-gender" placeholder="male / female / mixed"></div>
         <div class="form-row"><label>Nearby transport</label><input id="lf-transport" list="dl-transport"></div>
         <datalist id="dl-district"></datalist>
+        <datalist id="dl-building"></datalist>
         <datalist id="dl-deposit"></datalist>
         <datalist id="dl-bills"></datalist>
         <datalist id="dl-furnishing"></datalist>
@@ -389,6 +393,7 @@ function populateFieldDatalists(){
   const fields = {
     'dl-district': 'district', 'dl-deposit': 'deposit', 'dl-bills': 'bills',
     'dl-furnishing': 'furnishing', 'dl-gender': 'genderPolicy', 'dl-transport': 'transport',
+    'dl-building': 'buildingId',
   };
   for(const [datalistId, field] of Object.entries(fields)){
     const values = [...new Set(listingsCache.map(l=>l[field]).filter(v=>v && String(v).trim()))];
@@ -542,6 +547,7 @@ function openListingForm(id){
   document.getElementById('lf-quickfill').value = '';
   document.getElementById('lf-title').value = l ? l.title : '';
   document.getElementById('lf-district').value = l ? l.district : '';
+  document.getElementById('lf-building').value = l ? l.buildingId||'' : '';
   document.getElementById('lf-roomtype').value = l ? l.roomType : 'single';
   document.getElementById('lf-rent').value = l ? l.monthlyRent : '';
   document.getElementById('lf-currency').value = l && l.currency ? l.currency : 'TRY';
@@ -679,6 +685,7 @@ async function saveListing(){
   const payload = {
     title: document.getElementById('lf-title').value,
     district: document.getElementById('lf-district').value,
+    buildingId: document.getElementById('lf-building').value.trim(),
     roomType: document.getElementById('lf-roomtype').value,
     monthlyRent: parseFloat(document.getElementById('lf-rent').value)||0,
     currency: document.getElementById('lf-currency').value,

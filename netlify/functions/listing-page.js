@@ -18,6 +18,75 @@ const LABELS = {
 
 const ROOM_TYPE_LABEL = { single: "Single room", double: "Double room", shared: "Shared room", apartment: "Entire apartment" };
 
+const RELATED_LABELS = {
+  en: { sameBuilding: "Other rooms in this building", nearby: "Similar listings nearby" },
+  ar: { sameBuilding: "غرف تانية في نفس المبنى", nearby: "إعلانات مشابهة قريبة منك" },
+  tr: { sameBuilding: "Aynı binadaki diğer odalar", nearby: "Yakındaki benzer ilanlar" },
+};
+
+// Great-circle distance in km — used only to rank "nearby" suggestions
+// when both listings have a map pin; listings without coordinates just
+// fall back to district-only matching further down.
+function haversineKm(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLng = ((lng2 - lng1) * Math.PI) / 180;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+// Splits the rest of the catalog into (a) other rooms sharing this
+// listing's buildingId — the "same house, different room" case — and
+// (b) a short "similar nearby" list, scored by same-district first and
+// map-pin proximity second so it still surfaces something sensible for
+// listings that only have a district and no exact pin.
+function findRelatedListings(pub, allListings) {
+  const candidates = allListings
+    .filter((l) => l.id !== pub.id && isPubliclyVisible(l))
+    .map(toPublicListing);
+
+  const sameBuilding = pub.buildingId
+    ? candidates.filter((c) => c.buildingId && c.buildingId === pub.buildingId)
+    : [];
+  const usedIds = new Set(sameBuilding.map((c) => c.id));
+
+  const hasPin = typeof pub.lat === "number" && typeof pub.lng === "number";
+  const related = candidates
+    .filter((c) => !usedIds.has(c.id))
+    .map((c) => {
+      let score = 0;
+      if (c.district && c.district === pub.district) score += 100;
+      if (hasPin && typeof c.lat === "number" && typeof c.lng === "number") {
+        score += Math.max(0, 50 - haversineKm(pub.lat, pub.lng, c.lat, c.lng));
+      }
+      return { c, score };
+    })
+    .filter((x) => x.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 4)
+    .map((x) => x.c);
+
+  return { sameBuilding, related };
+}
+
+function relatedCardHtml(pubL, lang) {
+  const img = pubL.photos && pubL.photos[0] ? `/.netlify/functions/accommodation-listings?photo=${encodeURIComponent(pubL.photos[0])}` : "";
+  const typeLabel = ROOM_TYPE_LABEL[pubL.roomType] || pubL.roomType;
+  return `<a class="related-card" href="/accommodation/${pubL.slug}?lang=${lang}">
+    ${img ? `<img src="${img}" loading="lazy" alt="${escapeHtml(pubL.title)}">` : `<div class="related-card-noimg"><i class="fa-solid fa-image"></i></div>`}
+    <div class="related-card-body">
+      <div class="related-card-title">${escapeHtml(pubL.title)}</div>
+      <div class="related-card-meta">${escapeHtml(pubL.district)} &middot; ${escapeHtml(typeLabel)}</div>
+      <div class="related-card-price">${pubL.monthlyRent} ${escapeHtml(pubL.currency)}</div>
+    </div>
+  </a>`;
+}
+
+function relatedSectionHtml(heading, items, lang) {
+  if (!items.length) return "";
+  return `<div class="section related-section"><h3>${heading}</h3><div class="related-grid">${items.map((it) => relatedCardHtml(it, lang)).join("")}</div></div>`;
+}
+
 const GENDER_BADGE = {
   en: { girls: "Women Only", boys: "Men Only", mixed: "Mixed" },
   ar: { girls: "للسيدات فقط", boys: "للرجال فقط", mixed: "مختلط" },
@@ -86,10 +155,13 @@ function page410(lang) {
   return errorPage(lang, 410, t.gone);
 }
 
-function renderListing(listing, lang, previewToken) {
+function renderListing(listing, lang, previewToken, allListings) {
   const isPreview = !!previewToken;
   const t = LABELS[lang] || LABELS.en;
+  const rt = RELATED_LABELS[lang] || RELATED_LABELS.en;
   const pub = toPublicListing(listing);
+  const { sameBuilding, related } = findRelatedListings(pub, allListings || []);
+  const relatedHtml = relatedSectionHtml(rt.sameBuilding, sameBuilding, lang) + relatedSectionHtml(rt.nearby, related, lang);
   const title = `${escapeHtml(pub.title)} — ${escapeHtml(pub.district)} | Roomist by MATARIST`;
   const descSource = pub.description || `${ROOM_TYPE_LABEL[pub.roomType] || pub.roomType} in ${pub.district}, Istanbul.`;
   const description = escapeHtml(String(descSource).slice(0, 160));
@@ -274,6 +346,20 @@ h1{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 6px;line-height:1.2}
 .wa-btn{display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;padding:15px 30px;border-radius:10px;text-decoration:none;font-weight:700;margin-top:8px;font-size:0.95rem;box-shadow:0 10px 26px rgba(37,211,102,0.25);transition:transform 0.2s}
 .wa-btn:hover{transform:translateY(-2px)}
 
+/* ===== Related listings: other rooms in the same building, and a short
+   "similar nearby" list scored by district + map-pin distance. */
+.related-section{margin-top:36px}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.related-card{display:block;background:var(--surface);border:1px solid var(--border-soft);border-radius:12px;overflow:hidden;text-decoration:none;color:inherit;transition:border-color 0.2s,transform 0.2s}
+.related-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.related-card img{width:100%;height:100px;object-fit:cover;display:block;background:var(--surface-2)}
+.related-card-noimg{width:100%;height:100px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);color:var(--text-faint);font-size:1.4rem}
+.related-card-body{padding:10px 12px}
+.related-card-title{font-size:0.8rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.related-card-meta{font-size:0.7rem;color:var(--text-faint);margin-top:2px}
+.related-card-price{font-size:0.78rem;font-weight:700;color:var(--gold-light);margin-top:4px}
+@media(max-width:480px){.related-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}}
+
 /* ===== Roomist mascot — same astronaut as the hub page, popping in once
    to say "great choice" and point at the WhatsApp button below. */
 .mascot-chat{position:fixed;bottom:22px;inset-inline-end:22px;z-index:200}
@@ -360,6 +446,7 @@ ${mapHtml}
 <a class="wa-btn" href="https://wa.me/${WHATSAPP}?text=${waText}" target="_blank" rel="noopener">
 <i class="fa-brands fa-whatsapp"></i> ${t.contact}
 </a>
+${relatedHtml}
 </div>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -544,13 +631,13 @@ exports.handler = async function (event) {
     return {
       statusCode: 200,
       headers: { "Content-Type": "text/html; charset=utf-8", ...NO_STORE },
-      body: renderListing(listing, lang, qs.preview),
+      body: renderListing(listing, lang, qs.preview, listings),
     };
   }
 
   return {
     statusCode: 200,
     headers: { "Content-Type": "text/html; charset=utf-8", ...NO_STORE },
-    body: renderListing(listing, lang),
+    body: renderListing(listing, lang, null, listings),
   };
 };
