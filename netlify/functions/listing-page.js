@@ -295,18 +295,33 @@ h1{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:0 0 6px;line-height:1.2}
 .mascot-ping{position:absolute;top:2px;inset-inline-end:2px;width:15px;height:15px;background:#e8597a;border:2px solid var(--bg);border-radius:50%;animation:mascot-pulse 1.8s infinite}
 @keyframes mascot-pulse{0%{box-shadow:0 0 0 0 rgba(232,89,122,0.6)}70%{box-shadow:0 0 0 10px rgba(232,89,122,0)}100%{box-shadow:0 0 0 0 rgba(232,89,122,0)}}
 .mascot-toggle.mascot-intro-zoom{animation:mascot-intro-pop 4s cubic-bezier(.22,1,.36,1) 1}
-/* The lean-in/edge-cling look lives only here, in the entrance (0-32%) —
-   appearing close from the side, tilted like it's gripping the edge — then
-   straightens upright by 40%, before the wave plays, and stays upright for
-   the rest of the sequence and at rest afterward. */
+/* Flies in from the side like it's drifting in zero gravity — a gentle
+   weightless wobble rather than a tilted "gripping the edge" lean — then
+   settles level and looks at the screen by 40%, before the wave plays, and
+   stays upright for the rest of the sequence and at rest afterward. */
 @keyframes mascot-intro-pop{
-  0%{transform:scale(0.15) translate(34px,160px) rotate(-16deg)}
-  14%{transform:scale(1.9) translate(26px,22px) rotate(-14deg)}
-  24%{transform:scale(2.9) translate(16px,0) rotate(-10deg)}
-  32%{transform:scale(2.9) translate(6px,0) rotate(-4deg)}
+  0%{transform:scale(0.2) translate(60px,46px) rotate(10deg)}
+  10%{transform:scale(0.85) translate(38px,-14px) rotate(-7deg)}
+  20%{transform:scale(1.7) translate(16px,10px) rotate(6deg)}
+  28%{transform:scale(2.4) translate(4px,-6px) rotate(-3deg)}
+  34%{transform:scale(2.9) translate(0,3px) rotate(2deg)}
   40%{transform:scale(2.9) translate(0,0) rotate(0deg)}
   88%{transform:scale(2.9) translate(0,0) rotate(0deg)}
   100%{transform:scale(1) translate(0,0) rotate(0deg)}
+}
+/* Oxygen-tube exhaust: a few soft puffs trailing behind while it flies in
+   (0-40% of the 4s intro only), drifting down/back and fading. */
+.mascot-exhaust{position:absolute;bottom:2px;inset-inline-start:50%;width:0;height:0;pointer-events:none}
+.mascot-puff{position:absolute;bottom:0;inset-inline-start:0;width:11px;height:11px;margin-inline-start:-5px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.95),rgba(184,149,94,0.45) 55%,transparent 100%);opacity:0;filter:blur(1px)}
+.mascot-toggle.mascot-intro-zoom .mascot-puff{animation:mascot-puff-trail 1.6s ease-out 1}
+.mascot-toggle.mascot-intro-zoom .mascot-puff:nth-child(2){animation-delay:0.22s}
+.mascot-toggle.mascot-intro-zoom .mascot-puff:nth-child(3){animation-delay:0.44s}
+.mascot-toggle.mascot-intro-zoom .mascot-puff:nth-child(4){animation-delay:0.66s}
+@keyframes mascot-puff-trail{
+  0%{opacity:0;transform:translate(0,0) scale(0.4)}
+  18%{opacity:0.85;transform:translate(3px,5px) scale(0.8)}
+  60%{opacity:0.4;transform:translate(-5px,20px) scale(1.3)}
+  100%{opacity:0;transform:translate(-9px,32px) scale(1.6)}
 }
 /* The wave is driven from JS via plain style.transform writes — see the
    inline script below. A CSS descendant selector like
@@ -400,6 +415,7 @@ ${mapHtml}
   <div id="mascot-intro-bubble" class="mascot-intro-bubble">${t.goodChoice}</div>
   <a id="mascot-toggle" class="mascot-toggle" aria-label="${t.contact}" href="https://wa.me/${WHATSAPP}?text=${waText}" target="_blank" rel="noopener">
     <svg class="mascot-svg" viewBox="0 0 120 150"><use href="#mascot-icon"></use></svg>
+    <span class="mascot-exhaust"><span class="mascot-puff"></span><span class="mascot-puff"></span><span class="mascot-puff"></span><span class="mascot-puff"></span></span>
     <span class="mascot-ping"></span>
   </a>
 </div>
