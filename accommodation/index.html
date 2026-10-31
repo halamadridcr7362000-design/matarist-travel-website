@@ -862,24 +862,87 @@ function captainParseRoomType(msg){
   return null;
 }
 
+// Matches a district by name OR by its common Arabic transliteration/
+// Turkish-ASCII alias — matching only against the exact Latin/Turkish
+// spelling (the old behavior) meant a message typed in Arabic like "في
+// الفاتح" never matched "Fatih" at all, so the district filter silently
+// dropped out and the bot answered with every listing in the city instead
+// of just that district's. Only offers a canonical name that actually has
+// listings right now, so a match never produces an always-empty filter.
+const CAPTAIN_DISTRICT_ALIASES = {
+  'Şişli': ['şişli','sisli','osmanbey','شيشلي','أوسمان بي'],
+  'Beyoğlu': ['beyoğlu','beyoglu','taksim','بيوغلو','تقسيم','تكسيم'],
+  'Fatih': ['fatih','فاتح'],
+  'Avcılar': ['avcılar','avcilar','şükrü bey','sukru bey','افجلار','أفجيلار','شكرو بيه'],
+  'Esenyurt': ['esenyurt','haramidere','اسنيورت','إسنيورت','هاراميدره'],
+  'Beylikdüzü': ['beylikdüzü','beylikduzu','بيليك دوزو','بيليكدوزو'],
+  'Bahçelievler': ['bahçelievler','bahcelievler','şirinevler','sirinevler','باهتشلي افلر','شيرين افلر','شيرينفلر'],
+  'Bakırköy': ['bakırköy','bakirkoy','باكركوي'],
+  'Kağıthane': ['kağıthane','kagithane','çağlayan','caglayan','كاغيتهانه','كاغيتخانه'],
+  'Eyüpsultan': ['eyüpsultan','eyupsultan','alibeyköy','alibeykoy','أيوب سلطان','ايوب سلطان','اليبيكوي'],
+  'Üsküdar': ['üsküdar','uskudar','اسكودار','أسكودار'],
+  'Ümraniye': ['ümraniye','umraniye','أمرانيه','امرانيه'],
+  'Ataşehir': ['ataşehir','atasehir','أتاشهير','اتاشهير'],
+  'Beşiktaş': ['beşiktaş','besiktas','levent','بشكتاش','ليفنت'],
+  'Beykoz': ['beykoz','بيكوز'],
+  'Çekmeköy': ['çekmeköy','cekmekoy','تشكمكوي'],
+  'Sancaktepe': ['sancaktepe','سنجاك تبه'],
+  'Zeytinburnu': ['zeytinburnu','زيتين بورنو'],
+  'Güngören': ['güngören','gungoren','جونجورين'],
+  'Bayrampaşa': ['bayrampaşa','bayrampasa','بايرام باشا'],
+  'Gaziosmanpaşa': ['gaziosmanpaşa','gaziosmanpasa','غازي عثمان باشا'],
+  'Başakşehir': ['başakşehir','basaksehir','باشاك شهير'],
+};
+
 function captainParseDistrict(msg){
-  const districts = [...new Set(allListings.map(l=>l.district).filter(Boolean))];
-  const lower = msg.toLowerCase();
-  return districts.find(d => lower.includes(d.toLowerCase())) || null;
+  const low = msg.toLowerCase();
+  const available = new Set(allListings.map(l=>l.district).filter(Boolean));
+  for(const [canon, aliases] of Object.entries(CAPTAIN_DISTRICT_ALIASES)){
+    if(!available.has(canon)) continue;
+    if(aliases.some(a => low.includes(a))) return canon;
+  }
+  // Fallback: a direct match against whatever district strings are
+  // actually in the data, in case a listing uses a name not covered above.
+  return [...available].find(d => low.includes(d.toLowerCase())) || null;
 }
+
+const CAPTAIN_GENDER_LABEL = {
+  ar:{girls:'للبنات', boys:'للشباب', mixed:'مكس'},
+  en:{girls:'for girls', boys:'for boys', mixed:'mixed'}
+};
 
 const CAPTAIN_RESP = {
   ar:{
     greet:"يا هلا! 🧞 أنا <b>RoomGenie</b>، دليلك لأي غرفة أو شقة في إسطنبول. قولّي عايز سكن فين، لمين (بنات/شباب/مكس)، وميزانيتك، وهجيبلك أحسن اختيارات فورًا 💪",
-    resultsIntro:n=>`لقيت لك ${n} ${n===1?'سكن يناسبك':'سكنات تناسبك'} 👇`,
-    noMatch:"معلش، مفيش عندي حاليًا سكن مطابق تمامًا للطلب ده 😅 جرب تقلل شرط (زي الميزانية أو المنطقة) وهدورلك تاني.",
+    resultsIntro:(n,ctx)=>{
+      const bits = [];
+      if(ctx.genderLabel) bits.push(ctx.genderLabel);
+      if(ctx.district) bits.push(`في ${ctx.district}`);
+      return `لقيت لك ${n} ${n===1?'سكن':'سكنات'}${bits.length?' '+bits.join(' '):''} 👇`;
+    },
+    noMatch:ctx=>{
+      const bits = [];
+      if(ctx.genderLabel) bits.push(ctx.genderLabel);
+      if(ctx.district) bits.push(`في ${ctx.district}`);
+      return `معلش، مفيش عندي حاليًا سكن${bits.length?' '+bits.join(' '):''} مطابق للطلب ده 😅 جرب تقلل شرط (زي الميزانية أو المنطقة) وهدورلك تاني.`;
+    },
     more:"تحب تضيق الاختيار؟ قولّي المنطقة، الميزانية، أو لمين السكن (بنات/شباب/مكس) 😉",
     rented:"مؤجرة", perMonth:"/شهريًا"
   },
   en:{
     greet:"Hey there! 🧞 I'm <b>RoomGenie</b>, your guide to any room or apartment in Istanbul. Tell me where, who it's for (girls/boys/mixed), and your budget — I'll pull the best matches right away 💪",
-    resultsIntro:n=>`Found ${n} ${n===1?'place':'places'} that could work for you 👇`,
-    noMatch:"Hmm, nothing matches that exactly right now 😅 Try loosening a filter (budget or district) and I'll search again.",
+    resultsIntro:(n,ctx)=>{
+      const bits = [];
+      if(ctx.district) bits.push(`in ${ctx.district}`);
+      if(ctx.genderLabel) bits.push(ctx.genderLabel);
+      return `Found ${n} ${n===1?'place':'places'}${bits.length?' '+bits.join(' '):''} 👇`;
+    },
+    noMatch:ctx=>{
+      const bits = [];
+      if(ctx.district) bits.push(`in ${ctx.district}`);
+      if(ctx.genderLabel) bits.push(ctx.genderLabel);
+      return `Hmm, nothing matches${bits.length?' '+bits.join(' '):''} right now 😅 Try loosening a filter (budget or district) and I'll search again.`;
+    },
     more:"Want to narrow it down? Tell me the district, budget, or who it's for (girls/boys/mixed) 😉",
     rented:"rented", perMonth:"/month"
   }
@@ -911,10 +974,12 @@ function captainReply(raw){
     return true;
   }).sort((a,b)=>(a.status==='rented')-(b.status==='rented') || a.monthlyRent-b.monthlyRent);
 
-  if(!results.length) return { text:t.noMatch, listings:[], lang };
+  const ctx = { district, genderLabel: gender ? CAPTAIN_GENDER_LABEL[lang][gender] : null };
+
+  if(!results.length) return { text:t.noMatch(ctx), listings:[], lang };
 
   results = results.slice(0,5);
-  return { text:t.resultsIntro(results.length), listings:results, lang };
+  return { text:t.resultsIntro(results.length, ctx), listings:results, lang };
 }
 
 let captainGreeted = false;
