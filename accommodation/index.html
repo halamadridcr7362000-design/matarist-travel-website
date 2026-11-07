@@ -913,12 +913,47 @@ const CAPTAIN_DISTRICT_ALIASES = {
   'Başakşehir': ['başakşehir','basaksehir','باشاك شهير'],
 };
 
+function captainLevenshtein(a,b){
+  const m=a.length, n=b.length;
+  if(!m) return n;
+  if(!n) return m;
+  let prev = Array.from({length:n+1},(_,j)=>j);
+  for(let i=1;i<=m;i++){
+    const cur=[i];
+    for(let j=1;j<=n;j++){
+      const cost = a[i-1]===b[j-1] ? 0 : 1;
+      cur[j] = Math.min(prev[j]+1, cur[j-1]+1, prev[j-1]+cost);
+    }
+    prev = cur;
+  }
+  return prev[n];
+}
+
+// Arabic district names are transliterated from Turkish with no single
+// agreed spelling ("اسنيورت" vs "اسينيورت" vs "إسنيورت" for Esenyurt), so a
+// plain substring check on CAPTAIN_DISTRICT_ALIASES silently missed common
+// variants and the bot fell back to showing every district's listings.
+// This allows a small edit-distance (1-2 chars depending on alias length)
+// between any window of the message and an alias before giving up on it.
+function captainFuzzyIncludes(haystack, needle){
+  if(haystack.includes(needle)) return true;
+  if(needle.length < 4) return false;
+  const maxDist = needle.length >= 7 ? 2 : 1;
+  for(let i=0;i<=haystack.length-needle.length+maxDist;i++){
+    for(let len=needle.length-maxDist; len<=needle.length+maxDist; len++){
+      if(len<1 || i+len>haystack.length) continue;
+      if(captainLevenshtein(haystack.slice(i,i+len), needle) <= maxDist) return true;
+    }
+  }
+  return false;
+}
+
 function captainParseDistrict(msg){
   const low = msg.toLowerCase();
   const available = new Set(allListings.map(l=>l.district).filter(Boolean));
   for(const [canon, aliases] of Object.entries(CAPTAIN_DISTRICT_ALIASES)){
     if(!available.has(canon)) continue;
-    if(aliases.some(a => low.includes(a))) return canon;
+    if(aliases.some(a => captainFuzzyIncludes(low, a))) return canon;
   }
   // Fallback: a direct match against whatever district strings are
   // actually in the data, in case a listing uses a name not covered above.
