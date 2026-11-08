@@ -462,64 +462,164 @@ const QUICKFILL_DISTRICT_ALIASES = {
   'Başakşehir': ['başakşehir','basaksehir','باشاك شهير'],
 };
 
-// Grabs the matched keyword plus a few surrounding whitespace-split words,
-// instead of "everything up to the next punctuation" — Arabic sentences
-// often run on without commas, which made the old approach swallow the
-// rest of the string.
+// Grabs the matched keyword plus a few surrounding whitespace-split words
+// FROM THE SAME LINE ONLY — bounded to one line (instead of the whole text
+// flattened into one word list) so a label-style paste like "Deposit\n8000\n
+// Bills / utilities\n..." can't bleed the next field's label/value into this
+// one just because they land within a few words of each other.
 function captureWindow(text, keywordRegex, before, after){
-  const words = text.split(/\s+/).filter(Boolean);
-  const idx = words.findIndex(w => keywordRegex.test(w));
-  if(idx === -1) return '';
-  const start = Math.max(0, idx - before);
-  const end = Math.min(words.length, idx + 1 + after);
-  return words.slice(start, end).join(' ').replace(/[،,.]+$/, '').trim();
+  const lines = String(text||'').split(/\r?\n/);
+  for(const rawLine of lines){
+    const line = rawLine.trim();
+    if(!line) continue;
+    const words = line.split(/\s+/).filter(Boolean);
+    const idx = words.findIndex(w => keywordRegex.test(w));
+    if(idx === -1) continue;
+    const start = Math.max(0, idx - before);
+    const end = Math.min(words.length, idx + 1 + after);
+    return words.slice(start, end).join(' ').replace(/[،,.]+$/, '').trim();
+  }
+  return '';
 }
+
+// Some sources (an AI tool, or a copy from this very form) hand back the
+// listing as an explicit label-per-line transcript ("Title\n...\nDistrict\n
+// ...\nRoom type\n..."), mirroring this form's own field labels. The
+// word-window heuristics below are tuned for a free-text paragraph instead
+// and mis-split that format (e.g. matching the literal word "Deposit" as
+// the label line itself, then grabbing "8000" + the next label's name).
+// Detect that structure up front and, where found, read each field as
+// "everything between this label and the next" so values are never split
+// across fields. Returns null when the text doesn't look like this format,
+// so the narrative heuristics below run unchanged.
+const QUICKFILL_LABELS = [
+  { key:'title', re:/^title$/i },
+  { key:'district', re:/^district$/i },
+  { key:'buildingId', re:/^building\s*\/\s*property group/i },
+  { key:'roomTypeText', re:/^room type$/i },
+  { key:'monthlyRentText', re:/^monthly rent$/i },
+  { key:'currencyText', re:/^currency$/i },
+  { key:'deposit', re:/^deposit$/i },
+  { key:'bills', re:/^bills\s*\/\s*utilities$/i },
+  { key:'furnishing', re:/^furnishing$/i },
+  { key:'genderPolicy', re:/^gender preference$/i },
+  { key:'transport', re:/^nearby transport$/i },
+  { key:'statusText', re:/^status$/i },
+  { key:'description', re:/^description$/i },
+  { key:'rules', re:/^rules$/i },
+  { key:'ownerContact', re:/^owner\s*\/\s*landlord contact/i },
+];
+
+function extractLabeledFields(text){
+  const lines = String(text||'').split(/\r?\n/).map(l=>l.trim());
+  const hits = [];
+  lines.forEach((line,i)=>{
+    if(!line) return;
+    const label = QUICKFILL_LABELS.find(l=>l.re.test(line));
+    if(label) hits.push({ key:label.key, lineIndex:i });
+  });
+  if(hits.length < 3) return null; // too few label matches — treat as free-text instead
+  const out = {};
+  for(let h=0; h<hits.length; h++){
+    const start = hits[h].lineIndex + 1;
+    const end = h+1 < hits.length ? hits[h+1].lineIndex : lines.length;
+    out[hits[h].key] = lines.slice(start, end).filter(Boolean).join('\n').trim();
+  }
+  return out;
+}
+
+const QUICKFILL_ROOMTYPE_MAP = [
+  [/apartment/i, 'apartment'],
+  [/shared/i, 'shared'],
+  [/double/i, 'double'],
+  [/single/i, 'single'],
+];
+const QUICKFILL_STATUS_MAP = [
+  [/pending/i, 'pending'],
+  [/rented/i, 'rented'],
+  [/unpublished/i, 'unpublished'],
+  [/rejected/i, 'rejected'],
+  [/published/i, 'published'],
+  [/draft/i, 'draft'],
+];
 
 function parseListingText(text){
   const t = String(text || '');
   const low = t.toLowerCase();
+  const labeled = extractLabeledFields(t);
 
   let district = '';
+  const districtSource = (labeled && labeled.district ? labeled.district : t).toLowerCase();
   for(const [canon, aliases] of Object.entries(QUICKFILL_DISTRICT_ALIASES)){
-    if(aliases.some(a => low.includes(a))){ district = canon; break; }
+    if(aliases.some(a => districtSource.includes(a))){ district = canon; break; }
   }
+  if(!district && labeled && labeled.district) district = labeled.district;
 
   let roomType = 'single';
-  if(/شقة|شقه|apartment|flat|دوبلكس/i.test(t)) roomType = 'apartment';
+  if(labeled && labeled.roomTypeText){
+    const hit = QUICKFILL_ROOMTYPE_MAP.find(([re]) => re.test(labeled.roomTypeText));
+    if(hit) roomType = hit[1];
+  } else if(/شقة|شقه|apartment|flat|دوبلكس/i.test(t)) roomType = 'apartment';
   else if(/مشارك|شير|shared/i.test(t)) roomType = 'shared';
   else if(/دوبل|مزدوج|double/i.test(t)) roomType = 'double';
 
-  let genderPolicy = '';
-  if(/بنات|بنت|حريمي|سيدات|girls?|female|women/i.test(t)) genderPolicy = 'Female only';
-  else if(/شباب|ولاد|رجال|boys?|\bmale\b|\bmen\b/i.test(t)) genderPolicy = 'Male only';
-  else if(/مختلط|مكس|mixed/i.test(t)) genderPolicy = 'Mixed';
+  let genderPolicy = labeled && labeled.genderPolicy ? labeled.genderPolicy : '';
+  if(!genderPolicy){
+    if(/بنات|بنت|حريمي|سيدات|girls?|female|women/i.test(t)) genderPolicy = 'Female only';
+    else if(/شباب|ولاد|رجال|boys?|\bmale\b|\bmen\b/i.test(t)) genderPolicy = 'Male only';
+    else if(/مختلط|مكس|mixed/i.test(t)) genderPolicy = 'Mixed';
+  }
 
   let currency = 'TRY';
-  if(/\$|دولار|usd/i.test(t)) currency = 'USD';
+  if(labeled && labeled.currencyText){
+    const m = labeled.currencyText.match(/TRY|USD|EUR/i);
+    if(m) currency = m[0].toUpperCase();
+  } else if(/\$|دولار|usd/i.test(t)) currency = 'USD';
   else if(/€|يورو|eur/i.test(t)) currency = 'EUR';
+
   let monthlyRent = 0;
-  const rentMatch = t.match(/(\d[\d.,]*)\s*(الف|ألف|k)?\s*(ليرة|ليره|تركي|try|tl|\$|دولار|usd|€|يورو|eur)?/i);
+  const rentSource = labeled && labeled.monthlyRentText ? labeled.monthlyRentText : t;
+  const rentMatch = rentSource.match(/(\d[\d.,]*)\s*(الف|ألف|k)?\s*(ليرة|ليره|تركي|try|tl|\$|دولار|usd|€|يورو|eur)?/i);
   if(rentMatch){
     let num = parseFloat(rentMatch[1].replace(/,/g,''));
     if(rentMatch[2]) num *= 1000;
     if(num) monthlyRent = num;
   }
 
-  const deposit = captureWindow(t, /تأمين|تامين|deposit/i, 0, 2);
-  const transport = captureWindow(t, /مترو|metro|metrobus|باص|bus|اتوبيس/i, 0, 2);
+  const deposit = labeled && labeled.deposit ? labeled.deposit : captureWindow(t, /تأمين|تامين|deposit/i, 0, 2);
+  const transport = labeled && labeled.transport ? labeled.transport : captureWindow(t, /مترو|metro|metrobus|باص|bus|اتوبيس/i, 0, 2);
 
-  let bills = '';
-  if(/فواتير\s*(شامل|included)|bills?\s*included/i.test(t)) bills = 'Included';
-  else if(/فواتير\s*(غير شامل|مش شامل|extra|excluded)|bills?\s*(extra|excluded)/i.test(t)) bills = 'Excluded – paid separately';
+  let bills = labeled && labeled.bills ? labeled.bills : '';
+  if(!bills){
+    if(/فواتير\s*(شامل|included)|bills?\s*included/i.test(t)) bills = 'Included';
+    else if(/فواتير\s*(غير شامل|مش شامل|extra|excluded)|bills?\s*(extra|excluded)/i.test(t)) bills = 'Excluded – paid separately';
+  }
 
-  let furnishing = '';
-  if(/غير مفروش|unfurnished/i.test(t)) furnishing = 'Unfurnished';
-  else if(/مفروش|furnished/i.test(t)) furnishing = 'Furnished';
+  let furnishing = labeled && labeled.furnishing ? labeled.furnishing : '';
+  if(!furnishing){
+    if(/غير مفروش|unfurnished/i.test(t)) furnishing = 'Unfurnished';
+    else if(/مفروش|furnished/i.test(t)) furnishing = 'Furnished';
+  }
+
+  let status = '';
+  if(labeled && labeled.statusText){
+    const hit = QUICKFILL_STATUS_MAP.find(([re]) => re.test(labeled.statusText));
+    if(hit) status = hit[1];
+  }
+
+  // Strip this form's own grey helper line if it got pasted along with the
+  // building value (it sits directly under that field in the UI).
+  const buildingId = labeled && labeled.buildingId
+    ? labeled.buildingId.split('\n').filter(l => !/^type the exact same name/i.test(l.trim())).join(' ').trim()
+    : '';
+  const rules = labeled && labeled.rules ? labeled.rules : '';
+  const ownerContact = labeled && labeled.ownerContact ? labeled.ownerContact : '';
+  const description = labeled && labeled.description ? labeled.description : t.trim();
 
   const typeLabel = {single:'Single Room',double:'Double Room',shared:'Shared Room',apartment:'Apartment'}[roomType];
-  const title = district ? `${typeLabel} in ${district}` : typeLabel;
+  const title = (labeled && labeled.title) || (district ? `${typeLabel} in ${district}` : typeLabel);
 
-  return { title, district, roomType, monthlyRent, currency, deposit, bills, furnishing, genderPolicy, transport, description: t.trim() };
+  return { title, district, buildingId, roomType, monthlyRent, currency, deposit, bills, furnishing, genderPolicy, transport, status, description, rules, ownerContact };
 }
 
 function quickFillListingForm(){
@@ -528,6 +628,7 @@ function quickFillListingForm(){
   const r = parseListingText(text);
   if(r.title) document.getElementById('lf-title').value = r.title;
   if(r.district) document.getElementById('lf-district').value = r.district;
+  if(r.buildingId) document.getElementById('lf-building').value = r.buildingId;
   document.getElementById('lf-roomtype').value = r.roomType;
   if(r.monthlyRent) document.getElementById('lf-rent').value = r.monthlyRent;
   document.getElementById('lf-currency').value = r.currency;
@@ -536,7 +637,10 @@ function quickFillListingForm(){
   if(r.furnishing) document.getElementById('lf-furnishing').value = r.furnishing;
   if(r.genderPolicy) document.getElementById('lf-gender').value = r.genderPolicy;
   if(r.transport) document.getElementById('lf-transport').value = r.transport;
+  if(r.status) document.getElementById('lf-status').value = r.status;
   document.getElementById('lf-description').value = r.description;
+  if(r.rules) document.getElementById('lf-rules').value = r.rules;
+  if(r.ownerContact) document.getElementById('lf-owner').value = r.ownerContact;
   showToast('Form filled — review and adjust before saving', 'success');
 }
 
