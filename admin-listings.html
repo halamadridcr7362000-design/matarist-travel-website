@@ -510,12 +510,20 @@ const QUICKFILL_LABELS = [
   { key:'ownerContact', re:/^owner\s*\/\s*landlord contact/i },
 ];
 
+// AI tools frequently hand back each label wrapped in markdown bold
+// ("**Title**") or prefixed with a bullet/heading marker ("## Title",
+// "- Title") — strip that decoration before testing a line against the
+// label patterns below, which expect the bare label text.
+function quickfillStripLineDecoration(line){
+  return line.replace(/^[#>*\-••\s]+/, '').replace(/[*\s]+$/, '');
+}
+
 function extractLabeledFields(text){
   const lines = String(text||'').split(/\r?\n/).map(l=>l.trim());
   const hits = [];
   lines.forEach((line,i)=>{
     if(!line) return;
-    const label = QUICKFILL_LABELS.find(l=>l.re.test(line));
+    const label = QUICKFILL_LABELS.find(l=>l.re.test(quickfillStripLineDecoration(line)));
     if(label) hits.push({ key:label.key, lineIndex:i });
   });
   if(hits.length < 3) return null; // too few label matches — treat as free-text instead
@@ -559,9 +567,13 @@ function parseListingText(text){
   if(labeled && labeled.roomTypeText){
     const hit = QUICKFILL_ROOMTYPE_MAP.find(([re]) => re.test(labeled.roomTypeText));
     if(hit) roomType = hit[1];
-  } else if(/شقة|شقه|apartment|flat|دوبلكس/i.test(t)) roomType = 'apartment';
+  } else if(/شقة\s*كامل|كامل[ةه]\s*شقة|entire\s+apartment|whole\s+apartment|full\s+apartment|studio|دوبلكس/i.test(t)) roomType = 'apartment';
   else if(/مشارك|شير|shared/i.test(t)) roomType = 'shared';
   else if(/دوبل|مزدوج|double/i.test(t)) roomType = 'double';
+  // Bare "apartment"/"شقة" (without "entire"/"كاملة") is too easily matched
+  // by passing mentions elsewhere in the text (e.g. a house rule about
+  // "the apartment"), so it's intentionally excluded above — it no longer
+  // overrides the 'single' default on its own.
 
   let genderPolicy = labeled && labeled.genderPolicy ? labeled.genderPolicy : '';
   if(!genderPolicy){
