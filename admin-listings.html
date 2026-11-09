@@ -538,38 +538,58 @@ const QUICKFILL_LABELS = [
   { key:'monthlyRentText', re:/^monthly rent$/i },
   { key:'currencyText', re:/^currency$/i },
   { key:'deposit', re:/^deposit$/i },
-  { key:'bills', re:/^bills\s*\/\s*utilities$/i },
+  { key:'bills', re:/^bills(\s*\/\s*utilities)?$/i },
   { key:'furnishing', re:/^furnishing$/i },
-  { key:'genderPolicy', re:/^gender preference$/i },
+  { key:'genderPolicy', re:/^gender(\s*preference)?$/i },
   { key:'transport', re:/^nearby transport$/i },
   { key:'statusText', re:/^status$/i },
   { key:'description', re:/^description$/i },
   { key:'rules', re:/^rules$/i },
   { key:'ownerContact', re:/^owner\s*\/\s*landlord contact/i },
+  // Fields this form has nothing to do with, but that AI-generated listing
+  // text commonly includes alongside the ones above (floor, elevator,
+  // move-in date...). Recognized only so they act as boundaries — without
+  // them, an unrecognized "Floor: 5th Floor" line would get silently
+  // swallowed into whichever real field happens to precede it.
+  { key:'_ignored1', re:/^floor$/i },
+  { key:'_ignored2', re:/^elevator$/i },
+  { key:'_ignored3', re:/^available from$/i },
+  { key:'_ignored4', re:/^size(\s*\/\s*area)?$/i },
+  { key:'_ignored5', re:/^contact$/i },
 ];
 
 // AI tools frequently hand back each label wrapped in markdown bold
-// ("**Title**") or prefixed with a bullet/heading marker ("## Title",
-// "- Title") — strip that decoration before testing a line against the
-// label patterns below, which expect the bare label text.
-function quickfillStripLineDecoration(line){
-  return line.replace(/^[#>*\-••\s]+/, '').replace(/[*\s]+$/, '');
+// ("**Title:** value" or "**Title**" on its own line), or prefixed with a
+// bullet/heading marker ("## Title", "- Title"). Strip all of that —
+// including a "**" pair in the MIDDLE of the line (closing the bold run
+// right after the label) — before testing/splitting the line, since the
+// label patterns above expect the bare label text.
+function quickfillCleanLine(line){
+  return line.replace(/\*\*/g, '').replace(/^[#>\-••\s]+/, '').trim();
 }
 
+// Handles two shapes of labeled line:
+//   "Title"            (label alone; the value is the following line(s))
+//   "Title: value"      (value inline, right after the label on the same line)
 function extractLabeledFields(text){
   const lines = String(text||'').split(/\r?\n/).map(l=>l.trim());
   const hits = [];
   lines.forEach((line,i)=>{
     if(!line) return;
-    const label = QUICKFILL_LABELS.find(l=>l.re.test(quickfillStripLineDecoration(line)));
-    if(label) hits.push({ key:label.key, lineIndex:i });
+    const cleaned = quickfillCleanLine(line);
+    const colonIdx = cleaned.indexOf(':');
+    const labelPart = (colonIdx===-1 ? cleaned : cleaned.slice(0,colonIdx)).trim();
+    const inline = colonIdx===-1 ? '' : cleaned.slice(colonIdx+1).trim();
+    const label = QUICKFILL_LABELS.find(l=>l.re.test(labelPart));
+    if(label) hits.push({ key:label.key, lineIndex:i, inline });
   });
   if(hits.length < 3) return null; // too few label matches — treat as free-text instead
   const out = {};
   for(let h=0; h<hits.length; h++){
     const start = hits[h].lineIndex + 1;
     const end = h+1 < hits.length ? hits[h+1].lineIndex : lines.length;
-    out[hits[h].key] = lines.slice(start, end).filter(Boolean).join('\n').trim();
+    const continuation = lines.slice(start, end).filter(Boolean).join('\n').trim();
+    out[hits[h].key] = [hits[h].inline, continuation].filter(Boolean).join('\n').trim();
   }
   return out;
 }
