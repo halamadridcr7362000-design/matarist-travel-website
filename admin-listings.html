@@ -237,7 +237,26 @@ tr.clickable:hover td{background:var(--surface2)}
   <div class="modal-panel">
     <div class="modal-head"><h3>New accommodation transaction</h3><button class="btn secondary small" onclick="closeModal('tx-modal')">Close</button></div>
     <div class="modal-body">
-      <div class="form-row"><label>District</label><select id="tf-district-filter" onchange="populateListingSelect()"></select></div>
+      <div class="form-grid">
+        <div class="form-row"><label>District</label><select id="tf-district-filter" onchange="populateListingSelect()"></select></div>
+        <div class="form-row"><label>For</label>
+          <select id="tf-gender-filter" onchange="populateListingSelect()">
+            <option value="">All genders</option>
+            <option value="girls">Girls</option>
+            <option value="boys">Boys</option>
+            <option value="mixed">Mixed</option>
+          </select>
+        </div>
+        <div class="form-row"><label>Room type</label>
+          <select id="tf-roomtype-filter" onchange="populateListingSelect()">
+            <option value="">All room types</option>
+            <option value="single">Single</option>
+            <option value="double">Double</option>
+            <option value="shared">Shared</option>
+            <option value="apartment">Apartment</option>
+          </select>
+        </div>
+      </div>
       <div class="form-row"><label>Listing</label><select id="tf-listing"></select></div>
       <div class="form-grid">
         <div class="form-row"><label>Client name</label><input id="tf-client"></div>
@@ -943,7 +962,13 @@ function populateDistrictFilter(){
 function populateListingSelect(){
   const sel = document.getElementById('tf-listing');
   const district = document.getElementById('tf-district-filter').value;
-  const filtered = district ? listingsCache.filter(l=>l.district===district) : listingsCache;
+  const gender = document.getElementById('tf-gender-filter').value;
+  const roomType = document.getElementById('tf-roomtype-filter').value;
+  const filtered = listingsCache.filter(l =>
+    (!district || l.district===district) &&
+    (!gender || adminGenderTheme(l.genderPolicy)===gender) &&
+    (!roomType || l.roomType===roomType)
+  );
   sel.innerHTML = filtered.map(l=>`<option value="${l.id}" data-slug="${l.slug}" data-rent="${l.monthlyRent}">${escapeHtml(l.title)} — ${escapeHtml(l.district)}</option>`).join('');
   sel.onchange = () => {
     const opt = sel.options[sel.selectedIndex];
@@ -971,6 +996,8 @@ function openTransactionForm(){
   document.getElementById('tf-landlord').value=0;
   document.getElementById('tf-notes').value='';
   document.getElementById('tf-district-filter').value='';
+  document.getElementById('tf-gender-filter').value='';
+  document.getElementById('tf-roomtype-filter').value='';
   populateDistrictFilter();
   populateListingSelect();
   updateExpectedCommission();
@@ -1000,6 +1027,24 @@ async function createTransaction(){
     showToast('Transaction created: '+data.transaction.order_ref, 'success');
     closeModal('tx-modal');
     loadTransactions();
+    await markListingRented(payload.listingId);
+  }catch(e){ showToast(e.message, 'error'); }
+}
+
+// A created transaction means the room is taken — flip the listing to
+// "rented" automatically instead of making the admin do it by hand on
+// the listing form afterwards.
+async function markListingRented(listingId){
+  const listing = listingsCache.find(l=>l.id===listingId);
+  if(!listing || listing.status==='rented') return;
+  try{
+    const res = await fetch(LISTINGS_URL,{method:'POST',headers:authHeaders(),body:JSON.stringify({action:'setStatus',id:listingId,status:'rented'})});
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error||'Could not mark listing as rented');
+    const idx = listingsCache.findIndex(l=>l.id===listingId);
+    if(idx!==-1) listingsCache[idx] = data.listing;
+    renderListingsTable();
+    showToast('Listing marked as rented', 'success');
   }catch(e){ showToast(e.message, 'error'); }
 }
 
