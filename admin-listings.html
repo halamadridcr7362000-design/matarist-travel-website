@@ -237,6 +237,7 @@ tr.clickable:hover td{background:var(--surface2)}
   <div class="modal-panel">
     <div class="modal-head"><h3>New accommodation transaction</h3><button class="btn secondary small" onclick="closeModal('tx-modal')">Close</button></div>
     <div class="modal-body">
+      <div class="form-row"><label>District</label><select id="tf-district-filter" onchange="populateListingSelect()"></select></div>
       <div class="form-row"><label>Listing</label><select id="tf-listing"></select></div>
       <div class="form-grid">
         <div class="form-row"><label>Client name</label><input id="tf-client"></div>
@@ -931,14 +932,25 @@ async function previewListing(){
 /* ---------------- TRANSACTIONS ---------------- */
 let txCache = [];
 
+function populateDistrictFilter(){
+  const filterSel = document.getElementById('tf-district-filter');
+  const prev = filterSel.value;
+  const districts = [...new Set(listingsCache.map(l=>l.district).filter(Boolean))].sort();
+  filterSel.innerHTML = '<option value="">All districts</option>' + districts.map(d=>`<option value="${escapeHtml(d)}">${escapeHtml(d)}</option>`).join('');
+  if(districts.includes(prev)) filterSel.value = prev;
+}
+
 function populateListingSelect(){
   const sel = document.getElementById('tf-listing');
-  sel.innerHTML = listingsCache.map(l=>`<option value="${l.id}" data-slug="${l.slug}" data-rent="${l.monthlyRent}">${escapeHtml(l.title)} — ${escapeHtml(l.district)}</option>`).join('');
+  const district = document.getElementById('tf-district-filter').value;
+  const filtered = district ? listingsCache.filter(l=>l.district===district) : listingsCache;
+  sel.innerHTML = filtered.map(l=>`<option value="${l.id}" data-slug="${l.slug}" data-rent="${l.monthlyRent}">${escapeHtml(l.title)} — ${escapeHtml(l.district)}</option>`).join('');
   sel.onchange = () => {
     const opt = sel.options[sel.selectedIndex];
     if(opt){ document.getElementById('tf-rent').value = opt.dataset.rent; updateExpectedCommission(); }
   };
   if(sel.options.length){ document.getElementById('tf-rent').value = sel.options[0].dataset.rent; }
+  else{ document.getElementById('tf-rent').value = ''; }
 }
 
 function updateExpectedCommission(){
@@ -958,6 +970,8 @@ function openTransactionForm(){
   document.getElementById('tf-pct').value=50;
   document.getElementById('tf-landlord').value=0;
   document.getElementById('tf-notes').value='';
+  document.getElementById('tf-district-filter').value='';
+  populateDistrictFilter();
   populateListingSelect();
   updateExpectedCommission();
   openModalEl('tx-modal');
