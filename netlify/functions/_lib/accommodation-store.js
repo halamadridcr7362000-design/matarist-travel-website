@@ -6,6 +6,7 @@ const { getStore } = require("@netlify/blobs");
 
 const LISTINGS_KEY = "all-listings";
 const TRANSACTIONS_KEY = "all-transactions";
+const SUBSCRIBERS_KEY = "all-subscribers";
 
 // This site's Blobs automatic context injection isn't active (confirmed by
 // testing against a live deploy preview) — the existing orders.js already
@@ -22,6 +23,19 @@ function listingsStore() {
 
 function transactionsStore() {
   return getStore({ name: "accommodation-transactions", consistency: "strong", ...blobsCreds() });
+}
+
+function subscribersStore() {
+  return getStore({ name: "accommodation-subscribers", consistency: "strong", ...blobsCreds() });
+}
+
+async function getAllSubscribers() {
+  const data = await subscribersStore().get(SUBSCRIBERS_KEY, { type: "json" });
+  return data || [];
+}
+
+async function saveAllSubscribers(subscribers) {
+  await subscribersStore().setJSON(SUBSCRIBERS_KEY, subscribers);
 }
 
 async function getAllListings() {
@@ -113,8 +127,11 @@ function withDerived(tx) {
 module.exports = {
   listingsStore,
   transactionsStore,
+  subscribersStore,
   getAllListings,
   saveAllListings,
+  getAllSubscribers,
+  saveAllSubscribers,
   toPublicListing,
   isPubliclyVisible,
   getTransactionsWithEtag,
@@ -122,4 +139,5 @@ module.exports = {
   withDerived,
   LISTINGS_KEY,
   TRANSACTIONS_KEY,
+  SUBSCRIBERS_KEY,
 };

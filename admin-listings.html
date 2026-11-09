@@ -79,6 +79,7 @@ tr.clickable:hover td{background:var(--surface2)}
 .payment-list{list-style:none;margin:10px 0}
 .payment-list li{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:0.85rem}
 .tag{font-size:0.7rem;padding:2px 8px;border-radius:8px;background:var(--surface2);color:var(--text-muted)}
+.notify-panel{background:var(--surface);border:1px solid var(--gold);border-radius:10px;padding:16px}
 </style>
 </head>
 <body>
@@ -98,6 +99,7 @@ tr.clickable:hover td{background:var(--surface2)}
     <div class="sidebar-logo"><b>MATARIST</b><div>Accommodation Admin</div></div>
     <div class="nav-item active" data-page="listings" onclick="showPage('listings')"><i class="fa-solid fa-house"></i> Listings <span class="nav-count" id="pending-count" style="display:none">0</span></div>
     <div class="nav-item" data-page="transactions" onclick="showPage('transactions')"><i class="fa-solid fa-sack-dollar"></i> Transactions</div>
+    <div class="nav-item" data-page="subscribers" onclick="showPage('subscribers')"><i class="fa-solid fa-address-book"></i> Subscribers <span class="nav-count" id="subscribers-count" style="display:none">0</span></div>
     <div class="sidebar-footer">
       <button class="logout-btn" onclick="doLogout()">Log out</button>
     </div>
@@ -114,8 +116,8 @@ tr.clickable:hover td{background:var(--surface2)}
         </div>
       </div>
       <table>
-        <thead><tr><th>Title</th><th>District</th><th>Type</th><th>Rent</th><th>Status</th><th></th><th></th></tr></thead>
-        <tbody id="listings-tbody"><tr><td colspan="7">Loading…</td></tr></tbody>
+        <thead><tr><th>Title</th><th>District</th><th>Type</th><th>Rent</th><th>Status</th><th></th><th></th><th></th></tr></thead>
+        <tbody id="listings-tbody"><tr><td colspan="8">Loading…</td></tr></tbody>
       </table>
     </div>
 
@@ -128,6 +130,38 @@ tr.clickable:hover td{background:var(--surface2)}
       <table>
         <thead><tr><th>Ref</th><th>Client</th><th>Listing</th><th>Collected</th><th>Outstanding</th><th>Realized profit</th><th>Status</th></tr></thead>
         <tbody id="tx-tbody"><tr><td colspan="7">Loading…</td></tr></tbody>
+      </table>
+    </div>
+
+    <!-- SUBSCRIBERS PAGE -->
+    <div class="page" id="page-subscribers">
+      <div class="page-head">
+        <h2>Subscribers</h2>
+      </div>
+
+      <div class="notify-panel">
+        <div class="form-row">
+          <label>Notify about a listing (optional — fills the message below and pre-selects matching subscribers)</label>
+          <select id="notify-listing-select" onchange="onNotifyListingChange()"><option value="">— Choose a listing —</option></select>
+        </div>
+        <div class="form-row">
+          <label>Message</label>
+          <textarea id="notify-message" rows="4" placeholder="Write the WhatsApp message to send..."></textarea>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn secondary small" onclick="copyNotifyMessage()"><i class="fa-regular fa-copy"></i> Copy message</button>
+          <button class="btn secondary small" onclick="copySelectedNumbers()"><i class="fa-regular fa-copy"></i> Copy selected numbers</button>
+          <span id="notify-selected-count" style="font-size:0.78rem;color:var(--text-muted);align-self:center">0 selected</span>
+        </div>
+        <div style="font-size:0.74rem;color:var(--text-muted);margin-top:8px">WhatsApp can't send one message to many numbers from the browser. Use the per-row "Send" button to open a chat (pre-filled with the message above) for each selected client, one at a time — or copy the message + numbers and use a WhatsApp Broadcast List.</div>
+      </div>
+
+      <table style="margin-top:16px">
+        <thead><tr>
+          <th style="width:30px"><input type="checkbox" id="subscribers-select-all" onchange="toggleAllSubscribers(this.checked)"></th>
+          <th>Name</th><th>WhatsApp</th><th>District</th><th>For</th><th>Room type</th><th>Max budget</th><th>Joined</th><th></th><th></th>
+        </tr></thead>
+        <tbody id="subscribers-tbody"><tr><td colspan="9">Loading…</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -236,6 +270,7 @@ tr.clickable:hover td{background:var(--surface2)}
 const AUTH_URL='/.netlify/functions/accommodation-auth';
 const LISTINGS_URL='/.netlify/functions/accommodation-listings';
 const TX_URL='/.netlify/functions/accommodation-transactions';
+const SUBSCRIBERS_URL='/.netlify/functions/accommodation-subscribers';
 
 function getToken(){ return sessionStorage.getItem('acc_token'); }
 function authHeaders(){ return {'Authorization':'Bearer '+getToken(),'Content-Type':'application/json'}; }
@@ -284,9 +319,10 @@ function showPage(name){
   document.getElementById('page-'+name).classList.add('active');
   document.querySelector('.nav-item[data-page="'+name+'"]').classList.add('active');
   if(name==='transactions') loadTransactions();
+  if(name==='subscribers') loadSubscribers();
 }
 
-function initApp(){ loadListings(); loadTransactions(); }
+function initApp(){ loadListings(); loadTransactions(); loadSubscribers(); }
 
 /* ---------------- LISTINGS ---------------- */
 let listingsCache = [];
@@ -308,6 +344,7 @@ async function loadListings(){
   });
   renderListingsTable();
   populateListingSelect();
+  populateNotifyListingSelect();
   populateFieldDatalists();
   const pendingCount = listingsCache.filter(l=>l.status==='pending').length;
   const badge = document.getElementById('pending-count');
@@ -403,7 +440,7 @@ function populateFieldDatalists(){
 
 function renderListingsTable(){
   const tbody = document.getElementById('listings-tbody');
-  if(!listingsCache.length){ tbody.innerHTML='<tr><td colspan="7">No listings yet.</td></tr>'; return; }
+  if(!listingsCache.length){ tbody.innerHTML='<tr><td colspan="8">No listings yet.</td></tr>'; return; }
   tbody.innerHTML = listingsCache.map(l=>`
     <tr class="clickable" onclick="openListingForm('${l.id}')">
       <td>${l.submittedByOwner?'<i class="fa-solid fa-user-plus" style="color:var(--gold-light)" title="Submitted by owner"></i> ':''}${escapeHtml(l.title)}</td>
@@ -412,6 +449,7 @@ function renderListingsTable(){
       <td>${l.monthlyRent} ${escapeHtml(l.currency)}</td>
       <td><span class="badge ${l.status}">${l.status==='pending'?'needs review':l.status}</span></td>
       <td>${l.status==='pending'?`<div class="row-actions"><button class="btn small" onclick="event.stopPropagation();quickApprove('${l.id}')">Approve</button><button class="btn small danger" onclick="event.stopPropagation();quickReject('${l.id}')">Reject</button></div>`:''}</td>
+      <td>${(l.status==='published'||l.status==='rented')?`<button class="btn secondary small" onclick="event.stopPropagation();notifyAboutListing('${l.id}')" title="Notify registered subscribers about this listing">🔔 Notify</button>`:''}</td>
       <td><a href="/accommodation/${l.slug}" target="_blank" onclick="event.stopPropagation()">view</a></td>
     </tr>`).join('');
 }
@@ -1029,6 +1067,144 @@ async function cancelTransaction(ref){
 }
 
 function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* ---------------- SUBSCRIBERS ---------------- */
+let subscribersCache = [];
+
+// Same classification the public site's genderTheme() uses on a listing's
+// free-text genderPolicy field — reused here so "Notify about this
+// listing" can match it against a subscriber's girls/boys/mixed preference.
+function adminGenderTheme(genderPolicy){
+  const g = String(genderPolicy || '').toLowerCase();
+  if(/mixed|both genders|male\s*(&|and)\s*female/.test(g)) return 'mixed';
+  if(/female|girl|women|woman/.test(g)) return 'girls';
+  if(/\bmale\b|\bboys?\b|\bmen\b/.test(g)) return 'boys';
+  return '';
+}
+
+async function loadSubscribers(){
+  const res = await fetch(SUBSCRIBERS_URL, {headers: authHeaders()});
+  if(res.status===401){ doLogout(); return; }
+  const data = await res.json();
+  subscribersCache = (data.subscribers || []).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+  renderSubscribersTable();
+  const badge = document.getElementById('subscribers-count');
+  badge.style.display = subscribersCache.length ? 'inline-block' : 'none';
+  badge.textContent = subscribersCache.length;
+}
+
+function renderSubscribersTable(){
+  const tbody = document.getElementById('subscribers-tbody');
+  if(!subscribersCache.length){ tbody.innerHTML='<tr><td colspan="9">No subscribers yet.</td></tr>'; return; }
+  const genderLabel = {girls:'Women', boys:'Men', mixed:'Mixed', '':'Any'};
+  const typeLabel = {single:'Single', double:'Double', shared:'Shared', apartment:'Apartment', '':'Any'};
+  tbody.innerHTML = subscribersCache.map(s=>`
+    <tr data-id="${s.id}">
+      <td><input type="checkbox" class="sub-check" value="${s.id}" onchange="updateNotifySelectedCount()"></td>
+      <td>${escapeHtml(s.name) || '<span style="color:var(--text-muted)">—</span>'}</td>
+      <td>${escapeHtml(s.whatsapp)}</td>
+      <td>${escapeHtml(s.district) || '<span style="color:var(--text-muted)">Any</span>'}</td>
+      <td>${genderLabel[s.genderPolicy] || 'Any'}</td>
+      <td>${typeLabel[s.roomType] || 'Any'}</td>
+      <td>${s.maxPrice ? s.maxPrice+' TRY' : '—'}</td>
+      <td>${s.createdAt ? new Date(s.createdAt).toLocaleDateString() : ''}</td>
+      <td><button class="btn small" onclick="sendToSubscriber('${s.id}')" title="Open a WhatsApp chat with the message above"><i class="fa-brands fa-whatsapp"></i> Send</button></td>
+      <td><button class="btn small danger" onclick="deleteSubscriber('${s.id}')">Remove</button></td>
+    </tr>`).join('');
+  updateNotifySelectedCount();
+}
+
+function toggleAllSubscribers(checked){
+  document.querySelectorAll('.sub-check').forEach(cb=>cb.checked=checked);
+  updateNotifySelectedCount();
+}
+
+function getSelectedSubscribers(){
+  const ids = [...document.querySelectorAll('.sub-check:checked')].map(cb=>cb.value);
+  return subscribersCache.filter(s=>ids.includes(s.id));
+}
+
+function updateNotifySelectedCount(){
+  document.getElementById('notify-selected-count').textContent = getSelectedSubscribers().length+' selected';
+}
+
+async function deleteSubscriber(id){
+  if(!confirm('Remove this subscriber?')) return;
+  const res = await fetch(SUBSCRIBERS_URL,{method:'POST',headers:authHeaders(),body:JSON.stringify({action:'delete',id})});
+  if(res.ok){ showToast('Subscriber removed', 'success'); loadSubscribers(); }
+  else showToast('Could not remove subscriber', 'error');
+}
+
+function copyNotifyMessage(){
+  const msg = document.getElementById('notify-message').value;
+  if(!msg){ showToast('Write a message first', 'error'); return; }
+  navigator.clipboard.writeText(msg).then(()=>showToast('Message copied', 'success'));
+}
+
+function copySelectedNumbers(){
+  const selected = getSelectedSubscribers();
+  if(!selected.length){ showToast('Select at least one subscriber', 'error'); return; }
+  navigator.clipboard.writeText(selected.map(s=>s.whatsapp).join(', ')).then(()=>showToast('Numbers copied', 'success'));
+}
+
+// One click = one WhatsApp chat tab, pre-filled with whatever is currently
+// in the message box. wa.me has no bulk-send endpoint, so this is the
+// closest a browser can get to "send to everyone" — the admin clicks Send
+// once per selected row (see the note in the Subscribers page).
+function sendToSubscriber(id){
+  const s = subscribersCache.find(x=>x.id===id);
+  if(!s) return;
+  const msg = document.getElementById('notify-message').value;
+  const number = s.whatsapp.replace(/[^\d]/g,'');
+  window.open('https://wa.me/'+number+(msg?('?text='+encodeURIComponent(msg)):''), '_blank');
+}
+
+function populateNotifyListingSelect(){
+  const sel = document.getElementById('notify-listing-select');
+  const current = sel.value;
+  const publicListings = listingsCache.filter(l=>l.status==='published'||l.status==='rented');
+  sel.innerHTML = '<option value="">— Choose a listing —</option>' +
+    publicListings.map(l=>`<option value="${l.id}">${escapeHtml(l.title)} — ${escapeHtml(l.district)} (${l.monthlyRent} ${escapeHtml(l.currency)})</option>`).join('');
+  if(publicListings.some(l=>l.id===current)) sel.value = current;
+}
+
+function buildListingMessage(l){
+  const link = 'https://mataristtravel.com/accommodation/'+l.slug;
+  return `Hi! A new room just went up that might interest you:\n\n${l.title} — ${l.district}\n${l.monthlyRent} ${l.currency}/month\n\n${link}\n\nReply here if you'd like to see it 🙂`;
+}
+
+function onNotifyListingChange(){
+  const sel = document.getElementById('notify-listing-select');
+  const listing = listingsCache.find(l=>l.id===sel.value);
+  if(!listing) return;
+  document.getElementById('notify-message').value = buildListingMessage(listing);
+  const theme = adminGenderTheme(listing.genderPolicy);
+  const district = canonicalDistrict(listing.district);
+  document.querySelectorAll('.sub-check').forEach(cb=>{
+    const s = subscribersCache.find(x=>x.id===cb.value);
+    if(!s) return;
+    const districtOk = !s.district || canonicalDistrict(s.district)===district;
+    const genderOk = !s.genderPolicy || !theme || s.genderPolicy===theme;
+    cb.checked = districtOk && genderOk;
+  });
+  updateNotifySelectedCount();
+}
+
+// Entry point from the "🔔 Notify" button on a published listing row.
+function notifyAboutListing(id){
+  showPage('subscribers');
+  const trySelect = () => {
+    const sel = document.getElementById('notify-listing-select');
+    if([...sel.options].some(o=>o.value===id)){
+      sel.value = id;
+      onNotifyListingChange();
+    } else {
+      // Subscribers may still be loading — retry briefly.
+      setTimeout(trySelect, 200);
+    }
+  };
+  trySelect();
+}
 
 checkSession();
 </script>
