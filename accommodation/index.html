@@ -184,6 +184,7 @@ header nav a:hover{color:var(--gold-light)}
 .filters .field.action{flex:0 0 auto;justify-content:flex-end}
 .filters button{background:var(--gold);border:none;color:#1a1420;font-weight:700;font-size:0.88rem;padding:11px 26px;border-radius:var(--radius-sm);cursor:pointer;transition:background 0.2s,transform 0.2s;white-space:nowrap}
 .filters button:hover{background:var(--gold-light);transform:translateY(-1px)}
+#listings-section,#grid{scroll-margin-top:90px}
 
 /* ===== Content ===== */
 .wrap{max-width:1180px;margin:0 auto;padding:56px 5% 40px}
@@ -526,7 +527,7 @@ footer a{color:var(--gold);text-decoration:none;font-weight:600}
 <div class="wrap">
   <div id="map"></div>
   <div class="map-gmaps-link"><a href="https://www.google.com/maps/@41.0082,28.9784,11z" target="_blank" rel="noopener"><i class="fa-solid fa-up-right-from-square"></i> <span data-i18n="map_gmaps_link">Open in Google Maps</span></a></div>
-  <div class="section-head">
+  <div class="section-head" id="listings-section">
     <h2 data-i18n="listings_heading">Available Listings</h2>
     <span class="result-count" id="result-count"></span>
   </div>
@@ -809,7 +810,19 @@ function filteredListings(){
   }).sort((a,b)=>(a.status==='rented')-(b.status==='rented')); // available rooms first, rented ones sink to the end
 }
 
-function applyFilters(){ renderGrid(); }
+// Filters re-render instantly since allListings is already loaded client-side,
+// but on a long page (especially on mobile, where everything stacks
+// vertically) a silent instant re-render above the fold left people on
+// mobile thinking Search "did nothing" since the results were off-screen.
+// Scrolling to the listings section and showing a brief loading state makes
+// the search feel like it actually happened.
+function applyFilters(){
+  const grid = document.getElementById('grid');
+  const t = translations[window.currentLang || 'en'];
+  grid.innerHTML = `<div class="empty">${escapeHtml(t.loading || 'Loading listings…')}</div>`;
+  document.getElementById('listings-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setTimeout(renderGrid, 250);
+}
 
 // Per-card auto-rotating photo carousel. Tracked separately from render so
 // that re-rendering the grid (filters, language change) always clears any
