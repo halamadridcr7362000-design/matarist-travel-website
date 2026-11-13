@@ -33,6 +33,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .page{display:none}.page.active{display:block}
 .page-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
 .page-head h2{font-size:1.3rem}
+.filter-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.filter-bar .form-row{margin-bottom:0;min-width:150px;flex:1}
+.filter-bar .form-row.grow{flex:2}
+.filter-bar .form-row.shrink{flex:0 0 auto;min-width:0}
 .btn{background:var(--gold);color:#000;border:none;padding:9px 18px;border-radius:8px;font-weight:700;cursor:pointer;font-size:0.88rem}
 .btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
 .btn.danger{background:transparent;color:var(--red);border:1px solid var(--red)}
@@ -114,6 +118,39 @@ tr.clickable:hover td{background:var(--surface2)}
           <button class="btn secondary" onclick="normalizeDistricts()">🧹 Normalize districts</button>
           <button class="btn" onclick="openListingForm()">+ New listing</button>
         </div>
+      </div>
+      <div class="filter-bar">
+        <div class="form-row grow"><input id="lst-search-filter" placeholder="Search by title..." oninput="renderListingsTable()"></div>
+        <div class="form-row"><select id="lst-district-filter" onchange="renderListingsTable()"><option value="">All districts</option></select></div>
+        <div class="form-row">
+          <select id="lst-gender-filter" onchange="renderListingsTable()">
+            <option value="">All genders</option>
+            <option value="girls">Girls</option>
+            <option value="boys">Boys</option>
+            <option value="mixed">Mixed</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <select id="lst-roomtype-filter" onchange="renderListingsTable()">
+            <option value="">All room types</option>
+            <option value="single">Single</option>
+            <option value="double">Double</option>
+            <option value="shared">Shared</option>
+            <option value="apartment">Apartment</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <select id="lst-status-filter" onchange="renderListingsTable()">
+            <option value="">All statuses</option>
+            <option value="draft">Draft</option>
+            <option value="pending">Pending review</option>
+            <option value="published">Published</option>
+            <option value="rented">Rented</option>
+            <option value="unpublished">Unpublished</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+        <div class="form-row shrink"><button class="btn secondary" onclick="clearListingsFilters()">Clear filters</button></div>
       </div>
       <table>
         <thead><tr><th>Title</th><th>District</th><th>Type</th><th>Rent</th><th>Status</th><th></th><th></th><th></th></tr></thead>
@@ -362,6 +399,7 @@ async function loadListings(){
     if(ap!==bp) return ap? -1 : 1;
     return (b.updatedAt||0)-(a.updatedAt||0);
   });
+  populateListingsDistrictFilter();
   renderListingsTable();
   populateListingSelect();
   populateNotifyListingSelect();
@@ -458,10 +496,44 @@ function populateFieldDatalists(){
   }
 }
 
+function populateListingsDistrictFilter(){
+  const sel = document.getElementById('lst-district-filter');
+  const prev = sel.value;
+  const districts = [...new Set(listingsCache.map(l=>l.district).filter(Boolean))].sort();
+  sel.innerHTML = '<option value="">All districts</option>' + districts.map(d=>`<option value="${escapeHtml(d)}">${escapeHtml(d)}</option>`).join('');
+  if(districts.includes(prev)) sel.value = prev;
+}
+
+function clearListingsFilters(){
+  document.getElementById('lst-search-filter').value = '';
+  document.getElementById('lst-district-filter').value = '';
+  document.getElementById('lst-gender-filter').value = '';
+  document.getElementById('lst-roomtype-filter').value = '';
+  document.getElementById('lst-status-filter').value = '';
+  renderListingsTable();
+}
+
+function filteredListingsForTable(){
+  const search = document.getElementById('lst-search-filter').value.trim().toLowerCase();
+  const district = document.getElementById('lst-district-filter').value;
+  const gender = document.getElementById('lst-gender-filter').value;
+  const roomType = document.getElementById('lst-roomtype-filter').value;
+  const status = document.getElementById('lst-status-filter').value;
+  return listingsCache.filter(l =>
+    (!search || l.title.toLowerCase().includes(search)) &&
+    (!district || l.district===district) &&
+    (!gender || adminGenderTheme(l.genderPolicy)===gender) &&
+    (!roomType || l.roomType===roomType) &&
+    (!status || l.status===status)
+  );
+}
+
 function renderListingsTable(){
   const tbody = document.getElementById('listings-tbody');
   if(!listingsCache.length){ tbody.innerHTML='<tr><td colspan="8">No listings yet.</td></tr>'; return; }
-  tbody.innerHTML = listingsCache.map(l=>`
+  const rows = filteredListingsForTable();
+  if(!rows.length){ tbody.innerHTML='<tr><td colspan="8">No listings match these filters.</td></tr>'; return; }
+  tbody.innerHTML = rows.map(l=>`
     <tr class="clickable" onclick="openListingForm('${l.id}')">
       <td>${l.submittedByOwner?'<i class="fa-solid fa-user-plus" style="color:var(--gold-light)" title="Submitted by owner"></i> ':''}${escapeHtml(l.title)}</td>
       <td>${escapeHtml(l.district)}</td>
